@@ -1,6 +1,7 @@
 package com.opennxt
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.opennxt.api.stat.Stat
@@ -33,7 +34,7 @@ import java.io.FileNotFoundException
 import java.nio.file.Files
 import kotlin.system.exitProcess
 
-object OpenNXT : CliktCommand(name = "run-server", help = "Launches the OpenNXT server)") {
+object OpenNXT : CliktCommand(name = "run-server") {
     val skipHttpFileVerification by option(help = "Skips file verification when http server starts").flag(default = false)
     val enableProxySupport by option(help = "Enables proxy support. Disable this on live or when you won't use it.").flag(
         default = false
@@ -64,6 +65,8 @@ object OpenNXT : CliktCommand(name = "run-server", help = "Launches the OpenNXT 
     lateinit var commands: CommandRepository
 
     private val bootstrap = ServerBootstrap()
+
+    override fun help(context: Context): String = "Launches the OpenNXT server"
 
     private fun loadConfigurations() {
         logger.info { "Loading configuration files from ${Constants.CONFIG_PATH}" }

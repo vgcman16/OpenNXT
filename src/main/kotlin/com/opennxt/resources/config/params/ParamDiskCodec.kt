@@ -13,7 +13,7 @@ object ParamDiskCodec : DiskResourceCodec<ParamDefinition> {
         val result = Object2ObjectOpenHashMap<String, Path>()
         Files.list(path).forEach { file ->
             if (Files.isRegularFile(file)) {
-                val name = file.fileName.toString().toLowerCase()
+                val name = file.fileName.toString().lowercase()
                 if (name.endsWith(".toml")) {
                     result[name.substring(0, name.length - 5)] = file
                 }

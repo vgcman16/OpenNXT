@@ -19,7 +19,7 @@ class CommandRepository {
 
     fun complete(sender: CommandSender, input: String): Collection<String> {
         val split = input.split(" ", limit = 2)
-        val commandName = split[0].toLowerCase()
+        val commandName = split[0].lowercase()
 
         val match = commands[commandName]
         if (match != null) {
@@ -27,14 +27,14 @@ class CommandRepository {
         }
 
         if (split.size == 1)
-            return commands.keys.filter { it.startsWith(input.toLowerCase()) }
+            return commands.keys.filter { it.startsWith(input.lowercase()) }
 
         throw CommandException("Could not find a command named '${commandName}'")
     }
 
     fun execute(sender: CommandSender, input: String) {
         val split = input.split(" ", limit = 2)
-        val commandName = split[0].toLowerCase()
+        val commandName = split[0].lowercase()
 
         val match = commands[commandName] ?: throw CommandException("Command not found: '$commandName'")
 

@@ -39,7 +39,7 @@ object LoginThread : Thread("login-thread") {
     }
 
     private fun process(context: LoginContext) {
-        if (OpenNXT.enableProxySupport && OpenNXT.proxyConfig.usernames.contains(context.username.toLowerCase())) {
+        if (OpenNXT.enableProxySupport && OpenNXT.proxyConfig.usernames.contains(context.username.lowercase())) {
             OpenNXT.proxyConnectionFactory.createLogin(context.packet) { channel, result ->
                 if (channel != null) {
                     val now = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withLocale(Locale.getDefault()).withZone(ZoneId.systemDefault()).format(LocalDateTime.now()).replace(':', '-')

@@ -52,6 +52,16 @@ class FilesystemResources(val filesystem: Filesystem, val path: Path) {
         return diskCodices[resourceType] ?: throw NullPointerException("No disk codex found for type $type")
     }
 
+    fun hasFilesystemCodec(type: KClass<*>): Boolean {
+        val resourceType = ResourceType.forClass(type) ?: return false
+        return fsCodices.containsKey(resourceType)
+    }
+
+    fun hasDiskCodec(type: KClass<*>): Boolean {
+        val resourceType = ResourceType.forClass(type) ?: return false
+        return diskCodices.containsKey(resourceType)
+    }
+
     @Suppress("UNCHECKED_CAST")
     inline fun <reified T : Any> get(id: Int): T? {
         return getFilesystemCodex(T::class).load(filesystem, id) as? T

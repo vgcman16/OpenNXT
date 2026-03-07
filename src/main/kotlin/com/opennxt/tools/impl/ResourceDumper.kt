@@ -32,6 +32,11 @@ class ResourceDumper : Tool("resource-dumper", "Dumps resources from the filesys
             val path = Constants.RESOURCE_PATH.resolve("dumps").resolve(type.identifier)
             logger.info { "Dumping type $type to $path" }
 
+            if (!resources.hasFilesystemCodec(type.kclass) || !resources.hasDiskCodec(type.kclass)) {
+                logger.warn { "Skipping type $type because it does not have both filesystem and disk codecs yet" }
+                continue
+            }
+
             if (!Files.exists(path))
                 Files.createDirectories(path)
 

@@ -1,6 +1,7 @@
 package com.opennxt.model
 
-inline class InterfaceHash(val hash: Int) {
+@JvmInline
+value class InterfaceHash(val hash: Int) {
     val parent: Int
         get() = hash shr 16
     val component: Int

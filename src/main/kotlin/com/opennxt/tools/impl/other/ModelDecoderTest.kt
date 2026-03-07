@@ -5,7 +5,7 @@ import com.opennxt.tools.Tool
 import io.netty.buffer.Unpooled
 import kotlin.system.exitProcess
 
-class ModelDecoderTest : Tool(name = "model-decoder", help = "attempts to decode models") {
+class ModelDecoderTest : Tool(name = "model-decoder", commandHelp = "attempts to decode models") {
     override fun runTool() {
         val printValues = true
 

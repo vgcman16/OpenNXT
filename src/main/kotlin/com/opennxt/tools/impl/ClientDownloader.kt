@@ -35,7 +35,7 @@ class ClientDownloader : Tool("client-downloader", "Downloads clients from RS3")
                 if (!Files.exists(path)) Files.createDirectories(path)
             }
 
-            val typePath = path.resolve(type.name.toLowerCase()).resolve("original")
+            val typePath = path.resolve(type.name.lowercase()).resolve("original")
             if (!Files.exists(typePath)) Files.createDirectories(typePath)
 
             ClientConfig.save(config, typePath.resolve("jav_config.ws"))

@@ -34,7 +34,7 @@ object FileChecker {
         file: String,
         crc: Long
     ): ByteArray? {
-        val path = Constants.CLIENTS_PATH.resolve(build.toString()).resolve(type.name.toLowerCase()).resolve(folder)
+        val path = Constants.CLIENTS_PATH.resolve(build.toString()).resolve(type.name.lowercase()).resolve(folder)
             .resolve(file)
 
         val config = getConfig(folder, type, build) ?: return null
@@ -54,7 +54,7 @@ object FileChecker {
         type: BinaryType = BinaryType.WIN64,
         build: Int = OpenNXT.config.build
     ): ClientConfig? {
-        val path = Constants.CLIENTS_PATH.resolve(build.toString()).resolve(type.name.toLowerCase()).resolve(folder)
+        val path = Constants.CLIENTS_PATH.resolve(build.toString()).resolve(type.name.lowercase()).resolve(folder)
             .resolve("jav_config.ws")
         if (!Files.exists(path)) {
             logger.error { "jav_config.ws not found in $path (it should exist though)" }
@@ -78,7 +78,7 @@ object FileChecker {
 
         val crc = CRC32()
         BinaryType.values().forEach { binaryType ->
-            val typePath = Constants.CLIENTS_PATH.resolve(latest.toString()).resolve(binaryType.name.toLowerCase())
+            val typePath = Constants.CLIENTS_PATH.resolve(latest.toString()).resolve(binaryType.name.lowercase())
             if (!Files.exists(typePath))
                 throw FileNotFoundException("Couldn't find binary type $binaryType at $typePath")
 

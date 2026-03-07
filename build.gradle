@@ -1,51 +1,57 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.4.32'
+    id 'org.jetbrains.kotlin.jvm' version '2.3.10'
 }
 
-group 'com.opennxt'
-version '1.0.0'
+group = 'com.opennxt'
+version = '1.0.0'
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation "org.jetbrains.kotlin:kotlin-reflect"
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:2.3.10')
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'
 
-    implementation "io.github.microutils:kotlin-logging-jvm:2.0.6"
-    implementation "org.slf4j:slf4j-simple:1.7.29"
+    implementation 'io.github.microutils:kotlin-logging-jvm:3.0.5'
+    implementation 'org.slf4j:slf4j-simple:2.0.17'
 
-    implementation "com.google.guava:guava:19.0"
-    implementation "com.google.code.gson:gson:2.8.0"
-    implementation "io.github.classgraph:classgraph:4.8.105"
-    implementation "org.jglue.fluent-json:fluent-json:1.0.0"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.9.6"
-    implementation "it.unimi.dsi:fastutil:8.2.2"
-    implementation "com.github.ajalt:clikt:2.3.0"
-    implementation 'com.github.jponge:lzma-java:1.2'
-    implementation 'org.apache.commons:commons-compress:1.18'
-    implementation "com.moandjiezana.toml:toml4j:0.7.2"
+    implementation 'com.google.guava:guava:33.5.0-jre'
+    implementation 'com.google.code.gson:gson:2.13.2'
+    implementation 'io.github.classgraph:classgraph:4.8.184'
+    implementation 'org.jglue.fluent-json:fluent-json:2.0.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.1'
+    implementation 'it.unimi.dsi:fastutil:8.5.18'
+    implementation 'com.github.ajalt.clikt:clikt-jvm:5.1.0'
+    implementation 'com.github.jponge:lzma-java:1.3'
+    implementation 'org.apache.commons:commons-compress:1.28.0'
+    implementation 'com.moandjiezana.toml:toml4j:0.7.2'
 
-    implementation "org.xerial:sqlite-jdbc:3.32.3.2"
+    implementation 'org.xerial:sqlite-jdbc:3.51.2.0'
 
-    implementation "io.netty:netty-all:4.1.63.Final"
+    implementation 'io.netty:netty-all:4.2.10.Final'
 }
 
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-    kotlinOptions {
-        freeCompilerArgs = ["-Xinline-classes"]
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+kotlin {
+    jvmToolchain(25)
 }
 
-compileJava.options.encoding = 'UTF-8'
+tasks.withType(KotlinJvmCompile).configureEach {
+    compilerOptions {
+        jvmTarget = JvmTarget.fromTarget('25')
+    }
+}
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    options.release = 25
 }

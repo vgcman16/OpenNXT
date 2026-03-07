@@ -1,16 +1,16 @@
 package com.opennxt.tools
 
-import com.github.ajalt.clikt.core.NoRunCliktCommand
+import com.github.ajalt.clikt.core.Context
+import com.github.ajalt.clikt.core.NoOpCliktCommand
 import com.github.ajalt.clikt.core.subcommands
 import io.github.classgraph.ClassGraph
 import mu.KotlinLogging
 import kotlin.system.exitProcess
 
-object ToolExecutor : NoRunCliktCommand(
-    name = "run-tool",
-    help = "Executes a tool bundled in the server"
-) {
+object ToolExecutor : NoOpCliktCommand(name = "run-tool") {
     private val logger = KotlinLogging.logger {}
+
+    override fun help(context: Context): String = "Executes a tool bundled in the server"
 
     init {
         val result = ClassGraph()
@@ -20,7 +20,7 @@ object ToolExecutor : NoRunCliktCommand(
 
         val classes = result.getSubclasses("com.opennxt.tools.Tool")
 
-        val tools = classes.map { it.loadClass().newInstance() as Tool }
+        val tools = classes.map { it.loadClass().getDeclaredConstructor().newInstance() as Tool }
 
         if (tools.isEmpty()) {
             logger.error { "No bundled tools found" }

@@ -16,6 +16,6 @@ class ProxyConfig: TomlConfig() {
     }
 
     override fun load(toml: Toml) {
-        usernames = ArrayList(toml.getList("usernames", usernames).map { it.toLowerCase() })
+        usernames = ArrayList(toml.getList("usernames", usernames).map { it.lowercase() })
     }
 }
