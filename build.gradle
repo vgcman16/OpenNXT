@@ -5,7 +5,8 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '2.3.10'
 }
 
-group = 'com.opennxt'
+group = 'io.github.vgcman16.opennxt'
+description = 'Maintained fork of Techdaan/OpenNXT'
 version = '1.0.0'
 
 repositories {

@@ -1,54 +1,73 @@
-# OpenNXT - RS3 919
+# OpenNXT by vgcman16
 
-A RS3 RSPS framework targeted at NXT, the goal is to stay up-to-date with RS3
+Maintained fork of the RS3 NXT framework originally published as [Techdaan/OpenNXT](https://github.com/Techdaan/OpenNXT).
+This fork keeps the project buildable on a modern toolchain while preserving the existing code and data layout.
 
-# Discord
+## Repository
 
-We have a Discord server you can join! https://discord.gg/u5p4w3zjjx
+- Current fork: [vgcman16/OpenNXT](https://github.com/vgcman16/OpenNXT)
+- Upstream source: [Techdaan/OpenNXT](https://github.com/Techdaan/OpenNXT)
 
-# Tooling
+## Support
 
-One of the goals of this project is to have all necessary tools built-in. This includes the client downloader, client
-and launcher patcher, cache downloaders et cetera.
+Project tracking and support for this fork live in [GitHub Issues](https://github.com/vgcman16/OpenNXT/issues).
 
-Tools can be executed through the command line with the following parameters: `run-tool <tool-name> [--help]`
+## Tooling
 
-You can create your tools easily by creating a new class in `com.opennxt.tools.impl`. Your class must extend from base
-class `com.opennxt.tools.Tool`. Tools are registered automatically using classpath scanning.
+One of the goals of this project is to keep the required tools built into the repository. That includes the client
+downloader, launcher patcher, cache downloader, and related workflow helpers.
 
-# Updating
-To update OpenNXT to a new version:
+Tools can be executed with `run-tool <tool-name> [--help]`.
 
-1. Download the latest clients using `run-tool client-downloader`
-2. Download the latest cache using `run-tool cache-downloader`
-3. Patch the latest clients using `run-tool client-patcher`
-4. Update the `build` field in `./data/config/server.toml`
+New tools can be added by creating a class in `com.opennxt.tools.impl` that extends `com.opennxt.tools.Tool`. The
+tool registry is populated automatically through classpath scanning.
 
-If the version you are updating to is not yet supported by OpenNXT OR you want to contribute to the project's networking-related code and implementations, it is highly recommended you also fulfil these steps:
+## Build
+
+This fork currently builds with Gradle 9.4, Kotlin 2.3, and Java 25.
+
+```bash
+./gradlew build
+```
+
+Compatibility note: the internal package namespace remains `com.opennxt` in this fork to avoid a large breaking
+refactor.
+
+## Updating
+
+To move the project to a newer RS3 build:
+
+1. Download the latest clients using `run-tool client-downloader`.
+2. Download the latest cache using `run-tool cache-downloader`.
+3. Patch the latest clients using `run-tool client-patcher`.
+4. Update the `build` field in `./data/config/server.toml`.
+
+If the target version is not yet supported, or you are contributing to packet/protocol support, also do the following:
+
 1. In `com.opennxt.net.login.LoginEncoder`, replace `RS3_MODULUS` with the `old login` key printed by the patcher.
-2. Create a new directory: `./data/prot/[new version]/`, replacing `[new version]` with the server version.
-3. Open the win64.exe client in Ghidra, and run the [Ghidra NXT Auto Refactoring Script](https://github.com/Techdaan/rs3nxt-ghidra-scripts). For more information on how to install and use this tool you can visit [my Rune-Server thread.](https://www.rune-server.ee/runescape-development/rs-503-client-server/downloads/698604-nxt-win64-ghidra-refactoring-script.html)
-4. Run the script and use the data it prints to the console to populate the files in `./data/prot/[version]/*.toml`. The tool does not print `clientProtNames`. Those, you will have to do manually.
-5. Populate the packet fields using files in the `./data/prot/[version]/[(client/server)prot]` directories
+2. Create `./data/prot/[new version]/`, replacing `[new version]` with the server build number.
+3. Open the client in Ghidra and run the [Ghidra NXT Auto Refactoring Script](https://github.com/Techdaan/rs3nxt-ghidra-scripts). Background on that workflow is also available in the linked [Rune-Server release thread](https://www.rune-server.ee/runescape-development/rs-503-client-server/downloads/698604-nxt-win64-ghidra-refactoring-script.html).
+4. Use the script output to populate the files in `./data/prot/[version]/*.toml`. The tool does not emit `clientProtNames`, so those still need to be filled in manually.
+5. Populate packet fields using the files in `./data/prot/[version]/[(client/server)prot]`.
 
-# Setup
+## Setup
 
-To set the project up:
+1. Generate your server RSA keys with `run-tool rsa-key-generator`.
+2. Download the RS clients with `run-tool client-downloader`.
 
-1. Generate your server's RSA keys: `run-tool rsa-key-generator`
-2. Download the latest RS clients: `run-tool client-downloader`
-   
-   :warning: Latest clients might not be compatible with this repository. Please ensure this repository version matches
-   the version of your clients.
-3. Put the original launcher in: `./data/launcers/win/origina.exe` (can be found
-   at `C:\Program Files\Jagex\RuneScape Launcher\RuneScape.exe`)
-4. Create a configuration file `./data/config/server.toml`. Configure the following fields:
+   Warning: the latest clients are not guaranteed to match this repository. Keep the repository build and client build aligned.
+
+3. Put the original launcher in `./data/launcers/win/original.exe` from `C:\Program Files\Jagex\RuneScape Launcher\RuneScape.exe`.
+4. Create `./data/config/server.toml` with at least:
+
    ```toml
    hostname = "127.0.0.1"
    configUrl = "http://127.0.0.1/jav_config.ws?binaryType=2"
    ```
-   `configUrl` is the URL the launcher will get the `jav_config.ws` from.
-   `hostname` is the IP your server runs on 
-5. Patch the client and launchers using `run-tool client-patcher`
-6. Download the latest cache using `run-tool cache-downloader`
-7. Wait until this framework progresses further
+
+   `configUrl` is the URL the launcher should use to fetch `jav_config.ws`.
+   `hostname` is the address your server binds to.
+
+5. Patch the client and launcher with `run-tool client-patcher`.
+6. Download the latest compatible cache with `run-tool cache-downloader`.
+7. Build and run the server once your cache, launcher, and protocol data are in place.

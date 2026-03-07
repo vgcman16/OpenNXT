@@ -66,7 +66,7 @@ object OpenNXT : CliktCommand(name = "run-server") {
 
     private val bootstrap = ServerBootstrap()
 
-    override fun help(context: Context): String = "Launches the OpenNXT server"
+    override fun help(context: Context): String = "Launches the vgcman16 OpenNXT server"
 
     private fun loadConfigurations() {
         logger.info { "Loading configuration files from ${Constants.CONFIG_PATH}" }
@@ -85,7 +85,7 @@ object OpenNXT : CliktCommand(name = "run-server") {
     }
 
     override fun run() {
-        logger.info { "Starting OpenNXT" }
+        logger.info { "Starting OpenNXT (vgcman16 fork)" }
         loadConfigurations()
 
         if (enableProxySupport) {

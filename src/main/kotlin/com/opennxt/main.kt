@@ -8,7 +8,7 @@ import com.opennxt.tools.ToolExecutor
 
 fun main(args: Array<String>) {
     val root = object : NoOpCliktCommand(name = "open-nxt") {
-        override fun help(context: Context): String = "Base command for the OpenNXT server"
+        override fun help(context: Context): String = "Base command for the vgcman16 OpenNXT fork"
     }
 
     root.subcommands(OpenNXT, ToolExecutor).main(args)

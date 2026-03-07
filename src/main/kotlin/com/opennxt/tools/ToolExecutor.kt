@@ -10,7 +10,7 @@ import kotlin.system.exitProcess
 object ToolExecutor : NoOpCliktCommand(name = "run-tool") {
     private val logger = KotlinLogging.logger {}
 
-    override fun help(context: Context): String = "Executes a tool bundled in the server"
+    override fun help(context: Context): String = "Executes a bundled tool in the vgcman16 OpenNXT fork"
 
     init {
         val result = ClassGraph()
