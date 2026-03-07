@@ -87,11 +87,12 @@ class ClientPatcher :
 
         BinaryType.values().forEach { type ->
             val fromDirectory =
-                Constants.CLIENTS_PATH.resolve(version.toString()).resolve(type.name).resolve("original")
-            val toDirectory = Constants.CLIENTS_PATH.resolve(version.toString()).resolve(type.name).resolve("patched")
+                Constants.CLIENTS_PATH.resolve(version.toString()).resolve(type.name.lowercase()).resolve("original")
+            val toDirectory =
+                Constants.CLIENTS_PATH.resolve(version.toString()).resolve(type.name.lowercase()).resolve("patched")
             if (!Files.exists(toDirectory)) Files.createDirectories(toDirectory)
             val compressedDirectory =
-                Constants.CLIENTS_PATH.resolve(version.toString()).resolve(type.name).resolve("compressed")
+                Constants.CLIENTS_PATH.resolve(version.toString()).resolve(type.name.lowercase()).resolve("compressed")
             if (!Files.exists(compressedDirectory)) Files.createDirectories(compressedDirectory)
 
             logger.info { "Patching type $type" }
@@ -175,8 +176,9 @@ class ClientPatcher :
         if (oldJs5 == null) {
             val key = RSAUtil.findRSAKey(raw, 4096)
             if (key == null) {
-                logger.error { "Failed to find js5 RSA key in $from - can't patch!" }
-                exitProcess(1)
+                logger.warn { "Failed to find js5 RSA key in $from - copying file unchanged" }
+                Files.write(to, raw)
+                return
             }
             oldJs5 = key.toString(16).toByteArray(ASCII)
             logger.info { "Jagex public js5 key: ${key.toString(16)}" }
@@ -185,18 +187,25 @@ class ClientPatcher :
         if (oldLogin == null) {
             val key = RSAUtil.findRSAKey(raw, 1024)
             if (key == null) {
-                logger.error { "Failed to find login RSA key in $from - can't patch" }
-                exitProcess(1)
+                logger.warn { "Failed to find login RSA key in $from - copying file unchanged" }
+                Files.write(to, raw)
+                return
             }
             oldLogin = key.toString(16).toByteArray(ASCII)
             logger.info { "Jagex public login key: ${key.toString(16)}" }
         }
 
-        if (!raw.replaceFirst(oldJs5!!, rsaConfig.js5.modulus.toString(16).toByteArray()))
-            throw RuntimeException("Failed to patch js5 key in ${type.name}")
+        if (!raw.replaceFirst(oldJs5!!, rsaConfig.js5.modulus.toString(16).toByteArray())) {
+            logger.warn { "Failed to patch js5 key in ${type.name} file $from - copying file unchanged" }
+            Files.write(to, raw)
+            return
+        }
 
-        if (!raw.replaceFirst(oldLogin!!, rsaConfig.login.modulus.toString(16).toByteArray()))
-            throw RuntimeException("Failed to patch login key in ${type.name}")
+        if (!raw.replaceFirst(oldLogin!!, rsaConfig.login.modulus.toString(16).toByteArray())) {
+            logger.warn { "Failed to patch login key in ${type.name} file $from - copying file unchanged" }
+            Files.write(to, raw)
+            return
+        }
 
         Files.write(to, raw)
     }

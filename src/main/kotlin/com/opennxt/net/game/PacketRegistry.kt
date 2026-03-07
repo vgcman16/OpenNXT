@@ -2,7 +2,6 @@ package com.opennxt.net.game
 
 import com.opennxt.Constants
 import com.opennxt.OpenNXT
-import com.opennxt.model.files.FileChecker
 import com.opennxt.net.Side
 import com.opennxt.net.game.clientprot.ClientCheat
 import com.opennxt.net.game.clientprot.WorldlistFetch
@@ -44,7 +43,7 @@ object PacketRegistry {
         val constructor = codecType.constructors
             .first { it.parameters.size == 1 && it.parameters[0].type.javaType == Array<PacketFieldDeclaration>::class.java }
 
-        val packetPath = Constants.PROT_PATH.resolve(FileChecker.latestBuild().toString())
+        val packetPath = OpenNXT.protocol.path
             .resolve(if (side == Side.CLIENT) "clientProt" else "serverProt")
             .resolve("$name.txt")
 

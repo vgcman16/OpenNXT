@@ -26,6 +26,7 @@ import com.opennxt.net.proxy.ProxyConnectionFactory
 import com.opennxt.net.proxy.ProxyConnectionHandler
 import com.opennxt.resources.FilesystemResources
 import io.netty.bootstrap.ServerBootstrap
+import io.netty.channel.Channel
 import io.netty.channel.ChannelOption
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioServerSocketChannel
@@ -65,6 +66,8 @@ object OpenNXT : CliktCommand(name = "run-server") {
     lateinit var commands: CommandRepository
 
     private val bootstrap = ServerBootstrap()
+    private var networkGroup: NioEventLoopGroup? = null
+    private var networkChannel: Channel? = null
 
     override fun help(context: Context): String = "Launches the vgcman16 OpenNXT server"
 
@@ -84,102 +87,126 @@ object OpenNXT : CliktCommand(name = "run-server") {
         Stat.reload()
     }
 
+    private fun cleanupStartupFailure() {
+        networkChannel?.close()?.syncUninterruptibly()
+        networkChannel = null
+
+        networkGroup?.shutdownGracefully()?.syncUninterruptibly()
+        networkGroup = null
+
+        if (this::http.isInitialized) {
+            try {
+                http.close()
+            } catch (e: Exception) {
+                logger.warn(e) { "Failed to close HTTP server during startup cleanup" }
+            }
+        }
+    }
+
     override fun run() {
         logger.info { "Starting OpenNXT (vgcman16 fork)" }
         loadConfigurations()
 
-        if (enableProxySupport) {
-            logger.warn { "---------------- WARNING ----------------" }
-            logger.warn { " You are running in proxy-enabled mode." }
-            logger.warn { " Disable this in production environments" }
-            logger.warn { " or when you are not going to use this." }
-            logger.warn { "" }
-            logger.warn { " Remove flag '--enable-proxy-support'." }
-            logger.warn { " to disable." }
-            logger.warn { "---------------- WARNING ----------------" }
+        try {
+            if (enableProxySupport) {
+                logger.warn { "---------------- WARNING ----------------" }
+                logger.warn { " You are running in proxy-enabled mode." }
+                logger.warn { " Disable this in production environments" }
+                logger.warn { " or when you are not going to use this." }
+                logger.warn { "" }
+                logger.warn { " Remove flag '--enable-proxy-support'." }
+                logger.warn { " to disable." }
+                logger.warn { "---------------- WARNING ----------------" }
 
-            logger.info { "Setting up proxy connection factory" }
-            proxyConnectionFactory = ProxyConnectionFactory()
-            proxyConnectionHandler = ProxyConnectionHandler()
-        }
+                logger.info { "Setting up proxy connection factory" }
+                proxyConnectionFactory = ProxyConnectionFactory()
+                proxyConnectionHandler = ProxyConnectionHandler()
+            }
 
-        val protPath = Constants.PROT_PATH.resolve(config.build.toString())
-        if (!Files.exists(protPath)) {
-            logger.error { "Protocol information not found for build ${config.build}." }
-            logger.error { " Looked in: $protPath" }
-            logger.error { " Please look check out the following wiki page for help: <TO-DO>" }
+            val protPath = Constants.PROT_PATH.resolve(config.build.toString())
+            if (!Files.exists(protPath)) {
+                logger.error { "Protocol information not found for build ${config.build}." }
+                logger.error { " Looked in: $protPath" }
+                logger.error { " Please look check out the following wiki page for help: <TO-DO>" }
+                exitProcess(1)
+            }
+
+            protocol = ProtocolInformation(protPath)
+            protocol.load()
+
+            logger.info { "Setting up HTTP server" }
+            http = HttpServer(config)
+            http.init(skipHttpFileVerification)
+            http.bind()
+
+            logger.info { "Opening filesystem from ${Constants.CACHE_PATH}" }
+            filesystem = SqliteFilesystem(Constants.CACHE_PATH)
+
+            logger.info { "Generating prefetch table" }
+            prefetches = PrefetchTable.of(filesystem)
+
+            logger.info { "Generating & encoding checksum tables" }
+            checksumTable = Container.wrap(
+                ChecksumTable.create(filesystem, false)
+                    .encode(rsaConfig.js5.modulus, rsaConfig.js5.exponent)
+            ).array()
+            httpChecksumTable = Container.wrap(
+                ChecksumTable.create(filesystem, true)
+                    .encode(rsaConfig.js5.modulus, rsaConfig.js5.exponent)
+            ).array()
+
+            logger.info { "Setting up filesystem resource manager" }
+            resources = FilesystemResources(filesystem, Constants.RESOURCE_PATH)
+
+            logger.info { "Setting up command repository" }
+            commands = CommandRepository()
+
+            logger.info { "Starting js5 thread" }
+            Js5Thread.start()
+
+            logger.info { "Starting login thread" }
+            LoginThread.start()
+
+            logger.info { "Starting tick engine" }
+            tickEngine = TickEngine()
+
+            logger.info { "Instantiating game world" }
+            world = World()
+            tickEngine.submitTickable(world)
+
+            logger.info { "Instantiating lobby" }
+            lobby = Lobby()
+            tickEngine.submitTickable(lobby)
+
+            if (enableProxySupport) {
+                logger.info { "Registering proxy connection handler to tick engine" }
+                tickEngine.submitTickable(proxyConnectionHandler)
+            }
+
+            logger.info { "Reloading content-related things" }
+            reloadContent()
+
+            logger.info { "Starting network" }
+            networkGroup = NioEventLoopGroup()
+            bootstrap.group(networkGroup)
+                .channel(NioServerSocketChannel::class.java)
+                .childHandler(RSChannelInitializer())
+                .childOption(ChannelOption.SO_REUSEADDR, true)
+                .childOption(ChannelOption.TCP_NODELAY, true)
+                .childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30_000)
+
+            logger.info { "Binding game server to 0.0.0.0:${config.ports.game}" }
+            val result = bootstrap.bind("0.0.0.0", config.ports.game).sync()
+            networkChannel = result.channel()
+            if (!result.isSuccess) {
+                throw IllegalStateException("Failed to bind to 0.0.0.0:${config.ports.game}", result.cause())
+            }
+
+            logger.info { "Game server bound to 0.0.0.0:${config.ports.game}" }
+        } catch (e: Exception) {
+            logger.error(e) { "Server startup failed" }
+            cleanupStartupFailure()
             exitProcess(1)
         }
-
-        protocol = ProtocolInformation(protPath)
-        protocol.load()
-
-        logger.info { "Setting up HTTP server" }
-        http = HttpServer(config)
-        http.init(skipHttpFileVerification)
-        http.bind()
-
-        logger.info { "Opening filesystem from ${Constants.CACHE_PATH}" }
-        filesystem = SqliteFilesystem(Constants.CACHE_PATH)
-
-        logger.info { "Generating prefetch table" }
-        prefetches = PrefetchTable.of(filesystem)
-
-        logger.info { "Generating & encoding checksum tables" }
-        checksumTable = Container.wrap(
-            ChecksumTable.create(filesystem, false)
-                .encode(rsaConfig.js5.modulus, rsaConfig.js5.exponent)
-        ).array()
-        httpChecksumTable = Container.wrap(
-            ChecksumTable.create(filesystem, true)
-                .encode(rsaConfig.js5.modulus, rsaConfig.js5.exponent)
-        ).array()
-
-        logger.info { "Setting up filesystem resource manager" }
-        resources = FilesystemResources(filesystem, Constants.RESOURCE_PATH)
-
-        logger.info { "Setting up command repository" }
-        commands = CommandRepository()
-
-        logger.info { "Starting js5 thread" }
-        Js5Thread.start()
-
-        logger.info { "Starting login thread" }
-        LoginThread.start()
-
-        logger.info { "Starting tick engine" }
-        tickEngine = TickEngine()
-
-        logger.info { "Instantiating game world" }
-        world = World()
-        tickEngine.submitTickable(world)
-
-        logger.info { "Instantiating lobby" }
-        lobby = Lobby()
-        tickEngine.submitTickable(lobby)
-
-        if (enableProxySupport) {
-            logger.info { "Registering proxy connection handler to tick engine" }
-            tickEngine.submitTickable(proxyConnectionHandler)
-        }
-
-        logger.info { "Reloading content-related things" }
-        reloadContent()
-
-        logger.info { "Starting network" }
-        bootstrap.group(NioEventLoopGroup())
-            .channel(NioServerSocketChannel::class.java)
-            .childHandler(RSChannelInitializer())
-            .childOption(ChannelOption.SO_REUSEADDR, true)
-            .childOption(ChannelOption.TCP_NODELAY, true)
-            .childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30_000)
-
-        logger.info { "Binding game server to 0.0.0.0:${config.ports.game}" }
-        val result = bootstrap.bind("0.0.0.0", config.ports.game).sync()
-        if (!result.isSuccess) {
-            logger.error(result.cause()) { "Failed to bind to 0.0.0.0:${config.ports.game}" }
-            exitProcess(1)
-        }
-        logger.info { "Game server bound to 0.0.0.0:${config.ports.game}" }
     }
 }

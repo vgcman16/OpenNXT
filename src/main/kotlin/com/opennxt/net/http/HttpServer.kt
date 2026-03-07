@@ -3,6 +3,7 @@ package com.opennxt.net.http
 import com.opennxt.config.ServerConfig
 import com.opennxt.model.files.FileChecker
 import io.netty.bootstrap.ServerBootstrap
+import io.netty.channel.Channel
 import io.netty.channel.ChannelInitializer
 import io.netty.channel.ChannelOption
 import io.netty.channel.nio.NioEventLoopGroup
@@ -11,15 +12,16 @@ import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.codec.http.HttpObjectAggregator
 import io.netty.handler.codec.http.HttpServerCodec
 import mu.KotlinLogging
-import kotlin.system.exitProcess
 
 class HttpServer(val config: ServerConfig) : AutoCloseable {
     private val logger = KotlinLogging.logger {}
     private var initialized = false
 
     private val handler = HttpRequestHandler()
+    private val eventLoopGroup = NioEventLoopGroup()
+    private var channel: Channel? = null
     private val httpBootstrap = ServerBootstrap()
-        .group(NioEventLoopGroup())
+        .group(eventLoopGroup)
         .channel(NioServerSocketChannel::class.java)
         .childHandler(HttpChannelInitializer(handler))
         .childOption(ChannelOption.SO_REUSEADDR, true)
@@ -43,16 +45,16 @@ class HttpServer(val config: ServerConfig) : AutoCloseable {
         logger.info { "Binding http server to 0.0.0.0:$httpPort" }
 
         val result = httpBootstrap.bind("0.0.0.0", httpPort).sync()
-        if (!result.isSuccess) {
-            logger.error(result.cause()) { "Failed to bind to 0.0.0.0:$httpPort" }
-            exitProcess(1)
-        }
+        channel = result.channel()
+        check(result.isSuccess) { "Failed to bind to 0.0.0.0:$httpPort" }
 
         logger.info { "Http server bound to 0.0.0.0:$httpPort" }
     }
 
     override fun close() {
-        logger.warn { "TODO - Close http server connections" }
+        channel?.close()?.syncUninterruptibly()
+        channel = null
+        eventLoopGroup.shutdownGracefully().syncUninterruptibly()
     }
 
     private class HttpChannelInitializer(val handler: HttpRequestHandler) : ChannelInitializer<SocketChannel>() {

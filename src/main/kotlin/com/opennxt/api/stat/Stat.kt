@@ -5,6 +5,7 @@ import com.opennxt.resources.config.enums.EnumDefinition
 import com.opennxt.resources.defaults.stats.StatDefaults
 import com.opennxt.resources.defaults.stats.StatDefinition
 import com.opennxt.resources.defaults.stats.StatExperienceTable
+import mu.KotlinLogging
 
 enum class Stat(val id: Int) {
     ATTACK(0),
@@ -35,6 +36,7 @@ enum class Stat(val id: Int) {
     DIVINATION(25),
     INVENTION(26),
     ARCHAEOLOGY(27),
+    NECROMANCY(28),
     ;
 
     lateinit var def: StatDefinition
@@ -42,6 +44,7 @@ enum class Stat(val id: Int) {
     lateinit var display: String
 
     companion object {
+        private val logger = KotlinLogging.logger { }
         private val VALUES = values()
 
         fun reload() {
@@ -49,6 +52,11 @@ enum class Stat(val id: Int) {
             val names = FilesystemResources.instance.get<EnumDefinition>(680)!!
 
             defaults.stats.forEach { def ->
+                if (def.id !in VALUES.indices) {
+                    logger.warn { "Skipping unknown stat definition id ${def.id}; enum only defines ${VALUES.size} stats" }
+                    return@forEach
+                }
+
                 val enum = VALUES[def.id]
                 enum.def = def
                 enum.table = def.table

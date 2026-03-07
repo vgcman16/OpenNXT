@@ -38,6 +38,8 @@ object Js5ClientPipeline {
     }
 
     class Js5ClientDecoder(private val client: Js5Client) : ByteToMessageDecoder() {
+        private val logger = KotlinLogging.logger { }
+
         override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
             client.lastRead = System.currentTimeMillis()
 
@@ -59,6 +61,12 @@ object Js5ClientPipeline {
             }
 
             if (client.state == Js5ClientState.ACTIVE) {
+                if (client.current == null && client.downloadingHighPriority.isEmpty() && client.downloadingLowPriority.isEmpty() && buf.readableBytes() >= 31 * 4) {
+                    val prefetches = Js5PacketCodec.Prefetches.decode(GamePacketReader(buf))
+                    logger.info { "Received unsolicited js5 prefetch table with ${prefetches.prefetches.size} entries" }
+                    return
+                }
+
                 var request = client.current
 
                 if (request == null) {
@@ -168,14 +176,15 @@ object Js5ClientPipeline {
                         ctx.channel().close().sync()
                         return
                     }
-                    client.state = Js5ClientState.PREFETCHES
-                }
-                is Js5Packet.Prefetches -> {
+                    logger.info { "JS5 handshake accepted for build ${client.version}" }
                     client.state = Js5ClientState.ACTIVE
                     ctx.channel().write(Js5Packet.ConnectionInitialized(5, client.version))
                     ctx.channel().write(Js5Packet.LoggedOut(client.version))
                     ctx.channel().flush()
                     client.notifyConnected()
+                }
+                is Js5Packet.Prefetches -> {
+                    logger.info { "Received js5 prefetch table with ${msg.prefetches.size} entries" }
                 }
                 else -> throw RuntimeException("idk how to handle: $msg")
             }

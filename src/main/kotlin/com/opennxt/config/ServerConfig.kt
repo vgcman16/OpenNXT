@@ -8,7 +8,7 @@ class ServerConfig : TomlConfig() {
         val DEFAULT_PATH = Constants.CONFIG_PATH.resolve("server.toml")
     }
 
-    data class Ports(var game: Int = 43594, var http: Int = 80, var https: Int = 443)
+    data class Ports(var game: Int = 43594, var http: Int = 8080, var https: Int = 8443)
 
     var ports = Ports()
     var hostname = "127.0.0.1"
@@ -36,7 +36,7 @@ class ServerConfig : TomlConfig() {
 
         val networking = toml.getTable("networking")
         if (networking != null) {
-            val ports = toml.getTable("ports")
+            val ports = networking.getTable("ports")
             if (ports != null) {
                 this.ports.game = ports.getLong("game", this.ports.game.toLong()).toInt()
                 this.ports.http = ports.getLong("http", this.ports.http.toLong()).toInt()

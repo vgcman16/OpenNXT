@@ -28,7 +28,11 @@ This fork currently builds with Gradle 9.4, Kotlin 2.3, and Java 25.
 
 ```bash
 ./gradlew build
+./gradlew installDist
 ```
+
+The installed launcher lives at `./build/install/OpenNXT/bin/OpenNXT.bat` on Windows and
+`./build/install/OpenNXT/bin/OpenNXT` on POSIX systems.
 
 Compatibility note: the internal package namespace remains `com.opennxt` in this fork to avoid a large breaking
 refactor.
@@ -41,6 +45,10 @@ To move the project to a newer RS3 build:
 2. Download the latest cache using `run-tool cache-downloader`.
 3. Patch the latest clients using `run-tool client-patcher`.
 4. Update the `build` field in `./data/config/server.toml`.
+
+The bundled protocol data in this repository currently covers builds `918` and `919`. If Jagex is already on a
+newer live build, the downloader, patcher, and cache tools can still target it, but the server will not be protocol
+compatible until you add a matching `./data/prot/[build]/` set.
 
 If the target version is not yet supported, or you are contributing to packet/protocol support, also do the following:
 
@@ -57,16 +65,18 @@ If the target version is not yet supported, or you are contributing to packet/pr
 
    Warning: the latest clients are not guaranteed to match this repository. Keep the repository build and client build aligned.
 
-3. Put the original launcher in `./data/launcers/win/original.exe` from `C:\Program Files\Jagex\RuneScape Launcher\RuneScape.exe`.
+3. Put the original launcher in `./data/launchers/win/original.exe` from `C:\Program Files\Jagex\RuneScape Launcher\RuneScape.exe`.
 4. Create `./data/config/server.toml` with at least:
 
    ```toml
    hostname = "127.0.0.1"
-   configUrl = "http://127.0.0.1/jav_config.ws?binaryType=2"
+   configUrl = "http://127.0.0.1:8080/jav_config.ws?binaryType=2"
    ```
 
    `configUrl` is the URL the launcher should use to fetch `jav_config.ws`.
    `hostname` is the address your server binds to.
+
+   The default fork config uses `8080`/`8443` for HTTP/HTTPS so the tools can run without privileged ports.
 
 5. Patch the client and launcher with `run-tool client-patcher`.
 6. Download the latest compatible cache with `run-tool cache-downloader`.

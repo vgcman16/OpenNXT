@@ -4,9 +4,12 @@ import com.opennxt.filesystem.Filesystem
 import com.opennxt.filesystem.Index
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
+import mu.KotlinLogging
 
 class PrefetchTable(val entries: IntArray) {
     companion object {
+        private val logger = KotlinLogging.logger { }
+
         val RS3_DEFAULT = arrayOf(
             IndexPrefetch(Index.DEFAULTS),
             LibraryPrefetch("windows/x86/jaclib.dll"),
@@ -42,7 +45,14 @@ class PrefetchTable(val entries: IntArray) {
         )
 
         fun of(fs: Filesystem, prefetches: Array<Prefetch> = RS3_DEFAULT): PrefetchTable =
-            PrefetchTable(prefetches.map { it.calculateValue(fs) }.toIntArray())
+            PrefetchTable(prefetches.mapIndexed { index, prefetch ->
+                try {
+                    prefetch.calculateValue(fs)
+                } catch (e: Exception) {
+                    logger.warn(e) { "Failed to calculate prefetch entry $index (${prefetch::class.simpleName}); using 0" }
+                    0
+                }
+            }.toIntArray())
 
         fun decode(buffer: ByteBuf, prefetches: Array<Prefetch> = RS3_DEFAULT): PrefetchTable {
             TODO("prefetch table decoding")
