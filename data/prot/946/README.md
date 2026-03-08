@@ -102,6 +102,8 @@ Current parser-confirmed anchors:
 - Client `111` -> `OPLOC5`
 - Client `115` -> `OPPLAYER3`
 - Client `125` -> `OPNPC3`
+- Client `87` -> `RESUME_PAUSEBUTTON`
+- Client `129` -> `RESUME_P_COUNTDIALOG`
 
 Current local handler path used for confirmation:
 
@@ -262,6 +264,23 @@ Current client sender notes from runtime packet refs:
 - that `117` packet is clearly the self/select-side counterpart to
   `IF_BUTTONT`, but the exact legacy label or option index is not yet proven,
   so it is left out of `clientProtNames.toml` for now
+- `FUN_1401fda40` is the numeric prompt-resume sender:
+  it pops a script-stack string from `param_2 + 0x10a8`, parses it as base-10
+  through `FUN_1407e3b74(..., 10)`, and writes the resulting integer through
+  descriptor `DAT_140ebff80`; that resolves to `129 -> RESUME_P_COUNTDIALOG`
+- `FUN_1401fe5e0` is the zero-byte prompt continue sender:
+  it emits descriptor `DAT_140ebfce0` without appending any payload data,
+  using the same UI/script connection context as the prompt-resume helpers;
+  that resolves to `87 -> RESUME_PAUSEBUTTON`
+- `FUN_1401fd5b0`, `FUN_1401fdf30`, and `FUN_1401fe390` are the current
+  unresolved raw-string prompt trio:
+  all three pop a script-stack string, emit a single length-like byte via
+  `FUN_1400aa740`, and then write the raw text through `FUN_1400ac540`
+  without Huffman compression
+- those three helpers resolve to descriptors `67`, `93`, and `24`
+  respectively, so they are strong candidates for the remaining
+  string/name-style resume packets, but they are still left unnamed until the
+  clientscript hook context cleanly separates their prompt semantics
 
 Current UI-family notes from the `FUN_1400fadb0` constructor cluster:
 
