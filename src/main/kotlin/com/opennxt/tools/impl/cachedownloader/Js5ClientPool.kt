@@ -216,5 +216,9 @@ class Js5ClientPool(
                 logger.info { "Closing client (reason = pool close)" }
             }
         }
+
+        httpExecutor.shutdownNow()
+        workerGroup.shutdownGracefully().syncUninterruptibly()
+        Js5ClientPipeline.shutdown()
     }
 }

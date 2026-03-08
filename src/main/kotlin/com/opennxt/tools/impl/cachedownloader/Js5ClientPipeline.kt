@@ -24,6 +24,11 @@ object Js5ClientPipeline {
         return trafficCounter.trafficCounter().lastReadThroughput()
     }
 
+    fun shutdown() {
+        trafficCounter.release()
+        executor.shutdownNow()
+    }
+
     class Js5ClientChannelInitializer : ChannelInitializer<SocketChannel>() {
         override fun initChannel(ch: SocketChannel) {
             val credentials = Js5Credentials.download()
