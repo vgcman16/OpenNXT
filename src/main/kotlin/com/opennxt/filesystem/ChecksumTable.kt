@@ -78,7 +78,7 @@ class ChecksumTable(val entries: Array<TableEntry>) {
                         raw.getCrc32(),
                         table.version,
                         table.highestEntry(),
-                        table.archiveSize(),
+                        table.checksumSize(),
                         raw.getWhirlpool()
                     )
                 }
@@ -93,6 +93,7 @@ class ChecksumTable(val entries: Array<TableEntry>) {
     fun encode(modulus: BigInteger, exponent: BigInteger): ByteArray {
         val bout = ByteArrayOutputStream()
         val dos = DataOutputStream(bout)
+        val modulusBytes = (modulus.bitLength() + 7) / 8
 
         dos.use { os ->
             os.write(entries.size)
@@ -113,9 +114,15 @@ class ChecksumTable(val entries: Array<TableEntry>) {
             temp.flip()
             temp = temp.rsaEncrypt(modulus, exponent)
 
-            val bytes = ByteArray(temp.limit())
-            temp.get(bytes)
-            os.write(bytes)
+            val signature = ByteArray(temp.limit())
+            temp.get(signature)
+
+            // Native NXT accepts a signed big integer encoding here. When the encrypted value is a full-width
+            // 4096-bit positive number, include an explicit leading 0 byte so the result stays positive.
+            if (signature.size == modulusBytes && signature.isNotEmpty() && signature[0].toInt() and 0x80 == 0) {
+                os.writeByte(0)
+            }
+            os.write(signature)
 
             return bout.toByteArray()
         }
