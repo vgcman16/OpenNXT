@@ -68,13 +68,17 @@ Current parser-confirmed anchors:
 - Server `214` -> `MAP_PROJANIM_HALFSQ`
 - Client `80` -> `NO_TIMEOUT`
 - Client `6` -> `OPPLAYER5`
+- Client `9` -> `OPNPC1`
 - Client `14` -> `OPPLAYER7`
-- Client `16` -> `OPPLAYERT`
+- Client `16` -> `OPNPCT`
+- Client `19` -> `OPNPC2`
 - Client `20` -> `OPPLAYER1`
 - Client `23` -> `OPOBJ3`
 - Client `25` -> `OPOBJ2`
 - Client `26` -> `OPOBJ1`
 - Client `30` -> `OPPLAYER10`
+- Client `35` -> `OPNPC6`
+- Client `36` -> `OPNPC5`
 - Client `37` -> `OPOBJT`
 - Client `38` -> `OPLOC1`
 - Client `40` -> `OPLOC3`
@@ -84,14 +88,17 @@ Current parser-confirmed anchors:
 - Client `59` -> `OPPLAYER8`
 - Client `60` -> `OPPLAYER6`
 - Client `68` -> `OPLOC2`
+- Client `69` -> `OPNPC4`
 - Client `77` -> `OPOBJ6`
-- Client `91` -> `OPPLAYER9`
 - Client `90` -> `OPOBJ4`
+- Client `91` -> `OPPLAYER9`
 - Client `96` -> `OPPLAYER4`
 - Client `101` -> `OPLOC4`
 - Client `103` -> `OPOBJ5`
+- Client `105` -> `OPPLAYERT`
 - Client `111` -> `OPLOC5`
 - Client `115` -> `OPPLAYER3`
+- Client `125` -> `OPNPC3`
 
 Current local handler path used for confirmation:
 
@@ -137,11 +144,23 @@ Current client sender notes from runtime packet refs:
   `20 -> OPPLAYER1`, `46 -> OPPLAYER2`, `115 -> OPPLAYER3`, `96 -> OPPLAYER4`,
   `6 -> OPPLAYER5`, `60 -> OPPLAYER6`, `14 -> OPPLAYER7`, `59 -> OPPLAYER8`,
   `91 -> OPPLAYER9`, `30 -> OPPLAYER10`
-- `FUN_1400e5d10` is the player-targeted selected-cursor interaction path:
-  it writes the target player index plus selected component data from
-  `client + 0x198c0` and emits descriptor `ClientProtOP_16`
-- that packet shape matches the legacy targeted player interaction packet,
-  so `16` is now mapped as `OPPLAYERT`
+- `FUN_1400e6ea0` is the player-targeted selected-cursor sender:
+  it writes selected component data from `client + 0x198c0` plus a 2-byte
+  target index, then resolves the target through the active-player holder at
+  `*(param_1 + 0x19910) + 0x10` and routes toward that player's world position
+- the raw entry stubs at `14010cdc0` and `14010ce10`, plus the higher-level
+  caller `FUN_1401f9710`, all feed `FUN_1400e6ea0`, so `105` is `OPPLAYERT`
+- `FUN_1400e5d10` is the NPC-targeted mirror family:
+  it emits one 11-byte selected-component variant and six 3-byte base variants,
+  all using a short target index from `target + 0x48` and world-position routing
+  through `FUN_1400e37e0` / `FUN_1400e38f0`
+- the raw stub block around `14010d3a0..14010d587` is laid out as
+  `T,6,5,4,3,2,1`, while the same vtables are registered in `FUN_1400e39d0`
+  in calibrated `1,2,3,4,5,6,T` order, matching the already-resolved
+  `OPOBJ` and `OPLOC` families
+- that resolves the NPC interaction family as:
+  `9 -> OPNPC1`, `19 -> OPNPC2`, `125 -> OPNPC3`, `69 -> OPNPC4`,
+  `36 -> OPNPC5`, `35 -> OPNPC6`, `16 -> OPNPCT`
 - `FUN_1401bbf60` resolves ground-item definitions through `DAT_140c9b578`,
   which is now confirmed as the item-definition manager by the widget item-model
   parsers `FUN_1400fcbe0` and `FUN_1400fce90`
