@@ -37,6 +37,7 @@ class ClientPatcher :
     private val ASCII = Charsets.US_ASCII
 
     private val PATCHED_REGEX = "^.*"
+    private val hostParamsToRewrite = setOf(3, 37, 49)
     private val nativeRuntimeFiles = listOf(
         "chrome_100_percent.pak",
         "chrome_200_percent.pak",
@@ -215,13 +216,11 @@ class ClientPatcher :
     }
 
     private fun patchConfig(type: BinaryType, config: ClientConfig, filesPath: Path) {
-        config["codebase"] = "http://${serverConfig.hostname}/"
-
-        for (i in 0..config.highestParam) {
-            val value = config.getParam(i) ?: continue
-
-            if (value.contains("runescape.com") || value.contains("jagex.com")) {
-                config["param=$i"] = serverConfig.hostname
+        // Keep web/account/auth endpoints on Jagex infrastructure. Only rewrite the direct
+        // JS5/game socket hosts that need to point at the local server.
+        for (param in hostParamsToRewrite) {
+            if (config.getParam(param) != null) {
+                config["param=$param"] = serverConfig.hostname
             }
         }
 

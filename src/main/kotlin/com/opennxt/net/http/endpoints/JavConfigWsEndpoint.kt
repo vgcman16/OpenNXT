@@ -10,6 +10,8 @@ import io.netty.handler.codec.http.FullHttpRequest
 import io.netty.handler.codec.http.QueryStringDecoder
 
 object JavConfigWsEndpoint {
+    private val hostParamsToRewrite = setOf(3, 37, 49)
+
     fun handle(ctx: ChannelHandlerContext, msg: FullHttpRequest, query: QueryStringDecoder) {
 
         val type = BinaryType.values()[query.parameters().getOrElse("binaryType") { listOf("2") }.first().toInt()]
@@ -29,13 +31,11 @@ object JavConfigWsEndpoint {
             download++
         }
 
-        liveConfig["codebase"] = "http://${OpenNXT.config.hostname}/"
-
-        for (i in 0..liveConfig.highestParam) {
-            val value = liveConfig.getParam(i) ?: continue
-
-            if (value.contains("runescape.com") || value.contains("jagex.com")) {
-                liveConfig["param=$i"] = OpenNXT.config.hostname
+        // Preserve live auth/account/web endpoints so the native CEF flow can render and authenticate.
+        // Only redirect the JS5/game socket hosts that must terminate on OpenNXT.
+        for (param in hostParamsToRewrite) {
+            if (liveConfig.getParam(param) != null) {
+                liveConfig["param=$param"] = OpenNXT.config.hostname
             }
         }
 
