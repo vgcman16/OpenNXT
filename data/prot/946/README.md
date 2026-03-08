@@ -48,8 +48,11 @@ Current parser-confirmed anchors:
 - Server `21` -> `IF_OPENSUB_ACTIVE_LOC`
 - Server `24` -> `MAP_PROJANIM`
 - Server `38` -> `IF_OPENSUB`
+- Server `50` -> `IF_CLOSESUB`
 - Server `57` -> `IF_SETTEXT`
 - Server `59` -> `IF_SETEVENTS`
+- Server `77` -> `IF_SETPLAYERHEAD`
+- Server `106` -> `IF_SETPLAYERMODEL_SELF`
 - Server `108` -> `IF_SETSCROLLPOS`
 - Client `80` -> `NO_TIMEOUT`
 
@@ -61,6 +64,9 @@ Current local handler path used for confirmation:
 - `38` parser: `FUN_1400fb9d0`
 - `57` parser: `FUN_140108fd0`
 - `59` parser: `FUN_140109290`
+- `50` parser: `FUN_1400fc630`
+- `77` parser: `FUN_140108360`
+- `106` parser: `FUN_1401089c0`
 - `8` parser: `FUN_140107d70`
 - `108` parser: `FUN_140109650`
 
@@ -70,13 +76,25 @@ Current UI-family notes from the `FUN_1400fadb0` constructor cluster:
   `IF_SETTEXT`
 - `59` reads `parent int + mask int + two slot shorts`, which matches
   `IF_SETEVENTS`
+- `50` reads a single interface key, looks it up in the interface manager hash
+  table, and unlinks/releases the matched node, which matches `IF_CLOSESUB`
 - `8` reads `parent int + packed 15-bit colour` and expands it into RGB-like
   components before the widget update path, which matches `IF_SETCOLOUR`
+- `77` and `106` are twin local-player widget-model updaters that both read only
+  a parent interface id and source the appearance/model value from the cached
+  local-player object at `client + 0x19f68`
+- `77` writes widget model type `3`, which matches the legacy
+  `IF_SETPLAYERHEAD` path
+- `106` writes widget model type `5`, which matches the legacy
+  `IF_SETPLAYERMODEL_SELF` path
 - `108` reads `parent int + short` and routes through the dedicated interface
   manager path, which matches `IF_SETSCROLLPOS`
-- `137` and `202` remain the leading `IF_SETRETEX` / `IF_SETRECOL` candidates
+- `137` and `202` remain the leading `IF_SETRETEX` / `IF_SETRECOL` candidates;
+  both decode `parent int + slot byte + short pair` shapes and route into the
+  adjacent helper family at `FUN_1400cc6f0` / `FUN_1400cc630`
 - The 4-byte UI-family packets are not yet committed as names; at least one of
-  them looks more like a player-model widget update than `IF_CLOSESUB`
+  the remaining unresolved 4-byte packets sits outside the widget close/self-model
+  cluster documented above
 
 Regenerate the size-based shortlist with:
 
