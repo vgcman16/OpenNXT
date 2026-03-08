@@ -9,14 +9,18 @@ This directory is the in-repo workspace for RS3 build `946`.
 - The legacy `RS3NXTRefactorer` script does not yet complete on build `946`
 - `serverProtSizes.toml` is now extracted from the live client
 - `clientProtSizes.toml` is now extracted from the live client
+- `serverProtNames.toml` now contains the first parser-confirmed server anchors
+- `clientProtNames.toml` now contains the first parser-confirmed client anchor
 - `sizeDiffReport.md` now compares `919` vs `946` size tables to produce the first naming shortlist
 - The 2026 client registers `217` contiguous server packets through a new direct registrar at `FUN_140301280`
 - The 2026 client registers `130` contiguous client packets through a direct registrar at `FUN_140301100`
+- Runtime handler binding is now traced through `descriptor + 0x48` and into the real parser entrypoints
 
 Current script breakpoints observed during headless runs:
 
 - The legacy packet naming walk does not yet match the new `946` packet object layout
 - The legacy `SendPing` anchor is no longer required for packet size extraction, but packet naming still needs new heuristics
+- Build `946` is still not bootable in OpenNXT; the current name files are partial anchor sets only
 
 ## Inputs
 
@@ -36,6 +40,20 @@ Populate the following once the Ghidra heuristics are updated for build `946`:
 
 The current repository can download and patch the live `946` client and cache. The server remains pinned to
 supported protocol data until packet names and handler mappings are recovered for build `946`.
+
+Current parser-confirmed anchors:
+
+- Server `21` -> `IF_OPENSUB_ACTIVE_LOC`
+- Server `24` -> `MAP_PROJANIM`
+- Server `38` -> `IF_OPENSUB`
+- Client `80` -> `NO_TIMEOUT`
+
+Current local handler path used for confirmation:
+
+- `opcode -> descriptor -> descriptor + 0x48 -> handler vtable -> dispatch thunk -> parser`
+- `21` parser: `FUN_1400fbf80`
+- `24` parser: `FUN_140113af0`
+- `38` parser: `FUN_1400fb9d0`
 
 Regenerate the size-based shortlist with:
 

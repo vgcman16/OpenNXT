@@ -1,0 +1,7 @@
+# Partial build 946 server packet names recovered from handler binding and parser analysis.
+# This file is intentionally incomplete and is not enough to run build 946 end-to-end yet.
+
+[values]
+21 = "IF_OPENSUB_ACTIVE_LOC"
+24 = "MAP_PROJANIM"
+38 = "IF_OPENSUB"

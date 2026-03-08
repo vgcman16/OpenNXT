@@ -1,0 +1,5 @@
+# Partial build 946 client packet names recovered from runtime sender analysis.
+# This file is intentionally incomplete and is not enough to run build 946 end-to-end yet.
+
+[values]
+80 = "NO_TIMEOUT"
