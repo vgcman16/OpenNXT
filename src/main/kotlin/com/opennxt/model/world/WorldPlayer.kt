@@ -16,7 +16,13 @@ import com.opennxt.net.Side
 import com.opennxt.net.buf.GamePacketBuilder
 import com.opennxt.net.game.GamePacket
 import com.opennxt.net.game.PacketRegistry
+import com.opennxt.net.game.clientprot.ClientCheat
+import com.opennxt.net.game.clientprot.MapBuildComplete
+import com.opennxt.net.game.handlers.ClientCheatHandler
+import com.opennxt.net.game.handlers.MapBuildCompleteHandler
+import com.opennxt.net.game.handlers.NoTimeoutHandler
 import com.opennxt.net.game.pipeline.*
+import com.opennxt.net.game.serverprot.NoTimeout
 import com.opennxt.net.game.serverprot.RebuildNormal
 import com.opennxt.net.game.serverprot.RunClientScript
 import com.opennxt.net.game.serverprot.ServerTickEnd
@@ -30,10 +36,6 @@ import mu.KotlinLogging
 import kotlin.reflect.KClass
 
 class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntity) : BasePlayer(client, name) {
-    init {
-        entity.controllingPlayer = this
-    }
-
     private val handlers =
         Object2ObjectOpenHashMap<KClass<out GamePacket>, GamePacketHandler<in BasePlayer, out GamePacket>>()
     private val logger = KotlinLogging.logger { }
@@ -41,6 +43,14 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
     val viewport = Viewport(this)
     override val interfaces: InterfaceManager = InterfaceManager(this)
     override val stats: StatContainer = PlayerStatContainer(this)
+    var awaitingMapBuildComplete = false
+
+    init {
+        entity.controllingPlayer = this
+        handlers[NoTimeout::class] = NoTimeoutHandler
+        handlers[ClientCheat::class] = ClientCheatHandler
+        handlers[MapBuildComplete::class] = MapBuildCompleteHandler as GamePacketHandler<in BasePlayer, out GamePacket>
+    }
 
     fun handleIncomingPackets() {
         val queue = client.incomingQueue
@@ -90,6 +100,7 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
         val registration = PacketRegistry.getRegistration(Side.SERVER, RebuildNormal::class)!!
         (registration.codec as GamePacketCodec<GamePacket>).encode(viewport.createPacket(), builder)
         client.write(UnidentifiedPacket(OpcodeWithBuffer(registration.opcode, packet)))
+        awaitingMapBuildComplete = PacketRegistry.getRegistration(Side.CLIENT, MapBuildComplete::class) != null
         // Oh well.
 
         val player = this
@@ -1047,10 +1058,11 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
     }
 
     override fun tick() {
-        val opcode = OpenNXT.protocol.serverProtNames.values["PLAYER_INFO"]!!
-
-        client.write(UnidentifiedPacket(OpcodeWithBuffer(opcode, PlayerInfoEncoder.createBufferFor(this))))
-        viewport.resetForNextTransmit()
+        if (!awaitingMapBuildComplete) {
+            val opcode = OpenNXT.protocol.serverProtNames.values["PLAYER_INFO"]!!
+            client.write(UnidentifiedPacket(OpcodeWithBuffer(opcode, PlayerInfoEncoder.createBufferFor(this))))
+            viewport.resetForNextTransmit()
+        }
 
         client.write(ServerTickEnd)
     }

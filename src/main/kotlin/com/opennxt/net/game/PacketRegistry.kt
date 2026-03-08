@@ -4,6 +4,7 @@ import com.opennxt.Constants
 import com.opennxt.OpenNXT
 import com.opennxt.net.Side
 import com.opennxt.net.game.clientprot.ClientCheat
+import com.opennxt.net.game.clientprot.MapBuildComplete
 import com.opennxt.net.game.clientprot.WorldlistFetch
 import com.opennxt.net.game.pipeline.DynamicGamePacketCodec
 import com.opennxt.net.game.pipeline.GamePacketCodec
@@ -144,6 +145,9 @@ object PacketRegistry {
         register(Side.CLIENT, "NO_TIMEOUT", NoTimeout::class, EmptyPacketCodec(NoTimeout))
         register(Side.CLIENT, "CLIENT_CHEAT", ClientCheat::class, ClientCheat.Codec::class)
         register(Side.CLIENT, "WORLDLIST_FETCH", WorldlistFetch::class, WorldlistFetch.Codec::class)
+        if (OpenNXT.protocol.clientProtNames.values["MAP_BUILD_COMPLETE"] != null) {
+            register(Side.CLIENT, "MAP_BUILD_COMPLETE", MapBuildComplete::class, EmptyPacketCodec(MapBuildComplete))
+        }
     }
 
 
