@@ -2,4 +2,15 @@
 # This file is intentionally incomplete and is not enough to run build 946 end-to-end yet.
 
 [values]
+6 = "OPPLAYER5"
+14 = "OPPLAYER7"
+16 = "OPPLAYERT"
+20 = "OPPLAYER1"
+30 = "OPPLAYER10"
+46 = "OPPLAYER2"
+59 = "OPPLAYER8"
+60 = "OPPLAYER6"
 80 = "NO_TIMEOUT"
+91 = "OPPLAYER9"
+96 = "OPPLAYER4"
+115 = "OPPLAYER3"

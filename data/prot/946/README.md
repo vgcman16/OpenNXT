@@ -67,6 +67,17 @@ Current parser-confirmed anchors:
 - Server `132` -> `LOC_PREFETCH`
 - Server `214` -> `MAP_PROJANIM_HALFSQ`
 - Client `80` -> `NO_TIMEOUT`
+- Client `6` -> `OPPLAYER5`
+- Client `14` -> `OPPLAYER7`
+- Client `16` -> `OPPLAYERT`
+- Client `20` -> `OPPLAYER1`
+- Client `30` -> `OPPLAYER10`
+- Client `46` -> `OPPLAYER2`
+- Client `59` -> `OPPLAYER8`
+- Client `60` -> `OPPLAYER6`
+- Client `91` -> `OPPLAYER9`
+- Client `96` -> `OPPLAYER4`
+- Client `115` -> `OPPLAYER3`
 
 Current local handler path used for confirmation:
 
@@ -93,6 +104,30 @@ Current local handler path used for confirmation:
 - `132` parser: `FUN_1401149f0`
 - `214` parser: `FUN_140113e10`
 - `3` parser: `FUN_14013f5f0`
+
+Current client sender notes from runtime packet refs:
+
+- `FUN_140100220` is not involved in outbound input mapping; the useful pivot on
+  the client side is the `ClientProtOP_*` descriptor block at
+  `140ebf770..140ebff80`, which is now labeled in the local Ghidra workspace
+- `80` remains the confirmed keepalive packet: `FUN_1400ea070` gates it on a
+  `0x4e20` (20 second) timer before emitting the zero-byte descriptor
+- `FUN_1400e6bc0` is the resolved player-option sender family:
+  it first resolves a target through `FUN_140124550`, and `FUN_140124550`
+  explicitly walks the active player list at `client + 0x4038 / 0x4040`
+  before returning the matched player object
+- that sender writes only a modifier byte plus the target player index from
+  `target + 0x88`, which matches the fixed 3-byte `OPPLAYER*` packet family
+- the `param_2` switch in `FUN_1400e6bc0` maps player option indices directly
+  onto concrete `946` opcodes:
+  `20 -> OPPLAYER1`, `46 -> OPPLAYER2`, `115 -> OPPLAYER3`, `96 -> OPPLAYER4`,
+  `6 -> OPPLAYER5`, `60 -> OPPLAYER6`, `14 -> OPPLAYER7`, `59 -> OPPLAYER8`,
+  `91 -> OPPLAYER9`, `30 -> OPPLAYER10`
+- `FUN_1400e5d10` is the player-targeted selected-cursor interaction path:
+  it writes the target player index plus selected component data from
+  `client + 0x198c0` and emits descriptor `ClientProtOP_16`
+- that packet shape matches the legacy targeted player interaction packet,
+  so `16` is now mapped as `OPPLAYERT`
 
 Current UI-family notes from the `FUN_1400fadb0` constructor cluster:
 
