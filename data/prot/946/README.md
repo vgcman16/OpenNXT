@@ -128,6 +128,17 @@ Current client sender notes from runtime packet refs:
   `client + 0x198c0` and emits descriptor `ClientProtOP_16`
 - that packet shape matches the legacy targeted player interaction packet,
   so `16` is now mapped as `OPPLAYERT`
+- `FUN_1400e4cd0` is the first confirmed click-to-move sender pair:
+  it reads destination tiles from `target + 0x4c/+0x50`, writes the shared
+  `x + run + y` movement core, and then branches on `target + 0x48`
+- when that mode field is `0`, it emits fixed-size `ClientProtOP_33` with only
+  the 5-byte destination payload, which matches the plain scene-click walk path
+- when that mode field is `1`, it emits fixed-size `ClientProtOP_92` with the
+  same destination payload plus an extra 13-byte attachment block containing
+  click-context constants and local-player tile data
+- the structural split is consistent with `33 -> WALK` and
+  `92 -> MINIMAP_WALK`; those names are still based on packet shape because the
+  legacy label walk no longer survives in the `946` client
 
 Current UI-family notes from the `FUN_1400fadb0` constructor cluster:
 
