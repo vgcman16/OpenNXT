@@ -153,6 +153,15 @@ class ClientPatcher :
             }
         }
 
+        // The live config ships Jagex service ports; align the game endpoints with the local server.
+        for (param in listOf(41, 43, 45, 47)) {
+            config["param=$param"] = serverConfig.ports.game.toString()
+        }
+
+        for (param in listOf(42, 44, 46, 48)) {
+            config["param=$param"] = serverConfig.ports.https.toString()
+        }
+
         config.getFiles().forEach { file ->
             val data = Files.readAllBytes(filesPath.resolve(file.name))
             val id = file.id

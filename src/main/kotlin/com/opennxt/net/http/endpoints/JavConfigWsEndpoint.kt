@@ -39,6 +39,14 @@ object JavConfigWsEndpoint {
             }
         }
 
+        for (param in listOf(41, 43, 45, 47)) {
+            liveConfig["param=$param"] = OpenNXT.config.ports.game.toString()
+        }
+
+        for (param in listOf(42, 44, 46, 48)) {
+            liveConfig["param=$param"] = OpenNXT.config.ports.https.toString()
+        }
+
         ctx.sendHttpText(liveConfig.toString().toByteArray(Charsets.ISO_8859_1))
     }
 }
