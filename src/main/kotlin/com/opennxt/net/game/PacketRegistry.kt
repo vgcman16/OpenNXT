@@ -20,6 +20,7 @@ import kotlin.reflect.KClass
 import kotlin.reflect.jvm.javaType
 
 object PacketRegistry {
+    private const val LEGACY_FIELD_FALLBACK_BUILD = 919
     private val logger = KotlinLogging.logger { }
 
     private val serverProtByOpcode = Int2ObjectOpenHashMap<Registration>()
@@ -35,6 +36,21 @@ object PacketRegistry {
         val codec: GamePacketCodec<*>
     )
 
+    private fun opcodeFor(side: Side, name: String): Int? {
+        val mappings = if (side == Side.CLIENT) OpenNXT.protocol.clientProtNames else OpenNXT.protocol.serverProtNames
+        if (!mappings.values.containsKey(name)) {
+            return null
+        }
+        return mappings.values.getInt(name)
+    }
+
+    private fun findPacketDefinitionPath(side: Side, name: String) = sequenceOf(
+        OpenNXT.protocol.path.resolve(if (side == Side.CLIENT) "clientProt" else "serverProt").resolve("$name.txt"),
+        Constants.PROT_PATH.resolve(LEGACY_FIELD_FALLBACK_BUILD.toString())
+            .resolve(if (side == Side.CLIENT) "clientProt" else "serverProt")
+            .resolve("$name.txt")
+    ).firstOrNull(Files::exists)
+
     fun <T : GamePacket> register(
         side: Side,
         name: String,
@@ -44,13 +60,19 @@ object PacketRegistry {
         val constructor = codecType.constructors
             .first { it.parameters.size == 1 && it.parameters[0].type.javaType == Array<PacketFieldDeclaration>::class.java }
 
-        val packetPath = OpenNXT.protocol.path
-            .resolve(if (side == Side.CLIENT) "clientProt" else "serverProt")
-            .resolve("$name.txt")
+        val packetPath = findPacketDefinitionPath(side, name)
 
-        if (!Files.exists(packetPath)) {
-            logger.warn { "Failed to load packet field declaration from ${packetPath}" }
+        if (packetPath == null) {
+            logger.warn {
+                "Failed to load packet field declaration for '$name' on side $side from ${OpenNXT.protocol.path}"
+            }
             return
+        }
+
+        if (!packetPath.startsWith(OpenNXT.protocol.path)) {
+            logger.warn {
+                "Falling back to build $LEGACY_FIELD_FALLBACK_BUILD packet field declaration for '$name' on side $side"
+            }
         }
 
         val fields =
@@ -63,13 +85,9 @@ object PacketRegistry {
     }
 
     fun <T : GamePacket> register(side: Side, name: String, clazz: KClass<T>, codec: GamePacketCodec<T>?) {
-        @Suppress("DEPRECATION")
-        val opcode = (if (side == Side.CLIENT) OpenNXT.protocol.clientProtNames else OpenNXT.protocol.serverProtNames)
-            .values[name]
+        val opcode = opcodeFor(side, name)
 
-        if (opcode == null && side == Side.SERVER) {
-            throw NullPointerException("side $side name $name")
-        } else if (opcode == null && side == Side.CLIENT) {
+        if (opcode == null) {
             logger.warn { "Missing packet name -> opcode mapping for '$name'" }
             return
         }
@@ -79,7 +97,7 @@ object PacketRegistry {
             return
         }
 
-        val registration = Registration(name, opcode!!, clazz, codec)
+        val registration = Registration(name, opcode, clazz, codec)
 
         logger.info { "Registered packet ${clazz.simpleName} on side $side to opcode $opcode with codec ${codec::class.simpleName}" }
 
@@ -145,7 +163,7 @@ object PacketRegistry {
         register(Side.CLIENT, "NO_TIMEOUT", NoTimeout::class, EmptyPacketCodec(NoTimeout))
         register(Side.CLIENT, "CLIENT_CHEAT", ClientCheat::class, ClientCheat.Codec::class)
         register(Side.CLIENT, "WORLDLIST_FETCH", WorldlistFetch::class, WorldlistFetch.Codec::class)
-        if (OpenNXT.protocol.clientProtNames.values["MAP_BUILD_COMPLETE"] != null) {
+        if (opcodeFor(Side.CLIENT, "MAP_BUILD_COMPLETE") != null) {
             register(Side.CLIENT, "MAP_BUILD_COMPLETE", MapBuildComplete::class, EmptyPacketCodec(MapBuildComplete))
         }
     }

@@ -93,15 +93,20 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
         client.channel.pipeline().replace("login-encoder", "game-encoder", GamePacketEncoder())
         client.channel.pipeline().replace("login-handler", "game-handler", DynamicPacketHandler())
 
-        // ???
-        val packet = Unpooled.buffer(5140)
-        val builder = GamePacketBuilder(packet)
-        viewport.init(builder)
-        val registration = PacketRegistry.getRegistration(Side.SERVER, RebuildNormal::class)!!
-        (registration.codec as GamePacketCodec<GamePacket>).encode(viewport.createPacket(), builder)
-        client.write(UnidentifiedPacket(OpcodeWithBuffer(registration.opcode, packet)))
-        awaitingMapBuildComplete = PacketRegistry.getRegistration(Side.CLIENT, MapBuildComplete::class) != null
-        // Oh well.
+        val rebuildRegistration = PacketRegistry.getRegistration(Side.SERVER, RebuildNormal::class)
+        if (rebuildRegistration == null) {
+            logger.warn {
+                "Skipping REBUILD_NORMAL for ${this.name}: packet is not mapped for build ${OpenNXT.config.build}"
+            }
+            awaitingMapBuildComplete = true
+        } else {
+            val packet = Unpooled.buffer(5140)
+            val builder = GamePacketBuilder(packet)
+            viewport.init(builder)
+            (rebuildRegistration.codec as GamePacketCodec<GamePacket>).encode(viewport.createPacket(), builder)
+            client.write(UnidentifiedPacket(OpcodeWithBuffer(rebuildRegistration.opcode, packet)))
+            awaitingMapBuildComplete = PacketRegistry.getRegistration(Side.CLIENT, MapBuildComplete::class) != null
+        }
 
         val player = this
         stats.init()
@@ -1059,11 +1064,19 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
 
     override fun tick() {
         if (!awaitingMapBuildComplete) {
-            val opcode = OpenNXT.protocol.serverProtNames.values["PLAYER_INFO"]!!
-            client.write(UnidentifiedPacket(OpcodeWithBuffer(opcode, PlayerInfoEncoder.createBufferFor(this))))
+            val playerInfoOpcode = if (OpenNXT.protocol.serverProtNames.values.containsKey("PLAYER_INFO")) {
+                OpenNXT.protocol.serverProtNames.values.getInt("PLAYER_INFO")
+            } else {
+                null
+            }
+            if (playerInfoOpcode != null) {
+                client.write(UnidentifiedPacket(OpcodeWithBuffer(playerInfoOpcode, PlayerInfoEncoder.createBufferFor(this))))
+            }
             viewport.resetForNextTransmit()
         }
 
-        client.write(ServerTickEnd)
+        if (PacketRegistry.getRegistration(Side.SERVER, ServerTickEnd::class) != null) {
+            client.write(ServerTickEnd)
+        }
     }
 }
