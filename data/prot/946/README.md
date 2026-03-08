@@ -49,6 +49,7 @@ Current parser-confirmed anchors:
 - Server `21` -> `IF_OPENSUB_ACTIVE_LOC`
 - Server `24` -> `MAP_PROJANIM`
 - Server `38` -> `IF_OPENSUB`
+- Server `43` -> `UPDATE_ZONE_PARTIAL_ENCLOSED`
 - Server `50` -> `IF_CLOSESUB`
 - Server `57` -> `IF_SETTEXT`
 - Server `59` -> `IF_SETEVENTS`
@@ -71,6 +72,7 @@ Current local handler path used for confirmation:
 - `21` parser: `FUN_1400fbf80`
 - `24` parser: `FUN_140113af0`
 - `38` parser: `FUN_1400fb9d0`
+- `43` parser: `FUN_14013fb30`
 - `57` parser: `FUN_140108fd0`
 - `59` parser: `FUN_140109290`
 - `64` parser: `FUN_1401132f0`
@@ -120,6 +122,9 @@ Current UI-family notes from the `FUN_1400fadb0` constructor cluster:
 
 Current world-family notes from the `FUN_1401112c0` constructor cluster:
 
+- `43` reads a local-zone base from the packet header, then loops nested sub-opcodes
+  through the local descriptor table at `PTR_DAT_140c99f88` until the enclosing
+  payload is exhausted; that behavior matches `UPDATE_ZONE_PARTIAL_ENCLOSED`
 - `87` reads `coord byte + short + short` and feeds the same ground-item helper
   later used by the reveal/count parsers, which matches `OBJ_ADD`
 - `98` reads `coord byte + short` and calls the tile-ground-item removal helper,
