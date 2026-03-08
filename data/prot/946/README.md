@@ -71,12 +71,19 @@ Current parser-confirmed anchors:
 - Client `14` -> `OPPLAYER7`
 - Client `16` -> `OPPLAYERT`
 - Client `20` -> `OPPLAYER1`
+- Client `23` -> `OPOBJ3`
+- Client `25` -> `OPOBJ2`
+- Client `26` -> `OPOBJ1`
 - Client `30` -> `OPPLAYER10`
+- Client `37` -> `OPOBJT`
 - Client `46` -> `OPPLAYER2`
 - Client `59` -> `OPPLAYER8`
 - Client `60` -> `OPPLAYER6`
+- Client `77` -> `OPOBJ6`
 - Client `91` -> `OPPLAYER9`
+- Client `90` -> `OPOBJ4`
 - Client `96` -> `OPPLAYER4`
+- Client `103` -> `OPOBJ5`
 - Client `115` -> `OPPLAYER3`
 
 Current local handler path used for confirmation:
@@ -128,6 +135,18 @@ Current client sender notes from runtime packet refs:
   `client + 0x198c0` and emits descriptor `ClientProtOP_16`
 - that packet shape matches the legacy targeted player interaction packet,
   so `16` is now mapped as `OPPLAYERT`
+- `FUN_1401bbf60` resolves ground-item definitions through `DAT_140c9b578`,
+  which is now confirmed as the item-definition manager by the widget item-model
+  parsers `FUN_1400fcbe0` and `FUN_1400fce90`
+- its 1-based option switch maps onto the six fixed-size 7-byte ground-item
+  action packets:
+  `26 -> OPOBJ1`, `25 -> OPOBJ2`, `23 -> OPOBJ3`, `90 -> OPOBJ4`,
+  `103 -> OPOBJ5`, `77 -> OPOBJ6`
+- the raw stub block at `14010d170..14010d35e` wires those same descriptors,
+  plus `ClientProtOP_37`, into `FUN_1400e6190`
+- the special `param_2 == &DAT_140ebf9c0` branch in `FUN_1400e6190` appends
+  selected component data from `client + 0x198c0` to the same ground-item
+  target shape, so `37` is `OPOBJT`
 - `FUN_1400e4cd0` is the first confirmed click-to-move sender pair:
   it reads destination tiles from `target + 0x4c/+0x50`, writes the shared
   `x + run + y` movement core, and then branches on `target + 0x48`
