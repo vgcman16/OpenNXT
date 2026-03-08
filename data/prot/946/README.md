@@ -230,6 +230,26 @@ Current client sender notes from runtime packet refs:
 - the structural split is consistent with `33 -> WALK` and
   `92 -> MINIMAP_WALK`; those names are still based on packet shape because the
   legacy label walk no longer survives in the `946` client
+- `FUN_140169660` is the strongest widget-targeted sender:
+  it only runs when a selected component is active at `client + 0x198c0`,
+  writes the selected component fields from `+0x28c/+0x290/+0x294`, appends
+  the target widget/component key from `target + 0x4c/+0x50`, and then writes
+  a final target-derived short via `(**(code **)(*plVar10 + 0xb0))(plVar10)`;
+  with descriptor `DAT_140ebff10` that resolves to `122 -> IF_BUTTONT`
+- `FUN_1401a60d0` is the drag/drop-style widget sender reached from the drag
+  manager `FUN_1401a4c60`:
+  it serializes two widget/component objects stored at `param_1 + 0x2b8/0x2e8`,
+  writing source and destination interface hashes, slot-like shorts, and the
+  per-component `0xb0` values through descriptor `DAT_140ebf830`;
+  that payload shape matches `12 -> IF_BUTTOND`
+- `FUN_1401693a0 -> FUN_1401a5e00` remains intentionally unnamed:
+  it stores a resolved widget/component into the selected-component state at
+  `client + 0x198c0 + 0x178/0x180`, then emits a 6-byte packet through
+  `DAT_140ebfec0` containing only the widget hash and a slot-like short
+  (`117` in the current size table)
+- that `117` packet is clearly the self/select-side counterpart to
+  `IF_BUTTONT`, but the exact legacy label or option index is not yet proven,
+  so it is left out of `clientProtNames.toml` for now
 
 Current UI-family notes from the `FUN_1400fadb0` constructor cluster:
 
