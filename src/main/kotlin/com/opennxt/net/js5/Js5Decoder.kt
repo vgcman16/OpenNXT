@@ -53,16 +53,22 @@ class Js5Decoder(val session: Js5Session) : ByteToMessageDecoder() {
             Js5PacketCodec.RequestFile.opcodeNxtHigh1,
             Js5PacketCodec.RequestFile.opcodeNxtHigh2 -> {
                 val request = Js5PacketCodec.RequestFile.decode(GamePacketReader(buf))
-                request.priority = opcode != Js5PacketCodec.RequestFile.opcodeNxtLow && opcode != Js5PacketCodec.RequestFile.opcodeNxtLow
-//                logger.info { "Requested file ${request.index}, ${request.archive}. Priority: ${request.priority}" }
+                request.priority = opcode == Js5PacketCodec.RequestFile.opcodeHigh ||
+                    opcode == Js5PacketCodec.RequestFile.opcodeNxtHigh1 ||
+                    opcode == Js5PacketCodec.RequestFile.opcodeNxtHigh2
+                request.nxt = opcode == Js5PacketCodec.RequestFile.opcodeNxtLow ||
+                    opcode == Js5PacketCodec.RequestFile.opcodeNxtHigh1 ||
+                    opcode == Js5PacketCodec.RequestFile.opcodeNxtHigh2
 
-                if (request.priority) session.highPriorityRequests.add(request)
-                else session.lowPriorityRequests.add(request)
+                session.enqueueRequest(request, opcode)
             }
 
             Js5PacketCodec.ConnectionInitialized.opcode -> {
-                logger.info { "Connection initialized" }
-                Js5PacketCodec.ConnectionInitialized.decode(GamePacketReader(buf))
+                val packet = Js5PacketCodec.ConnectionInitialized.decode(GamePacketReader(buf))
+                logger.info {
+                    "JS5 connection initialized from ${ctx.channel().remoteAddress()} " +
+                        "with value=${packet.value}, build=${packet.build}"
+                }
                 ctx.channel().attr(Js5Session.ATTR_KEY).get().initialize()
             }
 
@@ -79,15 +85,15 @@ class Js5Decoder(val session: Js5Session) : ByteToMessageDecoder() {
             }
 
             Js5PacketCodec.LoggedIn.opcode -> {
-                logger.info { "Logged in" }
-                Js5PacketCodec.LoggedIn.decode(GamePacketReader(buf))
+                val packet = Js5PacketCodec.LoggedIn.decode(GamePacketReader(buf))
+                logger.info { "JS5 logged in state from ${ctx.channel().remoteAddress()} for build=${packet.build}" }
                 ctx.channel().attr(Js5Session.LOGGED_IN).set(true)
             }
 
             Js5PacketCodec.LoggedOut.opcode -> {
-                logger.info { "Logged out" }
-                Js5PacketCodec.LoggedOut.decode(GamePacketReader(buf))
-                ctx.channel().attr(Js5Session.LOGGED_IN).set(true)
+                val packet = Js5PacketCodec.LoggedOut.decode(GamePacketReader(buf))
+                logger.info { "JS5 logged out state from ${ctx.channel().remoteAddress()} for build=${packet.build}" }
+                ctx.channel().attr(Js5Session.LOGGED_IN).set(false)
             }
 
             else -> {

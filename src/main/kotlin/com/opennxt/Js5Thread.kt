@@ -11,25 +11,52 @@ object Js5Thread: Thread("js5-thread") {
     private val running = AtomicBoolean(true)
     private val logger = KotlinLogging.logger {  }
     private val sessions = CopyOnWriteArrayList<Js5Session>()
+    private val waitLock = java.lang.Object()
 
     override fun run() {
         while (running.get()) {
             if (sessions.isEmpty()) {
-                sleep(100)
+                synchronized(waitLock) {
+                    if (sessions.isEmpty() && running.get()) {
+                        waitLock.wait(10)
+                    }
+                }
+                continue
             }
 
+            var processedAny = false
             sessions.forEach {
-                it.process(10_000_000) // Process in blocks to avoid turning into "first-come first-serve"
+                if (it.process(10_000_000) != 0) {
+                    processedAny = true
+                }
+            }
+
+            if (!processedAny) {
+                synchronized(waitLock) {
+                    if (running.get()) {
+                        waitLock.wait(1)
+                    }
+                }
             }
         }
     }
 
     fun addSession(session: Js5Session) {
-        sessions.add(session)
+        if (!sessions.contains(session)) {
+            sessions.add(session)
+        }
+        wake()
     }
 
     fun removeSession(session: Js5Session) {
         sessions.remove(session)
+        wake()
+    }
+
+    fun wake() {
+        synchronized(waitLock) {
+            waitLock.notifyAll()
+        }
     }
 
 }

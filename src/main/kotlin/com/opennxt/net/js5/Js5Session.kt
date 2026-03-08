@@ -25,6 +25,8 @@ class Js5Session(val channel: Channel) : AutoCloseable {
     val lowPriorityRequests = ConcurrentLinkedQueue<Js5Packet.RequestFile>()
 
     var initialized = false
+    private var requestSequence = 0
+    private var responseSequence = 0
 
     init {
         channel.attr(ATTR_KEY).set(this)
@@ -44,6 +46,37 @@ class Js5Session(val channel: Channel) : AutoCloseable {
         }
     }
 
+    private fun describeRequest(request: Js5Packet.RequestFile): String = when {
+        request.index == 255 && request.archive == 255 -> "master-reference-table"
+        request.index == 255 -> "reference-table[${request.archive}]"
+        else -> "archive[${request.index},${request.archive}]"
+    }
+
+    private fun shouldTraceRequest(request: Js5Packet.RequestFile): Boolean {
+        return requestSequence <= 32 || request.index == 255 || request.archive == 255
+    }
+
+    private fun shouldTraceResponse(request: Js5Packet.RequestFile): Boolean {
+        return responseSequence <= 32 || request.index == 255 || request.archive == 255
+    }
+
+    fun enqueueRequest(request: Js5Packet.RequestFile, opcode: Int) {
+        requestSequence++
+
+        if (shouldTraceRequest(request)) {
+            logger.info {
+                "Queued js5 request #$requestSequence from ${channel.remoteAddress()}: " +
+                    "opcode=$opcode, priority=${request.priority}, nxt=${request.nxt}, " +
+                    "build=${request.build}, ${describeRequest(request)}"
+            }
+        }
+
+        if (request.priority) highPriorityRequests.add(request)
+        else lowPriorityRequests.add(request)
+
+        Js5Thread.wake()
+    }
+
     fun process(limit: Int): Int {
         var bytesSent = 0
 
@@ -52,8 +85,18 @@ class Js5Session(val channel: Channel) : AutoCloseable {
                 val request = highPriorityRequests.poll()
                 val data = request.loadFileData()
                 if (data == null) {
-                    logger.warn { "Received file request for non-existing file: [${request.index}, ${request.archive}]" }
+                    logger.warn {
+                        "JS5 missing file for high-priority request from ${channel.remoteAddress()}: " +
+                            "${describeRequest(request)}"
+                    }
                 } else {
+                    responseSequence++
+                    if (shouldTraceResponse(request)) {
+                        logger.info {
+                            "Serving js5 response #$responseSequence to ${channel.remoteAddress()}: " +
+                                "${describeRequest(request)}, priority=true, bytes=${data.readableBytes()}"
+                        }
+                    }
                     channel.write(Js5Packet.RequestFileResponse(true, request.index, request.archive, data))
                     bytesSent += data.capacity()
                 }
@@ -63,8 +106,18 @@ class Js5Session(val channel: Channel) : AutoCloseable {
                 val request = lowPriorityRequests.poll()
                 val data = request.loadFileData()
                 if (data == null) {
-                    logger.warn { "Received file request for non-existing file: [${request.index}, ${request.archive}]" }
+                    logger.warn {
+                        "JS5 missing file for low-priority request from ${channel.remoteAddress()}: " +
+                            "${describeRequest(request)}"
+                    }
                 } else {
+                    responseSequence++
+                    if (shouldTraceResponse(request)) {
+                        logger.info {
+                            "Serving js5 response #$responseSequence to ${channel.remoteAddress()}: " +
+                                "${describeRequest(request)}, priority=false, bytes=${data.readableBytes()}"
+                        }
+                    }
                     channel.write(Js5Packet.RequestFileResponse(false, request.index, request.archive, data))
                     bytesSent += data.capacity()
                 }
@@ -92,7 +145,7 @@ class Js5Session(val channel: Channel) : AutoCloseable {
     override fun close() {
         initialized = false
 
-        Js5Thread.addSession(this)
+        Js5Thread.removeSession(this)
 
         channel.close()
         highPriorityRequests.clear()

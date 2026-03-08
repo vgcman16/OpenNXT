@@ -19,9 +19,15 @@ class Js5Handler(val session: Js5Session): SimpleChannelInboundHandler<Js5Packet
                     throw IllegalStateException("Already handled handshake")
                 handledHandshake = true
 
-                logger.warn { "Sending OK - TODO: Check build & js5 token prior to accepting this connection" }
+                val responseCode = 0
+                logger.info {
+                    "Accepting js5 handshake from ${ctx.channel().remoteAddress()} " +
+                        "with build=${msg.major}.${msg.minor}, language=${msg.language}, " +
+                        "tokenLength=${msg.token.length}, response=$responseCode, " +
+                        "prefetches=${OpenNXT.prefetches.entries.size}"
+                }
 
-                ctx.channel().write(Js5Packet.HandshakeResponse(0))
+                ctx.channel().write(Js5Packet.HandshakeResponse(responseCode))
                 ctx.channel().write(Js5Packet.Prefetches(OpenNXT.prefetches.entries))
                 ctx.channel().flush()
             }
