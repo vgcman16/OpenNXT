@@ -17,6 +17,8 @@ class Js5Decoder(val session: Js5Session) : ByteToMessageDecoder() {
     var handshakeDecoded = false
 
     override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
+        session.traceInboundBytes("decode-entry", buf, handshakeDecoded)
+
         if (!handshakeDecoded) {
             buf.markReaderIndex()
             val size = buf.readUnsignedByte().toInt()
@@ -39,13 +41,23 @@ class Js5Decoder(val session: Js5Session) : ByteToMessageDecoder() {
 
             check(!buf.isReadable) { "buffer is readable after reading js5 handshake" }
 
+            logger.info {
+                "Decoded js5 handshake for session#${session.id} from ${ctx.channel().remoteAddress()} " +
+                    "with build=${build.major}.${build.minor}, language=$language, tokenLength=${token.length}"
+            }
             out.add(Js5Packet.Handshake(build.major, build.minor, token, language))
 
             handshakeDecoded = true
             return
         }
 
-        if (buf.readableBytes() < 10) return
+        if (buf.readableBytes() < 10) {
+            logger.info {
+                "Session#${session.id} waiting for more js5 bytes from ${ctx.channel().remoteAddress()}: " +
+                    "readable=${buf.readableBytes()}"
+            }
+            return
+        }
         when (val opcode = buf.readUnsignedByte().toInt()) {
             Js5PacketCodec.RequestFile.opcodeLow,
             Js5PacketCodec.RequestFile.opcodeHigh,
@@ -97,8 +109,11 @@ class Js5Decoder(val session: Js5Session) : ByteToMessageDecoder() {
             }
 
             else -> {
-                logger.warn { "Unknown js5 opcode $opcode from ${ctx.channel().remoteAddress()}. Skipping request" }
-                buf.skipBytes(9)
+                logger.warn {
+                    "Unknown js5 opcode $opcode on session#${session.id} from ${ctx.channel().remoteAddress()}. " +
+                        "Skipping 9 bytes"
+                }
+                buf.skipBytes(minOf(9, buf.readableBytes()))
             }
         }
     }

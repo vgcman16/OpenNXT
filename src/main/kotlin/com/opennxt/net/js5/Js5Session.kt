@@ -10,6 +10,7 @@ import io.netty.channel.Channel
 import io.netty.util.AttributeKey
 import mu.KotlinLogging
 import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.atomic.AtomicInteger
 
 class Js5Session(val channel: Channel) : AutoCloseable {
 
@@ -19,14 +20,17 @@ class Js5Session(val channel: Channel) : AutoCloseable {
         val ATTR_KEY = AttributeKey.valueOf<Js5Session>("js5-session")
         val XOR_KEY = AttributeKey.valueOf<Int>("js5-xor-key")
         val LOGGED_IN = AttributeKey.valueOf<Boolean>("js5-logged-in")
+        private val NEXT_ID = AtomicInteger(0)
     }
 
+    val id = NEXT_ID.incrementAndGet()
     val highPriorityRequests = ConcurrentLinkedQueue<Js5Packet.RequestFile>()
     val lowPriorityRequests = ConcurrentLinkedQueue<Js5Packet.RequestFile>()
 
     var initialized = false
     private var requestSequence = 0
     private var responseSequence = 0
+    private var inboundTraceSequence = 0
 
     init {
         channel.attr(ATTR_KEY).set(this)
@@ -58,6 +62,27 @@ class Js5Session(val channel: Channel) : AutoCloseable {
 
     private fun shouldTraceResponse(request: Js5Packet.RequestFile): Boolean {
         return responseSequence <= 32 || request.index == 255 || request.archive == 255
+    }
+
+    fun traceInboundBytes(stage: String, buf: ByteBuf, handshakeDecoded: Boolean) {
+        inboundTraceSequence++
+
+        if (inboundTraceSequence > 24) {
+            return
+        }
+
+        val readable = buf.readableBytes()
+        val previewLength = minOf(readable, 32)
+        val preview = ByteArray(previewLength)
+        if (previewLength > 0) {
+            buf.getBytes(buf.readerIndex(), preview)
+        }
+
+        logger.info {
+            "JS5 raw inbound session#$id read#$inboundTraceSequence from ${channel.remoteAddress()}: " +
+                "stage=$stage, handshakeDecoded=$handshakeDecoded, readable=$readable, " +
+                "preview=${preview.joinToString(" ") { "%02x".format(it.toInt() and 0xff) }}"
+        }
     }
 
     fun enqueueRequest(request: Js5Packet.RequestFile, opcode: Int) {
@@ -144,6 +169,12 @@ class Js5Session(val channel: Channel) : AutoCloseable {
 
     override fun close() {
         initialized = false
+
+        logger.info {
+            "Closing js5 session#$id from ${channel.remoteAddress()}: " +
+                "initialized=$initialized, requests=$requestSequence, responses=$responseSequence, " +
+                "rawReads=$inboundTraceSequence"
+        }
 
         Js5Thread.removeSession(this)
 
