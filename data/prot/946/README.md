@@ -8,12 +8,14 @@ This directory is the in-repo workspace for RS3 build `946`.
 - Ghidra import of the `win64` client succeeded
 - The legacy `RS3NXTRefactorer` script does not yet complete on build `946`
 - `serverProtSizes.toml` is now extracted from the live client
+- `clientProtSizes.toml` is now extracted from the live client
 - The 2026 client registers `217` contiguous server packets through a new direct registrar at `FUN_140301280`
+- The 2026 client registers `130` contiguous client packets through a direct registrar at `FUN_140301100`
 
 Current script breakpoints observed during headless runs:
 
-- `SendPing not found (Obtained from ServerProt decoding)` during `ClientProt` discovery
 - The legacy packet naming walk does not yet match the new `946` packet object layout
+- The legacy `SendPing` anchor is no longer required for packet size extraction, but packet naming still needs new heuristics
 
 ## Inputs
 
@@ -25,7 +27,6 @@ Current script breakpoints observed during headless runs:
 Populate the following once the Ghidra heuristics are updated for build `946`:
 
 - `clientProtNames.toml`
-- `clientProtSizes.toml`
 - `serverProtNames.toml`
 - `clientProt/*.txt`
 - `serverProt/*.txt`
@@ -33,4 +34,4 @@ Populate the following once the Ghidra heuristics are updated for build `946`:
 ## Notes
 
 The current repository can download and patch the live `946` client and cache. The server remains pinned to
-supported protocol data until packet names and client protocol data are recovered for build `946`.
+supported protocol data until packet names and handler mappings are recovered for build `946`.
