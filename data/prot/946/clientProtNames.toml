@@ -2,6 +2,7 @@
 # This file is intentionally incomplete and is not enough to run build 946 end-to-end yet.
 
 [values]
+4 = "MESSAGE_PUBLIC"
 6 = "OPPLAYER5"
 9 = "OPNPC1"
 14 = "OPPLAYER7"
@@ -20,6 +21,7 @@
 40 = "OPLOC3"
 43 = "OPLOC6"
 46 = "OPPLAYER2"
+49 = "MESSAGE_PRIVATE"
 58 = "OPLOCT"
 59 = "OPPLAYER8"
 60 = "OPPLAYER6"

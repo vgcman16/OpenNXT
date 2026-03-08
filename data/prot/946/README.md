@@ -67,6 +67,7 @@ Current parser-confirmed anchors:
 - Server `132` -> `LOC_PREFETCH`
 - Server `214` -> `MAP_PROJANIM_HALFSQ`
 - Client `80` -> `NO_TIMEOUT`
+- Client `4` -> `MESSAGE_PUBLIC`
 - Client `6` -> `OPPLAYER5`
 - Client `9` -> `OPNPC1`
 - Client `14` -> `OPPLAYER7`
@@ -84,6 +85,7 @@ Current parser-confirmed anchors:
 - Client `40` -> `OPLOC3`
 - Client `43` -> `OPLOC6`
 - Client `46` -> `OPPLAYER2`
+- Client `49` -> `MESSAGE_PRIVATE`
 - Client `58` -> `OPLOCT`
 - Client `59` -> `OPPLAYER8`
 - Client `60` -> `OPPLAYER6`
@@ -133,6 +135,23 @@ Current client sender notes from runtime packet refs:
   `140ebf770..140ebff80`, which is now labeled in the local Ghidra workspace
 - `80` remains the confirmed keepalive packet: `FUN_1400ea070` gates it on a
   `0x4e20` (20 second) timer before emitting the zero-byte descriptor
+- `FUN_140099710` is the strongest public-chat sender:
+  it pops one script string, derives two extra single-byte values through
+  `FUN_140097a10`, writes a placeholder length byte, and then compresses the
+  chat payload through `FUN_1403d62a0`; that shape matches
+  `4 -> MESSAGE_PUBLIC`
+- `FUN_140099a90` is the matching private-message sender:
+  it pops two strings, writes the first raw through `FUN_1400ac540`, then
+  compresses the second through `FUN_1403d62a0`; that shape matches
+  `49 -> MESSAGE_PRIVATE`
+- `FUN_140099e30` is still not named:
+  it pops two strings plus two small control values, writes one raw string,
+  appends a byte/bool pair, and then emits a second bounded raw string, which
+  looks more like a structured text submission than a clean `CLIENT_CHEAT`
+- the late colon-parser funnels `FUN_140646bf0` and `FUN_140641090` were ruled
+  out during this pass; both feed URL/connection setup through
+  `FUN_140643ea0`, `FUN_1406466d0`, and `FUN_140656d10` rather than outbound
+  gameplay/chat packets
 - `FUN_1400e6bc0` is the resolved player-option sender family:
   it first resolves a target through `FUN_140124550`, and `FUN_140124550`
   explicitly walks the active player list at `client + 0x4038 / 0x4040`
