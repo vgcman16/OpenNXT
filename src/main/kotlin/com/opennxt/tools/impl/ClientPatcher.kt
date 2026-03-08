@@ -23,6 +23,7 @@ import java.io.*
 import java.math.BigInteger
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.StandardCopyOption
 import java.util.*
 import java.util.zip.CRC32
 import kotlin.system.exitProcess
@@ -36,6 +37,22 @@ class ClientPatcher :
     private val ASCII = Charsets.US_ASCII
 
     private val PATCHED_REGEX = "^.*"
+    private val nativeRuntimeFiles = listOf(
+        "chrome_100_percent.pak",
+        "chrome_200_percent.pak",
+        "chrome_elf.dll",
+        "d3dcompiler_47.dll",
+        "icudtl.dat",
+        "libcef.dll",
+        "libEGL.dll",
+        "libGLESv2.dll",
+        "resources.pak",
+        "snapshot_blob.bin",
+        "v8_context_snapshot.bin",
+        "vk_swiftshader.dll",
+        "vk_swiftshader_icd.json",
+        "vulkan-1.dll"
+    )
 
     private val version by option(help = "The version of the client to patch")
         .int()
@@ -108,6 +125,7 @@ class ClientPatcher :
 
             logger.info { "Patching client config" }
             patchConfig(type, config, toDirectory)
+            copyNativeRuntimeCompanions(type, toDirectory)
 
             Files.deleteIfExists(compressedDirectory.resolve("jav_config.ws"))
             Files.copy(toDirectory.resolve("jav_config.ws"), compressedDirectory.resolve("jav_config.ws"))
@@ -139,6 +157,60 @@ class ClientPatcher :
 
             logger.info { "Patching launcher $from to $to" }
             patchLauncher(from, to)
+        }
+    }
+
+    private fun copyNativeRuntimeCompanions(type: BinaryType, toDirectory: Path) {
+        if (type != BinaryType.WIN32C && type != BinaryType.WIN64C) {
+            return
+        }
+
+        val launcherRoot = findLauncherRoot()
+        if (launcherRoot == null) {
+            logger.warn { "Could not find a Jagex Launcher install root; skipping native runtime companion copy for $type" }
+            return
+        }
+
+        logger.info { "Syncing native runtime companion files for $type from $launcherRoot" }
+
+        nativeRuntimeFiles.forEach { name ->
+            val source = launcherRoot.resolve(name)
+            val destination = toDirectory.resolve(name)
+            if (!Files.exists(source) || Files.exists(destination)) {
+                return@forEach
+            }
+            Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING)
+        }
+
+        copyDirectoryIfExists(launcherRoot.resolve("locales"), toDirectory.resolve("locales"))
+        copyDirectoryIfExists(launcherRoot.resolve("swiftshader"), toDirectory.resolve("swiftshader"))
+    }
+
+    private fun findLauncherRoot(): Path? {
+        val candidates = listOfNotNull(
+            System.getenv("ProgramFiles(x86)")?.let { Path.of(it).resolve("Jagex Launcher") },
+            System.getenv("ProgramFiles")?.let { Path.of(it).resolve("Jagex Launcher") }
+        )
+
+        return candidates.firstOrNull { Files.exists(it.resolve("JagexLauncher.exe")) }
+    }
+
+    private fun copyDirectoryIfExists(source: Path, destination: Path) {
+        if (!Files.exists(source) || Files.exists(destination)) {
+            return
+        }
+
+        Files.walk(source).use { paths ->
+            paths.forEach { path ->
+                val relative = source.relativize(path)
+                val target = destination.resolve(relative.toString())
+                if (Files.isDirectory(path)) {
+                    Files.createDirectories(target)
+                } else {
+                    Files.createDirectories(target.parent)
+                    Files.copy(path, target, StandardCopyOption.REPLACE_EXISTING)
+                }
+            }
         }
     }
 
