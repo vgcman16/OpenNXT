@@ -79,8 +79,8 @@ class LoginServerHandler : SimpleChannelInboundHandler<LoginPacket>() {
                         int23 = 0,
                         short24 = 0,
                         defaultWorld = OpenNXT.config.hostname,
-                        defaultWorldPort1 = 43594,
-                        defaultWorldPort2 = 43594,
+                        defaultWorldPort1 = OpenNXT.config.ports.game,
+                        defaultWorldPort2 = OpenNXT.config.ports.game,
                     )
 
                     ctx.channel().writeAndFlush(response).addListener { future ->
