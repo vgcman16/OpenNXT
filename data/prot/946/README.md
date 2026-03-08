@@ -86,6 +86,7 @@ Current parser-confirmed anchors:
 - Client `43` -> `OPLOC6`
 - Client `46` -> `OPPLAYER2`
 - Client `49` -> `MESSAGE_PRIVATE`
+- Client `56` -> `CLIENT_CHEAT`
 - Client `58` -> `OPLOCT`
 - Client `59` -> `OPPLAYER8`
 - Client `60` -> `OPPLAYER6`
@@ -148,6 +149,16 @@ Current client sender notes from runtime packet refs:
   it pops two strings plus two small control values, writes one raw string,
   appends a byte/bool pair, and then emits a second bounded raw string, which
   looks more like a structured text submission than a clean `CLIENT_CHEAT`
+- `FUN_14008d5e0` is the strongest raw command sender:
+  it pops exactly one string, emits a single length-like byte via
+  `FUN_1400aa740`, and then writes the string through `FUN_1400ac540`
+  without touching the Huffman compressor; with descriptor `DAT_140ebfaf0`
+  this resolves to `56 -> CLIENT_CHEAT`
+- the neighboring raw-string wrappers help calibrate that interpretation:
+  `FUN_14008d840` uses descriptor `DAT_140ebf7e0` (`7`) and writes two raw
+  strings with a combined short length, while `FUN_14008db20` uses
+  `DAT_140ebf810` (`10`) and writes one raw string plus a trailing packed
+  flag byte, so `56` is the clean single-command outlier in that family
 - the late colon-parser funnels `FUN_140646bf0` and `FUN_140641090` were ruled
   out during this pass; both feed URL/connection setup through
   `FUN_140643ea0`, `FUN_1406466d0`, and `FUN_140656d10` rather than outbound
