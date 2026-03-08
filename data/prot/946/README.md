@@ -78,6 +78,7 @@ Current parser-confirmed anchors:
 - Client `25` -> `OPOBJ2`
 - Client `26` -> `OPOBJ1`
 - Client `30` -> `OPPLAYER10`
+- Client `34` -> `MAP_BUILD_COMPLETE`
 - Client `35` -> `OPNPC6`
 - Client `36` -> `OPNPC5`
 - Client `37` -> `OPOBJT`
@@ -281,6 +282,18 @@ Current client sender notes from runtime packet refs:
   respectively, so they are strong candidates for the remaining
   string/name-style resume packets, but they are still left unnamed until the
   clientscript hook context cleanly separates their prompt semantics
+- `FUN_1401f6b50` is the strongest world-build completion sender:
+  it only emits `ClientProtOP_34` when the client is in logged-in state `0x14`
+  and the world-build object at `client + 0x198d0` reports `+0x10 == 0`
+- the neighboring native hook at raw block `1401f4c50` manipulates the same
+  `client + 0x198d0` state block, resetting build markers and flipping a
+  follow-up byte flag once that state reaches the ready path
+- that shared state gate makes `34 -> MAP_BUILD_COMPLETE` the cleanest fit for
+  the zero-byte world-handshake packet in the current `946` client
+- `15` and `21` remain unresolved zero-byte client packets:
+  `15` currently looks tied to the text-entry object at `client + 0x19838`,
+  while `21` tears down local UI/selection state and walks a local list
+  through `FUN_14019b190` / `FUN_1401ab3b0`
 
 Current UI-family notes from the `FUN_1400fadb0` constructor cluster:
 
