@@ -89,9 +89,13 @@ Current UI-family notes from the `FUN_1400fadb0` constructor cluster:
   `IF_SETPLAYERMODEL_SELF` path
 - `108` reads `parent int + short` and routes through the dedicated interface
   manager path, which matches `IF_SETSCROLLPOS`
-- `137` and `202` remain the leading `IF_SETRETEX` / `IF_SETRECOL` candidates;
-  both decode `parent int + slot byte + short pair` shapes and route into the
-  adjacent helper family at `FUN_1400cc6f0` / `FUN_1400cc630`
+- `137` and `202` remain the leading `IF_SETRETEX` / `IF_SETRECOL` candidates
+  and are now narrowed to a property-id split instead of a generic pair:
+  `137` decompiles to `FUN_1400cc6f0` with helper type `0x11`, while `202`
+  decompiles to `FUN_1400cc630` with helper type `0x12`
+- both decode `parent int + slot byte + short pair` shapes, but `137` applies a
+  `byte128`-style bias to one of the short-like values before the helper call,
+  while `202` passes the corresponding short through directly
 - The 4-byte UI-family packets are not yet committed as names; at least one of
   the remaining unresolved 4-byte packets sits outside the widget close/self-model
   cluster documented above
