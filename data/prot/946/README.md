@@ -10,6 +10,7 @@ This directory is the in-repo workspace for RS3 build `946`.
 - `serverProtSizes.toml` is now extracted from the live client
 - `clientProtSizes.toml` is now extracted from the live client
 - `serverProtNames.toml` now contains the first parser-confirmed server anchors
+  and the first horizontally expanded UI-family names
 - `clientProtNames.toml` now contains the first parser-confirmed client anchor
 - `sizeDiffReport.md` now compares `919` vs `946` size tables to produce the first naming shortlist
 - The 2026 client registers `217` contiguous server packets through a new direct registrar at `FUN_140301280`
@@ -43,9 +44,13 @@ supported protocol data until packet names and handler mappings are recovered fo
 
 Current parser-confirmed anchors:
 
+- Server `8` -> `IF_SETCOLOUR`
 - Server `21` -> `IF_OPENSUB_ACTIVE_LOC`
 - Server `24` -> `MAP_PROJANIM`
 - Server `38` -> `IF_OPENSUB`
+- Server `57` -> `IF_SETTEXT`
+- Server `59` -> `IF_SETEVENTS`
+- Server `108` -> `IF_SETSCROLLPOS`
 - Client `80` -> `NO_TIMEOUT`
 
 Current local handler path used for confirmation:
@@ -54,6 +59,24 @@ Current local handler path used for confirmation:
 - `21` parser: `FUN_1400fbf80`
 - `24` parser: `FUN_140113af0`
 - `38` parser: `FUN_1400fb9d0`
+- `57` parser: `FUN_140108fd0`
+- `59` parser: `FUN_140109290`
+- `8` parser: `FUN_140107d70`
+- `108` parser: `FUN_140109650`
+
+Current UI-family notes from the `FUN_1400fadb0` constructor cluster:
+
+- `57` is a string reader followed by widget-manager update calls, which matches
+  `IF_SETTEXT`
+- `59` reads `parent int + mask int + two slot shorts`, which matches
+  `IF_SETEVENTS`
+- `8` reads `parent int + packed 15-bit colour` and expands it into RGB-like
+  components before the widget update path, which matches `IF_SETCOLOUR`
+- `108` reads `parent int + short` and routes through the dedicated interface
+  manager path, which matches `IF_SETSCROLLPOS`
+- `137` and `202` remain the leading `IF_SETRETEX` / `IF_SETRECOL` candidates
+- The 4-byte UI-family packets are not yet committed as names; at least one of
+  them looks more like a player-model widget update than `IF_CLOSESUB`
 
 Regenerate the size-based shortlist with:
 

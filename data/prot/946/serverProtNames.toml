@@ -2,6 +2,10 @@
 # This file is intentionally incomplete and is not enough to run build 946 end-to-end yet.
 
 [values]
+8 = "IF_SETCOLOUR"
 21 = "IF_OPENSUB_ACTIVE_LOC"
 24 = "MAP_PROJANIM"
 38 = "IF_OPENSUB"
+57 = "IF_SETTEXT"
+59 = "IF_SETEVENTS"
+108 = "IF_SETSCROLLPOS"
