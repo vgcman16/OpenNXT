@@ -2,6 +2,7 @@ package com.opennxt.net.js5
 
 import com.opennxt.Js5Thread
 import com.opennxt.OpenNXT
+import com.opennxt.filesystem.Container
 import com.opennxt.filesystem.Filesystem
 import com.opennxt.net.js5.packet.Js5Packet
 import io.netty.buffer.ByteBuf
@@ -9,6 +10,7 @@ import io.netty.buffer.Unpooled
 import io.netty.channel.Channel
 import io.netty.util.AttributeKey
 import mu.KotlinLogging
+import java.nio.ByteBuffer
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -43,11 +45,27 @@ class Js5Session(val channel: Channel) : AutoCloseable {
             return when {
                 index == 255 && archive == 255 -> Unpooled.wrappedBuffer(OpenNXT.checksumTable)
                 index == 255 -> Unpooled.wrappedBuffer(OpenNXT.filesystem.readReferenceTable(archive) ?: return null)
-                else -> Unpooled.wrappedBuffer(OpenNXT.filesystem.read(index, archive) ?: return null)
+                else -> {
+                    val raw = OpenNXT.filesystem.read(index, archive) ?: return null
+                    Unpooled.wrappedBuffer(stripVersionTrailer(raw))
+                }
             }
         } catch (e: Exception) {
             return null
         }
+    }
+
+    private fun stripVersionTrailer(raw: ByteBuffer): ByteArray {
+        val bytes = ByteArray(raw.remaining())
+        raw.duplicate().get(bytes)
+
+        // Cache files are stored with a trailing 2-byte archive version. Live JS5 strips that trailer
+        // when serving non-255 archives, so mirror that wire format for native clients.
+        val version = Container.decode(ByteBuffer.wrap(bytes)).version
+        if (version == -1 || bytes.size < 2) {
+            return bytes
+        }
+        return bytes.copyOf(bytes.size - 2)
     }
 
     private fun describeRequest(request: Js5Packet.RequestFile): String = when {
