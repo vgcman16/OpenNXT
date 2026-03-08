@@ -236,6 +236,18 @@ Current client sender notes from runtime packet refs:
   the target widget/component key from `target + 0x4c/+0x50`, and then writes
   a final target-derived short via `(**(code **)(*plVar10 + 0xb0))(plVar10)`;
   with descriptor `DAT_140ebff10` that resolves to `122 -> IF_BUTTONT`
+- `FUN_1401a3600` is the plain widget menu-action router:
+  it carries the clicked option as `param_5`, gates it through the widget
+  clickmask via `FUN_14019b6b0`, and for `param_5 - 1 < 10` dispatches through
+  the 1-based descriptor table at `DAT_140b92f18`
+- `DAT_140b92f18` resolves the numbered widget button family directly:
+  `1 -> 97`, `2 -> 118`, `3 -> 54`, `4 -> 128`, `5 -> 18`,
+  `6 -> 64`, `7 -> 61`, `8 -> 124`, `9 -> 63`, `10 -> 47`
+- that table is sufficient to name the base widget packets as:
+  `97 -> IF_BUTTON1`, `118 -> IF_BUTTON2`, `54 -> IF_BUTTON3`,
+  `128 -> IF_BUTTON4`, `18 -> IF_BUTTON5`, `64 -> IF_BUTTON6`,
+  `61 -> IF_BUTTON7`, `124 -> IF_BUTTON8`, `63 -> IF_BUTTON9`,
+  `47 -> IF_BUTTON10`
 - `FUN_1401a60d0` is the drag/drop-style widget sender reached from the drag
   manager `FUN_1401a4c60`:
   it serializes two widget/component objects stored at `param_1 + 0x2b8/0x2e8`,
