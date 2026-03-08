@@ -48,7 +48,9 @@ Current parser-confirmed anchors:
 - Server `8` -> `IF_SETCOLOUR`
 - Server `21` -> `IF_OPENSUB_ACTIVE_LOC`
 - Server `24` -> `MAP_PROJANIM`
+- Server `28` -> `NPC_INFO`
 - Server `38` -> `IF_OPENSUB`
+- Server `42` -> `PLAYER_INFO`
 - Server `43` -> `UPDATE_ZONE_PARTIAL_ENCLOSED`
 - Server `50` -> `IF_CLOSESUB`
 - Server `57` -> `IF_SETTEXT`
@@ -71,7 +73,9 @@ Current local handler path used for confirmation:
 - `opcode -> descriptor -> descriptor + 0x48 -> handler vtable -> dispatch thunk -> parser`
 - `21` parser: `FUN_1400fbf80`
 - `24` parser: `FUN_140113af0`
+- `28` parser: `FUN_140106920 -> FUN_14011ebb0`
 - `38` parser: `FUN_1400fb9d0`
+- `42` parser: `FUN_140106360 -> FUN_140124e30`
 - `43` parser: `FUN_14013fb30`
 - `57` parser: `FUN_140108fd0`
 - `59` parser: `FUN_140109290`
@@ -149,6 +153,27 @@ Current world-family notes from the `FUN_1401112c0` constructor cluster:
   preloads the matching model resources for that shape; despite the `946`
   fixed-size form differing from the old `919` size, the behavior matches
   `LOC_PREFETCH`
+
+Current entity-sync notes from the bit-reader path:
+
+- `FUN_140100220` is the live `946` packet bit-reader used by both entity-sync
+  chains; it advances a bit cursor, uses `>> 3` and `& 7` addressing, and
+  slices packed values directly from the packet payload buffer
+- `28` resolves through `FUN_140106920` into `FUN_14011ebb0`, which in turn
+  drives `FUN_14011f040`, `FUN_14011f4b0`, and the flagged-update reader
+  `FUN_14011fd30`
+- the `28` chain reads a repeating `0x10`-bit entity id with a `0xffff`
+  sentinel, creates or rehydrates missing entities, tracks add/remove/update
+  lists at `+0xa0a0`, `+0xb0a0`, and `+0xc0f0`, and then applies queued update
+  blocks; that behavior matches `NPC_INFO`
+- `42` resolves through `FUN_140106360` into `FUN_140124e30`, which snapshots
+  the prior active list, performs four bit-packed passes over active/inactive
+  entries via `FUN_140125350` and `FUN_140125ab0`, and then emits flagged
+  update blocks through `FUN_14012ba50`
+- the `42` chain explicitly iterates until `uVar14 < 0x800`, which is the
+  client-side local-player cap, and its movement/update stages operate over the
+  player-index lists at `+0x4038/+0x4040` and `+0x6060/+0x6068`; that behavior
+  matches `PLAYER_INFO`
 
 Regenerate the size-based shortlist with:
 
