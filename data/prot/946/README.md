@@ -76,14 +76,21 @@ Current parser-confirmed anchors:
 - Client `26` -> `OPOBJ1`
 - Client `30` -> `OPPLAYER10`
 - Client `37` -> `OPOBJT`
+- Client `38` -> `OPLOC1`
+- Client `40` -> `OPLOC3`
+- Client `43` -> `OPLOC6`
 - Client `46` -> `OPPLAYER2`
+- Client `58` -> `OPLOCT`
 - Client `59` -> `OPPLAYER8`
 - Client `60` -> `OPPLAYER6`
+- Client `68` -> `OPLOC2`
 - Client `77` -> `OPOBJ6`
 - Client `91` -> `OPPLAYER9`
 - Client `90` -> `OPOBJ4`
 - Client `96` -> `OPPLAYER4`
+- Client `101` -> `OPLOC4`
 - Client `103` -> `OPOBJ5`
+- Client `111` -> `OPLOC5`
 - Client `115` -> `OPPLAYER3`
 
 Current local handler path used for confirmation:
@@ -147,6 +154,22 @@ Current client sender notes from runtime packet refs:
 - the special `param_2 == &DAT_140ebf9c0` branch in `FUN_1400e6190` appends
   selected component data from `client + 0x198c0` to the same ground-item
   target shape, so `37` is `OPOBJT`
+- `FUN_1400e5780` is the matching world-object interaction sender family:
+  the fixed-size non-target variants write local `x/y`, the run modifier, and a
+  4-byte target id from `target + 0x48`, which is the loc/object-shaped target
+  payload rather than the 3-byte player/NPC interaction shape
+- its special `param_2 == &DAT_140ebfb10` branch appends selected component
+  data from `client + 0x198c0`, and `ClientProtOP_58` is the only 17-byte
+  descriptor in the family, so `58` is `OPLOCT`
+- the action-class registrar `FUN_1400e39d0` wires the already-resolved
+  `OPOBJ` family in strict `1,2,3,4,5,6,T` order, and the `FUN_1400e5780`
+  vtable family is registered in the same seven-slot pattern:
+  `140b8dc88`, `140b8dc58`, `140b8db68`, `140b8db38`, `140b8dbc8`,
+  `140b8db98`, `140b8daa8`
+- the raw stubs then pair those vtables with concrete `946` descriptors in the
+  same order, which resolves the loc interaction family as:
+  `38 -> OPLOC1`, `68 -> OPLOC2`, `40 -> OPLOC3`, `101 -> OPLOC4`,
+  `111 -> OPLOC5`, `43 -> OPLOC6`, `58 -> OPLOCT`
 - `FUN_1400e4cd0` is the first confirmed click-to-move sender pair:
   it reads destination tiles from `target + 0x4c/+0x50`, writes the shared
   `x + run + y` movement core, and then branches on `target + 0x48`
