@@ -11,20 +11,6 @@ import io.netty.handler.codec.http.FullHttpRequest
 import io.netty.handler.codec.http.QueryStringDecoder
 
 object JavConfigWsEndpoint {
-    private val hostParamsToRewrite = setOf(37, 49)
-
-    private fun applyLocalSocketRewrite(config: ClientConfig) {
-        for (param in hostParamsToRewrite) {
-            if (config.getParam(param) != null) {
-                config["param=$param"] = OpenNXT.config.hostname
-            }
-        }
-
-        for (param in listOf(41, 43, 45, 47)) {
-            config["param=$param"] = OpenNXT.config.ports.game.toString()
-        }
-    }
-
     fun handle(ctx: ChannelHandlerContext, msg: FullHttpRequest, query: QueryStringDecoder) {
 
         val type = BinaryType.values()[query.parameters().getOrElse("binaryType") { listOf("2") }.first().toInt()]
@@ -35,9 +21,7 @@ object JavConfigWsEndpoint {
             .resolve("original")
             .resolve("jav_config.ws")
         val liveConfig = runCatching { ClientConfig.load(templatePath) }.getOrElse {
-            // If the original template is unavailable, fall back to the compressed config and at least
-            // normalize the direct OpenNXT socket endpoints.
-            applyLocalSocketRewrite(config)
+            // If the original template is unavailable, fall back to the compressed config as-is.
             ctx.sendHttpText(config.toString().toByteArray(Charsets.ISO_8859_1))
             return
         }
@@ -50,9 +34,9 @@ object JavConfigWsEndpoint {
             download++
         }
 
-        // Preserve live lobby/auth/account/web endpoints so the native flow can render and
-        // authenticate. Only redirect the content/game socket hosts that must terminate on OpenNXT.
-        applyLocalSocketRewrite(liveConfig)
+        // Preserve the live transport host/port layout from jav_config.ws. The local world handoff
+        // is injected later by the lobby login response, and rewriting the pre-login transport
+        // params here can strand the native client on the loading screen before it ever renders UI.
 
         ctx.sendHttpText(liveConfig.toString().toByteArray(Charsets.ISO_8859_1))
     }

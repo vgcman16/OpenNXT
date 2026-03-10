@@ -189,6 +189,14 @@ def main():
 
     ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     ssl_context.load_cert_chain(certfile=str(cert_path), keyfile=str(key_path))
+    try:
+        ssl_context.minimum_version = ssl.TLSVersion.TLSv1
+    except AttributeError:
+        pass
+    try:
+        ssl_context.set_ciphers("ALL:@SECLEVEL=0")
+    except ssl.SSLError:
+        pass
     args.ssl_context = ssl_context
 
     summary_lines = []

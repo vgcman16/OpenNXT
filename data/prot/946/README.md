@@ -144,6 +144,17 @@ Current login-init notes:
   per-skill table at `client + 0x19810` and consumes a 6-byte shape that no
   longer matches the old `919` field order, so `946` now has an explicit
   `serverProt/UPDATE_STAT.txt`.
+- `72` (`FUN_140140be0`) is the current `VARP_SMALL` mapping. It reads
+  `id ushort`, then a raw single-byte value, and applies the pair through the
+  client var manager at `+0x19f78`.
+- `51` (`FUN_140140b10`) is the current `VARP_LARGE` mapping. It reads a
+  big-endian 4-byte value followed by a big-endian `ushort` id before applying
+  the result through the same var manager.
+- `128` (`FUN_1400f8610`) is the current `CLIENT_SETVARC_SMALL` mapping. It
+  consumes `id ushortle`, then a raw byte value.
+- `124` (`FUN_140140dd0`) is the current `CLIENT_SETVARC_LARGE` mapping. It
+  consumes `id ushortle`, then a `V1`-ordered integer payload, and forwards the
+  decoded pair into the client varc manager.
 - `131` is the strongest `NO_TIMEOUT` match. It is zero-byte and only bumps a
   30-second deadline on the client session object.
 - `134` is the current `RESET_CLIENT_VARCACHE` login-reset mapping. It is
