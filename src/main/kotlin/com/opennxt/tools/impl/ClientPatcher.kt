@@ -37,7 +37,6 @@ class ClientPatcher :
     private val ASCII = Charsets.US_ASCII
 
     private val PATCHED_REGEX = "^.*"
-    private val hostParamsToRewrite = setOf(37, 49)
     private val nativeRuntimeFiles = listOf(
         "chrome_100_percent.pak",
         "chrome_200_percent.pak",
@@ -216,20 +215,9 @@ class ClientPatcher :
     }
 
     private fun patchConfig(type: BinaryType, config: ClientConfig, filesPath: Path) {
-        // Keep web/account/auth endpoints on Jagex infrastructure. Only rewrite the direct
-        // JS5/game socket hosts that need to point at the local server.
-        for (param in hostParamsToRewrite) {
-            if (config.getParam(param) != null) {
-                config["param=$param"] = serverConfig.hostname
-            }
-        }
-
-        // Only redirect the plain game/content endpoints to the local server. The secure lobby/auth
-        // path remains on Jagex infrastructure; the native client currently hands pre-login flow
-        // through that route before it ever reaches in-game login.
-        for (param in listOf(41, 43, 45, 47)) {
-            config["param=$param"] = serverConfig.ports.game.toString()
-        }
+        // Preserve the live host/port transport layout from Jagex. The local world destination is
+        // supplied later by the lobby login response, and forcing pre-login transport params to the
+        // local server can strand the native client on the loading screen before login UI renders.
 
         config.getFiles().forEach { file ->
             val data = Files.readAllBytes(filesPath.resolve(file.name))

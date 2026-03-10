@@ -1,4 +1,7 @@
-param()
+param(
+    [switch]$EnableProxySupport,
+    [string[]]$ProxyUsernames = @()
+)
 
 $ErrorActionPreference = "Stop"
 
@@ -14,6 +17,7 @@ $watchdogErr = Join-Path $root "tmp-live-stack-watchdog.err.log"
 $clientDir = Join-Path $root "data\\clients\\946\\win64c\\patched"
 $clientExe = Join-Path $clientDir "rs2client.exe"
 $launchArg = "http://127.0.0.1:8081/jav_config.ws?binaryType=6"
+$proxyConfigPath = Join-Path $root "data\\config\\proxy.toml"
 
 function Wait-ListeningPorts {
     param(
@@ -45,6 +49,41 @@ function Start-GameProxy {
     & $powershellExe -ExecutionPolicy Bypass -File $gameProxyScript | Out-Null
 }
 
+function Convert-ToTomlString {
+    param([string]$Value)
+
+    return '"' + $Value.Replace('\', '\\').Replace('"', '\"') + '"'
+}
+
+function Stop-ExistingNetTestProcesses {
+    $existingNetTestPids = @(
+        Get-CimInstance Win32_Process |
+            Where-Object {
+                $_.ProcessId -ne $PID -and
+                $null -ne $_.CommandLine -and
+                (
+                    $_.CommandLine -like "*tools\\launch-win64c-live.ps1*" -or
+                    $_.CommandLine -like "*tools\\keep_local_live_stack.ps1*" -or
+                    $_.CommandLine -like "*tools\\launch_lobby_tls_terminator.ps1*" -or
+                    $_.CommandLine -like "*tools\\launch_game_tls_terminator.ps1*" -or
+                    $_.CommandLine -like "*tools\\tcp_proxy.py*" -or
+                    $_.CommandLine -like "*tools\\tls_terminate_proxy.py*" -or
+                    $_.CommandLine -like "*OpenNXT.bat*run-server*" -or
+                    $_.CommandLine -like "*com.opennxt.OpenNXT*"
+                )
+            } |
+            Select-Object -ExpandProperty ProcessId -Unique
+    )
+
+    foreach ($processId in $existingNetTestPids) {
+        try {
+            taskkill /PID $processId /F | Out-Null
+        } catch {}
+    }
+}
+
+Stop-ExistingNetTestProcesses
+
 Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue |
     Where-Object { $_.LocalPort -in 443, 8081, 43595, 43596 } |
     Select-Object -ExpandProperty OwningProcess -Unique |
@@ -62,22 +101,57 @@ Get-Process -Name rs2client -ErrorAction SilentlyContinue | ForEach-Object {
 
 Remove-Item $serverOut, $serverErr -ErrorAction SilentlyContinue
 
-$wrapper = Start-Process -FilePath (Join-Path $root "build\\install\\OpenNXT\\bin\\OpenNXT.bat") `
-    -ArgumentList "run-server" `
-    -WorkingDirectory $root `
-    -RedirectStandardOutput $serverOut `
-    -RedirectStandardError $serverErr `
-    -PassThru
+$normalizedProxyUsernames = @()
+$serverArgs = @("run-server")
+$proxyConfigExists = Test-Path $proxyConfigPath
+$proxyConfigOriginalContent = if ($proxyConfigExists) { Get-Content $proxyConfigPath -Raw } else { $null }
+$proxyConfigModified = $false
 
-$serverPid = $null
-if (-not (Wait-ListeningPorts -Ports @(8081, 43596))) {
-    throw "Timed out waiting for OpenNXT server ports 8081 and 43596"
+try {
+    if ($EnableProxySupport) {
+        $normalizedProxyUsernames = @(
+            $ProxyUsernames |
+                Where-Object { $null -ne $_ } |
+                ForEach-Object { $_.Trim().ToLowerInvariant() } |
+                Where-Object { $_ -ne "" } |
+                Select-Object -Unique
+        )
+
+        if ($normalizedProxyUsernames.Count -eq 0) {
+            throw "EnableProxySupport requires at least one username in -ProxyUsernames"
+        }
+
+        $proxyConfigLine = "usernames = [{0}]" -f (($normalizedProxyUsernames | ForEach-Object { Convert-ToTomlString $_ }) -join ", ")
+        [System.IO.File]::WriteAllText($proxyConfigPath, $proxyConfigLine + [Environment]::NewLine)
+        $proxyConfigModified = $true
+        $serverArgs += "--enable-proxy-support"
+    }
+
+    $wrapper = Start-Process -FilePath (Join-Path $root "build\\install\\OpenNXT\\bin\\OpenNXT.bat") `
+        -ArgumentList $serverArgs `
+        -WorkingDirectory $root `
+        -RedirectStandardOutput $serverOut `
+        -RedirectStandardError $serverErr `
+        -PassThru
+
+    $serverPid = $null
+    if (-not (Wait-ListeningPorts -Ports @(8081, 43596))) {
+        throw "Timed out waiting for OpenNXT server ports 8081 and 43596"
+    }
+
+    $serverPid = Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue |
+        Where-Object { $_.LocalPort -in 8081, 43596 } |
+        Select-Object -ExpandProperty OwningProcess -Unique |
+        Select-Object -First 1
+} finally {
+    if ($proxyConfigModified) {
+        if ($proxyConfigExists) {
+            [System.IO.File]::WriteAllText($proxyConfigPath, $proxyConfigOriginalContent)
+        } else {
+            Remove-Item $proxyConfigPath -Force -ErrorAction SilentlyContinue
+        }
+    }
 }
-
-$serverPid = Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue |
-    Where-Object { $_.LocalPort -in 8081, 43596 } |
-    Select-Object -ExpandProperty OwningProcess -Unique |
-    Select-Object -First 1
 
 Start-LobbyProxy
 Start-GameProxy
@@ -113,6 +187,8 @@ $client = Start-Process -FilePath $clientExe `
     GameProxyPid = $gameProxyPid
     WatchdogPid = $watchdog.Id
     ClientPid = $client.Id
+    ProxyMode = if ($EnableProxySupport) { "live-capture" } else { "local" }
+    ProxyUsernames = $normalizedProxyUsernames
     ServerOut = $serverOut
     ServerErr = $serverErr
     WatchdogOut = $watchdogOut
@@ -120,3 +196,5 @@ $client = Start-Process -FilePath $clientExe `
     ClientExe = $clientExe
     ClientArg = $launchArg
 } | ConvertTo-Json -Depth 3
+
+exit 0

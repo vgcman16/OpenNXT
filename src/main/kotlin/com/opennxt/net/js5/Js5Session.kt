@@ -11,12 +11,15 @@ import io.netty.channel.Channel
 import io.netty.util.AttributeKey
 import mu.KotlinLogging
 import java.nio.ByteBuffer
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.atomic.AtomicInteger
 
 class Js5Session(val channel: Channel) : AutoCloseable {
 
     private val logger = KotlinLogging.logger { }
+
+    private data class ArchiveKey(val index: Int, val archive: Int)
 
     companion object {
         val ATTR_KEY = AttributeKey.valueOf<Js5Session>("js5-session")
@@ -33,6 +36,8 @@ class Js5Session(val channel: Channel) : AutoCloseable {
     private var requestSequence = 0
     private var responseSequence = 0
     private var inboundTraceSequence = 0
+    private val requestOccurrences = ConcurrentHashMap<ArchiveKey, AtomicInteger>()
+    private val responseOccurrences = ConcurrentHashMap<ArchiveKey, AtomicInteger>()
 
     init {
         channel.attr(ATTR_KEY).set(this)
@@ -69,17 +74,41 @@ class Js5Session(val channel: Channel) : AutoCloseable {
     }
 
     private fun describeRequest(request: Js5Packet.RequestFile): String = when {
-        request.index == 255 && request.archive == 255 -> "master-reference-table"
-        request.index == 255 -> "reference-table[${request.archive}]"
-        else -> "archive[${request.index},${request.archive}]"
+        request.index == 255 && request.archive == 255 -> "master-reference-table(index=255, archive=255)"
+        request.index == 255 -> "reference-table(index=255, archive=${request.archive})"
+        else -> "archive(index=${request.index}, archive=${request.archive})"
     }
 
-    private fun shouldTraceRequest(request: Js5Packet.RequestFile): Boolean {
-        return requestSequence <= 32 || request.index == 255 || request.archive == 255
+    private fun shouldTraceOccurrence(occurrence: Int): Boolean {
+        return occurrence <= 3 || occurrence == 5 || occurrence == 10 || occurrence == 25 || occurrence % 50 == 0
     }
 
-    private fun shouldTraceResponse(request: Js5Packet.RequestFile): Boolean {
-        return responseSequence <= 32 || request.index == 255 || request.archive == 255
+    private fun shouldTraceRequest(request: Js5Packet.RequestFile, occurrence: Int): Boolean {
+        return requestSequence <= 64 || request.index == 255 || request.archive == 255 || shouldTraceOccurrence(occurrence)
+    }
+
+    private fun shouldTraceResponse(request: Js5Packet.RequestFile, occurrence: Int): Boolean {
+        return responseSequence <= 64 || request.index == 255 || request.archive == 255 || shouldTraceOccurrence(occurrence)
+    }
+
+    private fun Js5Packet.RequestFile.archiveKey(): ArchiveKey = ArchiveKey(index, archive)
+
+    private fun describeAvailability(request: Js5Packet.RequestFile): String = when {
+        request.index == 255 && request.archive == 255 -> "available=checksum-table"
+        request.index == 255 -> "available=${OpenNXT.filesystem.readReferenceTable(request.archive) != null}"
+        else -> "available=${OpenNXT.filesystem.exists(request.index, request.archive)}"
+    }
+
+    private fun topRequestSummary(
+        occurrences: ConcurrentHashMap<ArchiveKey, AtomicInteger>,
+        limit: Int = 8
+    ): String {
+        return occurrences.entries
+            .sortedByDescending { it.value.get() }
+            .take(limit)
+            .joinToString(separator = ", ") { entry ->
+                "index=${entry.key.index}/archive=${entry.key.archive} x${entry.value.get()}"
+            }
     }
 
     fun traceInboundBytes(stage: String, buf: ByteBuf, handshakeDecoded: Boolean) {
@@ -105,12 +134,13 @@ class Js5Session(val channel: Channel) : AutoCloseable {
 
     fun enqueueRequest(request: Js5Packet.RequestFile, opcode: Int) {
         requestSequence++
+        val occurrence = requestOccurrences.computeIfAbsent(request.archiveKey()) { AtomicInteger() }.incrementAndGet()
 
-        if (shouldTraceRequest(request)) {
+        if (shouldTraceRequest(request, occurrence)) {
             logger.info {
                 "Queued js5 request #$requestSequence from ${channel.remoteAddress()}: " +
                     "opcode=$opcode, priority=${request.priority}, nxt=${request.nxt}, " +
-                    "build=${request.build}, ${describeRequest(request)}"
+                    "build=${request.build}, occurrence=$occurrence, ${describeRequest(request)}, ${describeAvailability(request)}"
             }
         }
 
@@ -130,14 +160,16 @@ class Js5Session(val channel: Channel) : AutoCloseable {
                 if (data == null) {
                     logger.warn {
                         "JS5 missing file for high-priority request from ${channel.remoteAddress()}: " +
-                            "${describeRequest(request)}"
+                            "${describeRequest(request)}, ${describeAvailability(request)}"
                     }
                 } else {
                     responseSequence++
-                    if (shouldTraceResponse(request)) {
+                    val occurrence = responseOccurrences.computeIfAbsent(request.archiveKey()) { AtomicInteger() }
+                        .incrementAndGet()
+                    if (shouldTraceResponse(request, occurrence)) {
                         logger.info {
                             "Serving js5 response #$responseSequence to ${channel.remoteAddress()}: " +
-                                "${describeRequest(request)}, priority=true, bytes=${data.readableBytes()}"
+                                "${describeRequest(request)}, priority=true, occurrence=$occurrence, bytes=${data.readableBytes()}"
                         }
                     }
                     channel.write(Js5Packet.RequestFileResponse(true, request.index, request.archive, data))
@@ -151,14 +183,16 @@ class Js5Session(val channel: Channel) : AutoCloseable {
                 if (data == null) {
                     logger.warn {
                         "JS5 missing file for low-priority request from ${channel.remoteAddress()}: " +
-                            "${describeRequest(request)}"
+                            "${describeRequest(request)}, ${describeAvailability(request)}"
                     }
                 } else {
                     responseSequence++
-                    if (shouldTraceResponse(request)) {
+                    val occurrence = responseOccurrences.computeIfAbsent(request.archiveKey()) { AtomicInteger() }
+                        .incrementAndGet()
+                    if (shouldTraceResponse(request, occurrence)) {
                         logger.info {
                             "Serving js5 response #$responseSequence to ${channel.remoteAddress()}: " +
-                                "${describeRequest(request)}, priority=false, bytes=${data.readableBytes()}"
+                                "${describeRequest(request)}, priority=false, occurrence=$occurrence, bytes=${data.readableBytes()}"
                         }
                     }
                     channel.write(Js5Packet.RequestFileResponse(false, request.index, request.archive, data))
@@ -191,7 +225,9 @@ class Js5Session(val channel: Channel) : AutoCloseable {
         logger.info {
             "Closing js5 session#$id from ${channel.remoteAddress()}: " +
                 "initialized=$initialized, requests=$requestSequence, responses=$responseSequence, " +
-                "rawReads=$inboundTraceSequence"
+                "rawReads=$inboundTraceSequence, " +
+                "topRequests=[${topRequestSummary(requestOccurrences)}], " +
+                "topResponses=[${topRequestSummary(responseOccurrences)}]"
         }
 
         Js5Thread.removeSession(this)

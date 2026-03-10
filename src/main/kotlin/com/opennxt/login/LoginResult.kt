@@ -11,7 +11,15 @@ enum class LoginResult(val code: GenericResponse) {
     DATABASE_ERROR(GenericResponse.INVALID_LOGIN_SERVER_RESPONSE),
     INVALID_USERNAME_PASS(GenericResponse.INVALID_USERNAME_OR_PASSWORD),
     WORLD_FULL(GenericResponse.WORLD_FULL),
+    DISABLED(GenericResponse.DISABLED_ACCOUNT),
     LOCKED(GenericResponse.ACCOUNT_LOCKED),
+    LOGIN_ATTEMPTS_EXCEEDED(GenericResponse.LOGIN_ATTEMPTS_EXCEEDED),
+    LOGIN_PREVENTED(GenericResponse.LOGIN_PREVENTED),
+    SESSION_EXPIRED(GenericResponse.SESSION_EXPIRED),
+    SESSION_ENDED(GenericResponse.SESSION_ENDED),
+    ACCOUNT_INACCESSIBLE(GenericResponse.ACCOUNT_INACCESSIBLE),
+    AUTHENTICATOR_CODE(GenericResponse.AUTHENTICATOR_CODE),
+    AUTHENTICATOR_INCORRECT(GenericResponse.AUTHENTICATOR_INCORRECT),
     BANNED(GenericResponse.TEMPORARILY_BANNED),
     LOGGED_IN(GenericResponse.LOGGED_IN),
     OUT_OF_DATE(GenericResponse.OUT_OF_DATE),
@@ -30,8 +38,8 @@ enum class LoginResult(val code: GenericResponse) {
             val reversed = REVERSE_LOOKUP[response]
             if (reversed != null)
                 return reversed
-            logger.warn { "Couldn't find GenericResponse->LoginResult mapping for $response, returning LOCKED" }
-            return LOCKED
+            logger.warn { "Couldn't find GenericResponse->LoginResult mapping for $response, returning DATABASE_ERROR" }
+            return DATABASE_ERROR
         }
     }
 }

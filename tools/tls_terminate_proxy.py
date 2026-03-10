@@ -85,14 +85,16 @@ def handle_client(client_sock, session_id, args, output_dir: Path):
     client_chunks = [0]
     server_chunks = [0]
 
-    client_sock.settimeout(args.socket_timeout)
-    initial_peek = client_sock.recv(5, socket.MSG_PEEK)
-    mode = "tls" if looks_like_tls_client_hello(initial_peek) else "raw"
-    lines.append(f"session#{session_id} mode={mode} initial-peek={preview_hex(initial_peek)}")
-    remote_stream, remote_target = create_remote_stream(mode, args)
-    lines.append(f"session#{session_id} remote={remote_target}")
+    remote_stream = None
 
     try:
+        client_sock.settimeout(args.socket_timeout)
+        initial_peek = client_sock.recv(5, socket.MSG_PEEK)
+        mode = "tls" if looks_like_tls_client_hello(initial_peek) else "raw"
+        lines.append(f"session#{session_id} mode={mode} initial-peek={preview_hex(initial_peek)}")
+        remote_stream, remote_target = create_remote_stream(mode, args)
+        lines.append(f"session#{session_id} remote={remote_target}")
+
         client_stream = client_sock
         if mode == "tls":
             client_stream = args.ssl_context.wrap_socket(client_sock, server_side=True)
@@ -112,16 +114,17 @@ def handle_client(client_sock, session_id, args, output_dir: Path):
         t2.start()
         t1.join()
         t2.join()
-    except ssl.SSLError as exc:
+    except (ssl.SSLError, OSError) as exc:
         with lock:
-            lines.append(f"session#{session_id} tls-error={type(exc).__name__}: {exc}")
+            lines.append(f"session#{session_id} session-error={type(exc).__name__}: {exc}")
     finally:
         try:
             client_sock.close()
         except OSError:
             pass
         try:
-            remote_stream.close()
+            if remote_stream is not None:
+                remote_stream.close()
         except OSError:
             pass
 
@@ -186,6 +189,14 @@ def main():
 
     ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     ssl_context.load_cert_chain(certfile=str(cert_path), keyfile=str(key_path))
+    try:
+        ssl_context.minimum_version = ssl.TLSVersion.TLSv1
+    except AttributeError:
+        pass
+    try:
+        ssl_context.set_ciphers("ALL:@SECLEVEL=0")
+    except ssl.SSLError:
+        pass
     args.ssl_context = ssl_context
 
     summary_lines = []

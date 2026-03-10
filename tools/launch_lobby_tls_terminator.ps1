@@ -1,5 +1,6 @@
 param(
     [int]$ListenPort = 443,
+    [string]$RemoteHost = "8.42.17.230",
     [int]$RemotePort = 43596,
     [string]$Name = "lobby",
     [string]$TlsRemoteHost = "content.runescape.com",
@@ -47,7 +48,7 @@ if ([string]::IsNullOrWhiteSpace($TlsConnectHost) -and -not [string]::IsNullOrWh
     }
 }
 
-$cmd = 'python "{0}" --listen-host 127.0.0.1 --listen-port {1} --remote-host 127.0.0.1 --remote-port {2} --tls-remote-host "{3}" --tls-remote-port {4} --pfxfile "{5}" --pfxpassword "{6}" --output-dir "{7}" --max-sessions {8} --idle-timeout-seconds {9} --socket-timeout {10}' -f $proxyScript, $ListenPort, $RemotePort, $TlsRemoteHost, $TlsRemotePort, $certInfo.PfxPath, $certInfo.PfxPassword, $outputDir, $MaxSessions, $IdleTimeoutSeconds, $SocketTimeout
+$cmd = 'python "{0}" --listen-host 127.0.0.1 --listen-port {1} --remote-host "{2}" --remote-port {3} --tls-remote-host "{4}" --tls-remote-port {5} --pfxfile "{6}" --pfxpassword "{7}" --output-dir "{8}" --max-sessions {9} --idle-timeout-seconds {10} --socket-timeout {11}' -f $proxyScript, $ListenPort, $RemoteHost, $RemotePort, $TlsRemoteHost, $TlsRemotePort, $certInfo.PfxPath, $certInfo.PfxPassword, $outputDir, $MaxSessions, $IdleTimeoutSeconds, $SocketTimeout
 if (-not [string]::IsNullOrWhiteSpace($TlsConnectHost)) {
     $cmd += ' --tls-connect-host "{0}"' -f $TlsConnectHost
 }
@@ -67,6 +68,7 @@ Start-Sleep -Seconds 2
 [pscustomobject]@{
     ProcessId = $process.Id
     ListenPort = $ListenPort
+    RemoteHost = $RemoteHost
     RemotePort = $RemotePort
     MaxSessions = $MaxSessions
     IdleTimeoutSeconds = $IdleTimeoutSeconds
