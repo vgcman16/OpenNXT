@@ -20,21 +20,7 @@ downloader, launcher patcher, cache downloader, and related workflow helpers.
 Tools can be executed with `run-tool <tool-name> [--help]`.
 
 New tools can be added by creating a class in `com.opennxt.tools.impl` that extends `com.opennxt.tools.Tool`. The
-tool registry is populated automatically through classpath scanning.
-
-## Discord Bot
-
-This repository now includes a standalone Discord community and ops service in `./discord-bot`.
-
-The bot is designed to:
-
-- scaffold the public OpenNXT Discord server structure after it is invited to a guild
-- handle verification, anti-spam, support tickets, and staff logging
-- receive GitHub webhooks for `vgcman16/OpenNXT` and post progress updates to Discord
-- run approval-gated local setup and lifecycle actions for this checkout on the same Windows host
-
-See `./discord-bot/README.md` for environment variables, install steps, and bot commands. Use `npm.cmd` on this
-machine because PowerShell execution policy blocks `npm.ps1`.
+tool registry is populated automatically through classpath scanning..
 
 ## Build
 
