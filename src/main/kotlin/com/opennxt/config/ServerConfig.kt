@@ -8,18 +8,24 @@ class ServerConfig : TomlConfig() {
         val DEFAULT_PATH = Constants.CONFIG_PATH.resolve("server.toml")
     }
 
-    data class Ports(var game: Int = 43594, var http: Int = 8080, var https: Int = 8443)
+    data class Ports(
+        var game: Int = 43594,
+        var gameBackend: Int = 43594,
+        var http: Int = 8080,
+        var https: Int = 8443
+    )
 
     var ports = Ports()
     var hostname = "127.0.0.1"
-    var configUrl = "http://127.0.0.1/jav_config.ws?binaryType=2"
+    var configUrl = "http://127.0.0.1:8080/jav_config.ws?binaryType=6"
 
-    var build = 918
+    var build = 946
 
     override fun save(map: MutableMap<String, Any>) {
         map["networking"] = mapOf(
             "ports" to mapOf(
                 "game" to ports.game,
+                "gameBackend" to ports.gameBackend,
                 "http" to ports.http,
                 "https" to ports.https
             )
@@ -39,6 +45,7 @@ class ServerConfig : TomlConfig() {
             val ports = networking.getTable("ports")
             if (ports != null) {
                 this.ports.game = ports.getLong("game", this.ports.game.toLong()).toInt()
+                this.ports.gameBackend = ports.getLong("gameBackend", this.ports.gameBackend.toLong()).toInt()
                 this.ports.http = ports.getLong("http", this.ports.http.toLong()).toInt()
                 this.ports.https = ports.getLong("https", this.ports.https.toLong()).toInt()
             }

@@ -101,35 +101,20 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
     }
 
     fun added() {
+        logger.info { "Bootstrapping lobby player $name" }
         stats.init()
         client.write(ResetClientVarcache)
         TODORefactorThisClass.sendDefaultVarps(client)
 
         interfaces.openTop(id = 906)
+        // Reintroduce the first proven child interfaces now that 946 IF_OPENSUB has a parser-backed layout.
+        logger.info { "Using staged lobby interface bootstrap for $name" }
 
-        interfaces.open(id = 907, parent = 906, component = 65, walkable = true)
-        interfaces.open(id = 910, parent = 906, component = 66, walkable = true)
-        interfaces.open(id = 909, parent = 906, component = 67, walkable = true)
-        interfaces.open(id = 912, parent = 906, component = 69, walkable = true)
-        interfaces.open(id = 589, parent = 906, component = 68, walkable = true)
-        interfaces.open(id = 911, parent = 906, component = 70, walkable = true)
-        interfaces.open(id = 914, parent = 906, component = 128, walkable = true)
-        interfaces.open(id = 915, parent = 906, component = 129, walkable = true)
-        interfaces.open(id = 913, parent = 906, component = 130, walkable = true)
-        interfaces.open(id = 815, parent = 906, component = 137, walkable = true)
-        interfaces.open(id = 803, parent = 906, component = 132, walkable = true)
-        interfaces.open(id = 822, parent = 906, component = 133, walkable = true)
-        interfaces.open(id = 825, parent = 906, component = 115, walkable = true)
-        interfaces.open(id = 821, parent = 906, component = 116, walkable = true)
-        interfaces.open(id = 808, parent = 906, component = 114, walkable = true)
-        interfaces.open(id = 820, parent = 906, component = 134, walkable = true)
-        interfaces.open(id = 811, parent = 906, component = 131, walkable = true)
-        interfaces.open(id = 826, parent = 906, component = 82, walkable = true)
-        interfaces.open(id = 801, parent = 906, component = 36, walkable = true)
-
-//        client.write(ClientSetvarcLarge(2771, 55004971))
-//        client.write(ClientSetvarcSmall(3496, 0))
-//        client.write(ClientSetvarcstrSmall(2508, ""))
+        // Reintroduce only the smallest proven lobby state writes while validating 946 client-varc opcodes.
+        client.write(ClientSetvarcLarge(2771, 55004971))
+        client.write(ClientSetvarcSmall(3496, 0))
+        client.write(ClientSetvarcstrSmall(2508, ""))
+        client.write(RunClientScript(script = 10936, args = emptyArray()))
 //        client.write(ClientSetvarcSmall(1027, 1))
 //        client.write(ClientSetvarcSmall(1034, 2))
 //        client.write(ClientSetvarcLarge(3699, 4096))
@@ -137,8 +122,8 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
 //        client.write(RunClientScript(script = 7486, args = arrayOf(27002876, 52494341)))
 //        client.write(RunClientScript(script = 7486, args = arrayOf(27002876, 59637768)))
 
-        interfaces.open(id = 1322, parent = 906, component = 151, walkable = true)
         interfaces.open(id = 814, parent = 906, component = 37, walkable = true)
+        logger.info { "Deferring alternate lobby child interface 1322 while isolating the remaining IF_OPENSUB crash" }
 
 //        client.write(ClientSetvarcSmall(id = 4659, value = 0))
 //        client.write(ClientSetvarcLarge(id = 4660, value = 500))
@@ -356,6 +341,7 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
 //
 //        client.write(ChatFilterSettingsPrivatechat(0))
 //        client.write(FriendlistLoaded)
+        logger.info { "Finished lobby bootstrap for $name" }
     }
 
     override fun tick() {

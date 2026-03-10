@@ -195,14 +195,14 @@ object OpenNXT : CliktCommand(name = "run-server") {
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 .childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30_000)
 
-            logger.info { "Binding game server to 0.0.0.0:${config.ports.game}" }
-            val result = bootstrap.bind("0.0.0.0", config.ports.game).sync()
+            logger.info { "Binding game server to 0.0.0.0:${config.ports.gameBackend}" }
+            val result = bootstrap.bind("0.0.0.0", config.ports.gameBackend).sync()
             networkChannel = result.channel()
             if (!result.isSuccess) {
-                throw IllegalStateException("Failed to bind to 0.0.0.0:${config.ports.game}", result.cause())
+                throw IllegalStateException("Failed to bind to 0.0.0.0:${config.ports.gameBackend}", result.cause())
             }
 
-            logger.info { "Game server bound to 0.0.0.0:${config.ports.game}" }
+            logger.info { "Game server bound to 0.0.0.0:${config.ports.gameBackend}" }
         } catch (e: Exception) {
             logger.error(e) { "Server startup failed" }
             cleanupStartupFailure()

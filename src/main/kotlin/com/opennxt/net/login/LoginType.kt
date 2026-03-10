@@ -1,6 +1,7 @@
 package com.opennxt.net.login
 
 enum class LoginType(val id: Int) {
+    GAME_ALT(3),
     GAME(16),
     LOBBY(19),
     GAMELOGIN_CONTINUE(26),

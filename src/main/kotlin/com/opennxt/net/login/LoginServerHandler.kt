@@ -39,7 +39,11 @@ class LoginServerHandler : SimpleChannelInboundHandler<LoginPacket>() {
                 if (ctx.channel().attr(RSChannelAttributes.PASSTHROUGH_CHANNEL).get() != null) {
                     logger.info { "Login was OK for proxy connection [client->open nxt], leaving channel management to proxy..." }
                 } else {
-                    if (ctx.channel().attr(RSChannelAttributes.LOGIN_TYPE).get() == LoginType.GAME){
+                    if (msg is LoginPacket.LobbyLoginRequest) {
+                        LoginHandoffStore.remember(ctx.channel().remoteAddress(), msg)
+                    }
+
+                    if (ctx.channel().attr(RSChannelAttributes.LOGIN_TYPE).get() in setOf(LoginType.GAME, LoginType.GAME_ALT)){
 
                         val map = Int2IntOpenHashMap()
                         TODORefactorThisClass.populateServerpermVarcs(map)

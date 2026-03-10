@@ -28,7 +28,6 @@ class Js5Handler(val session: Js5Session): SimpleChannelInboundHandler<Js5Packet
                 }
 
                 ctx.channel().write(Js5Packet.HandshakeResponse(responseCode))
-                ctx.channel().write(Js5Packet.Prefetches(OpenNXT.prefetches.entries))
                 ctx.channel().flush()
             }
             else -> TODO("Encode $msg")

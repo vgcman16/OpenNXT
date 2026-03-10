@@ -37,7 +37,7 @@ class ClientPatcher :
     private val ASCII = Charsets.US_ASCII
 
     private val PATCHED_REGEX = "^.*"
-    private val hostParamsToRewrite = setOf(3, 37, 49)
+    private val hostParamsToRewrite = setOf(37, 49)
     private val nativeRuntimeFiles = listOf(
         "chrome_100_percent.pak",
         "chrome_200_percent.pak",
@@ -224,13 +224,11 @@ class ClientPatcher :
             }
         }
 
-        // The live config ships Jagex service ports; align the game endpoints with the local server.
+        // Only redirect the plain game/content endpoints to the local server. The secure lobby/auth
+        // path remains on Jagex infrastructure; the native client currently hands pre-login flow
+        // through that route before it ever reaches in-game login.
         for (param in listOf(41, 43, 45, 47)) {
             config["param=$param"] = serverConfig.ports.game.toString()
-        }
-
-        for (param in listOf(42, 44, 46, 48)) {
-            config["param=$param"] = serverConfig.ports.https.toString()
         }
 
         config.getFiles().forEach { file ->

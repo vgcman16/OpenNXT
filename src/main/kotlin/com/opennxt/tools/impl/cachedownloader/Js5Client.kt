@@ -15,6 +15,7 @@ class Js5Client(val version: Int, val token: String) {
 
     val lock = Any()
     private val connectedLatch = CountDownLatch(1)
+    private val prefetchesLatch = CountDownLatch(1)
 
     var channel: Channel? = null
     val downloadingHighPriority = Long2ObjectOpenHashMap<Js5RequestHandler.ArchiveRequest>()
@@ -22,6 +23,7 @@ class Js5Client(val version: Int, val token: String) {
     var current: Js5RequestHandler.ArchiveRequest? = null
     var state = Js5ClientState.HANDSHAKE
     var lastRead = System.currentTimeMillis()
+    @Volatile var prefetches: IntArray? = null
 
     fun markAsCrashed() {
         synchronized(lock) {
@@ -91,7 +93,16 @@ class Js5Client(val version: Int, val token: String) {
         return connectedLatch.await(timeout, timeUnit)
     }
 
+    fun awaitPrefetches(timeout: Long, timeUnit: TimeUnit): Boolean {
+        return prefetchesLatch.await(timeout, timeUnit)
+    }
+
     fun notifyConnected() {
         connectedLatch.countDown()
+    }
+
+    fun notifyPrefetches(prefetches: IntArray) {
+        this.prefetches = prefetches.copyOf()
+        prefetchesLatch.countDown()
     }
 }

@@ -257,6 +257,19 @@ class ReferenceTable(val filesystem: Filesystem, val index: Int) {
         }
     }
 
+    fun checksumSize(): Int {
+        // Build 946 uses indices 32/33/34 with a stripped-down mask=1 table.
+        // For those pre-login indices, the checksum-table size field matches the final archive payload size,
+        // not the total uncompressed size across all archives.
+        if (mask == 1 && archives.isNotEmpty()) {
+            val lastArchive = loadArchive(archives.lastKey())
+                ?: throw NullPointerException("Failed to load final archive for checksum size in index $index")
+            return lastArchive.files.values.sumOf { it.data.size }
+        }
+
+        return archiveSize()
+    }
+
     fun totalCompressedSize(): Long {
         var sum = 0L
         for (value in archives.values)

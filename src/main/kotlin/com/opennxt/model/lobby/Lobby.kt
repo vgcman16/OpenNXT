@@ -23,6 +23,7 @@ class Lobby: Tickable {
     }
 
     fun addPlayer(player: LobbyPlayer) {
+        logger.info { "Queueing lobby player ${player.name}" }
         toAdd += player
     }
 }

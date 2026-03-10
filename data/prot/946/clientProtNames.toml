@@ -1,7 +1,6 @@
-# Partial build 946 client packet names recovered from runtime sender analysis.
-# This file is intentionally incomplete and is not enough to run build 946 end-to-end yet.
-
 [values]
+128 = "IF_BUTTON4"
+129 = "RESUME_P_COUNTDIALOG"
 4 = "MESSAGE_PUBLIC"
 6 = "OPPLAYER5"
 9 = "OPNPC1"
@@ -53,5 +52,3 @@
 122 = "IF_BUTTONT"
 124 = "IF_BUTTON8"
 125 = "OPNPC3"
-128 = "IF_BUTTON4"
-129 = "RESUME_P_COUNTDIALOG"
