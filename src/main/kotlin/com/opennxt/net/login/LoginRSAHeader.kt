@@ -23,7 +23,7 @@ sealed class LoginRSAHeader(val seeds: IntArray, val uniqueId: Long) {
 
     companion object {
         fun ByteBuf.readLoginHeader(type: LoginType, exponent: BigInteger, modulus: BigInteger): LoginRSAHeader {
-            val reconnecting = type == LoginType.GAME && readUnsignedByte().toInt() == 1
+            val reconnecting = (type == LoginType.GAME || type == LoginType.GAME_ALT) && readUnsignedByte().toInt() == 1
 
             // read rsa block
             val size = readUnsignedShort()
@@ -73,7 +73,7 @@ sealed class LoginRSAHeader(val seeds: IntArray, val uniqueId: Long) {
             exponent: BigInteger,
             modulus: BigInteger
         ) {
-            if (type == LoginType.GAME)
+            if (type == LoginType.GAME || type == LoginType.GAME_ALT)
                 writeByte(if (header is Reconnecting) 1 else 0)
 
             val rsaBlock = Unpooled.buffer()
@@ -83,7 +83,7 @@ sealed class LoginRSAHeader(val seeds: IntArray, val uniqueId: Long) {
             rsaBlock.writeInt(header.seeds[2])
             rsaBlock.writeInt(header.seeds[3])
             rsaBlock.writeLong(header.uniqueId)
-            if (type == LoginType.GAME && header is Reconnecting) {
+            if ((type == LoginType.GAME || type == LoginType.GAME_ALT) && header is Reconnecting) {
                 rsaBlock.writeInt(header.oldSeeds[0])
                 rsaBlock.writeInt(header.oldSeeds[1])
                 rsaBlock.writeInt(header.oldSeeds[2])

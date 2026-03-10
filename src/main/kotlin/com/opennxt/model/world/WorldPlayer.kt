@@ -67,6 +67,7 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
     }
 
     fun added() {
+        logger.info { "Bootstrapping world player $name" }
         entity.model.refresh()
 
         client.channel.write(Unpooled.buffer(1).writeByte(GenericResponse.SUCCESSFUL.id))
@@ -1060,6 +1061,7 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
         player.interfaces.events(id = 1430, component = 35, from = 65535, to = 65535, mask = 2)
 
         // TODO Rebuild [region | dynamic] packet
+        logger.info { "Finished world bootstrap for $name" }
     }
 
     override fun tick() {

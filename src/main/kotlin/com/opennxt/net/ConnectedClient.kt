@@ -114,6 +114,13 @@ class ConnectedClient(
                 return
             }
 
+            if (side == Side.CLIENT) {
+                logger.info {
+                    "Sending packet ${registration.name} (${packet::class.simpleName}) " +
+                        "to ${channel.remoteAddress()} on opcode ${registration.opcode}"
+                }
+            }
+
             val buffer = Unpooled.buffer()
             @Suppress("UNCHECKED_CAST")
             (registration.codec as GamePacketCodec<GamePacket>).encode(packet, GamePacketBuilder(buffer))

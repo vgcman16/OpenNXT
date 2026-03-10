@@ -33,7 +33,7 @@ class HandshakeHandler : SimpleChannelInboundHandler<HandshakeRequest>() {
                 ctx.pipeline().replace("handshake-handler", "js5-handler", Js5Handler(session))
                 ctx.pipeline().replace("handshake-decoder", "js5-decoder", Js5Decoder(session))
             }
-            HandshakeType.LOGIN -> {
+            HandshakeType.LOGIN, HandshakeType.LOGIN_ALT -> {
                 val uniqueId = ThreadLocalRandom.current().nextLong()
 
                 ctx.channel().attr(RSChannelAttributes.LOGIN_UNIQUE_ID).set(uniqueId)

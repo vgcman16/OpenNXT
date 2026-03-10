@@ -20,7 +20,7 @@ import kotlin.reflect.KClass
 import kotlin.reflect.jvm.javaType
 
 object PacketRegistry {
-    private const val LEGACY_FIELD_FALLBACK_BUILD = 919
+    private const val FIELD_DECLARATION_FALLBACK_BUILD = 919
     private val logger = KotlinLogging.logger { }
 
     private val serverProtByOpcode = Int2ObjectOpenHashMap<Registration>()
@@ -46,7 +46,7 @@ object PacketRegistry {
 
     private fun findPacketDefinitionPath(side: Side, name: String) = sequenceOf(
         OpenNXT.protocol.path.resolve(if (side == Side.CLIENT) "clientProt" else "serverProt").resolve("$name.txt"),
-        Constants.PROT_PATH.resolve(LEGACY_FIELD_FALLBACK_BUILD.toString())
+        Constants.PROT_PATH.resolve(FIELD_DECLARATION_FALLBACK_BUILD.toString())
             .resolve(if (side == Side.CLIENT) "clientProt" else "serverProt")
             .resolve("$name.txt")
     ).firstOrNull(Files::exists)
@@ -71,7 +71,8 @@ object PacketRegistry {
 
         if (!packetPath.startsWith(OpenNXT.protocol.path)) {
             logger.warn {
-                "Falling back to build $LEGACY_FIELD_FALLBACK_BUILD packet field declaration for '$name' on side $side"
+                "Missing build ${OpenNXT.config.build} packet field declaration for '$name' on side $side; " +
+                    "using build $FIELD_DECLARATION_FALLBACK_BUILD compatibility fallback"
             }
         }
 

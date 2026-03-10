@@ -31,6 +31,7 @@ class World : Tickable {
     fun getPlayer(index: Int): PlayerEntity? = playerEntities[index]
 
     fun addPlayer(player: WorldPlayer) {
+        logger.info { "Queueing world player ${player.name}" }
         toAdd += player
     }
 }

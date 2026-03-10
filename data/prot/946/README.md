@@ -64,7 +64,10 @@ Current parser-confirmed anchors:
 - Server `108` -> `IF_SETSCROLLPOS`
 - Server `122` -> `MAP_ANIM`
 - Server `127` -> `OBJ_COUNT`
+- Server `129` -> `UPDATE_STAT`
+- Server `131` -> `NO_TIMEOUT`
 - Server `132` -> `LOC_PREFETCH`
+- Server `134` -> `RESET_CLIENT_VARCACHE`
 - Server `214` -> `MAP_PROJANIM_HALFSQ`
 - Client `80` -> `NO_TIMEOUT`
 - Client `4` -> `MESSAGE_PUBLIC`
@@ -128,9 +131,24 @@ Current local handler path used for confirmation:
 - `108` parser: `FUN_140109650`
 - `122` parser: `FUN_140114110`
 - `127` parser: `FUN_1401143f0`
+- `129` parser: `FUN_1401412d0`
+- `131` parser: `FUN_140106b30`
 - `132` parser: `FUN_1401149f0`
+- `134` parser: `FUN_1400fe780`
 - `214` parser: `FUN_140113e10`
 - `3` parser: `FUN_14013f5f0`
+
+Current login-init notes:
+
+- `129` is the strongest `UPDATE_STAT` match. Its parser writes through the
+  per-skill table at `client + 0x19810` and consumes a 6-byte shape that no
+  longer matches the old `919` field order, so `946` now has an explicit
+  `serverProt/UPDATE_STAT.txt`.
+- `131` is the strongest `NO_TIMEOUT` match. It is zero-byte and only bumps a
+  30-second deadline on the client session object.
+- `134` is the current `RESET_CLIENT_VARCACHE` login-reset mapping. It is
+  zero-byte and performs a broad client-state reset across world, interface,
+  and cached session state before the next init wave.
 
 Current client sender notes from runtime packet refs:
 

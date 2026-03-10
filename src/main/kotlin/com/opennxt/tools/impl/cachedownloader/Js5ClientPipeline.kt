@@ -69,6 +69,7 @@ object Js5ClientPipeline {
                 if (client.current == null && client.downloadingHighPriority.isEmpty() && client.downloadingLowPriority.isEmpty() && buf.readableBytes() >= 31 * 4) {
                     val prefetches = Js5PacketCodec.Prefetches.decode(GamePacketReader(buf))
                     logger.info { "Received unsolicited js5 prefetch table with ${prefetches.prefetches.size} entries" }
+                    client.notifyPrefetches(prefetches.prefetches)
                     return
                 }
 
@@ -190,6 +191,7 @@ object Js5ClientPipeline {
                 }
                 is Js5Packet.Prefetches -> {
                     logger.info { "Received js5 prefetch table with ${msg.prefetches.size} entries" }
+                    client.notifyPrefetches(msg.prefetches)
                 }
                 else -> throw RuntimeException("idk how to handle: $msg")
             }

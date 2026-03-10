@@ -22,6 +22,20 @@ Tools can be executed with `run-tool <tool-name> [--help]`.
 New tools can be added by creating a class in `com.opennxt.tools.impl` that extends `com.opennxt.tools.Tool`. The
 tool registry is populated automatically through classpath scanning.
 
+## Discord Bot
+
+This repository now includes a standalone Discord community and ops service in `./discord-bot`.
+
+The bot is designed to:
+
+- scaffold the public OpenNXT Discord server structure after it is invited to a guild
+- handle verification, anti-spam, support tickets, and staff logging
+- receive GitHub webhooks for `vgcman16/OpenNXT` and post progress updates to Discord
+- run approval-gated local setup and lifecycle actions for this checkout on the same Windows host
+
+See `./discord-bot/README.md` for environment variables, install steps, and bot commands. Use `npm.cmd` on this
+machine because PowerShell execution policy blocks `npm.ps1`.
+
 ## Build
 
 This fork currently builds with Gradle 9.4, Kotlin 2.3, and Java 25.
@@ -44,11 +58,13 @@ To move the project to a newer RS3 build:
 1. Download the latest clients using `run-tool client-downloader`.
 2. Download the latest cache using `run-tool cache-downloader`.
 3. Patch the latest clients using `run-tool client-patcher`.
-4. Update the `build` field in `./data/config/server.toml`.
+4. Update the `build` field in `./data/config/server.toml` (copy `./tools/data/config/server.toml` there first if you
+   have not created a local config yet).
 
-The bundled protocol data in this repository currently covers builds `918` and `919`. If Jagex is already on a
-newer live build, the downloader, patcher, and cache tools can still target it, but the server will not be protocol
-compatible until you add a matching `./data/prot/[build]/` set.
+This fork now defaults to RS3 build `946`. The active protocol workspace is `./data/prot/946`, and packet field
+declarations currently fall back to `./data/prot/919` only when a specific `946` packet shape has not been committed
+yet. If Jagex moves beyond `946`, the downloader, patcher, and cache tools can still target the newer live build, but
+the server will not be protocol compatible until you add a matching `./data/prot/[build]/` set.
 
 If the target version is not yet supported, or you are contributing to packet/protocol support, also do the following:
 
@@ -66,15 +82,18 @@ If the target version is not yet supported, or you are contributing to packet/pr
    Warning: the latest clients are not guaranteed to match this repository. Keep the repository build and client build aligned.
 
 3. Put the original launcher in `./data/launchers/win/original.exe` from `C:\Program Files\Jagex\RuneScape Launcher\RuneScape.exe`.
-4. Create `./data/config/server.toml` with at least:
+4. Copy `./tools/data/config/server.toml` to `./data/config/server.toml`, then adjust it as needed. The tracked sample
+   is `946`-first and defaults to the native `win64c` launcher path:
 
    ```toml
    hostname = "127.0.0.1"
-   configUrl = "http://127.0.0.1:8080/jav_config.ws?binaryType=2"
+   build = 946
+   configUrl = "http://127.0.0.1:8080/jav_config.ws?binaryType=6"
    ```
 
    `configUrl` is the URL the launcher should use to fetch `jav_config.ws`.
    `hostname` is the address your server binds to.
+   `binaryType=6` targets the `win64c` client, which is the default local `946` path in this fork.
 
    The default fork config uses `8080`/`8443` for HTTP/HTTPS so the tools can run without privileged ports.
 
