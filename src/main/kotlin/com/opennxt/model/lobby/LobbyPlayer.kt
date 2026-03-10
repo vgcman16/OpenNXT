@@ -1,8 +1,8 @@
 package com.opennxt.model.lobby
 
+import com.opennxt.OpenNXT
 import com.opennxt.api.stat.StatContainer
 import com.opennxt.impl.stat.PlayerStatContainer
-import com.opennxt.model.InterfaceHash
 import com.opennxt.model.entity.BasePlayer
 import com.opennxt.model.entity.player.InterfaceManager
 import com.opennxt.model.worldlist.WorldFlag
@@ -18,7 +18,6 @@ import com.opennxt.net.game.handlers.NoTimeoutHandler
 import com.opennxt.net.game.handlers.WorldlistFetchHandler
 import com.opennxt.net.game.pipeline.GamePacketHandler
 import com.opennxt.net.game.serverprot.*
-import com.opennxt.net.game.serverprot.ifaces.IfOpenSub
 import com.opennxt.net.game.serverprot.variables.ClientSetvarcLarge
 import com.opennxt.net.game.serverprot.variables.ClientSetvarcSmall
 import com.opennxt.net.game.serverprot.variables.ClientSetvarcstrSmall
@@ -104,26 +103,52 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
         logger.info { "Bootstrapping lobby player $name" }
         stats.init()
         client.write(ResetClientVarcache)
-        TODORefactorThisClass.sendDefaultVarps(client)
+        val bootstrap = OpenNXT.config.lobbyBootstrap
+
+        logger.info {
+            "Lobby bootstrap toggles for $name: " +
+                "defaultVarps=${bootstrap.sendDefaultVarps}, " +
+                "root=${bootstrap.openRootInterface}, " +
+                "child814=${bootstrap.openPrimaryChild814}, " +
+                "child1322=${bootstrap.openAlternateChild1322}, " +
+                "varcLarge2771=${bootstrap.sendPrimaryVarcLarge2771}, " +
+                "varcSmall3496=${bootstrap.sendPrimaryVarcSmall3496}, " +
+                "varcString2508=${bootstrap.sendPrimaryVarcString2508}, " +
+                "script10936=${bootstrap.sendPrimaryClientScript10936}"
+        }
+
+        if (bootstrap.sendDefaultVarps) {
+            TODORefactorThisClass.sendDefaultVarps(client)
+        } else {
+            logger.info { "Skipping default lobby varps for $name while isolating the 946 crash" }
+        }
+
+        if (!bootstrap.openRootInterface) {
+            logger.info { "Skipping lobby root interface for $name due to bootstrap config" }
+            logger.info { "Finished lobby bootstrap for $name" }
+            return
+        }
 
         interfaces.openTop(id = 906)
-        // Reintroduce the first proven child interfaces now that 946 IF_OPENSUB has a parser-backed layout.
-        logger.info { "Using staged lobby interface bootstrap for $name" }
 
-        // Reintroduce only the smallest proven lobby state writes while validating 946 client-varc opcodes.
-        client.write(ClientSetvarcLarge(2771, 55004971))
-        client.write(ClientSetvarcSmall(3496, 0))
-        client.write(ClientSetvarcstrSmall(2508, ""))
-        client.write(RunClientScript(script = 10936, args = emptyArray()))
-//        client.write(ClientSetvarcSmall(1027, 1))
-//        client.write(ClientSetvarcSmall(1034, 2))
-//        client.write(ClientSetvarcLarge(3699, 4096))
-//
-//        client.write(RunClientScript(script = 7486, args = arrayOf(27002876, 52494341)))
-//        client.write(RunClientScript(script = 7486, args = arrayOf(27002876, 59637768)))
-
-        interfaces.open(id = 814, parent = 906, component = 37, walkable = true)
-        logger.info { "Deferring alternate lobby child interface 1322 while isolating the remaining IF_OPENSUB crash" }
+        if (bootstrap.sendPrimaryVarcLarge2771) {
+            client.write(ClientSetvarcLarge(2771, 55004971))
+        }
+        if (bootstrap.sendPrimaryVarcSmall3496) {
+            client.write(ClientSetvarcSmall(3496, 0))
+        }
+        if (bootstrap.sendPrimaryVarcString2508) {
+            client.write(ClientSetvarcstrSmall(2508, ""))
+        }
+        if (bootstrap.sendPrimaryClientScript10936) {
+            client.write(RunClientScript(script = 10936, args = emptyArray()))
+        }
+        if (bootstrap.openPrimaryChild814) {
+            interfaces.open(id = 814, parent = 906, component = 37, walkable = true)
+        }
+        if (bootstrap.openAlternateChild1322) {
+            interfaces.open(id = 1322, parent = 906, component = 151, walkable = true)
+        }
 
 //        client.write(ClientSetvarcSmall(id = 4659, value = 0))
 //        client.write(ClientSetvarcLarge(id = 4660, value = 500))
