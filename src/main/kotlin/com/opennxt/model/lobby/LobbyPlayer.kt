@@ -102,8 +102,8 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
     fun added() {
         logger.info { "Bootstrapping lobby player $name" }
         stats.init()
-        client.write(ResetClientVarcache)
         val bootstrap = OpenNXT.config.lobbyBootstrap
+        val stageTracker = LobbyBootstrapStageTracker(client, name)
 
         logger.info {
             "Lobby bootstrap toggles for $name: " +
@@ -117,38 +117,68 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
                 "script10936=${bootstrap.sendPrimaryClientScript10936}"
         }
 
-        if (bootstrap.sendDefaultVarps) {
-            TODORefactorThisClass.sendDefaultVarps(client)
-        } else {
-            logger.info { "Skipping default lobby varps for $name while isolating the 946 crash" }
+        stageTracker.run(LobbyBootstrapStage.RESET) {
+            client.write(ResetClientVarcache)
+        }
+
+        stageTracker.run(LobbyBootstrapStage.DEFAULT_VARPS) {
+            if (bootstrap.sendDefaultVarps) {
+                TODORefactorThisClass.sendDefaultVarps(client)
+            } else {
+                logger.info { "Skipping default lobby varps for $name while isolating the 946 crash" }
+            }
+        }
+
+        stageTracker.run(LobbyBootstrapStage.VARCS) {
+            if (bootstrap.sendPrimaryVarcLarge2771) {
+                client.write(ClientSetvarcLarge(2771, 55004971))
+            }
+            if (bootstrap.sendPrimaryVarcSmall3496) {
+                client.write(ClientSetvarcSmall(3496, 0))
+            }
+            if (bootstrap.sendPrimaryVarcString2508) {
+                client.write(ClientSetvarcstrSmall(2508, ""))
+            }
+            if (
+                !bootstrap.sendPrimaryVarcLarge2771 &&
+                !bootstrap.sendPrimaryVarcSmall3496 &&
+                !bootstrap.sendPrimaryVarcString2508
+            ) {
+                logger.info { "Skipping lobby varc bootstrap for $name due to bootstrap config" }
+            }
+        }
+
+        stageTracker.run(LobbyBootstrapStage.RUNCLIENTSCRIPT) {
+            if (bootstrap.sendPrimaryClientScript10936) {
+                client.write(RunClientScript(script = 10936, args = emptyArray()))
+            } else {
+                logger.info { "Skipping lobby bootstrap clientscript stage for $name due to bootstrap config" }
+            }
         }
 
         if (!bootstrap.openRootInterface) {
             logger.info { "Skipping lobby root interface for $name due to bootstrap config" }
-            logger.info { "Finished lobby bootstrap for $name" }
+            logger.info { "Finished lobby bootstrap for $name after stages ${client.completedBootstrapStages.joinToString()}" }
             return
         }
 
-        interfaces.openTop(id = 906)
+        stageTracker.run(LobbyBootstrapStage.ROOT_INTERFACE) {
+            interfaces.openTop(id = 906)
+        }
 
-        if (bootstrap.sendPrimaryVarcLarge2771) {
-            client.write(ClientSetvarcLarge(2771, 55004971))
+        stageTracker.run(LobbyBootstrapStage.CHILD_INTERFACES) {
+            if (bootstrap.openPrimaryChild814) {
+                interfaces.open(id = 814, parent = 906, component = 37, walkable = true)
+            }
+            if (bootstrap.openAlternateChild1322) {
+                interfaces.open(id = 1322, parent = 906, component = 151, walkable = true)
+            }
+            if (!bootstrap.openPrimaryChild814 && !bootstrap.openAlternateChild1322) {
+                logger.info { "Skipping lobby child interface bootstrap for $name due to bootstrap config" }
+            }
         }
-        if (bootstrap.sendPrimaryVarcSmall3496) {
-            client.write(ClientSetvarcSmall(3496, 0))
-        }
-        if (bootstrap.sendPrimaryVarcString2508) {
-            client.write(ClientSetvarcstrSmall(2508, ""))
-        }
-        if (bootstrap.sendPrimaryClientScript10936) {
-            client.write(RunClientScript(script = 10936, args = emptyArray()))
-        }
-        if (bootstrap.openPrimaryChild814) {
-            interfaces.open(id = 814, parent = 906, component = 37, walkable = true)
-        }
-        if (bootstrap.openAlternateChild1322) {
-            interfaces.open(id = 1322, parent = 906, component = 151, walkable = true)
-        }
+
+        logger.info { "Finished lobby bootstrap for $name after stages ${client.completedBootstrapStages.joinToString()}" }
 
 //        client.write(ClientSetvarcSmall(id = 4659, value = 0))
 //        client.write(ClientSetvarcLarge(id = 4660, value = 500))

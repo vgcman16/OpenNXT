@@ -17,6 +17,7 @@ repositories {
 dependencies {
     implementation platform('org.jetbrains.kotlin:kotlin-bom:2.3.10')
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
 
     implementation 'io.github.microutils:kotlin-logging-jvm:3.0.5'
     implementation 'org.slf4j:slf4j-simple:2.0.17'
@@ -61,6 +62,10 @@ tasks.withType(KotlinJvmCompile).configureEach {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.release = 25
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }
 
 tasks.named('startScripts') {
