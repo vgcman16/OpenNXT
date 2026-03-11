@@ -13,6 +13,7 @@ import com.opennxt.filesystem.Container
 import com.opennxt.filesystem.Filesystem
 import com.opennxt.filesystem.prefetches.PrefetchTable
 import com.opennxt.filesystem.sqlite.SqliteFilesystem
+import com.opennxt.login.AuthoritativeLoginProcessor
 import com.opennxt.login.LoginThread
 import com.opennxt.model.commands.CommandRepository
 import com.opennxt.model.lobby.Lobby
@@ -21,9 +22,6 @@ import com.opennxt.model.world.World
 import com.opennxt.net.RSChannelInitializer
 import com.opennxt.net.game.protocol.ProtocolInformation
 import com.opennxt.net.http.HttpServer
-import com.opennxt.net.proxy.ProxyConfig
-import com.opennxt.net.proxy.ProxyConnectionFactory
-import com.opennxt.net.proxy.ProxyConnectionHandler
 import com.opennxt.resources.FilesystemResources
 import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.Channel
@@ -37,15 +35,11 @@ import kotlin.system.exitProcess
 
 object OpenNXT : CliktCommand(name = "run-server") {
     val skipHttpFileVerification by option(help = "Skips file verification when http server starts").flag(default = false)
-    val enableProxySupport by option(help = "Enables proxy support. Disable this on live or when you won't use it.").flag(
-        default = false
-    )
 
     private val logger = KotlinLogging.logger {}
 
     lateinit var config: ServerConfig
     lateinit var rsaConfig: RsaConfig
-    lateinit var proxyConfig: ProxyConfig
 
     lateinit var http: HttpServer
 
@@ -55,8 +49,6 @@ object OpenNXT : CliktCommand(name = "run-server") {
     lateinit var checksumTable: ByteArray
     lateinit var httpChecksumTable: ByteArray
 
-    lateinit var proxyConnectionFactory: ProxyConnectionFactory
-    lateinit var proxyConnectionHandler: ProxyConnectionHandler
     lateinit var protocol: ProtocolInformation
     lateinit var tickEngine: TickEngine
 
@@ -80,7 +72,6 @@ object OpenNXT : CliktCommand(name = "run-server") {
             logger.info { "Could not find RSA config: $e. Please run `run-tool rsa-key-generator`" }
             exitProcess(1)
         }
-        proxyConfig = TomlConfig.load(Constants.CONFIG_PATH.resolve("proxy.toml"))
     }
 
     fun reloadContent() {
@@ -108,21 +99,6 @@ object OpenNXT : CliktCommand(name = "run-server") {
         loadConfigurations()
 
         try {
-            if (enableProxySupport) {
-                logger.warn { "---------------- WARNING ----------------" }
-                logger.warn { " You are running in proxy-enabled mode." }
-                logger.warn { " Disable this in production environments" }
-                logger.warn { " or when you are not going to use this." }
-                logger.warn { "" }
-                logger.warn { " Remove flag '--enable-proxy-support'." }
-                logger.warn { " to disable." }
-                logger.warn { "---------------- WARNING ----------------" }
-
-                logger.info { "Setting up proxy connection factory" }
-                proxyConnectionFactory = ProxyConnectionFactory()
-                proxyConnectionHandler = ProxyConnectionHandler()
-            }
-
             val protPath = Constants.PROT_PATH.resolve(config.build.toString())
             if (!Files.exists(protPath)) {
                 logger.error { "Protocol information not found for build ${config.build}." }
@@ -165,6 +141,7 @@ object OpenNXT : CliktCommand(name = "run-server") {
             Js5Thread.start()
 
             logger.info { "Starting login thread" }
+            LoginThread.configure(AuthoritativeLoginProcessor)
             LoginThread.start()
 
             logger.info { "Starting tick engine" }
@@ -177,11 +154,6 @@ object OpenNXT : CliktCommand(name = "run-server") {
             logger.info { "Instantiating lobby" }
             lobby = Lobby()
             tickEngine.submitTickable(lobby)
-
-            if (enableProxySupport) {
-                logger.info { "Registering proxy connection handler to tick engine" }
-                tickEngine.submitTickable(proxyConnectionHandler)
-            }
 
             logger.info { "Reloading content-related things" }
             reloadContent()

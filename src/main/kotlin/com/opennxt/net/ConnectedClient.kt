@@ -5,14 +5,17 @@ import com.opennxt.net.buf.GamePacketBuilder
 import com.opennxt.net.buf.GamePacketReader
 import com.opennxt.net.game.GamePacket
 import com.opennxt.net.game.PacketRegistry
+import com.opennxt.net.game.golden.GoldenPacketSupport
 import com.opennxt.net.game.pipeline.GamePacketCodec
 import com.opennxt.net.game.pipeline.OpcodeWithBuffer
 import com.opennxt.net.proxy.ProxyChannelAttributes
 import com.opennxt.net.proxy.UnidentifiedPacket
+import io.netty.buffer.ByteBufUtil
 import io.netty.buffer.Unpooled
 import io.netty.channel.Channel
 import mu.KotlinLogging
 import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * Handles incoming packets on the lowest possible level. This is usually called directly from the Netty pipeline, and
@@ -38,6 +41,8 @@ class ConnectedClient(
     val incomingQueue = ConcurrentLinkedQueue<GamePacket>()
 
     var initedPlayerList = false
+    @Volatile var lastCompletedBootstrapStage: String? = null
+    val completedBootstrapStages = CopyOnWriteArrayList<String>()
 
     fun receive(pair: OpcodeWithBuffer) {
         try {
@@ -49,6 +54,7 @@ class ConnectedClient(
                     incomingQueue.add(UnidentifiedPacket(OpcodeWithBuffer(pair.opcode, pair.buf.copy())))
                 return
             }
+            val payloadBytes = ByteBufUtil.getBytes(pair.buf, pair.buf.readerIndex(), pair.buf.readableBytes(), false)
 
             // TODO How can we do the following in a better way? This is getting very spaghetti.
             // TODO Clean up the following code...
@@ -74,18 +80,22 @@ class ConnectedClient(
                 reader.switchToByteAccess()
 
                 val decoded = registration.codec.decode(reader)
-                if (pair.buf.readableBytes() != 0 ){
-                    logger.warn { "Readable bytes in packet ${registration.name}: ${pair.buf.readableBytes()}" }
+                val unreadBytes = pair.buf.readableBytes()
+                if (unreadBytes != 0 ){
+                    logger.warn { "Readable bytes in packet ${registration.name}: $unreadBytes" }
                 }
+                GoldenPacketSupport.traceReceive(channel, side, registration, payloadBytes, decoded, unreadBytes)
 
                 logger.info { decoded.toString() }
                 return
             }
 
             val decoded = registration.codec.decode(GamePacketReader(pair.buf))
-            if (pair.buf.readableBytes() != 0 ){
-                logger.warn { "Readable bytes in packet ${registration.name}: ${pair.buf.readableBytes()}" }
+            val unreadBytes = pair.buf.readableBytes()
+            if (unreadBytes != 0 ){
+                logger.warn { "Readable bytes in packet ${registration.name}: $unreadBytes" }
             }
+            GoldenPacketSupport.traceReceive(channel, side, registration, payloadBytes, decoded, unreadBytes)
 
             incomingQueue.add(decoded)
         } catch (e: Exception) {
@@ -124,6 +134,13 @@ class ConnectedClient(
             val buffer = Unpooled.buffer()
             @Suppress("UNCHECKED_CAST")
             (registration.codec as GamePacketCodec<GamePacket>).encode(packet, GamePacketBuilder(buffer))
+            GoldenPacketSupport.traceSend(
+                channel = channel,
+                localSide = if (side == Side.CLIENT) Side.SERVER else Side.CLIENT,
+                registration = registration,
+                payload = ByteBufUtil.getBytes(buffer, 0, buffer.writerIndex(), false),
+                packet = packet
+            )
 
             channel.write(OpcodeWithBuffer(registration.opcode, buffer))
         } catch (e: Exception) {

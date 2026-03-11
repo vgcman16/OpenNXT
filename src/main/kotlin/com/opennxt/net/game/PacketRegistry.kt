@@ -3,6 +3,7 @@ package com.opennxt.net.game
 import com.opennxt.Constants
 import com.opennxt.OpenNXT
 import com.opennxt.net.Side
+import com.opennxt.net.game.golden.GoldenPacketSupport
 import com.opennxt.net.game.clientprot.ClientCheat
 import com.opennxt.net.game.clientprot.MapBuildComplete
 import com.opennxt.net.game.clientprot.WorldlistFetch
@@ -44,12 +45,67 @@ object PacketRegistry {
         return mappings.values.getInt(name)
     }
 
-    private fun findPacketDefinitionPath(side: Side, name: String) = sequenceOf(
-        OpenNXT.protocol.path.resolve(if (side == Side.CLIENT) "clientProt" else "serverProt").resolve("$name.txt"),
-        Constants.PROT_PATH.resolve(FIELD_DECLARATION_FALLBACK_BUILD.toString())
+    private fun shouldUseStrict946Definition(side: Side, name: String): Boolean {
+        return GoldenPacketSupport.requiredDefinition(OpenNXT.config.build, side, name) != null
+    }
+
+    private fun findPacketDefinitionPath(side: Side, name: String, allowFallback: Boolean): java.nio.file.Path? {
+        val localPath = OpenNXT.protocol.path
             .resolve(if (side == Side.CLIENT) "clientProt" else "serverProt")
             .resolve("$name.txt")
-    ).firstOrNull(Files::exists)
+        if (Files.exists(localPath)) {
+            return localPath
+        }
+        if (!allowFallback) {
+            return null
+        }
+
+        val fallbackPath = Constants.PROT_PATH.resolve(FIELD_DECLARATION_FALLBACK_BUILD.toString())
+            .resolve(if (side == Side.CLIENT) "clientProt" else "serverProt")
+            .resolve("$name.txt")
+        return fallbackPath.takeIf(Files::exists)
+    }
+
+    private fun validateStrict946Packets() {
+        if (OpenNXT.config.build != 946) {
+            return
+        }
+
+        GoldenPacketSupport.requiredDefinitions(OpenNXT.config.build, Side.SERVER).forEach { definition ->
+            val opcode = opcodeFor(Side.SERVER, definition.name)
+                ?: throw IllegalStateException(
+                    "Build ${OpenNXT.config.build} is missing the server packet mapping for ${definition.name}"
+                )
+            if (opcode != definition.opcode) {
+                throw IllegalStateException(
+                    "Build ${OpenNXT.config.build} maps ${definition.name} to opcode $opcode, expected ${definition.opcode}"
+                )
+            }
+
+            val size = OpenNXT.protocol.serverProtSizes.values.getOrDefault(opcode, Int.MIN_VALUE)
+            if (size != definition.size) {
+                throw IllegalStateException(
+                    "Build ${OpenNXT.config.build} maps ${definition.name} to size $size, expected ${definition.size}"
+                )
+            }
+
+            val expectedFields = definition.fields ?: return@forEach
+            val packetPath = OpenNXT.protocol.path.resolve("serverProt").resolve("${definition.name}.txt")
+            if (!Files.exists(packetPath)) {
+                throw IllegalStateException(
+                    "Build ${OpenNXT.config.build} is missing the server packet definition for ${definition.name} at $packetPath"
+                )
+            }
+
+            val actualFields = Files.readAllLines(packetPath).filter { it.isNotBlank() }
+            if (actualFields != expectedFields) {
+                throw IllegalStateException(
+                    "Build ${OpenNXT.config.build} has an unexpected field layout for ${definition.name}. " +
+                        "Expected $expectedFields, found $actualFields"
+                )
+            }
+        }
+    }
 
     fun <T : GamePacket> register(
         side: Side,
@@ -60,12 +116,15 @@ object PacketRegistry {
         val constructor = codecType.constructors
             .first { it.parameters.size == 1 && it.parameters[0].type.javaType == Array<PacketFieldDeclaration>::class.java }
 
-        val packetPath = findPacketDefinitionPath(side, name)
+        val strictDefinition = shouldUseStrict946Definition(side, name)
+        val packetPath = findPacketDefinitionPath(side, name, allowFallback = !strictDefinition)
 
         if (packetPath == null) {
-            logger.warn {
-                "Failed to load packet field declaration for '$name' on side $side from ${OpenNXT.protocol.path}"
+            val message = "Failed to load packet field declaration for '$name' on side $side from ${OpenNXT.protocol.path}"
+            if (strictDefinition) {
+                throw IllegalStateException(message)
             }
+            logger.warn { message }
             return
         }
 
@@ -87,14 +146,23 @@ object PacketRegistry {
 
     fun <T : GamePacket> register(side: Side, name: String, clazz: KClass<T>, codec: GamePacketCodec<T>?) {
         val opcode = opcodeFor(side, name)
+        val strictDefinition = shouldUseStrict946Definition(side, name)
 
         if (opcode == null) {
-            logger.warn { "Missing packet name -> opcode mapping for '$name'" }
+            val message = "Missing packet name -> opcode mapping for '$name'"
+            if (strictDefinition) {
+                throw IllegalStateException(message)
+            }
+            logger.warn { message }
             return
         }
 
         if (codec == null) {
-            logger.warn { "Skipping registering packet $name on side $side: Codec is null" }
+            val message = "Skipping registering packet $name on side $side: Codec is null"
+            if (strictDefinition) {
+                throw IllegalStateException(message)
+            }
+            logger.warn { message }
             return
         }
 
@@ -116,6 +184,7 @@ object PacketRegistry {
         clientProtByClass.clear()
         serverProtByClass.clear()
         serverProtByOpcode.clear()
+        validateStrict946Packets()
 
         register(Side.SERVER, "UPDATE_STAT", UpdateStat::class, UpdateStat.Codec::class)
         register(Side.SERVER, "VARP_SMALL", VarpSmall::class, VarpSmall.Codec::class)
