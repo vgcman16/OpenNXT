@@ -41,6 +41,7 @@ class ConnectedClient(
     val incomingQueue = ConcurrentLinkedQueue<GamePacket>()
 
     var initedPlayerList = false
+    @Volatile var currentBootstrapStage: String? = null
     @Volatile var lastCompletedBootstrapStage: String? = null
     val completedBootstrapStages = CopyOnWriteArrayList<String>()
 
@@ -125,9 +126,11 @@ class ConnectedClient(
             }
 
             if (side == Side.CLIENT) {
+                val bootstrapStage = currentBootstrapStage ?: lastCompletedBootstrapStage ?: "none"
                 logger.info {
                     "Sending packet ${registration.name} (${packet::class.simpleName}) " +
-                        "to ${channel.remoteAddress()} on opcode ${registration.opcode}"
+                        "to ${channel.remoteAddress()} on opcode ${registration.opcode} " +
+                        "[bootstrapStage=$bootstrapStage]"
                 }
             }
 

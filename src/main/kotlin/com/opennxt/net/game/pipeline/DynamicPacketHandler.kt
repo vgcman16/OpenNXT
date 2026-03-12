@@ -25,11 +25,12 @@ class DynamicPacketHandler : SimpleChannelInboundHandler<OpcodeWithBuffer>() {
     override fun channelInactive(ctx: ChannelHandlerContext) {
         logger.info { "Channel on side ${ctx.channel().attr(RSChannelAttributes.SIDE).get()} went inactive" }
         ctx.channel().attr(RSChannelAttributes.CONNECTED_CLIENT).get()?.let { client ->
-            val stage = client.lastCompletedBootstrapStage
+            val currentStage = client.currentBootstrapStage
+            val stage = currentStage ?: client.lastCompletedBootstrapStage
             if (stage != null) {
                 logger.info {
                     "Channel ${ctx.channel().remoteAddress()} closed after bootstrap stage $stage " +
-                        "(completed=${client.completedBootstrapStages.joinToString()})"
+                        "(current=${currentStage ?: "none"}, completed=${client.completedBootstrapStages.joinToString()})"
                 }
             }
         }

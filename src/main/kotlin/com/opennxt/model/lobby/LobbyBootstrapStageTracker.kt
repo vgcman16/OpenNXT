@@ -20,6 +20,7 @@ class LobbyBootstrapStageTracker(
 
     fun run(stage: LobbyBootstrapStage, block: () -> Unit) {
         logger.info { "Lobby bootstrap stage start for $playerName: ${stage.wireName}" }
+        client.currentBootstrapStage = stage.wireName
         try {
             block()
             client.lastCompletedBootstrapStage = stage.wireName
@@ -31,6 +32,10 @@ class LobbyBootstrapStageTracker(
                     "(lastCompleted=${client.lastCompletedBootstrapStage ?: "none"})"
             }
             throw e
+        } finally {
+            if (client.currentBootstrapStage == stage.wireName) {
+                client.currentBootstrapStage = null
+            }
         }
     }
 }
