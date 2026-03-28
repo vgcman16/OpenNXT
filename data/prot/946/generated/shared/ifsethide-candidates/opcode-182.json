@@ -1,0 +1,85 @@
+{
+  "programName": "rs2client.exe",
+  "functionName": "FUN_140108860",
+  "functionEntryPoint": "140108860",
+  "targetAddress": "140108860",
+  "packetName": "OPCODE_182",
+  "bufferParam": "param_2",
+  "legacyShape": [
+    "int",
+    "ubyte"
+  ],
+  "recoveryMode": "decompiler-c",
+  "decompileAttempted": true,
+  "decompileCompleted": true,
+  "status": "ok",
+  "fieldCount": 2,
+  "analysisNotes": [],
+  "statements": [
+    "undefined * FUN_140108860(longlong param_1,longlong param_2)\r\n\r\n{\r\n  int *piVar1;",
+    "char cVar2;",
+    "undefined8 uVar3;",
+    "longlong lVar4;",
+    "uint uVar5;",
+    "lVar4 = *(longlong *)(param_2 + 0x18);",
+    "*(longlong *)(param_2 + 0x18) = lVar4 + 1;",
+    "cVar2 = *(char *)(*(longlong *)(param_2 + 0x10) + lVar4);",
+    "*(longlong *)(param_2 + 0x18) = lVar4 + 5;",
+    "uVar5 = *(uint *)(*(longlong *)(param_2 + 0x10) + lVar4 + 1);",
+    "uVar5 = (uVar5 >> 8 ^ uVar5 << 8) & 0xff00ff ^ uVar5 << 8;",
+    "uVar3 = *(undefined8 *)(*(longlong *)(param_1 + 8) + 0x19888);",
+    "lVar4 = FUN_1400cbe70(uVar3,4,uVar5 << 0x10 | uVar5 >> 0x10);",
+    "FUN_1400cc1b0(uVar3,lVar4,1);",
+    "if (*(char *)(lVar4 + 0x38) != '\\0') {\r\n    FUN_14002cf90(lVar4 + 0x20);",
+    "*(undefined1 *)(lVar4 + 0x38) = 0;",
+    "}\r\n  *(uint *)(lVar4 + 0x20) = -2 - (uint)(byte)(cVar2 + 0x80);",
+    "if (*(char *)(lVar4 + 0x58) != '\\0') {\r\n    FUN_14002cf90(lVar4 + 0x40);",
+    "*(undefined1 *)(lVar4 + 0x58) = 0;",
+    "}\r\n  *(undefined4 *)(lVar4 + 0x40) = 5;",
+    "if (*(char *)(lVar4 + 0x78) != '\\0') {\r\n    FUN_14002cf90(lVar4 + 0x60);",
+    "*(undefined1 *)(lVar4 + 0x78) = 0;",
+    "}\r\n  *(undefined4 *)(lVar4 + 0x60) = 0;",
+    "lVar4 = *(longlong *)(*(longlong *)(param_1 + 8) + 0x19888);",
+    "piVar1 = (int *)(lVar4 + 0x10);",
+    "*piVar1 = *piVar1 + 1;",
+    "*(undefined1 *)(lVar4 + 0x14) = 1;",
+    "return &DAT_140c9c250;",
+    "}"
+  ],
+  "decompiledC": "\r\nundefined * FUN_140108860(longlong param_1,longlong param_2)\r\n\r\n{\r\n  int *piVar1;\r\n  char cVar2;\r\n  undefined8 uVar3;\r\n  longlong lVar4;\r\n  uint uVar5;\r\n  \r\n  lVar4 = *(longlong *)(param_2 + 0x18);\r\n  *(longlong *)(param_2 + 0x18) = lVar4 + 1;\r\n  cVar2 = *(char *)(*(longlong *)(param_2 + 0x10) + lVar4);\r\n  *(longlong *)(param_2 + 0x18) = lVar4 + 5;\r\n  uVar5 = *(uint *)(*(longlong *)(param_2 + 0x10) + lVar4 + 1);\r\n  uVar5 = (uVar5 >> 8 ^ uVar5 << 8) & 0xff00ff ^ uVar5 << 8;\r\n  uVar3 = *(undefined8 *)(*(longlong *)(param_1 + 8) + 0x19888);\r\n  lVar4 = FUN_1400cbe70(uVar3,4,uVar5 << 0x10 | uVar5 >> 0x10);\r\n  FUN_1400cc1b0(uVar3,lVar4,1);\r\n  if (*(char *)(lVar4 + 0x38) != '\\0') {\r\n    FUN_14002cf90(lVar4 + 0x20);\r\n    *(undefined1 *)(lVar4 + 0x38) = 0;\r\n  }\r\n  *(uint *)(lVar4 + 0x20) = -2 - (uint)(byte)(cVar2 + 0x80);\r\n  if (*(char *)(lVar4 + 0x58) != '\\0') {\r\n    FUN_14002cf90(lVar4 + 0x40);\r\n    *(undefined1 *)(lVar4 + 0x58) = 0;\r\n  }\r\n  *(undefined4 *)(lVar4 + 0x40) = 5;\r\n  if (*(char *)(lVar4 + 0x78) != '\\0') {\r\n    FUN_14002cf90(lVar4 + 0x60);\r\n    *(undefined1 *)(lVar4 + 0x78) = 0;\r\n  }\r\n  *(undefined4 *)(lVar4 + 0x60) = 0;\r\n  lVar4 = *(longlong *)(*(longlong *)(param_1 + 8) + 0x19888);\r\n  piVar1 = (int *)(lVar4 + 0x10);\r\n  *piVar1 = *piVar1 + 1;\r\n  *(undefined1 *)(lVar4 + 0x14) = 1;\r\n  return &DAT_140c9c250;\r\n}\r\n\r\n",
+  "fields": [
+    {
+      "index": 0,
+      "statementIndex": 7,
+      "accessKind": "read",
+      "width": 1,
+      "rawType": "ubyte",
+      "candidateType": "ubyte128",
+      "confidence": "strong",
+      "source": "direct-scalar-load",
+      "legacyType": "int",
+      "legacyAligned": false,
+      "evidence": [
+        "load-offset=0",
+        "cVar2 = *(char *)(*(longlong *)(param_2 + 0x10) + lVar4);",
+        "arg=uint *)(lVar4 + 0x20) = -2 - (uint)(byte)(cVar2 + 0x80"
+      ]
+    },
+    {
+      "index": 1,
+      "statementIndex": 9,
+      "accessKind": "read",
+      "width": 4,
+      "rawType": "int",
+      "candidateType": "intle",
+      "confidence": "strong",
+      "source": "direct-scalar-load",
+      "legacyType": "ubyte",
+      "legacyAligned": false,
+      "evidence": [
+        "load-offset=1",
+        "uVar5 = *(uint *)(*(longlong *)(param_2 + 0x10) + lVar4 + 1);"
+      ]
+    }
+  ]
+}

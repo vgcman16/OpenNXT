@@ -39,5 +39,46 @@ class Index private constructor() {
         const val MODELS_RT7 = 47
         const val ANIMS_RT7 = 48
         const val DBTABLEINDEX = 49
+
+        fun nameOf(index: Int): String = when (index) {
+            ANIMS -> "ANIMS"
+            BASES -> "BASES"
+            CONFIG -> "CONFIG"
+            INTERFACES -> "INTERFACES"
+            MAPS -> "MAPS"
+            MODELS -> "MODELS"
+            SPRITES -> "SPRITES"
+            BINARY -> "BINARY"
+            CLIENTSCRIPTS -> "CLIENTSCRIPTS"
+            FONTMETRICS -> "FONTMETRICS"
+            VORBIS -> "VORBIS"
+            CONFIG_OBJECT -> "CONFIG_OBJECT"
+            CONFIG_ENUM -> "CONFIG_ENUM"
+            CONFIG_NPC -> "CONFIG_NPC"
+            CONFIG_ITEM -> "CONFIG_ITEM"
+            CONFIG_SEQ -> "CONFIG_SEQ"
+            CONFIG_SPOT -> "CONFIG_SPOT"
+            CONFIG_STRUCT -> "CONFIG_STRUCT"
+            WORLDMAP -> "WORLDMAP"
+            QUICKCHAT -> "QUICKCHAT"
+            QUICKCHAT_GLOBAL -> "QUICKCHAT_GLOBAL"
+            MATERIALS -> "MATERIALS"
+            PARTICLES -> "PARTICLES"
+            DEFAULTS -> "DEFAULTS"
+            BILLBOARDS -> "BILLBOARDS"
+            DLLS -> "DLLS"
+            SHADERS -> "SHADERS"
+            LOADINGSPRITES -> "LOADINGSPRITES"
+            LOADINGSCREENS -> "LOADINGSCREENS"
+            LOADINGSPRITESRAW -> "LOADINGSPRITESRAW"
+            CUTSCENES -> "CUTSCENES"
+            AUDIOSTREAMS -> "AUDIOSTREAMS"
+            WORLDMAPAREAS -> "WORLDMAPAREAS"
+            WORLDMAPLABELS -> "WORLDMAPLABELS"
+            MODELS_RT7 -> "MODELS_RT7"
+            ANIMS_RT7 -> "ANIMS_RT7"
+            DBTABLEINDEX -> "DBTABLEINDEX"
+            else -> "INDEX_$index"
+        }
     }
 }

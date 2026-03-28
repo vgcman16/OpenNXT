@@ -8,7 +8,7 @@ import java.lang.Integer.max
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-class Js5Client(val version: Int, val token: String) {
+class Js5Client(val version: Int, val token: String, val bootstrapLoggedIn: Boolean = false) {
     companion object {
         val ATTR_KEY = AttributeKey.valueOf<Js5Client>("js5-client")
     }

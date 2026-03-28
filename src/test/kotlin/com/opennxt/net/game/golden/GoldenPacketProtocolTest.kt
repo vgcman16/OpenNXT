@@ -13,7 +13,9 @@ import com.opennxt.net.game.pipeline.OpcodeWithBuffer
 import com.opennxt.net.game.protocol.ProtocolInformation
 import com.opennxt.net.game.serverprot.RunClientScript
 import com.opennxt.net.game.serverprot.ifaces.IfOpenSub
+import com.opennxt.net.game.serverprot.ifaces.IfOpensubActivePlayer
 import com.opennxt.net.game.serverprot.ifaces.IfOpenTop
+import com.opennxt.net.game.serverprot.ifaces.IfSethide
 import com.opennxt.net.game.serverprot.variables.VarpLarge
 import com.opennxt.net.game.serverprot.variables.VarpSmall
 import com.opennxt.util.ISAACCipher
@@ -36,6 +38,7 @@ class GoldenPacketProtocolTest {
         OpenNXT.config = ServerConfig().apply { build = 946 }
         OpenNXT.protocol = ProtocolInformation(Constants.PROT_PATH.resolve("946"))
         OpenNXT.protocol.load()
+        PacketRegistry.reload()
     }
 
     @Test
@@ -46,6 +49,13 @@ class GoldenPacketProtocolTest {
             IfOpenTop(id = 0x3456) to hex("00000000000000000000000056340000000000"),
             IfOpenSub(id = 0x3456, flag = true, parent = InterfaceHash(0x11223344)) to
                 hex("000000004433221100000000000000007fd63400000000"),
+            IfSethide(parent = InterfaceHash(0x11223344), hidden = true) to hex("112233447f"),
+            IfOpensubActivePlayer(
+                subInterfaceId = 1482,
+                playerIndex = 1,
+                targetComponent = InterfaceHash(1482, 1).hash,
+                mode = 0
+            ) to hex("05ca008100000000000105ca00000000000000000000000000"),
             RunClientScript(script = 0x11223344, args = arrayOf(0x01020304, "abc", 0x05060708)) to
                 hex("6973690005060708616263000102030411223344")
         )
@@ -69,6 +79,8 @@ class GoldenPacketProtocolTest {
             72 to hex("3456ab"),
             126 to hex("00000000000000000000000056340000000000"),
             38 to hex("000000004433221100000000000000007fd63400000000"),
+            45 to hex("112233447f"),
+            116 to hex("05ca008100000000000105ca00000000000000000000000000"),
             141 to hex("6973690005060708616263000102030411223344")
         )
 
@@ -116,6 +128,15 @@ class GoldenPacketProtocolTest {
         }
 
         assertTrue(exception.message.orEmpty().contains("IF_OPENSUB"))
+    }
+
+    @Test
+    fun `build 946 registers active player opensub on opcode 116`() {
+        val registration = PacketRegistry.getRegistration(Side.SERVER, IfOpensubActivePlayer::class)
+            ?: error("Missing registration for IfOpensubActivePlayer")
+
+        assertEquals(116, registration.opcode)
+        assertEquals("IF_OPENSUB_ACTIVE_PLAYER", registration.name)
     }
 
     private fun frameServerPacket(opcode: Int, payload: ByteArray): OpcodeWithBuffer {

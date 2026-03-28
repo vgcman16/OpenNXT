@@ -3,6 +3,10 @@ package com.opennxt.model.entity.player
 import com.opennxt.content.interfaces.InterfaceSlot
 import com.opennxt.model.InterfaceHash
 import com.opennxt.model.entity.BasePlayer
+import com.opennxt.net.Side
+import com.opennxt.net.game.PacketRegistry
+import com.opennxt.net.game.generated.serverprot.IfSetplayerheadGeneratedPacket
+import com.opennxt.net.game.generated.serverprot.IfSetplayermodelSelfGeneratedPacket
 import com.opennxt.net.game.serverprot.ifaces.*
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import mu.KotlinLogging
@@ -39,6 +43,10 @@ class InterfaceManager(val player: BasePlayer) {
         player.client.write(IfOpenTop(id))
     }
 
+    fun hasRootOpen(): Boolean {
+        return root != null
+    }
+
     /**
      * Closes a component from an interface. This will first run all close listeners followed by sending the packet
      */
@@ -51,8 +59,7 @@ class InterfaceManager(val player: BasePlayer) {
         // TODO Recursively go through removed?
         // TODO Fire on_interface_close event
         println("Closed interface $removed")
-
-//        player.client.write(IfCloseSubPacket(id, component))
+        player.client.write(IfCloseSub(InterfaceHash(id, component)))
     }
 
     /**
@@ -121,7 +128,54 @@ class InterfaceManager(val player: BasePlayer) {
      * (Un)hides an interface by the interface id + component of the target interface
      */
     fun hide(id: Int, component: Int, hidden: Boolean) {
+        if (PacketRegistry.getRegistration(Side.SERVER, IfSethide::class) == null) {
+            logger.info("Skipping interface hide $id:$component hidden=$hidden for player ${player.name}: IF_SETHIDE is not mapped for this build")
+            return
+        }
         player.client.write(IfSethide(InterfaceHash(id, component), hidden))
+    }
+
+    /**
+     * Sets an interface component to render the local player's head model.
+     */
+    fun setPlayerHead(id: Int, component: Int) {
+        if (PacketRegistry.getRegistration(Side.SERVER, IfSetplayerheadGeneratedPacket::class) == null) {
+            logger.info("Skipping interface player-head $id:$component for player ${player.name}: IF_SETPLAYERHEAD is not mapped for this build")
+            return
+        }
+        player.client.write(IfSetplayerheadGeneratedPacket(InterfaceHash(id, component).hash))
+    }
+
+    /**
+     * Sets an interface component to render the local player's full model.
+     */
+    fun setPlayerModelSelf(id: Int, component: Int) {
+        if (PacketRegistry.getRegistration(Side.SERVER, IfSetplayermodelSelfGeneratedPacket::class) == null) {
+            logger.info("Skipping interface player-model-self $id:$component for player ${player.name}: IF_SETPLAYERMODEL_SELF is not mapped for this build")
+            return
+        }
+        player.client.write(IfSetplayermodelSelfGeneratedPacket(InterfaceHash(id, component).hash))
+    }
+
+    /**
+     * Binds a sub-interface component to a specific player context before sending model updates.
+     */
+    fun openActivePlayer(subInterfaceId: Int, component: Int, playerIndex: Int, mode: Int = 0) {
+        if (PacketRegistry.getRegistration(Side.SERVER, IfOpensubActivePlayer::class) == null) {
+            logger.info(
+                "Skipping interface active-player $subInterfaceId:$component for player ${player.name}: " +
+                    "IF_OPENSUB_ACTIVE_PLAYER is not mapped for this build"
+            )
+            return
+        }
+        player.client.write(
+            IfOpensubActivePlayer(
+                subInterfaceId = subInterfaceId,
+                playerIndex = playerIndex,
+                targetComponent = InterfaceHash(subInterfaceId, component).hash,
+                mode = mode
+            )
+        )
     }
 
     /**

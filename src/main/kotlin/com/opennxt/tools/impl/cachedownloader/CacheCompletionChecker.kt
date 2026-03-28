@@ -14,6 +14,7 @@ import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
 
 class CacheCompletionChecker : Tool(
     "cache-completion-checker",
@@ -49,19 +50,33 @@ class CacheCompletionChecker : Tool(
             }
         }
 
-        Thread {
-            while(true) {
+        val monitorRunning = AtomicBoolean(true)
+        val monitor = Thread({
+            while (monitorRunning.get()) {
                 logger.info { " CHECKERS WORKING:" }
                 workers.forEach { (index, worker) ->
                     if (!worker.completed && worker.started)
                         logger.info { "  Index $index: ${worker.progress / 1024L / 1024L}/${worker.estimatedTotal / 1024L / 1024L}MB" }
                 }
-                sleep(2500)
+                try {
+                    sleep(2500)
+                } catch (_: InterruptedException) {
+                    break
+                }
             }
-        }.start()
+        }, "cache-completion-monitor")
+        monitor.isDaemon = true
+        monitor.start()
 
         val start = System.currentTimeMillis()
-        checkerExecutor.invokeAll(set, 1, TimeUnit.HOURS)
-        logger.info { "Total time: ${System.currentTimeMillis() - start}" }
+        try {
+            checkerExecutor.invokeAll(set, 1, TimeUnit.HOURS)
+            logger.info { "Total time: ${System.currentTimeMillis() - start}" }
+        } finally {
+            monitorRunning.set(false)
+            monitor.interrupt()
+            checkerExecutor.shutdownNow()
+            checkerExecutor.awaitTermination(5, TimeUnit.SECONDS)
+        }
     }
 }

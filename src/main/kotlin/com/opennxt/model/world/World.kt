@@ -15,17 +15,66 @@ class World : Tickable {
 
     private val toAdd = ConcurrentLinkedQueue<WorldPlayer>()
 
+    private fun removePlayer(player: WorldPlayer, reason: String, closeChannel: Boolean = false) {
+        logger.info { "Removing world player ${player.name}: $reason" }
+        players -= player
+        playerEntities.remove(player.entity)
+        if (closeChannel && player.client.channel.isOpen) {
+            player.client.channel.close()
+        }
+    }
+
     override fun tick() {
         while (true) {
             val player = toAdd.poll() ?: break
-            players += player
-            playerEntities.add(player.entity)
-            player.added()
+            try {
+                players
+                    .filter { existing -> existing.name.equals(player.name, ignoreCase = true) }
+                    .toList()
+                    .forEach { existing ->
+                        removePlayer(
+                            existing,
+                            reason = "replaced by a newer world login for the same username",
+                            closeChannel = true
+                        )
+                    }
+
+                players += player
+                if (!playerEntities.add(player.entity)) {
+                    logger.warn { "Failed to allocate entity slot for world player ${player.name}" }
+                    players -= player
+                    player.client.channel.close()
+                    continue
+                }
+                player.added()
+            } catch (e: Exception) {
+                logger.error(e) { "Failed to bootstrap world player ${player.name}" }
+                players -= player
+                playerEntities.remove(player.entity)
+                player.client.channel.close()
+            }
         }
 
-        players.forEach { it.handleIncomingPackets() }
-        players.forEach { it.tick() }
-        players.forEach { it.client.flush() }
+        players.toList().forEach { player ->
+            if (player.client.channel.isActive) {
+                return@forEach
+            }
+
+            removePlayer(player, reason = "channel became inactive")
+        }
+
+        players.toList().forEach { player ->
+            try {
+                player.handleIncomingPackets()
+                player.tick()
+                player.client.flush()
+            } catch (e: Exception) {
+                logger.error(e) { "World tick failed for ${player.name}" }
+                players -= player
+                playerEntities.remove(player.entity)
+                player.client.channel.close()
+            }
+        }
     }
 
     fun getPlayer(index: Int): PlayerEntity? = playerEntities[index]

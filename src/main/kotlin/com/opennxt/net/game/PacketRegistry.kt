@@ -4,7 +4,14 @@ import com.opennxt.Constants
 import com.opennxt.OpenNXT
 import com.opennxt.net.Side
 import com.opennxt.net.game.golden.GoldenPacketSupport
+import com.opennxt.net.game.generated.GeneratedPacketCatalog
+import com.opennxt.net.game.generated.serverprot.IfSetplayerheadGeneratedPacket
+import com.opennxt.net.game.generated.serverprot.IfSetplayermodelSelfGeneratedPacket
+import com.opennxt.net.game.clientprot.ClientBootstrapBlob28
+import com.opennxt.net.game.clientprot.ClientBootstrapControl50
+import com.opennxt.net.game.clientprot.ClientBootstrapControl82
 import com.opennxt.net.game.clientprot.ClientCheat
+import com.opennxt.net.game.clientprot.ClientDisplayState106
 import com.opennxt.net.game.clientprot.MapBuildComplete
 import com.opennxt.net.game.clientprot.WorldlistFetch
 import com.opennxt.net.game.pipeline.DynamicGamePacketCodec
@@ -26,6 +33,8 @@ object PacketRegistry {
 
     private val serverProtByOpcode = Int2ObjectOpenHashMap<Registration>()
     private val clientProtByOpcode = Int2ObjectOpenHashMap<Registration>()
+    private val serverInspectionProtByOpcode = Int2ObjectOpenHashMap<Registration>()
+    private val clientInspectionProtByOpcode = Int2ObjectOpenHashMap<Registration>()
 
     private val serverProtByClass = Object2ObjectOpenHashMap<KClass<*>, Registration>()
     private val clientProtByClass = Object2ObjectOpenHashMap<KClass<*>, Registration>()
@@ -144,6 +153,33 @@ object PacketRegistry {
         register(side, name, clazz, codec)
     }
 
+    fun <T : GamePacket> registerInspectionGenerated(
+        side: Side,
+        name: String,
+        clazz: KClass<T>,
+        codecType: KClass<out DynamicGamePacketCodec<T>>
+    ) {
+        val opcode = opcodeFor(side, name) ?: return
+        if (getRegistration(side, opcode) != null) {
+            return
+        }
+
+        val constructor = codecType.constructors
+            .first { it.parameters.size == 1 && it.parameters[0].type.javaType == Array<PacketFieldDeclaration>::class.java }
+        val packetPath = findPacketDefinitionPath(side, name, allowFallback = false) ?: return
+        val fields =
+            Files.readAllLines(packetPath).filter { it.isNotBlank() }.map { PacketFieldDeclaration.fromString(it) }
+                .toTypedArray()
+        val codec = constructor.call(fields)
+        val registration = Registration(name, opcode, clazz, codec)
+
+        if (side == Side.CLIENT) {
+            clientInspectionProtByOpcode[opcode] = registration
+        } else {
+            serverInspectionProtByOpcode[opcode] = registration
+        }
+    }
+
     fun <T : GamePacket> register(side: Side, name: String, clazz: KClass<T>, codec: GamePacketCodec<T>?) {
         val opcode = opcodeFor(side, name)
         val strictDefinition = shouldUseStrict946Definition(side, name)
@@ -166,6 +202,15 @@ object PacketRegistry {
             return
         }
 
+        register(side, name, opcode, clazz, codec)
+    }
+
+    fun <T : GamePacket> register(side: Side, name: String, opcode: Int, clazz: KClass<T>, codec: GamePacketCodec<T>?) {
+        if (codec == null) {
+            logger.warn { "Skipping registering packet $name on side $side: Codec is null" }
+            return
+        }
+
         val registration = Registration(name, opcode, clazz, codec)
 
         logger.info { "Registered packet ${clazz.simpleName} on side $side to opcode $opcode with codec ${codec::class.simpleName}" }
@@ -181,9 +226,11 @@ object PacketRegistry {
 
     fun reload() {
         clientProtByOpcode.clear()
+        clientInspectionProtByOpcode.clear()
         clientProtByClass.clear()
         serverProtByClass.clear()
         serverProtByOpcode.clear()
+        serverInspectionProtByOpcode.clear()
         validateStrict946Packets()
 
         register(Side.SERVER, "UPDATE_STAT", UpdateStat::class, UpdateStat.Codec::class)
@@ -214,9 +261,28 @@ object PacketRegistry {
         register(Side.SERVER, "WORLDLIST_FETCH_REPLY", WorldListFetchReply::class, WorldListFetchReply.Codec)
         register(Side.SERVER, "IF_OPENTOP", IfOpenTop::class, IfOpenTop.Codec::class)
         register(Side.SERVER, "IF_OPENSUB", IfOpenSub::class, IfOpenSub.Codec::class)
+        register(
+            Side.SERVER,
+            "IF_OPENSUB_ACTIVE_PLAYER",
+            IfOpensubActivePlayer::class,
+            IfOpensubActivePlayer.Codec
+        )
+        register(Side.SERVER, "IF_CLOSESUB", IfCloseSub::class, IfCloseSub.Codec::class)
         register(Side.SERVER, "IF_SETEVENTS", IfSetevents::class, IfSetevents.Codec::class)
         register(Side.SERVER, "IF_SETTEXT", IfSettext::class, IfSettext.Codec::class)
         register(Side.SERVER, "IF_SETHIDE", IfSethide::class, IfSethide.Codec::class)
+        register(
+            Side.SERVER,
+            "IF_SETPLAYERHEAD",
+            IfSetplayerheadGeneratedPacket::class,
+            IfSetplayerheadGeneratedPacket.Codec::class
+        )
+        register(
+            Side.SERVER,
+            "IF_SETPLAYERMODEL_SELF",
+            IfSetplayermodelSelfGeneratedPacket::class,
+            IfSetplayermodelSelfGeneratedPacket.Codec::class
+        )
         register(
             Side.SERVER,
             "CHAT_FILTER_SETTINGS_PRIVATECHAT",
@@ -233,9 +299,15 @@ object PacketRegistry {
         register(Side.CLIENT, "NO_TIMEOUT", NoTimeout::class, EmptyPacketCodec(NoTimeout))
         register(Side.CLIENT, "CLIENT_CHEAT", ClientCheat::class, ClientCheat.Codec::class)
         register(Side.CLIENT, "WORLDLIST_FETCH", WorldlistFetch::class, WorldlistFetch.Codec::class)
+        register(Side.CLIENT, "CLIENT_BOOTSTRAP_BLOB_28", 28, ClientBootstrapBlob28::class, ClientBootstrapBlob28.Codec)
+        register(Side.CLIENT, "CLIENT_BOOTSTRAP_CONTROL_50", 50, ClientBootstrapControl50::class, ClientBootstrapControl50.Codec)
+        register(Side.CLIENT, "CLIENT_BOOTSTRAP_CONTROL_82", 82, ClientBootstrapControl82::class, ClientBootstrapControl82.Codec)
+        register(Side.CLIENT, "CLIENT_DISPLAY_STATE_106", 106, ClientDisplayState106::class, ClientDisplayState106.Codec)
         if (opcodeFor(Side.CLIENT, "MAP_BUILD_COMPLETE") != null) {
             register(Side.CLIENT, "MAP_BUILD_COMPLETE", MapBuildComplete::class, EmptyPacketCodec(MapBuildComplete))
         }
+
+        GeneratedPacketCatalog.registerAll()
     }
 
 
@@ -244,6 +316,14 @@ object PacketRegistry {
             clientProtByOpcode[opcode]
         } else {
             serverProtByOpcode[opcode]
+        }
+    }
+
+    fun getInspectionRegistration(side: Side, opcode: Int): Registration? {
+        return getRegistration(side, opcode) ?: if (side == Side.CLIENT) {
+            clientInspectionProtByOpcode[opcode]
+        } else {
+            serverInspectionProtByOpcode[opcode]
         }
     }
 

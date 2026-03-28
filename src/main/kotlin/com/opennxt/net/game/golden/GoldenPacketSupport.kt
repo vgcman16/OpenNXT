@@ -9,9 +9,11 @@ import com.opennxt.net.game.GamePacket
 import com.opennxt.net.game.PacketRegistry
 import com.opennxt.net.game.pipeline.DynamicGamePacketCodec
 import com.opennxt.net.game.pipeline.GamePacketCodec
+import com.opennxt.net.game.serverprot.RebuildNormal
 import com.opennxt.net.game.serverprot.RunClientScript
 import com.opennxt.net.game.serverprot.ifaces.IfOpenSub
 import com.opennxt.net.game.serverprot.ifaces.IfOpenTop
+import com.opennxt.net.game.serverprot.ifaces.IfSethide
 import com.opennxt.net.game.serverprot.variables.VarpLarge
 import com.opennxt.net.game.serverprot.variables.VarpSmall
 import io.netty.buffer.ByteBufUtil
@@ -43,6 +45,7 @@ object GoldenPacketSupport {
     private val server946Definitions = listOf(
         Definition("VARP_LARGE", 51, 6, listOf("value int", "id ushort")),
         Definition("VARP_SMALL", 72, 3, listOf("id ushort", "value ubyte")),
+        Definition("REBUILD_NORMAL", 39, -2),
         Definition(
             "IF_OPENTOP",
             126,
@@ -62,6 +65,12 @@ object GoldenPacketSupport {
                 "id ushortle128",
                 "xtea3 int"
             )
+        ),
+        Definition(
+            "IF_SETHIDE",
+            45,
+            5,
+            listOf("parent int", "hidden u128byte")
         ),
         Definition("RUNCLIENTSCRIPT", 141, -2)
     )
@@ -137,7 +146,13 @@ object GoldenPacketSupport {
         }
 
         val fields = runCatching { decodeFields(registration, payload) }
-            .getOrElse { mapOf("decodeFieldsError" to (it.message ?: it::class.simpleName.orEmpty())) }
+            .getOrElse {
+                if (registration.name == "REBUILD_NORMAL") {
+                    fieldsForPacket(packet)
+                } else {
+                    mapOf("decodeFieldsError" to (it.message ?: it::class.simpleName.orEmpty()))
+                }
+            }
 
         writeTrace(
             direction = "recv",
@@ -196,10 +211,25 @@ object GoldenPacketSupport {
                 fields["id"] = packet.id
                 fields["xtea3"] = 0
             }
+            is IfSethide -> {
+                fields["parent"] = packet.parent.hash
+                fields["hidden"] = if (packet.hidden) 1 else 0
+            }
             is RunClientScript -> {
                 fields["desc"] = String(packet.args.map { if (it is String) 's' else 'i' }.toCharArray())
                 fields["args"] = packet.args.toList()
                 fields["script"] = packet.script
+            }
+            is RebuildNormal -> {
+                fields["unused1"] = packet.unused1
+                fields["chunkX"] = packet.chunkX
+                fields["unused2"] = packet.unused2
+                fields["chunkY"] = packet.chunkY
+                fields["npcBits"] = packet.npcBits
+                fields["mapSize"] = packet.mapSize
+                fields["areaType"] = packet.areaType
+                fields["hash1"] = packet.hash1
+                fields["hash2"] = packet.hash2
             }
             else -> fields["packet"] = packet.toString()
         }

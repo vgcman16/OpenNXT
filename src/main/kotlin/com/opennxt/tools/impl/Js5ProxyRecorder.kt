@@ -1,10 +1,10 @@
 package com.opennxt.tools.impl
 
+import com.google.gson.GsonBuilder
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.int
 import com.opennxt.Constants
-import com.opennxt.net.handshake.HandshakeType
 import com.opennxt.tools.Tool
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
@@ -12,7 +12,6 @@ import java.io.IOException
 import java.net.ServerSocket
 import java.net.Socket
 import java.net.SocketTimeoutException
-import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -43,9 +42,12 @@ class Js5ProxyRecorder : Tool(
         val outputPath = Paths.get(outputDir)
         Files.createDirectories(outputPath)
 
+        val sessionRecords = mutableListOf<Map<String, Any?>>()
         val summaryLines = mutableListOf<String>()
         val timestamp = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss").withZone(ZoneOffset.UTC).format(Instant.now())
-        val summaryPath = outputPath.resolve("summary-$timestamp.log")
+        val summaryLogPath = outputPath.resolve("summary-$timestamp.log")
+        val summaryJsonPath = outputPath.resolve("summary-$timestamp.json")
+        val summaryMarkdownPath = outputPath.resolve("summary-$timestamp.md")
 
         logger.info { "Binding JS5 proxy on $bindHost:$bindPort -> $remoteHost:$remotePort" }
 
@@ -70,37 +72,53 @@ class Js5ProxyRecorder : Tool(
                 }
 
                 lastAccept = System.nanoTime()
-                sessionCount++
+                sessionCount += 1
 
-                val sessionLines = handleSession(sessionCount, client)
-                val sessionPath = outputPath.resolve("session-${sessionCount.toString().padStart(2, '0')}-$timestamp.log")
-                Files.write(sessionPath, sessionLines)
-                summaryLines += sessionLines
+                val baseName = "session-${sessionCount.toString().padStart(2, '0')}-$timestamp"
+                val result = handleSession(sessionCount, client)
+                val sessionLogPath = outputPath.resolve("$baseName.log")
+                val sessionJsonlPath = outputPath.resolve("$baseName.jsonl")
+                Files.write(sessionLogPath, result.lines)
+                Files.write(sessionJsonlPath, result.jsonLines)
+                summaryLines += result.lines
                 summaryLines += ""
+                sessionRecords += buildSessionRecord(result, sessionLogPath, sessionJsonlPath)
             }
         }
 
-        Files.write(summaryPath, summaryLines)
+        Files.write(summaryLogPath, summaryLines)
+        val artifact = buildSummaryArtifact(
+            timestamp = timestamp,
+            outputPath = outputPath,
+            summaryLogPath = summaryLogPath,
+            summaryJsonPath = summaryJsonPath,
+            summaryMarkdownPath = summaryMarkdownPath,
+            sessions = sessionRecords
+        )
+        Files.writeString(summaryJsonPath, gson.toJson(artifact))
+        Files.writeString(summaryMarkdownPath, renderSummaryMarkdown(artifact))
         logger.info { "Wrote JS5 proxy traces to $outputPath" }
     }
 
-    private fun handleSession(sessionId: Int, client: Socket): List<String> {
-        val lines = mutableListOf<String>()
-        val parser = ClientRequestParser(sessionId, lines)
-        val lastActivity = AtomicLong(System.nanoTime())
+    private fun handleSession(sessionId: Int, client: Socket): Js5SessionResult {
         val started = Instant.now()
+        val capture = Js5SessionCapture(sessionId, started)
+        val clientParser = Js5ClientStreamParser(sessionId, capture)
+        val remoteParser = Js5RemoteStreamParser(sessionId, capture)
+        val lastActivity = AtomicLong(System.nanoTime())
+        var idleTimeoutTriggered = false
 
         client.soTimeout = socketTimeoutMillis
         client.tcpNoDelay = true
 
-        lines += "session#$sessionId start=${started}"
-        lines += "session#$sessionId client=${client.remoteSocketAddress}"
+        capture.addLine("session#$sessionId start=$started")
+        capture.addLine("session#$sessionId client=${client.remoteSocketAddress}")
 
         Socket().use { remote ->
             remote.soTimeout = socketTimeoutMillis
             remote.tcpNoDelay = true
             remote.connect(java.net.InetSocketAddress(remoteHost, remotePort), socketTimeoutMillis)
-            lines += "session#$sessionId remote=$remoteHost:$remotePort"
+            capture.addLine("session#$sessionId remote=$remoteHost:$remotePort")
 
             val done = CountDownLatch(2)
             val clientToRemote = Thread {
@@ -109,7 +127,7 @@ class Js5ProxyRecorder : Tool(
                         source = client,
                         destination = remote,
                         lastActivity = lastActivity,
-                        inspect = { bytes, length -> parser.feed(bytes, length) }
+                        inspect = { bytes, length, timestamp -> clientParser.feed(bytes, length, timestamp) }
                     )
                 } finally {
                     done.countDown()
@@ -120,7 +138,8 @@ class Js5ProxyRecorder : Tool(
                     pump(
                         source = remote,
                         destination = client,
-                        lastActivity = lastActivity
+                        lastActivity = lastActivity,
+                        inspect = { bytes, length, timestamp -> remoteParser.feed(bytes, length, timestamp) }
                     )
                 } finally {
                     done.countDown()
@@ -135,7 +154,8 @@ class Js5ProxyRecorder : Tool(
             while (!done.await(1, TimeUnit.SECONDS)) {
                 val idle = Duration.ofNanos(System.nanoTime() - lastActivity.get()).seconds
                 if (idle >= sessionIdleTimeoutSeconds) {
-                    lines += "session#$sessionId idle-timeout=${idle}s"
+                    idleTimeoutTriggered = true
+                    capture.addLine("session#$sessionId idle-timeout=${idle}s")
                     break
                 }
             }
@@ -146,15 +166,17 @@ class Js5ProxyRecorder : Tool(
             remoteToClient.join(2000)
         }
 
-        lines += "session#$sessionId end=${Instant.now()}"
-        return lines
+        val ended = Instant.now()
+        remoteParser.finish(ended)
+        capture.addLine("session#$sessionId end=$ended")
+        return capture.finish(ended, idleTimeoutTriggered)
     }
 
     private fun pump(
         source: Socket,
         destination: Socket,
         lastActivity: AtomicLong,
-        inspect: ((ByteArray, Int) -> Unit)? = null
+        inspect: ((ByteArray, Int, Instant) -> Unit)? = null
     ) {
         val input = BufferedInputStream(source.getInputStream())
         val output = BufferedOutputStream(destination.getOutputStream())
@@ -173,8 +195,9 @@ class Js5ProxyRecorder : Tool(
                 break
             }
 
+            val timestamp = Instant.now()
             lastActivity.set(System.nanoTime())
-            inspect?.invoke(buffer, read)
+            inspect?.invoke(buffer, read, timestamp)
             output.write(buffer, 0, read)
             output.flush()
         }
@@ -187,129 +210,110 @@ class Js5ProxyRecorder : Tool(
         }
     }
 
-    private class ClientRequestParser(
-        private val sessionId: Int,
-        private val lines: MutableList<String>
-    ) {
-        private var pending = ByteArray(0)
-        private var outerHandshakeDecoded = false
-        private var js5HandshakeDecoded = false
+    private fun buildSessionRecord(result: Js5SessionResult, sessionLogPath: Path, sessionJsonlPath: Path): Map<String, Any?> {
+        val summary = result.summary
+        return linkedMapOf<String, Any?>(
+            "sessionId" to summary.sessionId,
+            "status" to summary.status,
+            "startTimestamp" to summary.startTimestamp,
+            "endTimestamp" to summary.endTimestamp,
+            "durationSeconds" to summary.durationSeconds,
+            "requestCount" to summary.requestCount,
+            "masterReferenceRequests" to summary.masterReferenceRequests,
+            "referenceTableRequests" to summary.referenceTableRequests,
+            "archiveRequests" to summary.archiveRequests,
+            "responseHeaderCount" to summary.responseHeaderCount,
+            "responseBytes" to summary.responseBytes,
+            "firstRequestAtMillis" to summary.firstRequestAtMillis,
+            "firstArchiveRequestAtMillis" to summary.firstArchiveRequestAtMillis,
+            "firstResponseHeaderAtMillis" to summary.firstResponseHeaderAtMillis,
+            "firstArchiveResponseAtMillis" to summary.firstArchiveResponseAtMillis,
+            "idleTimeoutTriggered" to summary.idleTimeoutTriggered,
+            "sessionLog" to sessionLogPath.toString(),
+            "sessionJsonl" to sessionJsonlPath.toString()
+        )
+    }
 
-        fun feed(source: ByteArray, length: Int) {
-            pending += source.copyOf(length)
-            parse()
-        }
+    private fun buildSummaryArtifact(
+        timestamp: String,
+        outputPath: Path,
+        summaryLogPath: Path,
+        summaryJsonPath: Path,
+        summaryMarkdownPath: Path,
+        sessions: List<Map<String, Any?>>
+    ): Map<String, Any?> {
+        val partialSessions = sessions.count { it["status"] == "partial" }
+        val requestCount = sessions.sumOf { (it["requestCount"] as? Number)?.toInt() ?: 0 }
+        val referenceTableRequests = sessions.sumOf { (it["referenceTableRequests"] as? Number)?.toInt() ?: 0 }
+        val archiveRequests = sessions.sumOf { (it["archiveRequests"] as? Number)?.toInt() ?: 0 }
+        val responseHeaderCount = sessions.sumOf { (it["responseHeaderCount"] as? Number)?.toInt() ?: 0 }
+        val responseBytes = sessions.sumOf { (it["responseBytes"] as? Number)?.toLong() ?: 0L }
+        val status = if (sessions.isNotEmpty() && partialSessions == 0) "ok" else "partial"
+        return linkedMapOf(
+            "tool" to "js5-proxy-recorder",
+            "schemaVersion" to 1,
+            "generatedAt" to Instant.now().toString(),
+            "status" to status,
+            "inputs" to linkedMapOf(
+                "bindHost" to bindHost,
+                "bindPort" to bindPort,
+                "remoteHost" to remoteHost,
+                "remotePort" to remotePort,
+                "maxSessions" to maxSessions,
+                "idleTimeoutSeconds" to idleTimeoutSeconds,
+                "sessionIdleTimeoutSeconds" to sessionIdleTimeoutSeconds,
+                "socketTimeoutMillis" to socketTimeoutMillis,
+                "outputDir" to outputPath.toString(),
+                "runTimestamp" to timestamp
+            ),
+            "summary" to linkedMapOf(
+                "sessionCount" to sessions.size,
+                "partialSessionCount" to partialSessions,
+                "requestCount" to requestCount,
+                "referenceTableRequests" to referenceTableRequests,
+                "archiveRequests" to archiveRequests,
+                "responseHeaderCount" to responseHeaderCount,
+                "responseBytes" to responseBytes
+            ),
+            "sessions" to sessions,
+            "artifacts" to linkedMapOf(
+                "summaryLog" to summaryLogPath.toString(),
+                "summaryJson" to summaryJsonPath.toString(),
+                "summaryMarkdown" to summaryMarkdownPath.toString()
+            )
+        )
+    }
 
-        private fun parse() {
-            while (true) {
-                if (!outerHandshakeDecoded) {
-                    if (pending.size < 1) return
-
-                    val handshakeType = pending[0].toInt() and 0xff
-                    lines += "session#$sessionId handshake-type=${HandshakeType.fromId(handshakeType) ?: handshakeType}"
-                    pending = pending.copyOfRange(1, pending.size)
-                    outerHandshakeDecoded = true
-                    continue
+    private fun renderSummaryMarkdown(artifact: Map<String, Any?>): String {
+        val summary = artifact["summary"] as Map<*, *>
+        val sessions = artifact["sessions"] as List<Map<String, Any?>>
+        return buildString {
+            appendLine("# JS5 Proxy Recorder")
+            appendLine()
+            appendLine("- Status: `${artifact["status"]}`")
+            appendLine("- Sessions: `${summary["sessionCount"]}`")
+            appendLine("- Requests: `${summary["requestCount"]}`")
+            appendLine("- Archive requests: `${summary["archiveRequests"]}`")
+            appendLine("- Response headers: `${summary["responseHeaderCount"]}`")
+            appendLine("- Response bytes: `${summary["responseBytes"]}`")
+            appendLine()
+            appendLine("## Sessions")
+            appendLine()
+            if (sessions.isEmpty()) {
+                appendLine("- No client sessions were recorded.")
+            } else {
+                for (session in sessions) {
+                    appendLine(
+                        "- `session#${session["sessionId"]}` status=`${session["status"]}` " +
+                            "requests=`${session["requestCount"]}` archiveRequests=`${session["archiveRequests"]}` " +
+                            "responseHeaders=`${session["responseHeaderCount"]}` idleTimeout=`${session["idleTimeoutTriggered"]}`"
+                    )
                 }
-
-                if (!js5HandshakeDecoded) {
-                    if (pending.size < 1) return
-
-                    val size = pending[0].toInt() and 0xff
-                    if (pending.size < size + 1) return
-
-                    val major = readInt(pending, 1)
-                    val minor = readInt(pending, 5)
-                    val tokenLength = size - 10
-                    val token = if (tokenLength > 0) {
-                        pending.copyOfRange(9, 9 + tokenLength).toString(StandardCharsets.US_ASCII)
-                    } else {
-                        ""
-                    }
-                    val language = pending[size].toInt() and 0xff
-
-                    lines += "session#$sessionId js5-handshake build=$major.$minor language=$language tokenLength=${token.length}"
-                    pending = pending.copyOfRange(size + 1, pending.size)
-                    js5HandshakeDecoded = true
-                    continue
-                }
-
-                if (pending.size < 10) {
-                    return
-                }
-
-                val opcode = pending[0].toInt() and 0xff
-                val frame = pending.copyOfRange(0, 10)
-                lines += describeFrame(opcode, frame)
-                pending = pending.copyOfRange(10, pending.size)
             }
         }
+    }
 
-        private fun describeFrame(opcode: Int, frame: ByteArray): String {
-            return when (opcode) {
-                0, 1, 17, 32, 33 -> {
-                    val index = frame[1].toInt() and 0xff
-                    val archive = readInt(frame, 2)
-                    val build = readUnsignedShort(frame, 6)
-                    val priority = opcode == 1 || opcode == 17 || opcode == 33
-                    val nxt = opcode == 17 || opcode == 32 || opcode == 33
-                    "session#$sessionId request opcode=$opcode priority=$priority nxt=$nxt build=$build ${describeArchive(index, archive)}"
-                }
-
-                6 -> {
-                    val value = readMedium(frame, 1)
-                    val build = readUnsignedShort(frame, 6)
-                    "session#$sessionId connection-initialized value=$value build=$build"
-                }
-
-                2 -> {
-                    val build = readUnsignedShort(frame, 6)
-                    "session#$sessionId logged-in build=$build"
-                }
-
-                3 -> {
-                    val build = readUnsignedShort(frame, 6)
-                    "session#$sessionId logged-out build=$build"
-                }
-
-                4 -> {
-                    val xor = frame[1].toInt() and 0xff
-                    "session#$sessionId xor-request xor=$xor"
-                }
-
-                7 -> {
-                    val build = readUnsignedShort(frame, 6)
-                    "session#$sessionId request-termination build=$build"
-                }
-
-                else -> {
-                    "session#$sessionId unknown opcode=$opcode frame=${frame.joinToString(" ") { "%02x".format(it.toInt() and 0xff) }}"
-                }
-            }
-        }
-
-        private fun describeArchive(index: Int, archive: Int): String = when {
-            index == 255 && archive == 255 -> "master-reference-table"
-            index == 255 -> "reference-table[$archive]"
-            else -> "archive[$index,$archive]"
-        }
-
-        private fun readInt(bytes: ByteArray, offset: Int): Int {
-            return ((bytes[offset].toInt() and 0xff) shl 24) or
-                ((bytes[offset + 1].toInt() and 0xff) shl 16) or
-                ((bytes[offset + 2].toInt() and 0xff) shl 8) or
-                (bytes[offset + 3].toInt() and 0xff)
-        }
-
-        private fun readUnsignedShort(bytes: ByteArray, offset: Int): Int {
-            return ((bytes[offset].toInt() and 0xff) shl 8) or
-                (bytes[offset + 1].toInt() and 0xff)
-        }
-
-        private fun readMedium(bytes: ByteArray, offset: Int): Int {
-            return ((bytes[offset].toInt() and 0xff) shl 16) or
-                ((bytes[offset + 1].toInt() and 0xff) shl 8) or
-                (bytes[offset + 2].toInt() and 0xff)
-        }
+    companion object {
+        private val gson = GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create()
     }
 }

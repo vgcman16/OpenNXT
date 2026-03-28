@@ -1,0 +1,819 @@
+{
+  "advisoryOnly": true,
+  "artifacts": {
+    "blackScreenCaptureJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\black-screen-capture.json",
+    "blackScreenCaptureMarkdown": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\black-screen-capture.md"
+  },
+  "build": 946,
+  "downstream": {
+    "sceneDeliveryArtifact": {
+      "advisoryOnly": true,
+      "artifacts": {
+        "sceneDeliveryAnalysisJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-delivery-analysis.json",
+        "sceneDeliveryAnalysisMarkdown": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-delivery-analysis.md"
+      },
+      "build": 946,
+      "cacheSignals": {
+        "checksum": {
+          "kind": "checksum",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\checksum-table-compare\\compare-report.json",
+          "present": true,
+          "status": "partial",
+          "summary": {
+            "containerBytesMatch": false,
+            "entriesBytesMatch": true,
+            "entryMismatchCount": 0,
+            "liveEntries": 67,
+            "liveEntriesSha256": "f269d38ca52ff42606af90c99036ca4f6bc2069d1c555ff6a5082785720a802d",
+            "liveSignatureSha256": "1e9c567f3097cefbaf4c8377f29b2346e3ed770bc343ddf243fe77cc22134d29",
+            "liveVersion": 946,
+            "localEntries": 67,
+            "localEntriesSha256": "f269d38ca52ff42606af90c99036ca4f6bc2069d1c555ff6a5082785720a802d",
+            "localSignatureSha256": "9ef577ff5fa012ecad1aae7eae2e6531277effbaaca13f7145dee619a12ccc13",
+            "mismatchRows": [],
+            "recommendation": "Local cache diverges from live JS5. Refresh the cache with `run-tool cache-downloader`, then rerun `run-tool checksum-table-compare`.",
+            "severity": "medium",
+            "signatureBytesMatch": false,
+            "status": "partial"
+          },
+          "tool": "checksum-table-compare"
+        },
+        "prefetch": {
+          "kind": "prefetch",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\prefetch-table-compare\\compare-report.json",
+          "present": true,
+          "status": "partial",
+          "summary": {
+            "comparisonState": "inconclusive-no-remote-table",
+            "countMismatch": true,
+            "localCount": 31,
+            "mismatchCount": 0,
+            "mismatches": [],
+            "recommendation": "Live JS5 did not provide a prefetch table. Treat this result as advisory-only and verify with wire captures if prefetch behavior matters.",
+            "remoteCount": 0,
+            "status": "partial"
+          },
+          "tool": "prefetch-table-compare"
+        }
+      },
+      "captureBundle": {
+        "js5Summary": "",
+        "overlapAchieved": null,
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\black-screen-capture.json",
+        "present": false,
+        "runtimeTracePath": "",
+        "status": null,
+        "worldWindowSelected": null
+      },
+      "clientErrors": {
+        "fileCount": 0,
+        "files": [],
+        "present": true
+      },
+      "correlation": {
+        "afterRebuildTailSeconds": {
+          "firstArchiveRequest": null,
+          "firstArchiveResponse": null,
+          "firstJs5Request": null,
+          "firstJs5Response": null
+        },
+        "firstArchiveRequestSeconds": null,
+        "firstArchiveResponseSeconds": null,
+        "firstJs5RequestSeconds": null,
+        "firstJs5ResponseSeconds": null,
+        "overlapConfidence": "missing",
+        "responseBytes": 0,
+        "responseHeaderCount": 0
+      },
+      "generatedAt": "2026-03-16T22:47:20.970337+00:00",
+      "inputs": {
+        "checksumReportJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\checksum-table-compare\\compare-report.json",
+        "clienterrorDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\clienterror",
+        "inputFingerprint": "067d0de570294da3046d4457e02b0af279a772c839f61213ecb44959e9e1de7d",
+        "js5SessionDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\js5-proxy-recorder-live",
+        "prefetchReportJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\prefetch-table-compare\\compare-report.json",
+        "runtimeTraceDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\runtime-trace",
+        "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log",
+        "worldWindow": "1027327:1049489"
+      },
+      "js5": {
+        "availableLegacySessionCount": 5,
+        "availableStructuredSummaryCount": 0,
+        "captureFormat": "legacy",
+        "fallbackSessions": [
+          {
+            "archiveRequests": 0,
+            "captureFormat": "legacy",
+            "durationSeconds": 11.101,
+            "endTimestamp": "2026-03-08T17:51:50.350032200Z",
+            "file": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\js5-proxy-recorder-live\\session-04-20260308-175054.log",
+            "masterReferenceRequests": 0,
+            "referenceTableRequests": 0,
+            "requestCount": 0,
+            "responseBytes": 0,
+            "responseHeaderCount": 0,
+            "sampleRequests": [],
+            "sceneDeliveryState": "client-never-opened-js5",
+            "sessionId": 4,
+            "sessionLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\js5-proxy-recorder-live\\session-04-20260308-175054.log",
+            "startTimestamp": "2026-03-08T17:51:39.249153Z",
+            "status": "ok",
+            "statusMarkers": {
+              "handshake-type": 1,
+              "idle-timeout": 1,
+              "js5-handshake": 1
+            },
+            "uniqueArchivePairs": [],
+            "uniqueReferenceTables": []
+          },
+          {
+            "archiveRequests": 0,
+            "captureFormat": "legacy",
+            "durationSeconds": 11.125,
+            "endTimestamp": "2026-03-08T17:52:01.674953600Z",
+            "file": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\js5-proxy-recorder-live\\session-05-20260308-175054.log",
+            "masterReferenceRequests": 0,
+            "referenceTableRequests": 0,
+            "requestCount": 0,
+            "responseBytes": 0,
+            "responseHeaderCount": 0,
+            "sampleRequests": [],
+            "sceneDeliveryState": "client-never-opened-js5",
+            "sessionId": 5,
+            "sessionLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\js5-proxy-recorder-live\\session-05-20260308-175054.log",
+            "startTimestamp": "2026-03-08T17:51:50.550027500Z",
+            "status": "ok",
+            "statusMarkers": {
+              "handshake-type": 1,
+              "idle-timeout": 1,
+              "js5-handshake": 1
+            },
+            "uniqueArchivePairs": [],
+            "uniqueReferenceTables": []
+          }
+        ],
+        "relevantSessions": [],
+        "selectionStrategy": "legacy-no-overlap"
+      },
+      "runtimeTrace": {
+        "selectionStrategy": "latest-no-overlap",
+        "summary": {
+          "endTimestamp": "2026-03-12T17:45:41.953270+00:00",
+          "file": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\runtime-trace\\rs2client-stuck-20260312-1235.jsonl",
+          "latestConnectionPorts": [
+            443
+          ],
+          "latestCpuPercent": 10.4,
+          "latestRss": 393564160,
+          "latestThreadCount": 166,
+          "openCacheFiles": [
+            "C:\\Users\\Demon\\AppData\\Local\\Jagex\\RuneScape\\Settings.jcache",
+            "C:\\ProgramData\\Jagex\\RuneScape\\ObjCache.jcache",
+            "C:\\ProgramData\\Jagex\\RuneScape\\ShaderManager.jcache",
+            "C:\\ProgramData\\Jagex\\RuneScape\\GlobalSettings.jcache"
+          ],
+          "sampleCount": 3,
+          "startTimestamp": "2026-03-12T17:45:08.234223+00:00",
+          "timeoutCount": 1
+        }
+      },
+      "schemaVersion": 1,
+      "status": "partial",
+      "summary": {
+        "archiveRequestsObserved": 0,
+        "captureBundlePresent": false,
+        "checksumStatus": "partial",
+        "clientErrorFileCount": 0,
+        "overlapConfidence": "missing",
+        "prefetchState": "inconclusive-no-remote-table",
+        "referenceTableRequests": 0,
+        "relevantJs5SessionCount": 0,
+        "responseBytes": 0,
+        "responseHeaderCount": 0,
+        "runtimeTracePresent": true,
+        "sceneDeliveryState": "capture-missing",
+        "worldSessionExists": true
+      },
+      "timeline": [
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:appearance",
+          "relativeSeconds": 0.0,
+          "timestamp": "2026-03-16T21:24:25.388062800Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:login-response",
+          "relativeSeconds": 0.118,
+          "timestamp": "2026-03-16T21:24:25.506385600Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:pipeline-switch",
+          "relativeSeconds": 0.143,
+          "timestamp": "2026-03-16T21:24:25.530957300Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:rebuild",
+          "relativeSeconds": 0.156,
+          "timestamp": "2026-03-16T21:24:25.544501500Z"
+        },
+        {
+          "detail": "{\n  \"areaType\": \"0\",\n  \"chunkX\": \"402\",\n  \"chunkY\": \"402\",\n  \"hash1\": \"0\",\n  \"hash2\": \"0\",\n  \"mapSize\": \"5\",\n  \"name\": \"demon\",\n  \"npcBits\": \"7\"\n}",
+          "kind": "world-send-rebuild-tail",
+          "label": "world-send-rebuild-tail",
+          "relativeSeconds": 0.173,
+          "timestamp": "2026-03-16T21:24:25.561521300Z"
+        },
+        {
+          "detail": "{\n  \"name\": \"demon\"\n}",
+          "kind": "world-waiting-map-build-complete",
+          "label": "world-waiting-map-build-complete",
+          "relativeSeconds": 0.207,
+          "timestamp": "2026-03-16T21:24:25.594642900Z"
+        },
+        {
+          "detail": "{\n  \"awaitingMapBuildComplete\": \"true\",\n  \"awaitingWorldReadySignal\": \"false\",\n  \"count\": \"1\",\n  \"height\": \"720\",\n  \"mode\": \"2\",\n  \"name\": \"demon\",\n  \"opcode\": \"106\",\n  \"trailingFlag\": \"0\",\n  \"width\": \"1280\"\n}",
+          "kind": "world-client-display-config",
+          "label": "world-client-display-config",
+          "relativeSeconds": 0.551,
+          "timestamp": "2026-03-16T21:24:25.939374900Z"
+        },
+        {
+          "detail": "{\n  \"bytes\": \"23\",\n  \"name\": \"demon\",\n  \"opcode\": \"48\",\n  \"preview\": \"0505ffff028d034180533980613480673c807441807644\"\n}",
+          "kind": "world-ready-signal-latched",
+          "label": "world-ready-signal-latched",
+          "relativeSeconds": 0.752,
+          "timestamp": "2026-03-16T21:24:26.140295700Z"
+        },
+        {
+          "detail": "{\n  \"bytes\": \"4\",\n  \"name\": \"demon\",\n  \"opcode\": \"113\",\n  \"preview\": \"000000e7\"\n}",
+          "kind": "world-map-build-complete-compat",
+          "label": "world-map-build-complete-compat",
+          "relativeSeconds": 0.931,
+          "timestamp": "2026-03-16T21:24:26.318690300Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:stats",
+          "relativeSeconds": 0.933,
+          "timestamp": "2026-03-16T21:24:26.321206300Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:default-state",
+          "relativeSeconds": 0.946,
+          "timestamp": "2026-03-16T21:24:26.333845200Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:interfaces",
+          "relativeSeconds": 0.949,
+          "timestamp": "2026-03-16T21:24:26.336852400Z"
+        },
+        {
+          "detail": "{\n  \"ids\": \"181,1027,1034,3497\",\n  \"name\": \"demon\"\n}",
+          "kind": "world-send-minimal-varcs",
+          "label": "world-send-minimal-varcs",
+          "relativeSeconds": 1.667,
+          "timestamp": "2026-03-16T21:24:27.055558300Z"
+        },
+        {
+          "detail": "{\n  \"name\": \"demon\"\n}",
+          "kind": "world-awaiting-ready-signal",
+          "label": "world-awaiting-ready-signal",
+          "relativeSeconds": 2.31,
+          "timestamp": "2026-03-16T21:24:27.697740100Z"
+        },
+        {
+          "detail": "{\n  \"bytes\": \"23\",\n  \"name\": \"demon\",\n  \"opcode\": \"48\",\n  \"preview\": \"0505ffff028d034180533980613480673c807441807644\",\n  \"source\": \"latched\"\n}",
+          "kind": "world-ready-signal",
+          "label": "world-ready-signal",
+          "relativeSeconds": 2.332,
+          "timestamp": "2026-03-16T21:24:27.720291800Z"
+        },
+        {
+          "detail": "bytes=64",
+          "kind": "send-raw",
+          "label": "send-raw:PLAYER_INFO",
+          "relativeSeconds": 2.629,
+          "timestamp": "2026-03-16T21:24:28.017040Z"
+        },
+        {
+          "detail": "bytes=64",
+          "kind": "send-raw",
+          "label": "send-raw:PLAYER_INFO",
+          "relativeSeconds": 2.798,
+          "timestamp": "2026-03-16T21:24:28.185969300Z"
+        },
+        {
+          "detail": "{\n  \"awaitingMapBuildComplete\": \"false\",\n  \"awaitingWorldReadySignal\": \"false\",\n  \"count\": \"2\",\n  \"height\": \"720\",\n  \"mode\": \"2\",\n  \"name\": \"demon\",\n  \"opcode\": \"106\",\n  \"trailingFlag\": \"0\",\n  \"width\": \"1280\"\n}",
+          "kind": "world-client-display-config",
+          "label": "world-client-display-config",
+          "relativeSeconds": 2.959,
+          "timestamp": "2026-03-16T21:24:28.347085600Z"
+        }
+      ],
+      "tool": "run_946_scene_delivery_aid",
+      "verdict": {
+        "likelyBlocker": "capture-missing",
+        "recommendation": "Run the client with JS5 proxy recording active so scene delivery can be correlated with this bootstrap session."
+      },
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 2,
+          "113": 3,
+          "17": 4,
+          "48": 5,
+          "83": 3
+        },
+        "durationSeconds": 4786.153,
+        "endLine": 1049489,
+        "endTimestamp": "2026-03-16T22:44:11.541531700Z",
+        "eventCount": 17462,
+        "exists": true,
+        "markerCounts": {
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-client-bootstrap-blob": 1,
+          "world-client-bootstrap-control": 3,
+          "world-client-display-config": 5,
+          "world-force-local-appearance": 4,
+          "world-hold-post-initial-sync": 3,
+          "world-ignore-client-compat": 11,
+          "world-ignore-client-timed": 2,
+          "world-map-build-complete-compat": 1,
+          "world-open-minimal-child": 1,
+          "world-post-initial-sync-hold": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 2,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 164,
+          "world-send-player-info": 164,
+          "world-send-rebuild-tail": 1,
+          "world-send-serverperm-ack-candidate": 2,
+          "world-skip-active-player": 1,
+          "world-skip-init-state": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 164,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 939,
+          "206": 2,
+          "28": 7975,
+          "38": 1,
+          "39": 1,
+          "42": 7975
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 1027327,
+        "startTimestamp": "2026-03-16T21:24:25.388062800Z"
+      }
+    },
+    "sceneDeliveryCommand": [
+      "C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_scene_delivery_aid.py",
+      "--force",
+      "--world-window",
+      "1027327:1049489"
+    ],
+    "sceneDeliveryReturnCode": 0,
+    "sceneDeliveryStderr": "",
+    "sceneDeliveryStdout": "{\n  \"artifacts\": {\n    \"sceneDeliveryAnalysisJson\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\scene-delivery-analysis.json\",\n    \"sceneDeliveryAnalysisMarkdown\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\scene-delivery-analysis.md\"\n  },\n  \"status\": \"partial\"\n}\n",
+    "toolDoctorArtifact": {
+      "advisoryOnly": true,
+      "artifacts": {
+        "tool_doctor": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\tool-doctor.md"
+      },
+      "build": 946,
+      "generatedAt": "2026-03-16T22:47:22.783189+00:00",
+      "inputs": {
+        "decompLogDir": "C:\\Users\\Demon\\Documents\\New project\\ghidra-projects",
+        "ghidraDir": "C:\\Users\\Demon\\Tools\\ghidra\\ghidra_12.0.4_PUBLIC",
+        "labels": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\curated-session-labels.json",
+        "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log"
+      },
+      "requirements": [
+        {
+          "kind": "input",
+          "name": "world-log",
+          "note": "Primary historical session source.",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log",
+          "present": true,
+          "required": true,
+          "size": 130172216,
+          "status": "ok"
+        },
+        {
+          "freshness": "stale",
+          "kind": "phase-output",
+          "name": "phase3-name-candidates",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase3\\nameCandidates.json",
+          "present": true,
+          "required": true,
+          "size": 311014,
+          "status": "partial"
+        },
+        {
+          "freshness": "stale",
+          "kind": "phase-output",
+          "name": "phase5-generated-packets",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase5\\generatedPackets.json",
+          "present": true,
+          "required": true,
+          "size": 44582,
+          "status": "partial"
+        },
+        {
+          "freshness": "stale",
+          "kind": "shared-output",
+          "name": "shared-verified-packets",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\verified-packets.json",
+          "present": true,
+          "required": true,
+          "size": 40009,
+          "status": "partial"
+        },
+        {
+          "freshness": "stale",
+          "kind": "shared-output",
+          "name": "shared-evidence-index",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\evidence-index.json",
+          "present": true,
+          "required": true,
+          "size": 751604,
+          "status": "partial"
+        },
+        {
+          "kind": "labels",
+          "name": "curated-labels",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\curated-session-labels.json",
+          "present": true,
+          "required": false,
+          "size": 957,
+          "status": "ok"
+        },
+        {
+          "kind": "ghidra",
+          "name": "decomp-log-dir",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\ghidra-projects",
+          "present": true,
+          "required": false,
+          "size": 262144,
+          "status": "ok"
+        },
+        {
+          "kind": "ghidra",
+          "name": "ghidra-headless",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Tools\\ghidra\\ghidra_12.0.4_PUBLIC\\support\\analyzeHeadless.bat",
+          "present": true,
+          "required": false,
+          "size": 2181,
+          "status": "ok"
+        },
+        {
+          "freshness": "stale",
+          "kind": "advisory",
+          "name": "curated-compare",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\curated-compare.json",
+          "present": true,
+          "required": false,
+          "size": 52961,
+          "status": "ok"
+        },
+        {
+          "freshness": "stale",
+          "kind": "advisory",
+          "name": "sender-aid",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-analysis.json",
+          "present": true,
+          "required": false,
+          "size": 58579,
+          "status": "ok"
+        },
+        {
+          "freshness": "stale",
+          "kind": "advisory",
+          "name": "active-sub-aid",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-analysis.json",
+          "present": true,
+          "required": false,
+          "size": 9170,
+          "status": "ok"
+        },
+        {
+          "freshness": "stale",
+          "kind": "advisory",
+          "name": "interface-diff",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\interface-diff.json",
+          "present": true,
+          "required": false,
+          "size": 8897,
+          "status": "ok"
+        },
+        {
+          "freshness": "fresh",
+          "kind": "advisory",
+          "name": "scene-delivery-aid",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-delivery-analysis.json",
+          "present": true,
+          "required": false,
+          "size": 14951,
+          "status": "ok"
+        },
+        {
+          "freshness": "stale",
+          "kind": "advisory",
+          "name": "js5-archive-resolver",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\js5-archive-resolution.json",
+          "present": true,
+          "required": false,
+          "size": 2138,
+          "status": "ok"
+        },
+        {
+          "freshness": "stale",
+          "kind": "advisory",
+          "name": "plateau-diff",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\plateau-diff.json",
+          "present": true,
+          "required": false,
+          "size": 40310,
+          "status": "ok"
+        },
+        {
+          "kind": "advisory",
+          "name": "black-screen-capture",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\black-screen-capture.json",
+          "present": false,
+          "required": false,
+          "status": "partial"
+        },
+        {
+          "freshness": "stale",
+          "kind": "verification",
+          "name": "runtime-verifier",
+          "note": "",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\runtime-verification-results.json",
+          "present": true,
+          "required": false,
+          "size": 8864,
+          "status": "ok"
+        }
+      ],
+      "schemaVersion": 1,
+      "status": "partial",
+      "summary": {
+        "blockedCount": 0,
+        "okCount": 12,
+        "partialCount": 5
+      },
+      "tool": "run_946_tool_doctor",
+      "toolReadiness": [
+        {
+          "level": "production-ready",
+          "reason": "Pipeline manifest present.",
+          "tool": "run_946_pipeline"
+        },
+        {
+          "freshness": "stale",
+          "level": "production-ready",
+          "reason": "Advisory-ready labeled compare.",
+          "tool": "run_946_curated_compare"
+        },
+        {
+          "freshness": "stale",
+          "level": "near-ready",
+          "reason": "Artifact missing or not fully green.",
+          "tool": "run_946_runtime_verifier"
+        },
+        {
+          "freshness": "stale",
+          "level": "near-ready",
+          "reason": "Standard artifact present.",
+          "tool": "run_946_sender_aid"
+        },
+        {
+          "freshness": "stale",
+          "level": "near-ready",
+          "reason": "Standard artifact present.",
+          "tool": "run_946_active_sub_aid"
+        },
+        {
+          "freshness": "stale",
+          "level": "near-ready",
+          "reason": "Standard artifact present.",
+          "tool": "run_946_interface_diff"
+        },
+        {
+          "freshness": "fresh",
+          "level": "near-ready",
+          "reason": "Artifact present, but the latest world session still needs overlapping JS5 capture.",
+          "tool": "run_946_scene_delivery_aid"
+        },
+        {
+          "freshness": "stale",
+          "level": "near-ready",
+          "reason": "Structured JS5 archive labeling present.",
+          "tool": "run_946_js5_archive_resolver"
+        },
+        {
+          "freshness": "stale",
+          "level": "near-ready",
+          "reason": "Post-interfaces plateau comparison present.",
+          "tool": "run_946_plateau_diff"
+        },
+        {
+          "level": "experimental",
+          "reason": "No capture bundle has been produced yet.",
+          "tool": "run_946_black_screen_capture"
+        }
+      ]
+    },
+    "toolDoctorCommand": [
+      "C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_tool_doctor.py",
+      "--force"
+    ],
+    "toolDoctorReturnCode": 0,
+    "toolDoctorStderr": "",
+    "toolDoctorStdout": "{\n  \"artifacts\": {\n    \"tool_doctor\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\tool-doctor.md\"\n  },\n  \"status\": \"partial\"\n}\n"
+  },
+  "generatedAt": "2026-03-16T22:47:23.036363+00:00",
+  "inputs": {
+    "captureSeconds": 60,
+    "clientVariant": "patched",
+    "js5IdleTimeoutSeconds": 20,
+    "js5SessionDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\js5-proxy-recorder-live",
+    "resetCache": true,
+    "runtimeTraceDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\runtime-trace",
+    "runtimeTraceSeconds": 60,
+    "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log"
+  },
+  "js5Recorder": {
+    "command": [
+      "C:\\WINDOWS\\system32\\cmd.exe",
+      "/c",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\build\\install\\OpenNXT\\bin\\OpenNXT.bat",
+      "run-tool",
+      "js5-proxy-recorder",
+      "--bind-port",
+      "43595",
+      "--remote-host",
+      "content.runescape.com",
+      "--remote-port",
+      "43594",
+      "--max-sessions",
+      "6",
+      "--idle-timeout-seconds",
+      "20",
+      "--session-idle-timeout-seconds",
+      "15",
+      "--output-dir",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\js5-proxy-recorder-live"
+    ],
+    "returnCode": 1,
+    "stderr": "'C:\\Users\\Demon\\Documents\\New' is not recognized as an internal or external command,\noperable program or batch file.\n",
+    "stdout": "",
+    "summaryJson": ""
+  },
+  "launch": {
+    "command": [
+      "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-File",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\launch-win64c-live.ps1",
+      "-ForceLobbyTlsMitm",
+      "-ContentTlsRemoteHost",
+      "127.0.0.1",
+      "-ContentTlsRemotePort",
+      "43595",
+      "-ContentTlsRemoteRaw",
+      "-DisableWatchdog"
+    ],
+    "returnCode": 0,
+    "state": {
+      "BypassGameProxy": false,
+      "ClientArgs": [
+        "http://lobby45a.runescape.com:8081/jav_config.ws?binaryType=6&hostRewrite=0&gameHostOverride=lobby45a.runescape.com&downloadMetadataSource=patched"
+      ],
+      "ClientCefLog": null,
+      "ClientExe": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\\\clients\\\\946\\\\win64c\\\\patched\\rs2client.exe",
+      "ClientPid": 182944,
+      "ClientStderr": null,
+      "ClientStdout": null,
+      "ContentTlsRemoteHost": "127.0.0.1",
+      "ContentTlsRemotePort": 43595,
+      "ContentTlsRemoteRaw": true,
+      "DisableChecksumOverride": false,
+      "DisableLobbyTlsPassthroughAuto": false,
+      "DisableWatchdog": true,
+      "DownloadMetadataSource": "patched",
+      "ForceLobbyTlsMitm": true,
+      "GameProxyPid": 181356,
+      "LaunchMode": "direct-client",
+      "LaunchStateFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tmp-launch-win64c-live.state.json",
+      "LobbyProxyPid": 3592,
+      "LobbyTlsPassthrough": false,
+      "ProxyMode": "local",
+      "ProxyUsernames": [],
+      "ServerErr": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tmp-manual-js5.err.log",
+      "ServerOut": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tmp-manual-js5.out.log",
+      "ServerPid": 9028,
+      "UseContentTlsRoute": true,
+      "WatchdogErr": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tmp-live-stack-watchdog.err.log",
+      "WatchdogOut": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tmp-live-stack-watchdog.out.log",
+      "WatchdogPid": null,
+      "WrapperPid": 268400
+    },
+    "stderr": "",
+    "stdout": "{\n    \"WrapperPid\":  268400,\n    \"ServerPid\":  9028,\n    \"LobbyProxyPid\":  3592,\n    \"GameProxyPid\":  181356,\n    \"WatchdogPid\":  null,\n    \"ClientPid\":  182944,\n    \"ProxyMode\":  \"local\",\n    \"ProxyUsernames\":  [\n\n                       ],\n    \"ServerOut\":  \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\tmp-manual-js5.out.log\",\n    \"ServerErr\":  \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\tmp-manual-js5.err.log\",\n    \"WatchdogOut\":  \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\tmp-live-stack-watchdog.out.log\",\n    \"WatchdogErr\":  \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\tmp-live-stack-watchdog.err.log\",\n    \"ClientExe\":  \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\\\\\clients\\\\\\\\946\\\\\\\\win64c\\\\\\\\patched\\\\rs2client.exe\",\n    \"ClientArgs\":  [\n                       \"http://lobby45a.runescape.com:8081/jav_config.ws?binaryType=6\\u0026hostRewrite=0\\u0026gameHostOverride=lobby45a.runescape.com\\u0026downloadMetadataSource=patched\"\n                   ],\n    \"DisableChecksumOverride\":  false,\n    \"BypassGameProxy\":  false,\n    \"LobbyTlsPassthrough\":  false,\n    \"ForceLobbyTlsMitm\":  true,\n    \"DisableLobbyTlsPassthroughAuto\":  false,\n    \"ContentTlsRemoteHost\":  \"127.0.0.1\",\n    \"ContentTlsRemotePort\":  43595,\n    \"ContentTlsRemoteRaw\":  true,\n    \"DisableWatchdog\":  true,\n    \"UseContentTlsRoute\":  true,\n    \"DownloadMetadataSource\":  \"patched\",\n    \"ClientStdout\":  null,\n    \"ClientStderr\":  null,\n    \"ClientCefLog\":  null,\n    \"LaunchStateFile\":  \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\tmp-launch-win64c-live.state.json\",\n    \"LaunchMode\":  \"direct-client\"\n}\n"
+  },
+  "launchedAt": "2026-03-16T22:47:23.033845+00:00",
+  "resetCache": {
+    "command": [
+      "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-File",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\reset_jagex_cache.ps1"
+    ],
+    "returnCode": 0,
+    "stderr": "ERROR: The process with PID 181320 could not be terminated.\nReason: There is no running instance of the task.\n\nERROR: The process \"181864\" not found.\nERROR: The process \"181872\" not found.\nERROR: The process \"181880\" not found.\n",
+    "stdout": "[\n    {\n        \"Path\":  \"C:\\\\ProgramData\\\\Jagex\\\\RuneScape\",\n        \"Action\":  \"renamed\",\n        \"Backup\":  \"C:\\\\ProgramData\\\\Jagex\\\\RuneScape-reset-20260316-174411\"\n    },\n    {\n        \"Path\":  \"C:\\\\Users\\\\Demon\\\\AppData\\\\Local\\\\Jagex\\\\RuneScape\",\n        \"Action\":  \"renamed\",\n        \"Backup\":  \"C:\\\\Users\\\\Demon\\\\AppData\\\\Local\\\\Jagex\\\\RuneScape-reset-20260316-174411\"\n    }\n]\n"
+  },
+  "runtimeTrace": {
+    "command": [
+      "C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\trace_process_runtime.py",
+      "--pid",
+      "182944",
+      "--timeout-seconds",
+      "60",
+      "--output",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\runtime-trace\\black-screen-runtime-20260316-224544.jsonl"
+    ],
+    "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\runtime-trace\\black-screen-runtime-20260316-224544.jsonl",
+    "returnCode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\trace_process_runtime.py\", line 139, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\trace_process_runtime.py\", line 107, in main\n    process = psutil.Process(args.pid)\n              ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\psutil\\__init__.py\", line 314, in __init__\n    self._init(pid)\n  File \"C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\psutil\\__init__.py\", line 360, in _init\n    raise NoSuchProcess(pid, msg=msg) from None\npsutil.NoSuchProcess: process PID not found (pid=182944)\n",
+    "stdout": ""
+  },
+  "schemaVersion": 1,
+  "status": "partial",
+  "summary": {
+    "overlapAchieved": false,
+    "sceneDeliveryVerdict": "capture-missing",
+    "statusReason": "overlap-missing",
+    "toolDoctorStatus": "partial",
+    "worldWindowSelected": "1027327:1049489"
+  },
+  "tool": "run_946_black_screen_capture"
+}

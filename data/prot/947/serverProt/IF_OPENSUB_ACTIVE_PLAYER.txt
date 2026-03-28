@@ -1,0 +1,7 @@
+subInterfaceId ushort
+playerIndex ushort128
+reserved0 int
+targetComponent intv1
+reserved1 long
+mode ubytec
+reserved2 int

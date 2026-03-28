@@ -20,7 +20,68 @@ downloader, launcher patcher, cache downloader, and related workflow helpers.
 Tools can be executed with `run-tool <tool-name> [--help]`.
 
 New tools can be added by creating a class in `com.opennxt.tools.impl` that extends `com.opennxt.tools.Tool`. The
-tool registry is populated automatically through classpath scanning..
+tool registry is populated automatically through classpath scanning.
+
+### Tool Readiness
+
+This fork treats production-ready analysis tooling as pipeline-ready advisory infrastructure. For the active build `946`
+workflow, that means:
+
+- checked-in tests
+- stable CLI output and artifact shape
+- explicit failure classification
+- a doctor or pipeline manifest surface that shows current readiness
+
+Use the Python-side `tools/run_946_tool_doctor.py` entrypoint to answer "what can I trust right now?" for the `946`
+protocol workspace.
+
+For var-meaning, the canonical operator flow is:
+
+1. `run-tool var-meaning-index`
+2. `run-tool var-meaning-triage`
+3. `run-tool var-meaning-query` or `run-tool var-meaning-inspect-script`
+4. `run-tool var-meaning-census-script`
+5. `run-tool var-meaning-import-cs2-evidence`
+6. `run-tool var-meaning-build-layout-hints`
+7. rebuild `var-meaning-index`
+
+Use `run-tool var-meaning-doctor` before trusting an existing local var-meaning store after major analyzer changes.
+
+Cache and JS5 diagnostics stay in the built-in Kotlin tool surface under
+`src/main/kotlin/com/opennxt/tools/impl` and `src/main/kotlin/com/opennxt/tools/impl/cachedownloader`.
+They are build-support tools rather than `946` protocol-workspace tools, so their artifacts live under
+`./data/debug/*` instead of `./data/prot/946/generated/*`.
+
+Current cache/JS5 operator guidance:
+
+- `run-tool checksum-table-compare`
+  - production-ready advisory output
+  - emits `txt`, `md`, and `json` under `./data/debug/checksum-table-compare`
+- `run-tool prefetch-table-compare`
+  - production-ready advisory output
+  - emits `txt`, `md`, and `json` under `./data/debug/prefetch-table-compare`
+- `run-tool js5-wire-compare`
+  - useful, but still older debug-style output
+- `run-tool js5-proxy-recorder`
+  - useful capture tool, but still older session-log output
+- `run-tool cache-completion-checker`
+  - useful for manual cache inspection, but still older console-only output
+- `run-tool cache-archive-probe`
+  - useful for spot inspection, but still older console-only output
+
+## Discord Bot
+
+This repository now includes a standalone Discord community and ops service in `./discord-bot`.
+
+The bot is designed to:
+
+- scaffold the public OpenNXT Discord server structure after it is invited to a guild
+- handle verification, anti-spam, support tickets, and staff logging
+- receive GitHub webhooks for `vgcman16/OpenNXT` and post progress updates to Discord
+- run approval-gated local setup and lifecycle actions for this checkout on the same Windows host
+
+See `./discord-bot/README.md` for environment variables, install steps, and bot commands. Use `npm.cmd` on this
+machine because PowerShell execution policy blocks `npm.ps1`.
 
 ## Build
 

@@ -1,0 +1,4921 @@
+{
+  "advisoryOnly": true,
+  "artifacts": {
+    "attemptDiffJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\attempt-diff.json",
+    "attemptDiffMarkdown": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\attempt-diff.md"
+  },
+  "attempts": [
+    {
+      "attemptIndex": 1,
+      "clientTail": [
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 7248,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:05.865669200Z"
+        }
+      ],
+      "needs": [
+        "fresh content capture aligned to this world attempt; no nearby tls-http-content session was paired",
+        "world channel must stay alive past bootstrap stage interfaces",
+        "post-bootstrap scene/archive transition, not more pre-login routing",
+        "first real scene archive request after interfaces"
+      ],
+      "outcome": "interfaces-loopback",
+      "pairedContentSession": {},
+      "pairedLoginRawSession": {},
+      "serverAttempt": {
+        "bootstrapFinished": true,
+        "channelClosed": true,
+        "closeLine": "[nioEventLoopGroup-3-26] INFO com.opennxt.net.game.pipeline.DynamicPacketHandler - Channel /127.0.0.1:61707 closed after bootstrap stage interfaces (current=none, completed=appearance, login-response, pipeline-switch, rebuild, stats, default-state, interfaces)",
+        "closeStage": "interfaces",
+        "player": "demon",
+        "skipReadyWait": false,
+        "waitingMapBuildComplete": true
+      },
+      "serverTail": [
+        {
+          "bytes": 36,
+          "kind": "send-raw",
+          "lineNumber": 7275,
+          "opcode": 57,
+          "preview": "4c6f6164696e67206e6f7465733c62723e506c6561736520776169742e2e2e00",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.425921900Z"
+        },
+        {
+          "bytes": 5,
+          "kind": "send-raw",
+          "lineNumber": 7276,
+          "opcode": 45,
+          "preview": "0589000580",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.429920800Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7277,
+          "opcode": 141,
+          "preview": "696900000000010000000b0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.436449400Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7278,
+          "opcode": 141,
+          "preview": "696900000000000000000c0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.442881200Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7296,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.476598700Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7299,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.480598500Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7303,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.485118Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7306,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.487118700Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7309,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.493651800Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7322,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.509699800Z"
+        }
+      ],
+      "tailSignature": "{\"client\":[\"recv-raw:0\"],\"server\":[\"send-raw:57\",\"send-raw:45\",\"send-raw:141\",\"send-raw:141\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:131\",\"send-raw:131\"],\"world\":[\"world-defer-forced-fallback-scene-bridge:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-light-tail-pre-hold:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-completion-structure:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-deferred-completion-scripts:accepted-ready-before-hold-clear\",\"world-skip-prime-forced-fallback-pre-deferred-families:already-primed\",\"world-hold-post-initial-sync\",\"world-hold-keepalive:forced-map-build-fallback\",\"world-skip-hold-sync:forced-map-build-fallback-post-prime\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 4.798,
+        "endLine": 7326,
+        "endTimestamp": "2026-03-22T18:54:10.551781600Z",
+        "eventCount": 86,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 2,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7240,
+        "startTimestamp": "2026-03-22T18:54:05.753367700Z"
+      },
+      "worldTail": [
+        {
+          "kind": "world-defer-forced-fallback-scene-bridge",
+          "lineNumber": 7316,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.501692900Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-light-tail-pre-hold",
+          "lineNumber": 7317,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.501692900Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-completion-structure",
+          "lineNumber": 7318,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.502697700Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-deferred-completion-scripts",
+          "lineNumber": 7319,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.504697100Z"
+        },
+        {
+          "kind": "world-skip-prime-forced-fallback-pre-deferred-families",
+          "lineNumber": 7320,
+          "reason": "already-primed",
+          "source": "hold",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.505699500Z"
+        },
+        {
+          "kind": "world-hold-post-initial-sync",
+          "lineNumber": 7321,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.506698200Z"
+        },
+        {
+          "kind": "world-hold-keepalive",
+          "lineNumber": 7323,
+          "reason": "forced-map-build-fallback",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.512226200Z"
+        },
+        {
+          "kind": "world-skip-hold-sync",
+          "lineNumber": 7324,
+          "reason": "forced-map-build-fallback-post-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.513223400Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 7325,
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.525731Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 7326,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:10.551781600Z"
+        }
+      ]
+    },
+    {
+      "attemptIndex": 2,
+      "clientTail": [
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 7335,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:10.634310900Z"
+        }
+      ],
+      "needs": [
+        "fresh content capture aligned to this world attempt; no nearby tls-http-content session was paired",
+        "world channel must stay alive past bootstrap stage interfaces",
+        "post-bootstrap scene/archive transition, not more pre-login routing",
+        "first real scene archive request after interfaces"
+      ],
+      "outcome": "interfaces-loopback",
+      "pairedContentSession": {},
+      "pairedLoginRawSession": {},
+      "serverAttempt": {
+        "bootstrapFinished": true,
+        "channelClosed": true,
+        "closeLine": "[nioEventLoopGroup-3-30] INFO com.opennxt.net.game.pipeline.DynamicPacketHandler - Channel /127.0.0.1:63349 closed after bootstrap stage interfaces (current=none, completed=appearance, login-response, pipeline-switch, rebuild, stats, default-state, interfaces)",
+        "closeStage": "interfaces",
+        "player": "demon",
+        "skipReadyWait": false,
+        "waitingMapBuildComplete": true
+      },
+      "serverTail": [
+        {
+          "bytes": 5,
+          "kind": "send-raw",
+          "lineNumber": 7364,
+          "opcode": 45,
+          "preview": "0589000580",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.193752600Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7365,
+          "opcode": 141,
+          "preview": "696900000000010000000b0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.195758200Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7366,
+          "opcode": 141,
+          "preview": "696900000000000000000c0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.198760300Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7384,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.217852400Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7387,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.219855100Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7391,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.222381400Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7394,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.224374Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7397,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.229884700Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7408,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.237417200Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7411,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.239417600Z"
+        }
+      ],
+      "tailSignature": "{\"client\":[\"recv-raw:0\"],\"server\":[\"send-raw:45\",\"send-raw:141\",\"send-raw:141\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:131\",\"send-raw:131\",\"send-raw:131\"],\"world\":[\"world-defer-forced-fallback-scene-bridge:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-light-tail-pre-hold:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-completion-structure:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-deferred-completion-scripts:accepted-ready-before-hold-clear\",\"world-skip-prime-forced-fallback-pre-deferred-families:already-primed\",\"world-hold-post-initial-sync\",\"world-hold-keepalive:forced-map-build-fallback\",\"world-skip-hold-sync:forced-map-build-fallback-post-prime\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 4.799,
+        "endLine": 7415,
+        "endTimestamp": "2026-03-22T18:54:15.353061Z",
+        "eventCount": 87,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 3,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7327,
+        "startTimestamp": "2026-03-22T18:54:10.553790600Z"
+      },
+      "worldTail": [
+        {
+          "kind": "world-defer-forced-fallback-scene-bridge",
+          "lineNumber": 7404,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.233417400Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-light-tail-pre-hold",
+          "lineNumber": 7405,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.233417400Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-completion-structure",
+          "lineNumber": 7406,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.233417400Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-deferred-completion-scripts",
+          "lineNumber": 7407,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.234419500Z"
+        },
+        {
+          "kind": "world-skip-prime-forced-fallback-pre-deferred-families",
+          "lineNumber": 7409,
+          "reason": "already-primed",
+          "source": "hold",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.237417200Z"
+        },
+        {
+          "kind": "world-hold-post-initial-sync",
+          "lineNumber": 7410,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.237417200Z"
+        },
+        {
+          "kind": "world-hold-keepalive",
+          "lineNumber": 7412,
+          "reason": "forced-map-build-fallback",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.240416Z"
+        },
+        {
+          "kind": "world-skip-hold-sync",
+          "lineNumber": 7413,
+          "reason": "forced-map-build-fallback-post-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.240416Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 7414,
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.297362800Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 7415,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:15.353061Z"
+        }
+      ]
+    },
+    {
+      "attemptIndex": 3,
+      "clientTail": [
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 7424,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:15.483449900Z"
+        }
+      ],
+      "needs": [
+        "fresh content capture aligned to this world attempt; no nearby tls-http-content session was paired",
+        "world channel must stay alive past bootstrap stage interfaces",
+        "post-bootstrap scene/archive transition, not more pre-login routing",
+        "first real scene archive request after interfaces"
+      ],
+      "outcome": "interfaces-loopback",
+      "pairedContentSession": {},
+      "pairedLoginRawSession": {},
+      "serverAttempt": {
+        "bootstrapFinished": true,
+        "channelClosed": true,
+        "closeLine": "[nioEventLoopGroup-3-34] INFO com.opennxt.net.game.pipeline.DynamicPacketHandler - Channel /127.0.0.1:63425 closed after bootstrap stage interfaces (current=none, completed=appearance, login-response, pipeline-switch, rebuild, stats, default-state, interfaces)",
+        "closeStage": "interfaces",
+        "player": "demon",
+        "skipReadyWait": false,
+        "waitingMapBuildComplete": true
+      },
+      "serverTail": [
+        {
+          "bytes": 36,
+          "kind": "send-raw",
+          "lineNumber": 7451,
+          "opcode": 57,
+          "preview": "4c6f6164696e67206e6f7465733c62723e506c6561736520776169742e2e2e00",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:15.999996600Z"
+        },
+        {
+          "bytes": 5,
+          "kind": "send-raw",
+          "lineNumber": 7452,
+          "opcode": 45,
+          "preview": "0589000580",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:16.003529200Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7453,
+          "opcode": 141,
+          "preview": "696900000000010000000b0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:16.007547300Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7454,
+          "opcode": 141,
+          "preview": "696900000000000000000c0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:16.009531600Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7472,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:16.027451800Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7475,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:16.029796700Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7479,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:16.031307600Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7482,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:16.032323700Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7485,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:16.035336300Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7498,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:16.044623300Z"
+        }
+      ],
+      "tailSignature": "{\"client\":[\"recv-raw:0\"],\"server\":[\"send-raw:57\",\"send-raw:45\",\"send-raw:141\",\"send-raw:141\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:131\",\"send-raw:131\"],\"world\":[\"world-defer-forced-fallback-scene-bridge:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-light-tail-pre-hold:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-completion-structure:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-deferred-completion-scripts:accepted-ready-before-hold-clear\",\"world-skip-prime-forced-fallback-pre-deferred-families:already-primed\",\"world-hold-post-initial-sync\",\"world-hold-keepalive:forced-map-build-fallback\",\"world-skip-hold-sync:forced-map-build-fallback-post-prime\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 3.59,
+        "endLine": 7502,
+        "endTimestamp": "2026-03-22T18:54:18.945322200Z",
+        "eventCount": 86,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 2,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7416,
+        "startTimestamp": "2026-03-22T18:54:15.355079200Z"
+      },
+      "worldTail": [
+        {
+          "kind": "world-defer-forced-fallback-scene-bridge",
+          "lineNumber": 7492,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:16.039340300Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-light-tail-pre-hold",
+          "lineNumber": 7493,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:16.040334900Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-completion-structure",
+          "lineNumber": 7494,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:16.040334900Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-deferred-completion-scripts",
+          "lineNumber": 7495,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:16.041342200Z"
+        },
+        {
+          "kind": "world-skip-prime-forced-fallback-pre-deferred-families",
+          "lineNumber": 7496,
+          "reason": "already-primed",
+          "source": "hold",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:16.041342200Z"
+        },
+        {
+          "kind": "world-hold-post-initial-sync",
+          "lineNumber": 7497,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:16.041342200Z"
+        },
+        {
+          "kind": "world-hold-keepalive",
+          "lineNumber": 7499,
+          "reason": "forced-map-build-fallback",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:16.044623300Z"
+        },
+        {
+          "kind": "world-skip-hold-sync",
+          "lineNumber": 7500,
+          "reason": "forced-map-build-fallback-post-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:16.045628700Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 7501,
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:16.077576700Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 7502,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:18.945322200Z"
+        }
+      ]
+    },
+    {
+      "attemptIndex": 4,
+      "clientTail": [
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 7511,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:19.047837700Z"
+        }
+      ],
+      "needs": [
+        "fresh content capture aligned to this world attempt; no nearby tls-http-content session was paired",
+        "world channel must stay alive past bootstrap stage interfaces",
+        "post-bootstrap scene/archive transition, not more pre-login routing",
+        "first real scene archive request after interfaces"
+      ],
+      "outcome": "interfaces-loopback",
+      "pairedContentSession": {},
+      "pairedLoginRawSession": {},
+      "serverAttempt": {
+        "bootstrapFinished": true,
+        "channelClosed": true,
+        "closeLine": "[nioEventLoopGroup-3-38] INFO com.opennxt.net.game.pipeline.DynamicPacketHandler - Channel /127.0.0.1:63508 closed after bootstrap stage interfaces (current=none, completed=appearance, login-response, pipeline-switch, rebuild, stats, default-state, interfaces)",
+        "closeStage": "interfaces",
+        "player": "demon",
+        "skipReadyWait": false,
+        "waitingMapBuildComplete": true
+      },
+      "serverTail": [
+        {
+          "bytes": 5,
+          "kind": "send-raw",
+          "lineNumber": 7540,
+          "opcode": 45,
+          "preview": "0589000580",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:19.605384100Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7541,
+          "opcode": 141,
+          "preview": "696900000000010000000b0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:19.607387900Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7542,
+          "opcode": 141,
+          "preview": "696900000000000000000c0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:19.611885700Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7560,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:19.631352900Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7563,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:19.633492Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7567,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:19.636504200Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7570,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:19.637490800Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7573,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:19.641510800Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7584,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:19.647722800Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7587,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:19.649724400Z"
+        }
+      ],
+      "tailSignature": "{\"client\":[\"recv-raw:0\"],\"server\":[\"send-raw:45\",\"send-raw:141\",\"send-raw:141\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:131\",\"send-raw:131\",\"send-raw:131\"],\"world\":[\"world-defer-forced-fallback-scene-bridge:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-light-tail-pre-hold:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-completion-structure:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-deferred-completion-scripts:accepted-ready-before-hold-clear\",\"world-skip-prime-forced-fallback-pre-deferred-families:already-primed\",\"world-hold-post-initial-sync\",\"world-hold-keepalive:forced-map-build-fallback\",\"world-skip-hold-sync:forced-map-build-fallback-post-prime\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 4.196,
+        "endLine": 7591,
+        "endTimestamp": "2026-03-22T18:54:23.142451400Z",
+        "eventCount": 87,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 3,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7503,
+        "startTimestamp": "2026-03-22T18:54:18.946831700Z"
+      },
+      "worldTail": [
+        {
+          "kind": "world-defer-forced-fallback-scene-bridge",
+          "lineNumber": 7580,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:19.644692100Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-light-tail-pre-hold",
+          "lineNumber": 7581,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:19.644692100Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-completion-structure",
+          "lineNumber": 7582,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:19.644692100Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-deferred-completion-scripts",
+          "lineNumber": 7583,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:19.645715400Z"
+        },
+        {
+          "kind": "world-skip-prime-forced-fallback-pre-deferred-families",
+          "lineNumber": 7585,
+          "reason": "already-primed",
+          "source": "hold",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:19.648724300Z"
+        },
+        {
+          "kind": "world-hold-post-initial-sync",
+          "lineNumber": 7586,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:19.648724300Z"
+        },
+        {
+          "kind": "world-hold-keepalive",
+          "lineNumber": 7588,
+          "reason": "forced-map-build-fallback",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:19.651230900Z"
+        },
+        {
+          "kind": "world-skip-hold-sync",
+          "lineNumber": 7589,
+          "reason": "forced-map-build-fallback-post-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:19.651230900Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 7590,
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:19.708936400Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 7591,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:23.142451400Z"
+        }
+      ]
+    },
+    {
+      "attemptIndex": 5,
+      "clientTail": [
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 7600,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:23.244035300Z"
+        }
+      ],
+      "needs": [
+        "fresh content capture aligned to this world attempt; no nearby tls-http-content session was paired",
+        "world channel must stay alive past bootstrap stage interfaces",
+        "post-bootstrap scene/archive transition, not more pre-login routing",
+        "first real scene archive request after interfaces"
+      ],
+      "outcome": "interfaces-loopback",
+      "pairedContentSession": {},
+      "pairedLoginRawSession": {},
+      "serverAttempt": {
+        "bootstrapFinished": true,
+        "channelClosed": true,
+        "closeLine": "[nioEventLoopGroup-3-42] INFO com.opennxt.net.game.pipeline.DynamicPacketHandler - Channel /127.0.0.1:63596 closed after bootstrap stage interfaces (current=none, completed=appearance, login-response, pipeline-switch, rebuild, stats, default-state, interfaces)",
+        "closeStage": "interfaces",
+        "player": "demon",
+        "skipReadyWait": false,
+        "waitingMapBuildComplete": true
+      },
+      "serverTail": [
+        {
+          "bytes": 5,
+          "kind": "send-raw",
+          "lineNumber": 7629,
+          "opcode": 45,
+          "preview": "0589000580",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:23.793364900Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7630,
+          "opcode": 141,
+          "preview": "696900000000010000000b0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:23.794862700Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7631,
+          "opcode": 141,
+          "preview": "696900000000000000000c0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:23.798134300Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7649,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:23.814134900Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7652,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:23.815135500Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7656,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:23.818268100Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7659,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:23.820267900Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7662,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:23.824951100Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7673,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:23.832469200Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7676,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:23.834473200Z"
+        }
+      ],
+      "tailSignature": "{\"client\":[\"recv-raw:0\"],\"server\":[\"send-raw:45\",\"send-raw:141\",\"send-raw:141\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:131\",\"send-raw:131\",\"send-raw:131\"],\"world\":[\"world-defer-forced-fallback-scene-bridge:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-light-tail-pre-hold:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-completion-structure:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-deferred-completion-scripts:accepted-ready-before-hold-clear\",\"world-skip-prime-forced-fallback-pre-deferred-families:already-primed\",\"world-hold-post-initial-sync\",\"world-hold-keepalive:forced-map-build-fallback\",\"world-skip-hold-sync:forced-map-build-fallback-post-prime\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 4.206,
+        "endLine": 7680,
+        "endTimestamp": "2026-03-22T18:54:27.349903700Z",
+        "eventCount": 87,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 3,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7592,
+        "startTimestamp": "2026-03-22T18:54:23.143463600Z"
+      },
+      "worldTail": [
+        {
+          "kind": "world-defer-forced-fallback-scene-bridge",
+          "lineNumber": 7669,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:23.828962700Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-light-tail-pre-hold",
+          "lineNumber": 7670,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:23.828962700Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-completion-structure",
+          "lineNumber": 7671,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:23.828962700Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-deferred-completion-scripts",
+          "lineNumber": 7672,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:23.829961300Z"
+        },
+        {
+          "kind": "world-skip-prime-forced-fallback-pre-deferred-families",
+          "lineNumber": 7674,
+          "reason": "already-primed",
+          "source": "hold",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:23.832469200Z"
+        },
+        {
+          "kind": "world-hold-post-initial-sync",
+          "lineNumber": 7675,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:23.833483Z"
+        },
+        {
+          "kind": "world-hold-keepalive",
+          "lineNumber": 7677,
+          "reason": "forced-map-build-fallback",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:23.835469800Z"
+        },
+        {
+          "kind": "world-skip-hold-sync",
+          "lineNumber": 7678,
+          "reason": "forced-map-build-fallback-post-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:23.835469800Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 7679,
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:23.841537Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 7680,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:27.349903700Z"
+        }
+      ]
+    },
+    {
+      "attemptIndex": 6,
+      "clientTail": [
+        {
+          "bytes": 1,
+          "kind": "recv-raw",
+          "lineNumber": 7689,
+          "opcode": 83,
+          "preview": "01",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:27.466659500Z"
+        },
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 7690,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:27.481890900Z"
+        },
+        {
+          "bytes": 1,
+          "kind": "recv-raw",
+          "lineNumber": 7691,
+          "opcode": 83,
+          "preview": "00",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:27.791349Z"
+        }
+      ],
+      "needs": [
+        "fresh content capture aligned to this world attempt; no nearby tls-http-content session was paired",
+        "world channel must stay alive past bootstrap stage interfaces",
+        "post-bootstrap scene/archive transition, not more pre-login routing",
+        "first real scene archive request after interfaces"
+      ],
+      "outcome": "interfaces-loopback",
+      "pairedContentSession": {},
+      "pairedLoginRawSession": {},
+      "serverAttempt": {
+        "bootstrapFinished": true,
+        "channelClosed": true,
+        "closeLine": "[nioEventLoopGroup-3-46] INFO com.opennxt.net.game.pipeline.DynamicPacketHandler - Channel /127.0.0.1:52773 closed after bootstrap stage interfaces (current=none, completed=appearance, login-response, pipeline-switch, rebuild, stats, default-state, interfaces)",
+        "closeStage": "interfaces",
+        "player": "demon",
+        "skipReadyWait": false,
+        "waitingMapBuildComplete": true
+      },
+      "serverTail": [
+        {
+          "bytes": 36,
+          "kind": "send-raw",
+          "lineNumber": 7719,
+          "opcode": 57,
+          "preview": "4c6f6164696e67206e6f7465733c62723e506c6561736520776169742e2e2e00",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.091617800Z"
+        },
+        {
+          "bytes": 5,
+          "kind": "send-raw",
+          "lineNumber": 7720,
+          "opcode": 45,
+          "preview": "0589000580",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.093773700Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7721,
+          "opcode": 141,
+          "preview": "696900000000010000000b0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.101529500Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7722,
+          "opcode": 141,
+          "preview": "696900000000000000000c0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.107690600Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7740,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.145717100Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7743,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.151406Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7747,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.158402100Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7750,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.162442600Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7753,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.170544100Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7767,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.194173100Z"
+        }
+      ],
+      "tailSignature": "{\"client\":[\"recv-raw:83\",\"recv-raw:0\",\"recv-raw:83\"],\"server\":[\"send-raw:57\",\"send-raw:45\",\"send-raw:141\",\"send-raw:141\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:131\",\"send-raw:131\"],\"world\":[\"world-defer-forced-fallback-light-tail-pre-hold:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-completion-structure:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-deferred-completion-scripts:accepted-ready-before-hold-clear\",\"world-ignore-client-compat:83\",\"world-skip-prime-forced-fallback-pre-deferred-families:already-primed\",\"world-hold-post-initial-sync\",\"world-hold-keepalive:forced-map-build-fallback\",\"world-skip-hold-sync:forced-map-build-fallback-post-prime\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1,
+          "83": 2
+        },
+        "durationSeconds": 5.403,
+        "endLine": 7771,
+        "endTimestamp": "2026-03-22T18:54:32.756016900Z",
+        "eventCount": 90,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-ignore-client-compat": 2,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 2,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7681,
+        "startTimestamp": "2026-03-22T18:54:27.353415600Z"
+      },
+      "worldTail": [
+        {
+          "kind": "world-defer-forced-fallback-light-tail-pre-hold",
+          "lineNumber": 7761,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.182825500Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-completion-structure",
+          "lineNumber": 7762,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.184484100Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-deferred-completion-scripts",
+          "lineNumber": 7763,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.185510100Z"
+        },
+        {
+          "bytes": 1,
+          "kind": "world-ignore-client-compat",
+          "lineNumber": 7764,
+          "opcode": 83,
+          "preview": "00",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.189519900Z"
+        },
+        {
+          "kind": "world-skip-prime-forced-fallback-pre-deferred-families",
+          "lineNumber": 7765,
+          "reason": "already-primed",
+          "source": "hold",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.190719800Z"
+        },
+        {
+          "kind": "world-hold-post-initial-sync",
+          "lineNumber": 7766,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.191238300Z"
+        },
+        {
+          "kind": "world-hold-keepalive",
+          "lineNumber": 7768,
+          "reason": "forced-map-build-fallback",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.195318600Z"
+        },
+        {
+          "kind": "world-skip-hold-sync",
+          "lineNumber": 7769,
+          "reason": "forced-map-build-fallback-post-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.196352400Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 7770,
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.256106200Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 7771,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:32.756016900Z"
+        }
+      ]
+    },
+    {
+      "attemptIndex": 7,
+      "clientTail": [
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 7780,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:32.841391900Z"
+        }
+      ],
+      "needs": [
+        "fresh content capture aligned to this world attempt; no nearby tls-http-content session was paired",
+        "world channel must stay alive past bootstrap stage interfaces",
+        "post-bootstrap scene/archive transition, not more pre-login routing",
+        "first real scene archive request after interfaces"
+      ],
+      "outcome": "interfaces-loopback",
+      "pairedContentSession": {},
+      "pairedLoginRawSession": {},
+      "serverAttempt": {
+        "bootstrapFinished": true,
+        "channelClosed": true,
+        "closeLine": "[nioEventLoopGroup-3-50] INFO com.opennxt.net.game.pipeline.DynamicPacketHandler - Channel /127.0.0.1:52861 closed after bootstrap stage interfaces (current=none, completed=appearance, login-response, pipeline-switch, rebuild, stats, default-state, interfaces)",
+        "closeStage": "interfaces",
+        "player": "demon",
+        "skipReadyWait": false,
+        "waitingMapBuildComplete": true
+      },
+      "serverTail": [
+        {
+          "bytes": 5,
+          "kind": "send-raw",
+          "lineNumber": 7809,
+          "opcode": 45,
+          "preview": "0589000580",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:33.434993300Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7810,
+          "opcode": 141,
+          "preview": "696900000000010000000b0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:33.440002Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7811,
+          "opcode": 141,
+          "preview": "696900000000000000000c0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:33.446532200Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7829,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:33.481495500Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7832,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:33.486011Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7836,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:33.492526500Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7839,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:33.497035900Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7842,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:33.503073700Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7853,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:33.515387700Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7856,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:33.519387200Z"
+        }
+      ],
+      "tailSignature": "{\"client\":[\"recv-raw:0\"],\"server\":[\"send-raw:45\",\"send-raw:141\",\"send-raw:141\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:131\",\"send-raw:131\",\"send-raw:131\"],\"world\":[\"world-defer-forced-fallback-scene-bridge:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-light-tail-pre-hold:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-completion-structure:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-deferred-completion-scripts:accepted-ready-before-hold-clear\",\"world-skip-prime-forced-fallback-pre-deferred-families:already-primed\",\"world-hold-post-initial-sync\",\"world-hold-keepalive:forced-map-build-fallback\",\"world-skip-hold-sync:forced-map-build-fallback-post-prime\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 5.383,
+        "endLine": 7860,
+        "endTimestamp": "2026-03-22T18:54:38.141058100Z",
+        "eventCount": 87,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 3,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7772,
+        "startTimestamp": "2026-03-22T18:54:32.758017800Z"
+      },
+      "worldTail": [
+        {
+          "kind": "world-defer-forced-fallback-scene-bridge",
+          "lineNumber": 7849,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:33.510081600Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-light-tail-pre-hold",
+          "lineNumber": 7850,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:33.511080500Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-completion-structure",
+          "lineNumber": 7851,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:33.512388100Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-deferred-completion-scripts",
+          "lineNumber": 7852,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:33.513387900Z"
+        },
+        {
+          "kind": "world-skip-prime-forced-fallback-pre-deferred-families",
+          "lineNumber": 7854,
+          "reason": "already-primed",
+          "source": "hold",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:33.516387800Z"
+        },
+        {
+          "kind": "world-hold-post-initial-sync",
+          "lineNumber": 7855,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:33.517387700Z"
+        },
+        {
+          "kind": "world-hold-keepalive",
+          "lineNumber": 7857,
+          "reason": "forced-map-build-fallback",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:33.521387200Z"
+        },
+        {
+          "kind": "world-skip-hold-sync",
+          "lineNumber": 7858,
+          "reason": "forced-map-build-fallback-post-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:33.522806600Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 7859,
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:33.571225200Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 7860,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:38.141058100Z"
+        }
+      ]
+    },
+    {
+      "attemptIndex": 8,
+      "clientTail": [
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 7869,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:38.282453300Z"
+        }
+      ],
+      "needs": [
+        "fresh content capture aligned to this world attempt; no nearby tls-http-content session was paired",
+        "world channel must stay alive past bootstrap stage interfaces",
+        "post-bootstrap scene/archive transition, not more pre-login routing",
+        "first real scene archive request after interfaces"
+      ],
+      "outcome": "interfaces-loopback",
+      "pairedContentSession": {},
+      "pairedLoginRawSession": {},
+      "serverAttempt": {
+        "bootstrapFinished": true,
+        "channelClosed": true,
+        "closeLine": "[nioEventLoopGroup-3-54] INFO com.opennxt.net.game.pipeline.DynamicPacketHandler - Channel /127.0.0.1:52933 closed after bootstrap stage interfaces (current=none, completed=appearance, login-response, pipeline-switch, rebuild, stats, default-state, interfaces)",
+        "closeStage": "interfaces",
+        "player": "demon",
+        "skipReadyWait": false,
+        "waitingMapBuildComplete": true
+      },
+      "serverTail": [
+        {
+          "bytes": 5,
+          "kind": "send-raw",
+          "lineNumber": 7898,
+          "opcode": 45,
+          "preview": "0589000580",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:38.808949400Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7899,
+          "opcode": 141,
+          "preview": "696900000000010000000b0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:38.817973Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7900,
+          "opcode": 141,
+          "preview": "696900000000000000000c0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:38.825485400Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7918,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:38.856601400Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7921,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:38.859601400Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7925,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:38.865112400Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7928,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:38.869112300Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7931,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:38.873624900Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7942,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:38.889135Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7945,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:38.894235700Z"
+        }
+      ],
+      "tailSignature": "{\"client\":[\"recv-raw:0\"],\"server\":[\"send-raw:45\",\"send-raw:141\",\"send-raw:141\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:131\",\"send-raw:131\",\"send-raw:131\"],\"world\":[\"world-defer-forced-fallback-scene-bridge:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-light-tail-pre-hold:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-completion-structure:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-deferred-completion-scripts:accepted-ready-before-hold-clear\",\"world-skip-prime-forced-fallback-pre-deferred-families:already-primed\",\"world-hold-post-initial-sync\",\"world-hold-keepalive:forced-map-build-fallback\",\"world-skip-hold-sync:forced-map-build-fallback-post-prime\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 4.801,
+        "endLine": 7949,
+        "endTimestamp": "2026-03-22T18:54:42.943716600Z",
+        "eventCount": 87,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 3,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7861,
+        "startTimestamp": "2026-03-22T18:54:38.142858800Z"
+      },
+      "worldTail": [
+        {
+          "kind": "world-defer-forced-fallback-scene-bridge",
+          "lineNumber": 7938,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:38.882131900Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-light-tail-pre-hold",
+          "lineNumber": 7939,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:38.883131600Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-completion-structure",
+          "lineNumber": 7940,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:38.885135700Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-deferred-completion-scripts",
+          "lineNumber": 7941,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:38.887135900Z"
+        },
+        {
+          "kind": "world-skip-prime-forced-fallback-pre-deferred-families",
+          "lineNumber": 7943,
+          "reason": "already-primed",
+          "source": "hold",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:38.890135800Z"
+        },
+        {
+          "kind": "world-hold-post-initial-sync",
+          "lineNumber": 7944,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:38.892231800Z"
+        },
+        {
+          "kind": "world-hold-keepalive",
+          "lineNumber": 7946,
+          "reason": "forced-map-build-fallback",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:38.895235200Z"
+        },
+        {
+          "kind": "world-skip-hold-sync",
+          "lineNumber": 7947,
+          "reason": "forced-map-build-fallback-post-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:38.896235700Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 7948,
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:38.949339100Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 7949,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:42.943716600Z"
+        }
+      ]
+    },
+    {
+      "attemptIndex": 9,
+      "clientTail": [
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 7958,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:43.083080900Z"
+        }
+      ],
+      "needs": [
+        "fresh content capture aligned to this world attempt; no nearby tls-http-content session was paired",
+        "world channel must stay alive past bootstrap stage interfaces",
+        "post-bootstrap scene/archive transition, not more pre-login routing",
+        "first real scene archive request after interfaces"
+      ],
+      "outcome": "interfaces-loopback",
+      "pairedContentSession": {},
+      "pairedLoginRawSession": {},
+      "serverAttempt": {
+        "bootstrapFinished": true,
+        "channelClosed": true,
+        "closeLine": "[nioEventLoopGroup-3-58] INFO com.opennxt.net.game.pipeline.DynamicPacketHandler - Channel /127.0.0.1:60089 closed after bootstrap stage interfaces (current=none, completed=appearance, login-response, pipeline-switch, rebuild, stats, default-state, interfaces)",
+        "closeStage": "interfaces",
+        "player": "demon",
+        "skipReadyWait": false,
+        "waitingMapBuildComplete": true
+      },
+      "serverTail": [
+        {
+          "bytes": 36,
+          "kind": "send-raw",
+          "lineNumber": 7985,
+          "opcode": 57,
+          "preview": "4c6f6164696e67206e6f7465733c62723e506c6561736520776169742e2e2e00",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:43.620316700Z"
+        },
+        {
+          "bytes": 5,
+          "kind": "send-raw",
+          "lineNumber": 7986,
+          "opcode": 45,
+          "preview": "0589000580",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:43.621822600Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7987,
+          "opcode": 141,
+          "preview": "696900000000010000000b0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:43.625825700Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7988,
+          "opcode": 141,
+          "preview": "696900000000000000000c0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:43.633344Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 8006,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:43.661369900Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 8009,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:43.663884300Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 8013,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:43.668883100Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 8016,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:43.673397900Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 8019,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:43.680438100Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 8032,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:43.703498200Z"
+        }
+      ],
+      "tailSignature": "{\"client\":[\"recv-raw:0\"],\"server\":[\"send-raw:57\",\"send-raw:45\",\"send-raw:141\",\"send-raw:141\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:131\",\"send-raw:131\"],\"world\":[\"world-defer-forced-fallback-scene-bridge:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-light-tail-pre-hold:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-completion-structure:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-deferred-completion-scripts:accepted-ready-before-hold-clear\",\"world-skip-prime-forced-fallback-pre-deferred-families:already-primed\",\"world-hold-post-initial-sync\",\"world-hold-keepalive:forced-map-build-fallback\",\"world-skip-hold-sync:forced-map-build-fallback-post-prime\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 9.001,
+        "endLine": 8036,
+        "endTimestamp": "2026-03-22T18:54:51.947723500Z",
+        "eventCount": 86,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 2,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7950,
+        "startTimestamp": "2026-03-22T18:54:42.946231900Z"
+      },
+      "worldTail": [
+        {
+          "kind": "world-defer-forced-fallback-scene-bridge",
+          "lineNumber": 8026,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:43.688950700Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-light-tail-pre-hold",
+          "lineNumber": 8027,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:43.689950300Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-completion-structure",
+          "lineNumber": 8028,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:43.693467300Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-deferred-completion-scripts",
+          "lineNumber": 8029,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:43.695983300Z"
+        },
+        {
+          "kind": "world-skip-prime-forced-fallback-pre-deferred-families",
+          "lineNumber": 8030,
+          "reason": "already-primed",
+          "source": "hold",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:43.696983300Z"
+        },
+        {
+          "kind": "world-hold-post-initial-sync",
+          "lineNumber": 8031,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:43.697983200Z"
+        },
+        {
+          "kind": "world-hold-keepalive",
+          "lineNumber": 8033,
+          "reason": "forced-map-build-fallback",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:43.704498600Z"
+        },
+        {
+          "kind": "world-skip-hold-sync",
+          "lineNumber": 8034,
+          "reason": "forced-map-build-fallback-post-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:43.706498300Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 8035,
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:43.743653100Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 8036,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:51.947723500Z"
+        }
+      ]
+    },
+    {
+      "attemptIndex": 10,
+      "clientTail": [
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 8045,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:52.050009900Z"
+        }
+      ],
+      "needs": [
+        "fresh content capture aligned to this world attempt; no nearby tls-http-content session was paired",
+        "world channel must stay alive past bootstrap stage interfaces",
+        "post-bootstrap scene/archive transition, not more pre-login routing",
+        "first real scene archive request after interfaces"
+      ],
+      "outcome": "interfaces-loopback",
+      "pairedContentSession": {},
+      "pairedLoginRawSession": {},
+      "serverAttempt": {
+        "bootstrapFinished": true,
+        "channelClosed": true,
+        "closeLine": "[nioEventLoopGroup-3-62] INFO com.opennxt.net.game.pipeline.DynamicPacketHandler - Channel /127.0.0.1:60160 closed after bootstrap stage interfaces (current=none, completed=appearance, login-response, pipeline-switch, rebuild, stats, default-state, interfaces)",
+        "closeStage": "interfaces",
+        "player": "demon",
+        "skipReadyWait": false,
+        "waitingMapBuildComplete": true
+      },
+      "serverTail": [
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9560,
+          "opcode": 38,
+          "preview": "0000000085008a0300000000000000007fb60300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.527701200Z"
+        },
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9561,
+          "opcode": 38,
+          "preview": "0000000073008a0300000000000000007fb90300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.530229Z"
+        },
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9562,
+          "opcode": 38,
+          "preview": "0000000074008a0300000000000000007fb50300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.532242800Z"
+        },
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9563,
+          "opcode": 38,
+          "preview": "0000000072008a0300000000000000007fa80300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.534758800Z"
+        },
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9564,
+          "opcode": 38,
+          "preview": "0000000086008a0300000000000000007fb40300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.536782200Z"
+        },
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9565,
+          "opcode": 38,
+          "preview": "0000000083008a0300000000000000007fab0300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.538325300Z"
+        },
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9566,
+          "opcode": 38,
+          "preview": "0000000052008a0300000000000000007fba0300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.540303200Z"
+        },
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9567,
+          "opcode": 38,
+          "preview": "0000000024008a0300000000000000007fa10300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.541816Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 9568,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "social-state",
+          "timestamp": "2026-03-22T18:57:50.555491600Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 9569,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "social-state",
+          "timestamp": "2026-03-22T18:57:50.557487300Z"
+        }
+      ],
+      "tailSignature": "{\"client\":[\"recv-raw:0\"],\"server\":[\"send-raw:38\",\"send-raw:38\",\"send-raw:38\",\"send-raw:38\",\"send-raw:38\",\"send-raw:38\",\"send-raw:38\",\"send-raw:38\",\"send-raw:131\",\"send-raw:131\"],\"world\":[\"world-defer-forced-fallback-light-tail-pre-hold:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-completion-structure:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-deferred-completion-scripts:accepted-ready-before-hold-clear\",\"world-skip-prime-forced-fallback-pre-deferred-families:already-primed\",\"world-hold-post-initial-sync\",\"world-hold-keepalive:forced-map-build-fallback\",\"world-skip-hold-sync:forced-map-build-fallback-post-prime\",\"world-channel-inactive\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 185.167,
+        "endLine": 9571,
+        "endTimestamp": "2026-03-22T18:57:57.116850Z",
+        "eventCount": 1525,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 2,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 21,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "51": 552,
+          "57": 1,
+          "59": 1,
+          "72": 833,
+          "106": 1,
+          "126": 2,
+          "128": 4,
+          "129": 29,
+          "131": 5,
+          "134": 2,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 8037,
+        "startTimestamp": "2026-03-22T18:54:51.949722300Z"
+      },
+      "worldTail": [
+        {
+          "kind": "world-defer-forced-fallback-light-tail-pre-hold",
+          "lineNumber": 8115,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:52.663417500Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-completion-structure",
+          "lineNumber": 8116,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:52.664417600Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-deferred-completion-scripts",
+          "lineNumber": 8117,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:52.665416100Z"
+        },
+        {
+          "kind": "world-skip-prime-forced-fallback-pre-deferred-families",
+          "lineNumber": 8119,
+          "reason": "already-primed",
+          "source": "hold",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:52.670412400Z"
+        },
+        {
+          "kind": "world-hold-post-initial-sync",
+          "lineNumber": 8120,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:52.671413200Z"
+        },
+        {
+          "kind": "world-hold-keepalive",
+          "lineNumber": 8122,
+          "reason": "forced-map-build-fallback",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:52.675437800Z"
+        },
+        {
+          "kind": "world-skip-hold-sync",
+          "lineNumber": 8123,
+          "reason": "forced-map-build-fallback-post-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:52.676446800Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 8124,
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:52.712569600Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 9570,
+          "stage": "social-state",
+          "timestamp": "2026-03-22T18:57:50.580068500Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 9571,
+          "stage": "",
+          "timestamp": "2026-03-22T18:57:57.116850Z"
+        }
+      ]
+    },
+    {
+      "attemptIndex": 11,
+      "clientTail": [
+        {
+          "bytes": 105,
+          "kind": "recv-raw",
+          "lineNumber": 9580,
+          "opcode": 48,
+          "preview": "090effff02900351c201e9029b05578f6d6d02c804d280675f80380f36d8079b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:57:57.729463600Z"
+        },
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 9581,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:57:57.733562400Z"
+        }
+      ],
+      "needs": [
+        "fresh content capture aligned to this world attempt; no nearby tls-http-content session was paired",
+        "world channel must stay alive past bootstrap stage interfaces",
+        "post-bootstrap scene/archive transition, not more pre-login routing",
+        "first real scene archive request after interfaces"
+      ],
+      "outcome": "interfaces-loopback",
+      "pairedContentSession": {},
+      "pairedLoginRawSession": {},
+      "serverAttempt": {
+        "bootstrapFinished": true,
+        "channelClosed": true,
+        "closeLine": "[nioEventLoopGroup-3-2] INFO com.opennxt.net.game.pipeline.DynamicPacketHandler - Channel /127.0.0.1:60234 closed after bootstrap stage interfaces (current=none, completed=appearance, login-response, pipeline-switch, rebuild, stats, default-state, interfaces)",
+        "closeStage": "interfaces",
+        "player": "demon",
+        "skipReadyWait": false,
+        "waitingMapBuildComplete": true
+      },
+      "serverTail": [
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 11246,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.408778400Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 11249,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.411125300Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 11251,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.411631200Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11252,
+          "opcode": 42,
+          "preview": "007ff4",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.416741100Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 11253,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.416741100Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11254,
+          "opcode": 42,
+          "preview": "007ff4",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.418738Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 11255,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.420245300Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11256,
+          "opcode": 42,
+          "preview": "007ff4",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.421760400Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 11257,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.421760400Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11258,
+          "opcode": 42,
+          "preview": "007ff4",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.426283300Z"
+        }
+      ],
+      "tailSignature": "{\"client\":[\"recv-raw:48\",\"recv-raw:0\"],\"server\":[\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\"],\"world\":[\"world-force-local-appearance:scene-start-nudge\",\"world-send-player-info:42\",\"world-send-scene-start-sync-burst\",\"world-sync-frame:scene-start-nudge\",\"world-send-npc-info:28\",\"world-force-local-appearance:scene-start-nudge\",\"world-send-player-info:42\",\"world-send-scene-start-sync-burst\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1,
+          "48": 1
+        },
+        "durationSeconds": 8.38,
+        "endLine": 11260,
+        "endTimestamp": "2026-03-22T18:58:05.507633Z",
+        "eventCount": 1683,
+        "exists": true,
+        "markerCounts": {
+          "world-accelerate-post-initial-sync-hold-clear": 1,
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-arm-scene-start-sync-burst": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-clear-post-initial-sync-hold": 1,
+          "world-client-display-config": 1,
+          "world-close-loading-overlay": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-deferred-completion-announcement-scripts": 1,
+          "world-defer-deferred-completion-event-delta": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-defer-late-root-interface-events": 1,
+          "world-force-local-appearance": 5,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-forced-fallback-scene-bridge": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-open-minimal-supplemental-child": 2,
+          "world-open-restored-interface": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-late-default-varps-followup-sync": 1,
+          "world-prime-late-default-varps-keepalive": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-queued-deferred-default-varps": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-deferred-completion-structure": 1,
+          "world-send-deferred-completion-tail": 1,
+          "world-send-deferred-completion-tail-after-sync": 1,
+          "world-send-deferred-default-varps": 1,
+          "world-send-deferred-forced-fallback-completion-companions": 1,
+          "world-send-forced-fallback-deferred-completion-scripts": 1,
+          "world-send-forced-fallback-light-tail-scripts": 1,
+          "world-send-forced-fallback-restored-world-panels": 1,
+          "world-send-forced-fallback-utility-panel-deck": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-light-interface-tail": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 5,
+          "world-send-player-info": 5,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-scene-start-sync-burst": 3,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-forced-fallback-deferred-completion-events": 1,
+          "world-skip-forced-fallback-light-tail-events": 1,
+          "world-skip-forced-fallback-supplemental-events": 1,
+          "world-skip-forced-fallback-utility-panel-events": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 5,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 9,
+          "38": 59,
+          "39": 1,
+          "42": 9,
+          "45": 8,
+          "50": 1,
+          "51": 552,
+          "57": 6,
+          "59": 31,
+          "72": 833,
+          "106": 1,
+          "126": 1,
+          "128": 8,
+          "131": 4,
+          "134": 1,
+          "141": 49,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "late-default-varps": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces",
+          "late-default-varps"
+        ],
+        "startLine": 9572,
+        "startTimestamp": "2026-03-22T18:57:57.127359900Z"
+      },
+      "worldTail": [
+        {
+          "kind": "world-force-local-appearance",
+          "lineNumber": 11240,
+          "reason": "scene-start-nudge",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.407773900Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "world-send-player-info",
+          "lineNumber": 11241,
+          "opcode": 42,
+          "reason": "scene-start-nudge",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.407773900Z"
+        },
+        {
+          "kind": "world-send-scene-start-sync-burst",
+          "lineNumber": 11243,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.408778400Z"
+        },
+        {
+          "kind": "world-sync-frame",
+          "lineNumber": 11244,
+          "reason": "scene-start-nudge",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.408778400Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "world-send-npc-info",
+          "lineNumber": 11245,
+          "opcode": 28,
+          "reason": "scene-start-nudge",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.408778400Z"
+        },
+        {
+          "kind": "world-force-local-appearance",
+          "lineNumber": 11247,
+          "reason": "scene-start-nudge",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.410075900Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "world-send-player-info",
+          "lineNumber": 11248,
+          "opcode": 42,
+          "reason": "scene-start-nudge",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.411125300Z"
+        },
+        {
+          "kind": "world-send-scene-start-sync-burst",
+          "lineNumber": 11250,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.411631200Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 11259,
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.427293100Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 11260,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:05.507633Z"
+        }
+      ]
+    },
+    {
+      "attemptIndex": 12,
+      "clientTail": [
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 11269,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:58:05.623108500Z"
+        }
+      ],
+      "needs": [
+        "fresh content capture aligned to this world attempt; no nearby tls-http-content session was paired",
+        "world channel must stay alive past bootstrap stage interfaces",
+        "post-bootstrap scene/archive transition, not more pre-login routing",
+        "first real scene archive request after interfaces"
+      ],
+      "outcome": "interfaces-loopback",
+      "pairedContentSession": {},
+      "pairedLoginRawSession": {},
+      "serverAttempt": {
+        "bootstrapFinished": true,
+        "channelClosed": true,
+        "closeLine": "[nioEventLoopGroup-3-6] INFO com.opennxt.net.game.pipeline.DynamicPacketHandler - Channel /127.0.0.1:60301 closed after bootstrap stage interfaces (current=none, completed=appearance, login-response, pipeline-switch, rebuild, stats, default-state, interfaces)",
+        "closeStage": "interfaces",
+        "player": "demon",
+        "skipReadyWait": false,
+        "waitingMapBuildComplete": true
+      },
+      "serverTail": [
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11667,
+          "opcode": 72,
+          "preview": "0334ff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.056618300Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11668,
+          "opcode": 72,
+          "preview": "0335ff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.057857700Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11669,
+          "opcode": 72,
+          "preview": "0336ff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.058867900Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11670,
+          "opcode": 72,
+          "preview": "0337ff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.059867700Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11671,
+          "opcode": 72,
+          "preview": "0338ff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.060867200Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11672,
+          "opcode": 72,
+          "preview": "0339ff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.062895600Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11673,
+          "opcode": 72,
+          "preview": "033aff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.065978600Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11674,
+          "opcode": 72,
+          "preview": "033bff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.069375600Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11675,
+          "opcode": 72,
+          "preview": "033cff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.070499200Z"
+        },
+        {
+          "kind": "send-raw",
+          "lineNumber": 11676,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:07.071511100Z"
+        }
+      ],
+      "tailSignature": "{\"client\":[\"recv-raw:0\"],\"server\":[\"send-raw:72\",\"send-raw:72\",\"send-raw:72\",\"send-raw:72\",\"send-raw:72\",\"send-raw:72\",\"send-raw:72\",\"send-raw:72\",\"send-raw:72\",\"send-raw\"],\"world\":[\"world-send-deferred-completion-tail\",\"world-send-deferred-default-varps\",\"world-queued-deferred-default-varps\",\"world-arm-scene-start-sync-burst:late-default-varps-prime\",\"world-prime-late-default-varps-keepalive\",\"world-prime-late-default-varps-followup-sync\",\"world-sync-frame:late-default-varps-prime\",\"world-send-npc-info:28\",\"world-force-local-appearance:late-default-varps-prime\",\"world-send-player-info:42\"]}",
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 1.562,
+        "endLine": 11676,
+        "endTimestamp": "2026-03-22T18:58:07.071511100Z",
+        "eventCount": 413,
+        "exists": true,
+        "markerCounts": {
+          "world-accelerate-post-initial-sync-hold-clear": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-arm-scene-start-sync-burst": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-clear-post-initial-sync-hold": 1,
+          "world-client-display-config": 1,
+          "world-close-loading-overlay": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-deferred-completion-announcement-scripts": 1,
+          "world-defer-deferred-completion-event-delta": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-defer-late-root-interface-events": 1,
+          "world-force-local-appearance": 3,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-forced-fallback-scene-bridge": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-open-minimal-supplemental-child": 2,
+          "world-open-restored-interface": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-late-default-varps-followup-sync": 1,
+          "world-prime-late-default-varps-keepalive": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-queued-deferred-default-varps": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-deferred-completion-structure": 1,
+          "world-send-deferred-completion-tail": 1,
+          "world-send-deferred-completion-tail-after-sync": 1,
+          "world-send-deferred-default-varps": 1,
+          "world-send-deferred-forced-fallback-completion-companions": 1,
+          "world-send-forced-fallback-deferred-completion-scripts": 1,
+          "world-send-forced-fallback-light-tail-scripts": 1,
+          "world-send-forced-fallback-restored-world-panels": 1,
+          "world-send-forced-fallback-utility-panel-deck": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-light-interface-tail": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 3,
+          "world-send-player-info": 3,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-forced-fallback-deferred-completion-events": 1,
+          "world-skip-forced-fallback-light-tail-events": 1,
+          "world-skip-forced-fallback-supplemental-events": 1,
+          "world-skip-forced-fallback-utility-panel-events": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 3,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 3,
+          "38": 59,
+          "39": 1,
+          "42": 3,
+          "45": 8,
+          "50": 1,
+          "51": 70,
+          "57": 6,
+          "59": 31,
+          "72": 70,
+          "106": 1,
+          "126": 1,
+          "128": 8,
+          "131": 4,
+          "134": 1,
+          "141": 49,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "late-default-varps": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces",
+          "late-default-varps"
+        ],
+        "startLine": 11261,
+        "startTimestamp": "2026-03-22T18:58:05.509616700Z"
+      },
+      "worldTail": [
+        {
+          "kind": "world-send-deferred-completion-tail",
+          "lineNumber": 11521,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.677212700Z"
+        },
+        {
+          "kind": "world-send-deferred-default-varps",
+          "lineNumber": 11523,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.678670700Z"
+        },
+        {
+          "kind": "world-queued-deferred-default-varps",
+          "lineNumber": 11524,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.680203800Z"
+        },
+        {
+          "kind": "world-arm-scene-start-sync-burst",
+          "lineNumber": 11525,
+          "reason": "late-default-varps-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.680203800Z"
+        },
+        {
+          "kind": "world-prime-late-default-varps-keepalive",
+          "lineNumber": 11527,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.683183700Z"
+        },
+        {
+          "kind": "world-prime-late-default-varps-followup-sync",
+          "lineNumber": 11528,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.683183700Z"
+        },
+        {
+          "kind": "world-sync-frame",
+          "lineNumber": 11529,
+          "reason": "late-default-varps-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.684202100Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "world-send-npc-info",
+          "lineNumber": 11530,
+          "opcode": 28,
+          "reason": "late-default-varps-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.684202100Z"
+        },
+        {
+          "kind": "world-force-local-appearance",
+          "lineNumber": 11532,
+          "reason": "late-default-varps-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.685198500Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "world-send-player-info",
+          "lineNumber": 11533,
+          "opcode": 42,
+          "reason": "late-default-varps-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.687300600Z"
+        }
+      ]
+    }
+  ],
+  "build": 946,
+  "cluster": {
+    "clusterId": "20260322-092945",
+    "clusterStartTimestamp": "2026-03-22T09:29:45+00:00",
+    "contentSessionCount": 3,
+    "worldAttemptCount": 12
+  },
+  "differences": [
+    "all attempts end with the same outcome: interfaces-loopback",
+    "every paired server attempt closes at bootstrap stage interfaces",
+    "paired content labels: <missing> x12",
+    "paired raw login byte-shapes: 0->0 x12",
+    "tail signatures split into 5x attempts [2, 4, 5, 7, 8], 3x attempts [1, 3, 9], 1x attempts [10], 1x attempts [12]"
+  ],
+  "generatedAt": "2026-03-22T19:55:03.504428+00:00",
+  "inputs": {
+    "attemptLimit": 12,
+    "clusterId": "",
+    "contentCaptureDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\lobby-tls-terminator",
+    "inputFingerprint": "493990185d7b1a839d1e90d0aced594aa0b183bc4575b8411ab63b5f91c47658",
+    "serverLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tmp-manual-js5.err.log",
+    "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log"
+  },
+  "schemaVersion": 1,
+  "signatureGroups": [
+    {
+      "attemptIndexes": [
+        2,
+        4,
+        5,
+        7,
+        8
+      ],
+      "clientTail": [
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 7335,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:10.634310900Z"
+        }
+      ],
+      "count": 5,
+      "disconnectStages": [
+        "interfaces"
+      ],
+      "outcomes": [
+        "interfaces-loopback"
+      ],
+      "pairedContentFirstRequestLabels": [
+        "<missing>"
+      ],
+      "serverTail": [
+        {
+          "bytes": 5,
+          "kind": "send-raw",
+          "lineNumber": 7364,
+          "opcode": 45,
+          "preview": "0589000580",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.193752600Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7365,
+          "opcode": 141,
+          "preview": "696900000000010000000b0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.195758200Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7366,
+          "opcode": 141,
+          "preview": "696900000000000000000c0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.198760300Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7384,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.217852400Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7387,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.219855100Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7391,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.222381400Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7394,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.224374Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7397,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.229884700Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7408,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.237417200Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7411,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.239417600Z"
+        }
+      ],
+      "signature": "{\"client\":[\"recv-raw:0\"],\"server\":[\"send-raw:45\",\"send-raw:141\",\"send-raw:141\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:131\",\"send-raw:131\",\"send-raw:131\"],\"world\":[\"world-defer-forced-fallback-scene-bridge:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-light-tail-pre-hold:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-completion-structure:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-deferred-completion-scripts:accepted-ready-before-hold-clear\",\"world-skip-prime-forced-fallback-pre-deferred-families:already-primed\",\"world-hold-post-initial-sync\",\"world-hold-keepalive:forced-map-build-fallback\",\"world-skip-hold-sync:forced-map-build-fallback-post-prime\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldTail": [
+        {
+          "kind": "world-defer-forced-fallback-scene-bridge",
+          "lineNumber": 7404,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.233417400Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-light-tail-pre-hold",
+          "lineNumber": 7405,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.233417400Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-completion-structure",
+          "lineNumber": 7406,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.233417400Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-deferred-completion-scripts",
+          "lineNumber": 7407,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.234419500Z"
+        },
+        {
+          "kind": "world-skip-prime-forced-fallback-pre-deferred-families",
+          "lineNumber": 7409,
+          "reason": "already-primed",
+          "source": "hold",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.237417200Z"
+        },
+        {
+          "kind": "world-hold-post-initial-sync",
+          "lineNumber": 7410,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.237417200Z"
+        },
+        {
+          "kind": "world-hold-keepalive",
+          "lineNumber": 7412,
+          "reason": "forced-map-build-fallback",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.240416Z"
+        },
+        {
+          "kind": "world-skip-hold-sync",
+          "lineNumber": 7413,
+          "reason": "forced-map-build-fallback-post-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:11.240416Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 7414,
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:11.297362800Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 7415,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:15.353061Z"
+        }
+      ]
+    },
+    {
+      "attemptIndexes": [
+        1,
+        3,
+        9
+      ],
+      "clientTail": [
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 7248,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:05.865669200Z"
+        }
+      ],
+      "count": 3,
+      "disconnectStages": [
+        "interfaces"
+      ],
+      "outcomes": [
+        "interfaces-loopback"
+      ],
+      "pairedContentFirstRequestLabels": [
+        "<missing>"
+      ],
+      "serverTail": [
+        {
+          "bytes": 36,
+          "kind": "send-raw",
+          "lineNumber": 7275,
+          "opcode": 57,
+          "preview": "4c6f6164696e67206e6f7465733c62723e506c6561736520776169742e2e2e00",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.425921900Z"
+        },
+        {
+          "bytes": 5,
+          "kind": "send-raw",
+          "lineNumber": 7276,
+          "opcode": 45,
+          "preview": "0589000580",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.429920800Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7277,
+          "opcode": 141,
+          "preview": "696900000000010000000b0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.436449400Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7278,
+          "opcode": 141,
+          "preview": "696900000000000000000c0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.442881200Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7296,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.476598700Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7299,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.480598500Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7303,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.485118Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7306,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.487118700Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7309,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.493651800Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7322,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.509699800Z"
+        }
+      ],
+      "signature": "{\"client\":[\"recv-raw:0\"],\"server\":[\"send-raw:57\",\"send-raw:45\",\"send-raw:141\",\"send-raw:141\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:131\",\"send-raw:131\"],\"world\":[\"world-defer-forced-fallback-scene-bridge:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-light-tail-pre-hold:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-completion-structure:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-deferred-completion-scripts:accepted-ready-before-hold-clear\",\"world-skip-prime-forced-fallback-pre-deferred-families:already-primed\",\"world-hold-post-initial-sync\",\"world-hold-keepalive:forced-map-build-fallback\",\"world-skip-hold-sync:forced-map-build-fallback-post-prime\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldTail": [
+        {
+          "kind": "world-defer-forced-fallback-scene-bridge",
+          "lineNumber": 7316,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.501692900Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-light-tail-pre-hold",
+          "lineNumber": 7317,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.501692900Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-completion-structure",
+          "lineNumber": 7318,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.502697700Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-deferred-completion-scripts",
+          "lineNumber": 7319,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.504697100Z"
+        },
+        {
+          "kind": "world-skip-prime-forced-fallback-pre-deferred-families",
+          "lineNumber": 7320,
+          "reason": "already-primed",
+          "source": "hold",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.505699500Z"
+        },
+        {
+          "kind": "world-hold-post-initial-sync",
+          "lineNumber": 7321,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.506698200Z"
+        },
+        {
+          "kind": "world-hold-keepalive",
+          "lineNumber": 7323,
+          "reason": "forced-map-build-fallback",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.512226200Z"
+        },
+        {
+          "kind": "world-skip-hold-sync",
+          "lineNumber": 7324,
+          "reason": "forced-map-build-fallback-post-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:06.513223400Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 7325,
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:06.525731Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 7326,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:10.551781600Z"
+        }
+      ]
+    },
+    {
+      "attemptIndexes": [
+        10
+      ],
+      "clientTail": [
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 8045,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:52.050009900Z"
+        }
+      ],
+      "count": 1,
+      "disconnectStages": [
+        "interfaces"
+      ],
+      "outcomes": [
+        "interfaces-loopback"
+      ],
+      "pairedContentFirstRequestLabels": [
+        "<missing>"
+      ],
+      "serverTail": [
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9560,
+          "opcode": 38,
+          "preview": "0000000085008a0300000000000000007fb60300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.527701200Z"
+        },
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9561,
+          "opcode": 38,
+          "preview": "0000000073008a0300000000000000007fb90300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.530229Z"
+        },
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9562,
+          "opcode": 38,
+          "preview": "0000000074008a0300000000000000007fb50300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.532242800Z"
+        },
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9563,
+          "opcode": 38,
+          "preview": "0000000072008a0300000000000000007fa80300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.534758800Z"
+        },
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9564,
+          "opcode": 38,
+          "preview": "0000000086008a0300000000000000007fb40300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.536782200Z"
+        },
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9565,
+          "opcode": 38,
+          "preview": "0000000083008a0300000000000000007fab0300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.538325300Z"
+        },
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9566,
+          "opcode": 38,
+          "preview": "0000000052008a0300000000000000007fba0300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.540303200Z"
+        },
+        {
+          "bytes": 23,
+          "kind": "send-raw",
+          "lineNumber": 9567,
+          "opcode": 38,
+          "preview": "0000000024008a0300000000000000007fa10300000000",
+          "stage": "child-interfaces",
+          "timestamp": "2026-03-22T18:57:50.541816Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 9568,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "social-state",
+          "timestamp": "2026-03-22T18:57:50.555491600Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 9569,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "social-state",
+          "timestamp": "2026-03-22T18:57:50.557487300Z"
+        }
+      ],
+      "signature": "{\"client\":[\"recv-raw:0\"],\"server\":[\"send-raw:38\",\"send-raw:38\",\"send-raw:38\",\"send-raw:38\",\"send-raw:38\",\"send-raw:38\",\"send-raw:38\",\"send-raw:38\",\"send-raw:131\",\"send-raw:131\"],\"world\":[\"world-defer-forced-fallback-light-tail-pre-hold:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-completion-structure:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-deferred-completion-scripts:accepted-ready-before-hold-clear\",\"world-skip-prime-forced-fallback-pre-deferred-families:already-primed\",\"world-hold-post-initial-sync\",\"world-hold-keepalive:forced-map-build-fallback\",\"world-skip-hold-sync:forced-map-build-fallback-post-prime\",\"world-channel-inactive\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldTail": [
+        {
+          "kind": "world-defer-forced-fallback-light-tail-pre-hold",
+          "lineNumber": 8115,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:52.663417500Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-completion-structure",
+          "lineNumber": 8116,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:52.664417600Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-deferred-completion-scripts",
+          "lineNumber": 8117,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:52.665416100Z"
+        },
+        {
+          "kind": "world-skip-prime-forced-fallback-pre-deferred-families",
+          "lineNumber": 8119,
+          "reason": "already-primed",
+          "source": "hold",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:52.670412400Z"
+        },
+        {
+          "kind": "world-hold-post-initial-sync",
+          "lineNumber": 8120,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:52.671413200Z"
+        },
+        {
+          "kind": "world-hold-keepalive",
+          "lineNumber": 8122,
+          "reason": "forced-map-build-fallback",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:52.675437800Z"
+        },
+        {
+          "kind": "world-skip-hold-sync",
+          "lineNumber": 8123,
+          "reason": "forced-map-build-fallback-post-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:52.676446800Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 8124,
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:52.712569600Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 9570,
+          "stage": "social-state",
+          "timestamp": "2026-03-22T18:57:50.580068500Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 9571,
+          "stage": "",
+          "timestamp": "2026-03-22T18:57:57.116850Z"
+        }
+      ]
+    },
+    {
+      "attemptIndexes": [
+        12
+      ],
+      "clientTail": [
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 11269,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:58:05.623108500Z"
+        }
+      ],
+      "count": 1,
+      "disconnectStages": [
+        "interfaces"
+      ],
+      "outcomes": [
+        "interfaces-loopback"
+      ],
+      "pairedContentFirstRequestLabels": [
+        "<missing>"
+      ],
+      "serverTail": [
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11667,
+          "opcode": 72,
+          "preview": "0334ff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.056618300Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11668,
+          "opcode": 72,
+          "preview": "0335ff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.057857700Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11669,
+          "opcode": 72,
+          "preview": "0336ff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.058867900Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11670,
+          "opcode": 72,
+          "preview": "0337ff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.059867700Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11671,
+          "opcode": 72,
+          "preview": "0338ff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.060867200Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11672,
+          "opcode": 72,
+          "preview": "0339ff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.062895600Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11673,
+          "opcode": 72,
+          "preview": "033aff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.065978600Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11674,
+          "opcode": 72,
+          "preview": "033bff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.069375600Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11675,
+          "opcode": 72,
+          "preview": "033cff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:07.070499200Z"
+        },
+        {
+          "kind": "send-raw",
+          "lineNumber": 11676,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:07.071511100Z"
+        }
+      ],
+      "signature": "{\"client\":[\"recv-raw:0\"],\"server\":[\"send-raw:72\",\"send-raw:72\",\"send-raw:72\",\"send-raw:72\",\"send-raw:72\",\"send-raw:72\",\"send-raw:72\",\"send-raw:72\",\"send-raw:72\",\"send-raw\"],\"world\":[\"world-send-deferred-completion-tail\",\"world-send-deferred-default-varps\",\"world-queued-deferred-default-varps\",\"world-arm-scene-start-sync-burst:late-default-varps-prime\",\"world-prime-late-default-varps-keepalive\",\"world-prime-late-default-varps-followup-sync\",\"world-sync-frame:late-default-varps-prime\",\"world-send-npc-info:28\",\"world-force-local-appearance:late-default-varps-prime\",\"world-send-player-info:42\"]}",
+      "worldTail": [
+        {
+          "kind": "world-send-deferred-completion-tail",
+          "lineNumber": 11521,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.677212700Z"
+        },
+        {
+          "kind": "world-send-deferred-default-varps",
+          "lineNumber": 11523,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.678670700Z"
+        },
+        {
+          "kind": "world-queued-deferred-default-varps",
+          "lineNumber": 11524,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.680203800Z"
+        },
+        {
+          "kind": "world-arm-scene-start-sync-burst",
+          "lineNumber": 11525,
+          "reason": "late-default-varps-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.680203800Z"
+        },
+        {
+          "kind": "world-prime-late-default-varps-keepalive",
+          "lineNumber": 11527,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.683183700Z"
+        },
+        {
+          "kind": "world-prime-late-default-varps-followup-sync",
+          "lineNumber": 11528,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.683183700Z"
+        },
+        {
+          "kind": "world-sync-frame",
+          "lineNumber": 11529,
+          "reason": "late-default-varps-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.684202100Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "world-send-npc-info",
+          "lineNumber": 11530,
+          "opcode": 28,
+          "reason": "late-default-varps-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.684202100Z"
+        },
+        {
+          "kind": "world-force-local-appearance",
+          "lineNumber": 11532,
+          "reason": "late-default-varps-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.685198500Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "world-send-player-info",
+          "lineNumber": 11533,
+          "opcode": 42,
+          "reason": "late-default-varps-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:06.687300600Z"
+        }
+      ]
+    },
+    {
+      "attemptIndexes": [
+        11
+      ],
+      "clientTail": [
+        {
+          "bytes": 105,
+          "kind": "recv-raw",
+          "lineNumber": 9580,
+          "opcode": 48,
+          "preview": "090effff02900351c201e9029b05578f6d6d02c804d280675f80380f36d8079b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:57:57.729463600Z"
+        },
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 9581,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:57:57.733562400Z"
+        }
+      ],
+      "count": 1,
+      "disconnectStages": [
+        "interfaces"
+      ],
+      "outcomes": [
+        "interfaces-loopback"
+      ],
+      "pairedContentFirstRequestLabels": [
+        "<missing>"
+      ],
+      "serverTail": [
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 11246,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.408778400Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 11249,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.411125300Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 11251,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.411631200Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11252,
+          "opcode": 42,
+          "preview": "007ff4",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.416741100Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 11253,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.416741100Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11254,
+          "opcode": 42,
+          "preview": "007ff4",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.418738Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 11255,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.420245300Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11256,
+          "opcode": 42,
+          "preview": "007ff4",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.421760400Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 11257,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.421760400Z"
+        },
+        {
+          "bytes": 3,
+          "kind": "send-raw",
+          "lineNumber": 11258,
+          "opcode": 42,
+          "preview": "007ff4",
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.426283300Z"
+        }
+      ],
+      "signature": "{\"client\":[\"recv-raw:48\",\"recv-raw:0\"],\"server\":[\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\"],\"world\":[\"world-force-local-appearance:scene-start-nudge\",\"world-send-player-info:42\",\"world-send-scene-start-sync-burst\",\"world-sync-frame:scene-start-nudge\",\"world-send-npc-info:28\",\"world-force-local-appearance:scene-start-nudge\",\"world-send-player-info:42\",\"world-send-scene-start-sync-burst\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldTail": [
+        {
+          "kind": "world-force-local-appearance",
+          "lineNumber": 11240,
+          "reason": "scene-start-nudge",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.407773900Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "world-send-player-info",
+          "lineNumber": 11241,
+          "opcode": 42,
+          "reason": "scene-start-nudge",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.407773900Z"
+        },
+        {
+          "kind": "world-send-scene-start-sync-burst",
+          "lineNumber": 11243,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.408778400Z"
+        },
+        {
+          "kind": "world-sync-frame",
+          "lineNumber": 11244,
+          "reason": "scene-start-nudge",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.408778400Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "world-send-npc-info",
+          "lineNumber": 11245,
+          "opcode": 28,
+          "reason": "scene-start-nudge",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.408778400Z"
+        },
+        {
+          "kind": "world-force-local-appearance",
+          "lineNumber": 11247,
+          "reason": "scene-start-nudge",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.410075900Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "world-send-player-info",
+          "lineNumber": 11248,
+          "opcode": 42,
+          "reason": "scene-start-nudge",
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.411125300Z"
+        },
+        {
+          "kind": "world-send-scene-start-sync-burst",
+          "lineNumber": 11250,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:02.411631200Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 11259,
+          "stage": "late-default-varps",
+          "timestamp": "2026-03-22T18:58:02.427293100Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 11260,
+          "stage": "",
+          "timestamp": "2026-03-22T18:58:05.507633Z"
+        }
+      ]
+    },
+    {
+      "attemptIndexes": [
+        6
+      ],
+      "clientTail": [
+        {
+          "bytes": 1,
+          "kind": "recv-raw",
+          "lineNumber": 7689,
+          "opcode": 83,
+          "preview": "01",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:27.466659500Z"
+        },
+        {
+          "bytes": 1291,
+          "kind": "recv-raw",
+          "lineNumber": 7690,
+          "opcode": 0,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:27.481890900Z"
+        },
+        {
+          "bytes": 1,
+          "kind": "recv-raw",
+          "lineNumber": 7691,
+          "opcode": 83,
+          "preview": "00",
+          "stage": "rebuild",
+          "timestamp": "2026-03-22T18:54:27.791349Z"
+        }
+      ],
+      "count": 1,
+      "disconnectStages": [
+        "interfaces"
+      ],
+      "outcomes": [
+        "interfaces-loopback"
+      ],
+      "pairedContentFirstRequestLabels": [
+        "<missing>"
+      ],
+      "serverTail": [
+        {
+          "bytes": 36,
+          "kind": "send-raw",
+          "lineNumber": 7719,
+          "opcode": 57,
+          "preview": "4c6f6164696e67206e6f7465733c62723e506c6561736520776169742e2e2e00",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.091617800Z"
+        },
+        {
+          "bytes": 5,
+          "kind": "send-raw",
+          "lineNumber": 7720,
+          "opcode": 45,
+          "preview": "0589000580",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.093773700Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7721,
+          "opcode": 141,
+          "preview": "696900000000010000000b0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.101529500Z"
+        },
+        {
+          "bytes": 15,
+          "kind": "send-raw",
+          "lineNumber": 7722,
+          "opcode": 141,
+          "preview": "696900000000000000000c0000229e",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.107690600Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7740,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.145717100Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7743,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.151406Z"
+        },
+        {
+          "bytes": 2,
+          "kind": "send-raw",
+          "lineNumber": 7747,
+          "opcode": 28,
+          "preview": "ffff",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.158402100Z"
+        },
+        {
+          "bytes": 64,
+          "kind": "send-raw",
+          "lineNumber": 7750,
+          "opcode": 42,
+          "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.162442600Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7753,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.170544100Z"
+        },
+        {
+          "bytes": 0,
+          "kind": "send-raw",
+          "lineNumber": 7767,
+          "opcode": 131,
+          "preview": "<empty>",
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.194173100Z"
+        }
+      ],
+      "signature": "{\"client\":[\"recv-raw:83\",\"recv-raw:0\",\"recv-raw:83\"],\"server\":[\"send-raw:57\",\"send-raw:45\",\"send-raw:141\",\"send-raw:141\",\"send-raw:28\",\"send-raw:42\",\"send-raw:28\",\"send-raw:42\",\"send-raw:131\",\"send-raw:131\"],\"world\":[\"world-defer-forced-fallback-light-tail-pre-hold:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-completion-structure:accepted-ready-before-hold-clear\",\"world-defer-forced-fallback-deferred-completion-scripts:accepted-ready-before-hold-clear\",\"world-ignore-client-compat:83\",\"world-skip-prime-forced-fallback-pre-deferred-families:already-primed\",\"world-hold-post-initial-sync\",\"world-hold-keepalive:forced-map-build-fallback\",\"world-skip-hold-sync:forced-map-build-fallback-post-prime\",\"world-channel-inactive\",\"world-added\"]}",
+      "worldTail": [
+        {
+          "kind": "world-defer-forced-fallback-light-tail-pre-hold",
+          "lineNumber": 7761,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.182825500Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-completion-structure",
+          "lineNumber": 7762,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.184484100Z"
+        },
+        {
+          "kind": "world-defer-forced-fallback-deferred-completion-scripts",
+          "lineNumber": 7763,
+          "reason": "accepted-ready-before-hold-clear",
+          "source": "explicit",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.185510100Z"
+        },
+        {
+          "bytes": 1,
+          "kind": "world-ignore-client-compat",
+          "lineNumber": 7764,
+          "opcode": 83,
+          "preview": "00",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.189519900Z"
+        },
+        {
+          "kind": "world-skip-prime-forced-fallback-pre-deferred-families",
+          "lineNumber": 7765,
+          "reason": "already-primed",
+          "source": "hold",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.190719800Z"
+        },
+        {
+          "kind": "world-hold-post-initial-sync",
+          "lineNumber": 7766,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.191238300Z"
+        },
+        {
+          "kind": "world-hold-keepalive",
+          "lineNumber": 7768,
+          "reason": "forced-map-build-fallback",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.195318600Z"
+        },
+        {
+          "kind": "world-skip-hold-sync",
+          "lineNumber": 7769,
+          "reason": "forced-map-build-fallback-post-prime",
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:28.196352400Z"
+        },
+        {
+          "kind": "world-channel-inactive",
+          "lineNumber": 7770,
+          "stage": "interfaces",
+          "timestamp": "2026-03-22T18:54:28.256106200Z"
+        },
+        {
+          "kind": "world-added",
+          "lineNumber": 7771,
+          "stage": "",
+          "timestamp": "2026-03-22T18:54:32.756016900Z"
+        }
+      ]
+    }
+  ],
+  "status": "ok",
+  "summary": {
+    "attemptCount": 12,
+    "clusterId": "20260322-092945",
+    "commonServerTailSuffix": [],
+    "commonWorldTailSuffix": [],
+    "latestArchiveRequests": 0,
+    "latestContentFirstRequestLabel": "",
+    "latestDisconnectStage": "interfaces",
+    "latestOutcome": "interfaces-loopback",
+    "likelyBlocker": "interfaces-tail-variant-loopback",
+    "uniqueTailSignatureCount": 6
+  },
+  "tool": "run_946_attempt_diff",
+  "verdict": {
+    "likelyBlocker": "interfaces-tail-variant-loopback",
+    "needs": [
+      "fresh content capture on the looping attempt cluster; no paired scene archive request exists yet",
+      "first surviving step after world-hold-keepalive:forced-map-build-fallback -> world-skip-hold-sync:forced-map-build-fallback-post-prime -> world-channel-inactive -> world-added; the channel still drops at interfaces on the dominant signature",
+      "content pairing disappears on attempts 1, 2, 3, 4, 5, 6; capture the exact first content session that should follow the interface tail on those later attempts",
+      "compare the dominant world-tail signature against a non-looping baseline: world-hold-post-initial-sync -> world-hold-keepalive:forced-map-build-fallback -> world-skip-hold-sync:forced-map-build-fallback-post-prime -> world-channel-inactive -> world-added",
+      "compare the last server raw tail against a non-looping baseline: send-raw:28 -> send-raw:42 -> send-raw:131 -> send-raw:131 -> send-raw:131"
+    ],
+    "recommendation": "The client still dies at interfaces, but there are multiple tail signatures. Diff the dominant signatures instead of changing routing again."
+  }
+}

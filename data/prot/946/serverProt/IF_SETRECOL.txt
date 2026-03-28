@@ -1,0 +1,4 @@
+value0 ushortle
+value1 ushortle
+value2 ubytec
+value3 intle

@@ -1,0 +1,96 @@
+{
+  "advisoryOnly": true,
+  "artifacts": {
+    "js5_archive_resolution": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\js5-archive-resolution.md"
+  },
+  "build": 946,
+  "generatedAt": "2026-03-19T05:10:36.408583+00:00",
+  "indexNames": {
+    "0": "ANIMS",
+    "1": "BASES",
+    "10": "BINARY",
+    "12": "CLIENTSCRIPTS",
+    "13": "FONTMETRICS",
+    "14": "VORBIS",
+    "16": "CONFIG_OBJECT",
+    "17": "CONFIG_ENUM",
+    "18": "CONFIG_NPC",
+    "19": "CONFIG_ITEM",
+    "2": "CONFIG",
+    "20": "CONFIG_SEQ",
+    "21": "CONFIG_SPOT",
+    "22": "CONFIG_STRUCT",
+    "23": "WORLDMAP",
+    "24": "QUICKCHAT",
+    "25": "QUICKCHAT_GLOBAL",
+    "26": "MATERIALS",
+    "27": "PARTICLES",
+    "28": "DEFAULTS",
+    "29": "BILLBOARDS",
+    "3": "INTERFACES",
+    "30": "DLLS",
+    "31": "SHADERS",
+    "32": "LOADINGSPRITES",
+    "33": "LOADINGSCREENS",
+    "34": "LOADINGSPRITESRAW",
+    "35": "CUTSCENES",
+    "40": "AUDIOSTREAMS",
+    "41": "WORLDMAPAREAS",
+    "42": "WORLDMAPLABELS",
+    "47": "MODELS_RT7",
+    "48": "ANIMS_RT7",
+    "49": "DBTABLEINDEX",
+    "5": "MAPS",
+    "7": "MODELS",
+    "8": "SPRITES"
+  },
+  "inputs": {
+    "inputFingerprint": "92aaf13d69be90c05a62632c8751ef6d2da8f8ed95eddc40bfb67373c281f261",
+    "js5SessionDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\js5-proxy-recorder-live",
+    "summaryJson": ""
+  },
+  "prefetch": {
+    "prefetchArchives": [
+      {
+        "archive": 0,
+        "index": 23
+      }
+    ],
+    "prefetchIndexes": [
+      2,
+      3,
+      12,
+      13,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      31,
+      49,
+      57,
+      58,
+      59,
+      60
+    ]
+  },
+  "resolutions": [],
+  "schemaVersion": 1,
+  "selectedSummaryJson": "",
+  "status": "partial",
+  "summary": {
+    "categoryCounts": {},
+    "resolvedArchiveCount": 0,
+    "sessionCount": 0,
+    "summaryJsonPresent": false
+  },
+  "tool": "run_946_js5_archive_resolver"
+}

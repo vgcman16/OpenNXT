@@ -17,6 +17,15 @@ import java.nio.ByteBuffer
 import java.util.concurrent.*
 import kotlin.system.exitProcess
 
+internal fun parseSelectionCsv(value: String?): Set<Int>? = value
+    ?.split(",")
+    ?.mapNotNull { token ->
+        val trimmed = token.trim()
+        if (trimmed.isEmpty()) null else trimmed.toInt()
+    }
+    ?.toSet()
+    ?.takeIf { it.isNotEmpty() }
+
 class CacheDownloader : Tool("cache-downloader", "Updates / downloads the cache from Jagex' JS5 servers") {
     private val ip by option(help = "Live js5 server ip").default("content.runescape.com")
     private val port by option(help = "Live js5 server port").int().default(43594)
@@ -25,6 +34,8 @@ class CacheDownloader : Tool("cache-downloader", "Updates / downloads the cache 
     private val ioThreads by option(help = "The number of I/O threads for cache-related operations").int().default(8)
     private val checkThreads by option(help = "The number of I/O threads for checking which files require updating").int()
         .default(4)
+    private val indicesArg by option(help = "Comma-separated indices to refresh; defaults to all indices")
+    private val archivesArg by option(help = "Comma-separated archive ids to refresh within the selected indices")
 
     private lateinit var cache: Filesystem
 
@@ -34,6 +45,9 @@ class CacheDownloader : Tool("cache-downloader", "Updates / downloads the cache 
     private lateinit var checksumTable: ChecksumTable
 
     private lateinit var requestHandler: Js5RequestHandler
+
+    private fun shouldProcessIndex(index: Int, selectedIndices: Set<Int>?): Boolean =
+        selectedIndices == null || index in selectedIndices
 
     fun request(priority: Boolean, index: Int, archive: Int): Js5RequestHandler.ArchiveRequest {
         if (index == 255) {
@@ -72,10 +86,13 @@ class CacheDownloader : Tool("cache-downloader", "Updates / downloads the cache 
         }
     }
 
-    private fun updateReferenceTables() {
+    private fun updateReferenceTables(selectedIndices: Set<Int>?) {
         val pending = HashSet<Js5RequestHandler.ArchiveRequest>()
 
         checksumTable.entries.forEachIndexed { index, entry ->
+            if (!shouldProcessIndex(index, selectedIndices)) {
+                return@forEachIndexed
+            }
             if (entry.crc == 0 && entry.version == 0) return@forEachIndexed
 
             val existingRaw = cache.readReferenceTable(index)
@@ -135,9 +152,74 @@ class CacheDownloader : Tool("cache-downloader", "Updates / downloads the cache 
         }
     }
 
+    private fun downloadTargetedArchives(selectedIndices: Set<Int>, selectedArchives: Set<Int>) {
+        logger.info {
+            "Starting targeted archive sync for indices=${
+                selectedIndices.sorted().joinToString(",")
+            } archives=${selectedArchives.sorted().joinToString(",")}"
+        }
+
+        val pending = ArrayList<Js5RequestHandler.ArchiveRequest>()
+
+        selectedIndices.sorted().forEach { index ->
+            val table = cache.getReferenceTable(index)
+                ?: throw NullPointerException("Couldn't get reference table for index $index")
+
+            selectedArchives.sorted().forEach { archiveId ->
+                val archive = table.archives[archiveId]
+                if (archive == null) {
+                    logger.info { "Skipping [$index,$archiveId] because it is not present in the reference table" }
+                    return@forEach
+                }
+
+                val existing = cache.read(index, archiveId)
+                val reason = when {
+                    existing == null -> "missing"
+                    existing.getCrc32(existing.capacity() - 2) != archive.crc -> "crc-mismatch"
+                    else -> {
+                        existing.position(existing.capacity() - 2)
+                        val version = existing.short.toInt() and 0xffff
+                        if (version != (archive.version and 0xffff)) "version-mismatch" else null
+                    }
+                }
+
+                if (reason == null) {
+                    logger.info { "Archive [$index,$archiveId] is already up-to-date" }
+                    return@forEach
+                }
+
+                logger.info { "Queueing [$index,$archiveId] because $reason" }
+                val request = clientPool.addRequest(false, index, archiveId)
+                    ?: throw IllegalStateException("Failed to add archive request [$index,$archiveId]")
+                pending += request
+            }
+        }
+
+        if (pending.isEmpty()) {
+            logger.info { "No targeted archives required updates" }
+            return
+        }
+
+        pending.forEach { request ->
+            if (!request.awaitCompletion(60, TimeUnit.SECONDS)) {
+                logger.error { "Took more than 60 seconds to download targeted archive [${request.index},${request.archive}]. Exiting." }
+                exitProcess(1)
+            }
+
+            writeCompletedRequest(cache, request)
+            logger.info { "Finished downloading & saving targeted archive [${request.index},${request.archive}]." }
+        }
+    }
+
     override fun runTool() {
         check(numJs5Clients > 0) { "num-js5-clients must be greater than 0" }
         check(numHttpClients > 0) { "num-http-clients must be greater than 0" }
+
+        val selectedIndices = parseSelectionCsv(indicesArg)
+        val selectedArchives = parseSelectionCsv(archivesArg)
+        require(selectedArchives == null || selectedIndices != null) {
+            "--archives-arg requires --indices-arg"
+        }
 
         logger.info { "Starting download from $ip:$port" }
 
@@ -165,11 +247,17 @@ class CacheDownloader : Tool("cache-downloader", "Updates / downloads the cache 
         downloadChecksumTable()
         createNewIndices()
 
+        logger.info { "Checking tables" }
+        updateReferenceTables(selectedIndices)
+
+        if (selectedIndices != null && selectedArchives != null) {
+            downloadTargetedArchives(selectedIndices, selectedArchives)
+            clientPool.close()
+            return
+        }
+
         logger.info { "Setting up request handler" }
         requestHandler = Js5RequestHandler(clientPool, cache, ioThreads)
-
-        logger.info { "Checking tables" }
-        updateReferenceTables()
 
         logger.info { "Starting table checks" }
         checkerExecutor = Executors.newFixedThreadPool(checkThreads, ThreadFactoryBuilder()
@@ -181,12 +269,18 @@ class CacheDownloader : Tool("cache-downloader", "Updates / downloads the cache 
             .build())
 
         // start music first, big archive over http we can download first for faster overall downloads
-        val musicChecker = IndexCompletionChecker(cache, 40, requestHandler)
-        checkerExecutor.submit(musicChecker)
+        val includeMusic = shouldProcessIndex(40, selectedIndices)
+        val musicChecker = if (includeMusic) {
+            IndexCompletionChecker(cache, 40, requestHandler).also(checkerExecutor::submit)
+        } else {
+            null
+        }
 
         val completionCheckers = HashSet<IndexCompletionChecker>()
         checksumTable.entries.forEachIndexed { index, entry ->
-            if (index == 40 || (entry.crc == 0 && entry.version == 0)) return@forEachIndexed
+            if (!shouldProcessIndex(index, selectedIndices) || index == 40 || (entry.crc == 0 && entry.version == 0)) {
+                return@forEachIndexed
+            }
 
             val checker = IndexCompletionChecker(cache, index, requestHandler)
             completionCheckers.add(checker)
@@ -207,7 +301,7 @@ class CacheDownloader : Tool("cache-downloader", "Updates / downloads the cache 
                 doneJs5 = true
             }
 
-            if (clientPool.closed && musicChecker.completed && snapshot.pendingHttpCount == 0) {
+            if (clientPool.closed && (musicChecker?.completed ?: true) && snapshot.pendingHttpCount == 0) {
                 logger.info { "All http operations are done, preparing to shutdown" }
                 doneHttp = true
             }

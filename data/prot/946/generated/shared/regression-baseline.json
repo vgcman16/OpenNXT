@@ -1,0 +1,71 @@
+{
+  "artifacts": {
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase1\\clientProtSizes.generated.toml": {
+      "sha256": "e39a06fc0fb1dcf76b1806272b450e2b45db5477aa9c652f9d4290989b7291b3",
+      "size": 1196
+    },
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase1\\registrars.json": {
+      "sha256": "cd0be7c20d50ffb2941ce4f03211ce0c178039646ca5b1c16026b9f9eed29869",
+      "size": 45013
+    },
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase1\\serverProtSizes.generated.toml": {
+      "sha256": "14738d72e976890c2c95a732bb81dc90f3b2b0910c432b03e025ea3fb9587aa9",
+      "size": 2028
+    },
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase2\\clientParsers.json": {
+      "sha256": "cf58893d3f704a80f0ef7b31ea6d0249a8518ab0942a58c304e9d99b2ebad133",
+      "size": 48560
+    },
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase2\\handlerFamilies.json": {
+      "sha256": "82dfb4eac210cc409bbef129cb00866c7f356045a23e498b00f2d0c3ed2af9e0",
+      "size": 29838
+    },
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase2\\handlerGraph.json": {
+      "sha256": "e7e96eb793ba334ef361bcda6839106ea901d2c79bfd38e7a2b3b503cc0ab354",
+      "size": 120033
+    },
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase2\\helperSignatures.json": {
+      "sha256": "dd8321fb98b19e92263d4bb2cee27a3572e3e60c77495fcbdf5144eab7a17b42",
+      "size": 94073
+    },
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase2\\serverParsers.json": {
+      "sha256": "56c985e42d9448682ab47a3814333bd0bbd93cf37cec4f30447cb3086cc6144c",
+      "size": 81604
+    },
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase3\\clientAmbiguousClusters.json": {
+      "sha256": "8e27c9d0895c7b34a05c05548100b320122fe55dacecaac2a37a9d2b5b3de5cd",
+      "size": 1537
+    },
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase3\\nameCandidates.json": {
+      "sha256": "7665c2ef8e8cff2f7d1c567e04f01354b9f602a55c867b33b71e1e07daf60be0",
+      "size": 311106
+    },
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\fieldGapAnalysis.json": {
+      "sha256": "9147efc478995d96d4f3ae5d3dfd4378621c624287a39e67c3356a671f0b3339",
+      "size": 64351
+    },
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFieldIndex.json": {
+      "sha256": "02f45aa5f87331739af6f9ba7ca1bd54ace42b7592f02581c29578334696aa9c",
+      "size": 11807
+    },
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\cross-build-index.json": {
+      "sha256": "d7af60e582495401918da3eef0c7b2cadf8c1acff0a5a6e42fa8d304b66c8cd0",
+      "size": 336736
+    },
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\evidence-index.json": {
+      "sha256": "a21b78d7a290864bbb320a3679048c6c52660db127b02ca15374d5d03519fb71",
+      "size": 750548
+    },
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\promotion-status.json": {
+      "sha256": "c49b7b1d6d6eff34753404dd10bd4b7d021f6c7d1c0812510bb39a52efad2c66",
+      "size": 97337
+    },
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\verified-packets.json": {
+      "sha256": "7e544b8b7f7a6abce4fd9460077bc52b639d0a807b622572c6eefb73c3a37636",
+      "size": 38024
+    }
+  },
+  "manifestFingerprint": "b643bc0b83eb8fbf9085e54430871e4ea06d23d8e0d435f437a72202ae2ef763",
+  "pipeline": "946-automation-pipeline",
+  "updatedAt": "2026-03-15T00:35:55.227647+00:00"
+}

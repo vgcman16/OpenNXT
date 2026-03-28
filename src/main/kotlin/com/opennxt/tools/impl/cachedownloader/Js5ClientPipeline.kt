@@ -29,10 +29,12 @@ object Js5ClientPipeline {
         executor.shutdownNow()
     }
 
-    class Js5ClientChannelInitializer : ChannelInitializer<SocketChannel>() {
+    class Js5ClientChannelInitializer(
+        private val bootstrapLoggedIn: Boolean = false
+    ) : ChannelInitializer<SocketChannel>() {
         override fun initChannel(ch: SocketChannel) {
             val credentials = Js5Credentials.download()
-            val client = Js5Client(credentials.version, credentials.token)
+            val client = Js5Client(credentials.version, credentials.token, bootstrapLoggedIn)
             ch.attr(Js5Client.ATTR_KEY).set(client)
 
             ch.pipeline().addLast("traffic-counter", trafficCounter)
@@ -101,6 +103,17 @@ object Js5ClientPipeline {
                     buffer.putInt(fileSize)
 
                     request.offset = 10
+
+                    val totalSize = buffer.capacity() - (if (request.index == 255) 0 else 2)
+                    if (buffer.position() == totalSize) {
+                        buffer.flip()
+
+                        if (!client.removeRequest(request))
+                            throw IllegalStateException("failed to remove completed zero-length download from client request list")
+
+                        request.notifyCompleted()
+                        client.current = null
+                    }
                 } else {
                     val buffer = request.buffer ?: throw IllegalStateException("buffer not initialized")
                     val totalSize = buffer.capacity() - (if (request.index == 255) 0 else 2)
@@ -185,7 +198,13 @@ object Js5ClientPipeline {
                     logger.info { "JS5 handshake accepted for build ${client.version}" }
                     client.state = Js5ClientState.ACTIVE
                     ctx.channel().write(Js5Packet.ConnectionInitialized(5, client.version))
-                    ctx.channel().write(Js5Packet.LoggedOut(client.version))
+                    ctx.channel().write(
+                        if (client.bootstrapLoggedIn) {
+                            Js5Packet.LoggedIn(client.version)
+                        } else {
+                            Js5Packet.LoggedOut(client.version)
+                        }
+                    )
                     ctx.channel().flush()
                     client.notifyConnected()
                 }

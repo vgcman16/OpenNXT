@@ -6,6 +6,26 @@ import com.opennxt.net.game.serverprot.variables.VarpLarge
 import io.netty.channel.Channel
 
 object TODORefactorThisClass {
+    val FORCED_FALLBACK_CANDIDATE_DEFAULT_VARP_IDS: List<Int> =
+        listOf(0, 1, 2, 6, 3, 4, 7, 10, 11, 3920, 8256)
+
+    fun sendForcedFallbackCandidateDefaultVarps(channel: ConnectedClient) {
+        // Prioritize the late scene-start gate varps the 946 client heuristically touches
+        // before archive resolution begins. These must lead the deferred queue on the
+        // forced-fallback path so the first paced batch is meaningful.
+        channel.write(VarpSmall(0, 28))
+        channel.write(VarpSmall(1, -1))
+        channel.write(VarpSmall(2, -1))
+        channel.write(VarpLarge(6, 0))
+        channel.write(VarpLarge(3, -1807741724))
+        channel.write(VarpSmall(4, -1))
+        channel.write(VarpLarge(7, 0))
+        channel.write(VarpSmall(10, -1))
+        channel.write(VarpSmall(11, -1))
+        channel.write(VarpSmall(3920, -1))
+        channel.write(VarpSmall(8256, -1))
+    }
+
     fun populateServerpermVarcs(values: MutableMap<Int, Int>) {
         values[5139] = -2146664148
         values[5140] = 2048

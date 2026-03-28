@@ -1,5 +1,6 @@
 package com.opennxt.model.proxy
 
+import com.google.gson.GsonBuilder
 import io.netty.buffer.ByteBuf
 import java.io.OutputStream
 import java.nio.ByteBuffer
@@ -9,6 +10,14 @@ import java.time.Instant
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PacketDumper(file: Path) : AutoCloseable {
+    data class StructuredRecord(
+        val timestamp: Long,
+        val opcode: Int,
+        val packet: String,
+        val source: String,
+        val fields: Map<String, Any?>
+    )
+
     var file: Path = file
         set(value) {
             if (open.get()) {
@@ -20,16 +29,25 @@ class PacketDumper(file: Path) : AutoCloseable {
 
     private val open = AtomicBoolean(false)
     private val lock = Any()
+    private val gson = GsonBuilder().disableHtmlEscaping().create()
 
     private lateinit var stream: OutputStream
+    private lateinit var structuredStream: OutputStream
+
+    val structuredFile: Path
+        get() = file.resolveSibling("${file.fileName.toString().substringBeforeLast('.', file.fileName.toString())}.jsonl")
 
     private fun ensureOpen() {
         if (!open.get()) {
             if (!Files.exists(file.parent))
                 Files.createDirectories(file.parent)
 
-            Files.createFile(file)
+            if (!Files.exists(file))
+                Files.createFile(file)
+            if (!Files.exists(structuredFile))
+                Files.createFile(structuredFile)
             stream = Files.newOutputStream(file)
+            structuredStream = Files.newOutputStream(structuredFile)
 
             open.set(true)
         }
@@ -64,11 +82,37 @@ class PacketDumper(file: Path) : AutoCloseable {
         }
     }
 
+    fun dumpStructured(opcode: Int, packet: String, source: String, fields: Map<String, Any?>) {
+        synchronized(lock) {
+            ensureOpen()
+
+            if (!open.get()) {
+                throw IllegalStateException("Tried to write to closed file")
+            }
+
+            val line = gson.toJson(
+                StructuredRecord(
+                    timestamp = Instant.now().toEpochMilli(),
+                    opcode = opcode,
+                    packet = packet,
+                    source = source,
+                    fields = LinkedHashMap(fields)
+                )
+            ) + System.lineSeparator()
+
+            structuredStream.write(line.toByteArray(Charsets.UTF_8))
+        }
+    }
+
     override fun close() {
         synchronized(lock) {
+            if (!open.get()) {
+                return
+            }
             open.set(false)
 
             stream.close()
+            structuredStream.close()
         }
     }
 }

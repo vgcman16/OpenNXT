@@ -1,16 +1,20 @@
 hostname = "127.0.0.1"
-build = 946
+build = 947
 configUrl = "http://127.0.0.1:8080/jav_config.ws?binaryType=6"
 
 [networking.ports]
 game = 43594
-gameBackend = 43594
+gameBackend = 43596
 http = 8080
 https = 8443
 
 [lobby.bootstrap]
-sendDefaultVarps = false
+sendWorldInitState = false
+sendDefaultVarps = true
+worldInterfaceSelfModelComponent = 1
+worldInterfaceSelfHeadComponent = -1
 openRootInterface = true
+openSupplementalChildInterfaces = false
 openPrimaryChild814 = false
 openAlternateChild1322 = false
 sendPrimaryVarcLarge2771 = false

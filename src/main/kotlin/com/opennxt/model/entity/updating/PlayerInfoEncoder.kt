@@ -19,6 +19,9 @@ import kotlin.math.abs
 
 object PlayerInfoEncoder {
     val MAX_PLAYERS_PER_ADD = 25
+    // The first world frame must include the local player's appearance block or the
+    // client can sit on the loading screen with a valid world connection but nothing to render.
+    private const val SEND_APPEARANCE_UPDATES = true
 
     fun createBufferFor(player: WorldPlayer): ByteBuf {
         val outBuf = Unpooled.buffer()
@@ -231,7 +234,6 @@ object PlayerInfoEncoder {
         if (maskData >= 0xff) maskData = maskData or 0x40
         if (maskData >= 0xffff) maskData = maskData or 0x400
 
-        block.put(DataType.SHORT, 0) // TODO Size of the update block
         block.put(DataType.BYTE, maskData)
 
         if (maskData >= 0xff) block.put(DataType.BYTE, maskData shr 8)
@@ -247,6 +249,7 @@ object PlayerInfoEncoder {
             }
             current.encode(block, player, target)
         }
+
     }
 
     private fun needsRemove(player: WorldPlayer, viewport: Viewport, target: PlayerEntity): Boolean {
@@ -271,6 +274,7 @@ object PlayerInfoEncoder {
     }
 
     private fun needsAppearanceUpdate(viewport: Viewport, index: Int, hash: ByteArray, blockSize: Int): Boolean {
+        if (!SEND_APPEARANCE_UPDATES) return false
         if (blockSize > ((7500 - 500) / 2) || hash.isEmpty()) return false
         val cachedHash = viewport.cachedAppearanceHashes[index]
         return cachedHash == null || !MessageDigest.isEqual(cachedHash, hash)

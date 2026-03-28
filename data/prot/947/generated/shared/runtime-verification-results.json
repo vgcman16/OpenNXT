@@ -1,0 +1,213 @@
+{
+  "advisoryOnly": true,
+  "artifacts": {
+    "runtime_verification_results": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\runtime-verification-results.md"
+  },
+  "build": 946,
+  "generatedAt": "2026-03-16T17:44:26.737290+00:00",
+  "gradle": {
+    "command": [
+      ".\\gradlew.bat",
+      "--no-daemon",
+      "compileKotlin",
+      "test",
+      "--tests",
+      "com.opennxt.net.game.golden.GoldenPacketProtocolTest",
+      "--tests",
+      "com.opennxt.model.lobby.LobbyBootstrapTest",
+      "--tests",
+      "com.opennxt.net.game.generated.GeneratedPacketCatalogTest",
+      "--tests",
+      "com.opennxt.net.game.generated.ConnectedClientInspectionDumpTest",
+      "--tests",
+      "com.opennxt.net.game.generated.PriorityPacketInspectionDumpTest",
+      "--tests",
+      "com.opennxt.net.game.generated.ProxyFallbackDumpTest"
+    ],
+    "passed": true,
+    "returnCode": 0,
+    "stderr": "WARNING: A restricted method in java.lang.System has been called\nWARNING: java.lang.System::load has been called by net.rubygrapefruit.platform.internal.NativeLibraryLoader in an unnamed module (file:/C:/Users/Demon/.gradle/wrapper/dists/gradle-9.4.0-bin/lcvyxq3t37f6mx9miaydrrgs/gradle-9.4.0/lib/native-platform-0.22-milestone-29.jar)\nWARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module\nWARNING: Restricted methods will be blocked in a future release unless native access is enabled\n\n",
+    "stdout": "To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.4.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.\nDaemon will be stopped at the end of the build \n> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED\n> Task :compileKotlin UP-TO-DATE\n> Task :compileJava UP-TO-DATE\n> Task :processResources UP-TO-DATE\n> Task :classes UP-TO-DATE\n> Task :jar UP-TO-DATE\n> Task :compileTestKotlin UP-TO-DATE\n> Task :compileTestJava NO-SOURCE\n> Task :processTestResources NO-SOURCE\n> Task :testClasses UP-TO-DATE\n> Task :test\n\nBUILD SUCCESSFUL in 1m 40s\n6 actionable tasks: 1 executed, 5 up-to-date\nConsider enabling configuration cache to speed up this build: https://docs.gradle.org/9.4.0/userguide/configuration_cache_enabling.html\n"
+  },
+  "inputs": {
+    "gradleTests": [
+      "com.opennxt.net.game.golden.GoldenPacketProtocolTest",
+      "com.opennxt.model.lobby.LobbyBootstrapTest",
+      "com.opennxt.net.game.generated.GeneratedPacketCatalogTest",
+      "com.opennxt.net.game.generated.ConnectedClientInspectionDumpTest",
+      "com.opennxt.net.game.generated.PriorityPacketInspectionDumpTest",
+      "com.opennxt.net.game.generated.ProxyFallbackDumpTest"
+    ],
+    "inputFingerprint": "17703550782c680e7b1089089a804ee80a26c8c5ebfddda401f91b5795e3d765",
+    "pythonFixtureTests": [
+      "tools/test_946_phase4_fixtures.py",
+      "tools/test_946_promotion_fixtures.py"
+    ],
+    "runTests": true,
+    "sharedDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared"
+  },
+  "packets": [
+    {
+      "draftMatchesDeclaration": true,
+      "fieldDeclarationExists": true,
+      "generatedOrManual": true,
+      "legacyCompatible": true,
+      "noUnknownFields": true,
+      "opcode": 129,
+      "packetName": "RESUME_P_COUNTDIALOG",
+      "proxyStructured": false,
+      "runtimeVerified": false,
+      "side": "client",
+      "widthMatches": true
+    },
+    {
+      "draftMatchesDeclaration": true,
+      "fieldDeclarationExists": true,
+      "generatedOrManual": true,
+      "legacyCompatible": true,
+      "noUnknownFields": true,
+      "opcode": 3,
+      "packetName": "OBJ_REVEAL",
+      "proxyStructured": false,
+      "runtimeVerified": false,
+      "side": "server",
+      "widthMatches": true
+    },
+    {
+      "draftMatchesDeclaration": true,
+      "fieldDeclarationExists": true,
+      "generatedOrManual": true,
+      "legacyCompatible": true,
+      "noUnknownFields": true,
+      "opcode": 8,
+      "packetName": "IF_SETCOLOUR",
+      "proxyStructured": false,
+      "runtimeVerified": false,
+      "side": "server",
+      "widthMatches": true
+    },
+    {
+      "draftMatchesDeclaration": true,
+      "fieldDeclarationExists": true,
+      "generatedOrManual": true,
+      "legacyCompatible": true,
+      "noUnknownFields": true,
+      "opcode": 57,
+      "packetName": "IF_SETTEXT",
+      "proxyStructured": false,
+      "runtimeVerified": false,
+      "side": "server",
+      "widthMatches": true
+    },
+    {
+      "draftMatchesDeclaration": true,
+      "fieldDeclarationExists": true,
+      "generatedOrManual": true,
+      "legacyCompatible": true,
+      "noUnknownFields": true,
+      "opcode": 59,
+      "packetName": "IF_SETEVENTS",
+      "proxyStructured": false,
+      "runtimeVerified": false,
+      "side": "server",
+      "widthMatches": true
+    },
+    {
+      "draftMatchesDeclaration": true,
+      "fieldDeclarationExists": true,
+      "generatedOrManual": true,
+      "legacyCompatible": true,
+      "noUnknownFields": true,
+      "opcode": 87,
+      "packetName": "OBJ_ADD",
+      "proxyStructured": false,
+      "runtimeVerified": false,
+      "side": "server",
+      "widthMatches": true
+    },
+    {
+      "draftMatchesDeclaration": true,
+      "fieldDeclarationExists": true,
+      "generatedOrManual": true,
+      "legacyCompatible": true,
+      "noUnknownFields": true,
+      "opcode": 98,
+      "packetName": "OBJ_DEL",
+      "proxyStructured": false,
+      "runtimeVerified": false,
+      "side": "server",
+      "widthMatches": true
+    },
+    {
+      "draftMatchesDeclaration": true,
+      "fieldDeclarationExists": true,
+      "generatedOrManual": true,
+      "legacyCompatible": true,
+      "noUnknownFields": true,
+      "opcode": 108,
+      "packetName": "IF_SETSCROLLPOS",
+      "proxyStructured": false,
+      "runtimeVerified": false,
+      "side": "server",
+      "widthMatches": true
+    },
+    {
+      "draftMatchesDeclaration": true,
+      "fieldDeclarationExists": true,
+      "generatedOrManual": true,
+      "legacyCompatible": true,
+      "noUnknownFields": true,
+      "opcode": 127,
+      "packetName": "OBJ_COUNT",
+      "proxyStructured": false,
+      "runtimeVerified": false,
+      "side": "server",
+      "widthMatches": true
+    },
+    {
+      "draftMatchesDeclaration": true,
+      "fieldDeclarationExists": true,
+      "generatedOrManual": true,
+      "legacyCompatible": true,
+      "noUnknownFields": true,
+      "opcode": 137,
+      "packetName": "IF_SETRETEX",
+      "proxyStructured": false,
+      "runtimeVerified": false,
+      "side": "server",
+      "widthMatches": true
+    }
+  ],
+  "pythonFixtures": [
+    {
+      "command": [
+        "C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\test_946_phase4_fixtures.py"
+      ],
+      "returnCode": 1,
+      "stderr": ".F.\n======================================================================\nFAIL: test_if_setretex_exact_candidate_types (__main__.Phase4FixtureTest.test_if_setretex_exact_candidate_types)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\test_946_phase4_fixtures.py\", line 46, in test_if_setretex_exact_candidate_types\n    self.assertEqual(\nAssertionError: Lists differ: ['ushort'] != ['ubytec', 'intv1', 'ushort128', 'ushortle']\n\nFirst differing element 0:\n'ushort'\n'ubytec'\n\nSecond list contains 3 additional elements.\nFirst extra element 1:\n'intv1'\n\n- ['ushort']\n+ ['ubytec', 'intv1', 'ushort128', 'ushortle']\n\n----------------------------------------------------------------------\nRan 3 tests in 99.629s\n\nFAILED (failures=1)\n",
+      "stdout": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\test_946_promotion_fixtures.py"
+      ],
+      "returnCode": 0,
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.021s\n\nOK\n",
+      "stdout": ""
+    }
+  ],
+  "schemaVersion": 1,
+  "status": "partial",
+  "summary": {
+    "allPriorityProxyStructured": false,
+    "allPriorityVerified": false,
+    "gradleTestsPassed": true,
+    "priorityProxyStructuredCount": 0,
+    "priorityVerifiedCount": 0,
+    "pythonFixturesPassed": false,
+    "testsPassed": false
+  },
+  "tool": "run_946_runtime_verifier"
+}

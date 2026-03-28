@@ -15,6 +15,7 @@ import com.opennxt.net.game.serverprot.ifaces.*
 import com.opennxt.net.game.serverprot.variables.VarpLarge
 import com.opennxt.net.game.serverprot.variables.VarpSmall
 import com.opennxt.net.proxy.handler.*
+import io.netty.buffer.ByteBufUtil
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import mu.KotlinLogging
 import java.io.BufferedWriter
@@ -34,6 +35,7 @@ class ProxyPlayer(val proxyClient: ConnectedProxyClient) : CommandSender, Tickab
 
         handlers[IfOpenTop::class] = IfOpenTopProxyHandler
         handlers[IfOpenSub::class] = IfOpenSubProxyHandler
+        handlers[IfOpensubActivePlayer::class] = IfOpensubActivePlayerProxyHandler
         handlers[IfSetevents::class] = IfSetEventsHandler
         handlers[IfSettext::class] = IfSettextHandler
         handlers[IfSethide::class] = IfSethideHandler
@@ -54,8 +56,9 @@ class ProxyPlayer(val proxyClient: ConnectedProxyClient) : CommandSender, Tickab
         val handler = handlers[packet::class]
         if (handler == null) {
             if (packet is UnidentifiedPacket) {
-                val name = PacketRegistry.getRegistration(Side.SERVER, packet.packet.opcode)?.name ?: "null"
-                plaintextDumpFile.appendLine("// $name - Unhandled/not decoded")
+                val name = PacketRegistry.getInspectionRegistration(Side.SERVER, packet.packet.opcode)?.name ?: "null"
+                val hex = ByteBufUtil.hexDump(packet.packet.buf, packet.packet.buf.readerIndex(), packet.packet.buf.readableBytes())
+                plaintextDumpFile.appendLine("// $name - Unhandled/not decoded hex=$hex")
             } else {
                 plaintextDumpFile.appendLine("// $packet")
             }

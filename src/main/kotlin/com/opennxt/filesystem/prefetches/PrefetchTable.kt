@@ -44,6 +44,46 @@ class PrefetchTable(val entries: IntArray) {
             IndexPrefetch(60),
         )
 
+        val RS3_946 = arrayOf(
+            IndexPrefetch(Index.DEFAULTS),
+            ZeroPrefetch("legacy-library:windows/x86/jaclib.dll"),
+            ZeroPrefetch("legacy-library:windows/x86/jaggl.dll"),
+            ZeroPrefetch("legacy-library:windows/x86/jagdx.dll"),
+            ZeroPrefetch("legacy-library:windows/x86/sw3d.dll"),
+            ZeroPrefetch("legacy-library:RuneScape-setup.exe"),
+            ZeroPrefetch("legacy-library:windows/x86/hw3d.dll"),
+            ZeroPrefetch("legacy-index:SHADERS(31)"),
+            IndexPrefetch(Index.MATERIALS),
+            IndexPrefetch(Index.CONFIG),
+            IndexPrefetch(Index.CONFIG_OBJECT),
+            IndexPrefetch(Index.CONFIG_ENUM),
+            IndexPrefetch(Index.CONFIG_NPC),
+            IndexPrefetch(Index.CONFIG_ITEM),
+            IndexPrefetch(Index.CONFIG_SEQ),
+            IndexPrefetch(Index.CONFIG_SPOT),
+            IndexPrefetch(Index.CONFIG_STRUCT),
+            IndexPrefetch(Index.DBTABLEINDEX),
+            IndexPrefetch(Index.QUICKCHAT),
+            ZeroPrefetch("legacy-index:QUICKCHAT_GLOBAL(25)"),
+            IndexPrefetch(Index.PARTICLES),
+            IndexPrefetch(Index.BILLBOARDS),
+            FilePrefetch(Index.BINARY, "huffman"),
+            IndexPrefetch(Index.INTERFACES),
+            IndexPrefetch(Index.CLIENTSCRIPTS),
+            IndexPrefetch(Index.FONTMETRICS),
+            ArchivePrefetch(Index.WORLDMAP, 0),
+            IndexPrefetch(57),
+            IndexPrefetch(58),
+            IndexPrefetch(59),
+            IndexPrefetch(60),
+        )
+
+        fun specForBuild(build: Int): Array<Prefetch> =
+            when (build) {
+                946 -> RS3_946
+                else -> RS3_DEFAULT
+            }
+
         fun of(fs: Filesystem, prefetches: Array<Prefetch> = RS3_DEFAULT): PrefetchTable =
             PrefetchTable(prefetches.mapIndexed { index, prefetch ->
                 try {
@@ -53,6 +93,8 @@ class PrefetchTable(val entries: IntArray) {
                     0
                 }
             }.toIntArray())
+
+        fun of(fs: Filesystem, build: Int): PrefetchTable = of(fs, specForBuild(build))
 
         fun decode(buffer: ByteBuf, prefetches: Array<Prefetch> = RS3_DEFAULT): PrefetchTable {
             TODO("prefetch table decoding")

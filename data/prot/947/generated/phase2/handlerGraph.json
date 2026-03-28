@@ -1,0 +1,5012 @@
+[
+  {
+    "side": "client",
+    "opcode": 0,
+    "packetRef": "140ebf770",
+    "setupFunction": "14014dba0",
+    "setupFunctionName": "FUN_14014dba0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "14014dba0",
+    "parserName": "FUN_14014dba0",
+    "helperChain": [
+      "14014dba0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 1,
+    "packetRef": "140ebf780",
+    "setupFunction": "1400fe270",
+    "setupFunctionName": "FUN_1400fe270",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400fe270",
+    "parserName": "FUN_1400fe270",
+    "helperChain": [
+      "1400fe270"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 2,
+    "packetRef": "140ebf790",
+    "setupFunction": "1400d08e0",
+    "setupFunctionName": "FUN_1400d08e0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400d08e0",
+    "parserName": "FUN_1400d08e0",
+    "helperChain": [
+      "1400d08e0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 3,
+    "packetRef": "140ebf7a0",
+    "setupFunction": "140093ab0",
+    "setupFunctionName": "FUN_140093ab0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140093ab0",
+    "parserName": "FUN_140093ab0",
+    "helperChain": [
+      "140093ab0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 4,
+    "packetRef": "140ebf7b0",
+    "setupFunction": "140099710",
+    "setupFunctionName": "FUN_140099710",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140099710",
+    "parserName": "FUN_140099710",
+    "helperChain": [
+      "140099710"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 5,
+    "packetRef": "140ebf7c0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 6,
+    "packetRef": "140ebf7d0",
+    "setupFunction": "1400e6bc0",
+    "setupFunctionName": "FUN_1400e6bc0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e6bc0",
+    "parserName": "FUN_1400e6bc0",
+    "helperChain": [
+      "1400e6bc0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 7,
+    "packetRef": "140ebf7e0",
+    "setupFunction": "14008d840",
+    "setupFunctionName": "FUN_14008d840",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "14008d840",
+    "parserName": "FUN_14008d840",
+    "helperChain": [
+      "14008d840"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 8,
+    "packetRef": "140ebf7f0",
+    "setupFunction": "1401fd800",
+    "setupFunctionName": "FUN_1401fd800",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401fd800",
+    "parserName": "FUN_1401fd800",
+    "helperChain": [
+      "1401fd800"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 9,
+    "packetRef": "140ebf800",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 10,
+    "packetRef": "140ebf810",
+    "setupFunction": "14008db20",
+    "setupFunctionName": "FUN_14008db20",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "14008db20",
+    "parserName": "FUN_14008db20",
+    "helperChain": [
+      "14008db20"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 11,
+    "packetRef": "140ebf820",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 12,
+    "packetRef": "140ebf830",
+    "setupFunction": "1401a60d0",
+    "setupFunctionName": "FUN_1401a60d0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401a60d0",
+    "parserName": "FUN_1401a60d0",
+    "helperChain": [
+      "1401a60d0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 13,
+    "packetRef": "140ebf840",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 14,
+    "packetRef": "140ebf850",
+    "setupFunction": "1400e6bc0",
+    "setupFunctionName": "FUN_1400e6bc0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e6bc0",
+    "parserName": "FUN_1400e6bc0",
+    "helperChain": [
+      "1400e6bc0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 15,
+    "packetRef": "140ebf860",
+    "setupFunction": "14014fe10",
+    "setupFunctionName": "FUN_14014fe10",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "14014fe10",
+    "parserName": "FUN_14014fe10",
+    "helperChain": [
+      "14014fe10"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 16,
+    "packetRef": "140ebf870",
+    "setupFunction": "1400e5d10",
+    "setupFunctionName": "FUN_1400e5d10",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e5d10",
+    "parserName": "FUN_1400e5d10",
+    "helperChain": [
+      "1400e5d10"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 17,
+    "packetRef": "140ebf880",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 18,
+    "packetRef": "140ebf890",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 19,
+    "packetRef": "140ebf8a0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 20,
+    "packetRef": "140ebf8b0",
+    "setupFunction": "1400e6bc0",
+    "setupFunctionName": "FUN_1400e6bc0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e6bc0",
+    "parserName": "FUN_1400e6bc0",
+    "helperChain": [
+      "1400e6bc0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 21,
+    "packetRef": "140ebf8c0",
+    "setupFunction": "14019abd0",
+    "setupFunctionName": "FUN_14019abd0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "14019abd0",
+    "parserName": "FUN_14019abd0",
+    "helperChain": [
+      "14019abd0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 22,
+    "packetRef": "140ebf8d0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 23,
+    "packetRef": "140ebf8e0",
+    "setupFunction": "1401bbf60",
+    "setupFunctionName": "FUN_1401bbf60",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401bbf60",
+    "parserName": "FUN_1401bbf60",
+    "helperChain": [
+      "1401bbf60"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 24,
+    "packetRef": "140ebf8f0",
+    "setupFunction": "1401fe390",
+    "setupFunctionName": "FUN_1401fe390",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401fe390",
+    "parserName": "FUN_1401fe390",
+    "helperChain": [
+      "1401fe390"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 25,
+    "packetRef": "140ebf900",
+    "setupFunction": "1401bbf60",
+    "setupFunctionName": "FUN_1401bbf60",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401bbf60",
+    "parserName": "FUN_1401bbf60",
+    "helperChain": [
+      "1401bbf60"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 26,
+    "packetRef": "140ebf910",
+    "setupFunction": "1401bbf60",
+    "setupFunctionName": "FUN_1401bbf60",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401bbf60",
+    "parserName": "FUN_1401bbf60",
+    "helperChain": [
+      "1401bbf60"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 27,
+    "packetRef": "140ebf920",
+    "setupFunction": "1400e53e0",
+    "setupFunctionName": "FUN_1400e53e0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e53e0",
+    "parserName": "FUN_1400e53e0",
+    "helperChain": [
+      "1400e53e0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 28,
+    "packetRef": "140ebf930",
+    "setupFunction": "1400cfcb0",
+    "setupFunctionName": "FUN_1400cfcb0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400cfcb0",
+    "parserName": "FUN_1400cfcb0",
+    "helperChain": [
+      "1400cfcb0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 29,
+    "packetRef": "140ebf940",
+    "setupFunction": "140099e30",
+    "setupFunctionName": "FUN_140099e30",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140099e30",
+    "parserName": "FUN_140099e30",
+    "helperChain": [
+      "140099e30"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 30,
+    "packetRef": "140ebf950",
+    "setupFunction": "1400e6bc0",
+    "setupFunctionName": "FUN_1400e6bc0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e6bc0",
+    "parserName": "FUN_1400e6bc0",
+    "helperChain": [
+      "1400e6bc0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 31,
+    "packetRef": "140ebf960",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 32,
+    "packetRef": "140ebf970",
+    "setupFunction": "1401bdca0",
+    "setupFunctionName": "FUN_1401bdca0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401bdca0",
+    "parserName": "FUN_1401bdca0",
+    "helperChain": [
+      "1401bdca0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 33,
+    "packetRef": "140ebf980",
+    "setupFunction": "1400e4cd0",
+    "setupFunctionName": "FUN_1400e4cd0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e4cd0",
+    "parserName": "FUN_1400e4cd0",
+    "helperChain": [
+      "1400e4cd0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 34,
+    "packetRef": "140ebf990",
+    "setupFunction": "1401f6b50",
+    "setupFunctionName": "FUN_1401f6b50",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401f6b50",
+    "parserName": "FUN_1401f6b50",
+    "helperChain": [
+      "1401f6b50"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 35,
+    "packetRef": "140ebf9a0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 36,
+    "packetRef": "140ebf9b0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 37,
+    "packetRef": "140ebf9c0",
+    "setupFunction": "1400e6190",
+    "setupFunctionName": "FUN_1400e6190",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e6190",
+    "parserName": "FUN_1400e6190",
+    "helperChain": [
+      "1400e6190"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 38,
+    "packetRef": "140ebf9d0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 39,
+    "packetRef": "140ebf9e0",
+    "setupFunction": "14014b4f0",
+    "setupFunctionName": "FUN_14014b4f0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "14014b4f0",
+    "parserName": "FUN_14014b4f0",
+    "helperChain": [
+      "14014b4f0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 40,
+    "packetRef": "140ebf9f0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 41,
+    "packetRef": "140ebfa00",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 42,
+    "packetRef": "140ebfa10",
+    "setupFunction": "140195e30",
+    "setupFunctionName": "FUN_140195e30",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140195e30",
+    "parserName": "FUN_140195e30",
+    "helperChain": [
+      "140195e30"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 43,
+    "packetRef": "140ebfa20",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 44,
+    "packetRef": "140ebfa30",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 45,
+    "packetRef": "140ebfa40",
+    "setupFunction": "1400cfcb0",
+    "setupFunctionName": "FUN_1400cfcb0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400cfcb0",
+    "parserName": "FUN_1400cfcb0",
+    "helperChain": [
+      "1400cfcb0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 46,
+    "packetRef": "140ebfa50",
+    "setupFunction": "1400e6bc0",
+    "setupFunctionName": "FUN_1400e6bc0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e6bc0",
+    "parserName": "FUN_1400e6bc0",
+    "helperChain": [
+      "1400e6bc0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 47,
+    "packetRef": "140ebfa60",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 48,
+    "packetRef": "140ebfa70",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 49,
+    "packetRef": "140ebfa80",
+    "setupFunction": "140099a90",
+    "setupFunctionName": "FUN_140099a90",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140099a90",
+    "parserName": "FUN_140099a90",
+    "helperChain": [
+      "140099a90"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 50,
+    "packetRef": "140ebfa90",
+    "setupFunction": "1400ca430",
+    "setupFunctionName": "FUN_1400ca430",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400ca430",
+    "parserName": "FUN_1400ca430",
+    "helperChain": [
+      "1400ca430"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 51,
+    "packetRef": "140ebfaa0",
+    "setupFunction": "1400cfcb0",
+    "setupFunctionName": "FUN_1400cfcb0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400cfcb0",
+    "parserName": "FUN_1400cfcb0",
+    "helperChain": [
+      "1400cfcb0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 52,
+    "packetRef": "140ebfab0",
+    "setupFunction": "140150030",
+    "setupFunctionName": "FUN_140150030",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140150030",
+    "parserName": "FUN_140150030",
+    "helperChain": [
+      "140150030"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 53,
+    "packetRef": "140ebfac0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 54,
+    "packetRef": "140ebfad0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 55,
+    "packetRef": "140ebfae0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 56,
+    "packetRef": "140ebfaf0",
+    "setupFunction": "14008d5e0",
+    "setupFunctionName": "FUN_14008d5e0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "14008d5e0",
+    "parserName": "FUN_14008d5e0",
+    "helperChain": [
+      "14008d5e0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 57,
+    "packetRef": "140ebfb00",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 58,
+    "packetRef": "140ebfb10",
+    "setupFunction": "1400e5780",
+    "setupFunctionName": "FUN_1400e5780",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e5780",
+    "parserName": "FUN_1400e5780",
+    "helperChain": [
+      "1400e5780"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 59,
+    "packetRef": "140ebfb20",
+    "setupFunction": "1400e6bc0",
+    "setupFunctionName": "FUN_1400e6bc0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e6bc0",
+    "parserName": "FUN_1400e6bc0",
+    "helperChain": [
+      "1400e6bc0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 60,
+    "packetRef": "140ebfb30",
+    "setupFunction": "1400e6bc0",
+    "setupFunctionName": "FUN_1400e6bc0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e6bc0",
+    "parserName": "FUN_1400e6bc0",
+    "helperChain": [
+      "1400e6bc0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 61,
+    "packetRef": "140ebfb40",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 62,
+    "packetRef": "140ebfb50",
+    "setupFunction": "1401c5c10",
+    "setupFunctionName": "FUN_1401c5c10",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401c5c10",
+    "parserName": "FUN_1401c5c10",
+    "helperChain": [
+      "1401c5c10"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 63,
+    "packetRef": "140ebfb60",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 64,
+    "packetRef": "140ebfb70",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 65,
+    "packetRef": "140ebfb80",
+    "setupFunction": "1400bbf80",
+    "setupFunctionName": "FUN_1400bbf80",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400bbf80",
+    "parserName": "FUN_1400bbf80",
+    "helperChain": [
+      "1400bbf80"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 66,
+    "packetRef": "140ebfb90",
+    "setupFunction": "140118140",
+    "setupFunctionName": "FUN_140118140",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140118140",
+    "parserName": "FUN_140118140",
+    "helperChain": [
+      "140118140"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 67,
+    "packetRef": "140ebfba0",
+    "setupFunction": "1401fd5b0",
+    "setupFunctionName": "FUN_1401fd5b0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401fd5b0",
+    "parserName": "FUN_1401fd5b0",
+    "helperChain": [
+      "1401fd5b0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 68,
+    "packetRef": "140ebfbb0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 69,
+    "packetRef": "140ebfbc0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 70,
+    "packetRef": "140ebfbd0",
+    "setupFunction": "1400e5120",
+    "setupFunctionName": "FUN_1400e5120",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e5120",
+    "parserName": "FUN_1400e5120",
+    "helperChain": [
+      "1400e5120"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 71,
+    "packetRef": "140ebfbe0",
+    "setupFunction": "14009a410",
+    "setupFunctionName": "FUN_14009a410",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "14009a410",
+    "parserName": "FUN_14009a410",
+    "helperChain": [
+      "14009a410"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 72,
+    "packetRef": "140ebfbf0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 73,
+    "packetRef": "140ebfc00",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 74,
+    "packetRef": "140ebfc10",
+    "setupFunction": "14014f8d0",
+    "setupFunctionName": "FUN_14014f8d0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "14014f8d0",
+    "parserName": "FUN_14014f8d0",
+    "helperChain": [
+      "14014f8d0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 75,
+    "packetRef": "140ebfc20",
+    "setupFunction": "1401a42e0",
+    "setupFunctionName": "FUN_1401a42e0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401a42e0",
+    "parserName": "FUN_1401a42e0",
+    "helperChain": [
+      "1401a42e0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 76,
+    "packetRef": "140ebfc30",
+    "setupFunction": "1401fdd20",
+    "setupFunctionName": "FUN_1401fdd20",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401fdd20",
+    "parserName": "FUN_1401fdd20",
+    "helperChain": [
+      "1401fdd20"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 77,
+    "packetRef": "140ebfc40",
+    "setupFunction": "1401bbf60",
+    "setupFunctionName": "FUN_1401bbf60",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401bbf60",
+    "parserName": "FUN_1401bbf60",
+    "helperChain": [
+      "1401bbf60"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 78,
+    "packetRef": "140ebfc50",
+    "setupFunction": "1401bdf20",
+    "setupFunctionName": "FUN_1401bdf20",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401bdf20",
+    "parserName": "FUN_1401bdf20",
+    "helperChain": [
+      "1401bdf20"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 79,
+    "packetRef": "140ebfc60",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 80,
+    "packetRef": "140ebfc70",
+    "setupFunction": "1400ea070",
+    "setupFunctionName": "FUN_1400ea070",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400ea070",
+    "parserName": "FUN_1400ea070",
+    "helperChain": [
+      "1400ea070"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 81,
+    "packetRef": "140ebfc80",
+    "setupFunction": "14009a760",
+    "setupFunctionName": "FUN_14009a760",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "14009a760",
+    "parserName": "FUN_14009a760",
+    "helperChain": [
+      "14009a760"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 82,
+    "packetRef": "140ebfc90",
+    "setupFunction": "140098720",
+    "setupFunctionName": "FUN_140098720",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140098720",
+    "parserName": "FUN_140098720",
+    "helperChain": [
+      "140098720"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 83,
+    "packetRef": "140ebfca0",
+    "setupFunction": "1400cfcb0",
+    "setupFunctionName": "FUN_1400cfcb0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400cfcb0",
+    "parserName": "FUN_1400cfcb0",
+    "helperChain": [
+      "1400cfcb0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 84,
+    "packetRef": "140ebfcb0",
+    "setupFunction": "1401bea30",
+    "setupFunctionName": "FUN_1401bea30",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401bea30",
+    "parserName": "FUN_1401bea30",
+    "helperChain": [
+      "1401bea30"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 85,
+    "packetRef": "140ebfcc0",
+    "setupFunction": "140144a60",
+    "setupFunctionName": "FUN_140144a60",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140144a60",
+    "parserName": "FUN_140144a60",
+    "helperChain": [
+      "140144a60"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 86,
+    "packetRef": "140ebfcd0",
+    "setupFunction": "140188c40",
+    "setupFunctionName": "FUN_140188c40",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140188c40",
+    "parserName": "FUN_140188c40",
+    "helperChain": [
+      "140188c40"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 87,
+    "packetRef": "140ebfce0",
+    "setupFunction": "1401fe5e0",
+    "setupFunctionName": "FUN_1401fe5e0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401fe5e0",
+    "parserName": "FUN_1401fe5e0",
+    "helperChain": [
+      "1401fe5e0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 88,
+    "packetRef": "140ebfcf0",
+    "setupFunction": "1401fe180",
+    "setupFunctionName": "FUN_1401fe180",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401fe180",
+    "parserName": "FUN_1401fe180",
+    "helperChain": [
+      "1401fe180"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 89,
+    "packetRef": "140ebfd00",
+    "setupFunction": "1401bace0",
+    "setupFunctionName": "FUN_1401bace0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401bace0",
+    "parserName": "FUN_1401bace0",
+    "helperChain": [
+      "1401bace0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 90,
+    "packetRef": "140ebfd10",
+    "setupFunction": "1401bbf60",
+    "setupFunctionName": "FUN_1401bbf60",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401bbf60",
+    "parserName": "FUN_1401bbf60",
+    "helperChain": [
+      "1401bbf60"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 91,
+    "packetRef": "140ebfd20",
+    "setupFunction": "1400e6bc0",
+    "setupFunctionName": "FUN_1400e6bc0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e6bc0",
+    "parserName": "FUN_1400e6bc0",
+    "helperChain": [
+      "1400e6bc0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 92,
+    "packetRef": "140ebfd30",
+    "setupFunction": "1400e4cd0",
+    "setupFunctionName": "FUN_1400e4cd0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e4cd0",
+    "parserName": "FUN_1400e4cd0",
+    "helperChain": [
+      "1400e4cd0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 93,
+    "packetRef": "140ebfd40",
+    "setupFunction": "1401fdf30",
+    "setupFunctionName": "FUN_1401fdf30",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401fdf30",
+    "parserName": "FUN_1401fdf30",
+    "helperChain": [
+      "1401fdf30"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 94,
+    "packetRef": "140ebfd50",
+    "setupFunction": "140147d50",
+    "setupFunctionName": "FUN_140147d50",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140147d50",
+    "parserName": "FUN_140147d50",
+    "helperChain": [
+      "140147d50"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 95,
+    "packetRef": "140ebfd60",
+    "setupFunction": "140093920",
+    "setupFunctionName": "FUN_140093920",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140093920",
+    "parserName": "FUN_140093920",
+    "helperChain": [
+      "140093920"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 96,
+    "packetRef": "140ebfd70",
+    "setupFunction": "1400e6bc0",
+    "setupFunctionName": "FUN_1400e6bc0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e6bc0",
+    "parserName": "FUN_1400e6bc0",
+    "helperChain": [
+      "1400e6bc0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 97,
+    "packetRef": "140ebfd80",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 98,
+    "packetRef": "140ebfd90",
+    "setupFunction": "140148020",
+    "setupFunctionName": "FUN_140148020",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140148020",
+    "parserName": "FUN_140148020",
+    "helperChain": [
+      "140148020"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 99,
+    "packetRef": "140ebfda0",
+    "setupFunction": "1400992d0",
+    "setupFunctionName": "FUN_1400992d0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400992d0",
+    "parserName": "FUN_1400992d0",
+    "helperChain": [
+      "1400992d0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 100,
+    "packetRef": "140ebfdb0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 101,
+    "packetRef": "140ebfdc0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 102,
+    "packetRef": "140ebfdd0",
+    "setupFunction": "14017d110",
+    "setupFunctionName": "FUN_14017d110",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "14017d110",
+    "parserName": "FUN_14017d110",
+    "helperChain": [
+      "14017d110"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 103,
+    "packetRef": "140ebfde0",
+    "setupFunction": "1401bbf60",
+    "setupFunctionName": "FUN_1401bbf60",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401bbf60",
+    "parserName": "FUN_1401bbf60",
+    "helperChain": [
+      "1401bbf60"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 104,
+    "packetRef": "140ebfdf0",
+    "setupFunction": "1401c4a90",
+    "setupFunctionName": "FUN_1401c4a90",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401c4a90",
+    "parserName": "FUN_1401c4a90",
+    "helperChain": [
+      "1401c4a90"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 105,
+    "packetRef": "140ebfe00",
+    "setupFunction": "1400e6ea0",
+    "setupFunctionName": "FUN_1400e6ea0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e6ea0",
+    "parserName": "FUN_1400e6ea0",
+    "helperChain": [
+      "1400e6ea0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 106,
+    "packetRef": "140ebfe10",
+    "setupFunction": "1400d0620",
+    "setupFunctionName": "FUN_1400d0620",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400d0620",
+    "parserName": "FUN_1400d0620",
+    "helperChain": [
+      "1400d0620"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 107,
+    "packetRef": "140ebfe20",
+    "setupFunction": "1401a3df0",
+    "setupFunctionName": "FUN_1401a3df0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401a3df0",
+    "parserName": "FUN_1401a3df0",
+    "helperChain": [
+      "1401a3df0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 108,
+    "packetRef": "140ebfe30",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 109,
+    "packetRef": "140ebfe40",
+    "setupFunction": "1401c3fa0",
+    "setupFunctionName": "FUN_1401c3fa0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401c3fa0",
+    "parserName": "FUN_1401c3fa0",
+    "helperChain": [
+      "1401c3fa0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 110,
+    "packetRef": "140ebfe50",
+    "setupFunction": "14015dab0",
+    "setupFunctionName": "FUN_14015dab0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "14015dab0",
+    "parserName": "FUN_14015dab0",
+    "helperChain": [
+      "14015dab0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 111,
+    "packetRef": "140ebfe60",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 112,
+    "packetRef": "140ebfe70",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 113,
+    "packetRef": "140ebfe80",
+    "setupFunction": "1400ced60",
+    "setupFunctionName": "FUN_1400ced60",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400ced60",
+    "parserName": "FUN_1400ced60",
+    "helperChain": [
+      "1400ced60"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 114,
+    "packetRef": "140ebfe90",
+    "setupFunction": "1401a4520",
+    "setupFunctionName": "FUN_1401a4520",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401a4520",
+    "parserName": "FUN_1401a4520",
+    "helperChain": [
+      "1401a4520"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 115,
+    "packetRef": "140ebfea0",
+    "setupFunction": "1400e6bc0",
+    "setupFunctionName": "FUN_1400e6bc0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1400e6bc0",
+    "parserName": "FUN_1400e6bc0",
+    "helperChain": [
+      "1400e6bc0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 116,
+    "packetRef": "140ebfeb0",
+    "setupFunction": "14014fb80",
+    "setupFunctionName": "FUN_14014fb80",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "14014fb80",
+    "parserName": "FUN_14014fb80",
+    "helperChain": [
+      "14014fb80"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 117,
+    "packetRef": "140ebfec0",
+    "setupFunction": "1401a5e00",
+    "setupFunctionName": "FUN_1401a5e00",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401a5e00",
+    "parserName": "FUN_1401a5e00",
+    "helperChain": [
+      "1401a5e00"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 118,
+    "packetRef": "140ebfed0",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 119,
+    "packetRef": "140ebfee0",
+    "setupFunction": "140147a80",
+    "setupFunctionName": "FUN_140147a80",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140147a80",
+    "parserName": "FUN_140147a80",
+    "helperChain": [
+      "140147a80"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 120,
+    "packetRef": "140ebfef0",
+    "setupFunction": "1401a40a0",
+    "setupFunctionName": "FUN_1401a40a0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401a40a0",
+    "parserName": "FUN_1401a40a0",
+    "helperChain": [
+      "1401a40a0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 121,
+    "packetRef": "140ebff00",
+    "setupFunction": "14014b1c0",
+    "setupFunctionName": "FUN_14014b1c0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "14014b1c0",
+    "parserName": "FUN_14014b1c0",
+    "helperChain": [
+      "14014b1c0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 122,
+    "packetRef": "140ebff10",
+    "setupFunction": "140169660",
+    "setupFunctionName": "FUN_140169660",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140169660",
+    "parserName": "FUN_140169660",
+    "helperChain": [
+      "140169660"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 123,
+    "packetRef": "140ebff20",
+    "setupFunction": "140150370",
+    "setupFunctionName": "FUN_140150370",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "140150370",
+    "parserName": "FUN_140150370",
+    "helperChain": [
+      "140150370"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 124,
+    "packetRef": "140ebff30",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 125,
+    "packetRef": "140ebff40",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 126,
+    "packetRef": "140ebff50",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 127,
+    "packetRef": "140ebff60",
+    "setupFunction": "1401bf8b0",
+    "setupFunctionName": "FUN_1401bf8b0",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401bf8b0",
+    "parserName": "FUN_1401bf8b0",
+    "helperChain": [
+      "1401bf8b0"
+    ]
+  },
+  {
+    "side": "client",
+    "opcode": 128,
+    "packetRef": "140ebff70",
+    "setupFunction": "",
+    "setupFunctionName": "",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "",
+    "parserName": "",
+    "helperChain": []
+  },
+  {
+    "side": "client",
+    "opcode": 129,
+    "packetRef": "140ebff80",
+    "setupFunction": "1401fda40",
+    "setupFunctionName": "FUN_1401fda40",
+    "dispatchMethod": "",
+    "dispatchName": "",
+    "parserTarget": "1401fda40",
+    "parserName": "FUN_1401fda40",
+    "helperChain": [
+      "1401fda40"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 1,
+    "packetRef": "140ec0060",
+    "setupFunction": "1400f0fe0",
+    "setupFunctionName": "FUN_1400f0fe0",
+    "dispatchMethod": "14010b300",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f2080",
+    "parserName": "FUN_1400f2080",
+    "helperChain": [
+      "1400f0fe0",
+      "14010b300",
+      "1400f2080"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 2,
+    "packetRef": "140ec00b0",
+    "setupFunction": "14010fdd0",
+    "setupFunctionName": "FUN_14010fdd0",
+    "dispatchMethod": "140140330",
+    "dispatchName": "FUN_140140330",
+    "parserTarget": "140140330",
+    "parserName": "FUN_140140330",
+    "helperChain": [
+      "14010fdd0",
+      "140140330",
+      "140140330"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 3,
+    "packetRef": "140ec0100",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013f5f0",
+    "dispatchName": "FUN_14013f5f0",
+    "parserTarget": "14013f5f0",
+    "parserName": "FUN_14013f5f0",
+    "helperChain": [
+      "1401112c0",
+      "14013f5f0",
+      "14013f5f0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 4,
+    "packetRef": "140ec0150",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140108af0",
+    "dispatchName": "FUN_140108af0",
+    "parserTarget": "140108af0",
+    "parserName": "FUN_140108af0",
+    "helperChain": [
+      "1400fadb0",
+      "140108af0",
+      "140108af0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 5,
+    "packetRef": "140ec01a0",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010c660",
+    "dispatchName": "FUN_14010c660",
+    "parserTarget": "14010c660",
+    "parserName": "FUN_14010c660",
+    "helperChain": [
+      "1400f0570",
+      "14010c660",
+      "14010c660"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 6,
+    "packetRef": "140ec01f0",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013f570",
+    "dispatchName": "<raw>",
+    "parserTarget": "140114560",
+    "parserName": "FUN_140114560",
+    "helperChain": [
+      "1401112c0",
+      "14013f570",
+      "140114560"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 7,
+    "packetRef": "140ec0240",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140109460",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fc390",
+    "parserName": "FUN_1400fc390",
+    "helperChain": [
+      "1400fadb0",
+      "140109460",
+      "1400fc390"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 8,
+    "packetRef": "140ec0290",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140107d70",
+    "dispatchName": "FUN_140107d70",
+    "parserTarget": "140107d70",
+    "parserName": "FUN_140107d70",
+    "helperChain": [
+      "1400fadb0",
+      "140107d70",
+      "140107d70"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 9,
+    "packetRef": "140ec02e0",
+    "setupFunction": "1400f6330",
+    "setupFunctionName": "FUN_1400f6330",
+    "dispatchMethod": "14010a7f0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f73a0",
+    "parserName": "FUN_1400f73a0",
+    "helperChain": [
+      "1400f6330",
+      "14010a7f0",
+      "1400f73a0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 10,
+    "packetRef": "140ec0330",
+    "setupFunction": "1400f0fe0",
+    "setupFunctionName": "FUN_1400f0fe0",
+    "dispatchMethod": "14010b170",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f3480",
+    "parserName": "FUN_1400f3480",
+    "helperChain": [
+      "1400f0fe0",
+      "14010b170",
+      "1400f3480"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 11,
+    "packetRef": "140ec0380",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "14010adc0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f6020",
+    "parserName": "FUN_1400f6020",
+    "helperChain": [
+      "1400e9470",
+      "14010adc0",
+      "1400f6020"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 12,
+    "packetRef": "140ec03d0",
+    "setupFunction": "14010fdd0",
+    "setupFunctionName": "FUN_14010fdd0",
+    "dispatchMethod": "1401408d0",
+    "dispatchName": "FUN_1401408d0",
+    "parserTarget": "1401408d0",
+    "parserName": "FUN_1401408d0",
+    "helperChain": [
+      "14010fdd0",
+      "1401408d0",
+      "1401408d0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 13,
+    "packetRef": "140ec0420",
+    "setupFunction": "1400ff000",
+    "setupFunctionName": "FUN_1400ff000",
+    "dispatchMethod": "1401062a0",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400ff000",
+      "1401062a0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 14,
+    "packetRef": "140ec0470",
+    "setupFunction": "14010fdd0",
+    "setupFunctionName": "FUN_14010fdd0",
+    "dispatchMethod": "140140f40",
+    "dispatchName": "FUN_140140f40",
+    "parserTarget": "140140f40",
+    "parserName": "FUN_140140f40",
+    "helperChain": [
+      "14010fdd0",
+      "140140f40",
+      "140140f40"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 15,
+    "packetRef": "140ec04c0",
+    "setupFunction": "1400f0fe0",
+    "setupFunctionName": "FUN_1400f0fe0",
+    "dispatchMethod": "14010b230",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f2590",
+    "parserName": "FUN_1400f2590",
+    "helperChain": [
+      "1400f0fe0",
+      "14010b230",
+      "1400f2590"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 16,
+    "packetRef": "140ec0510",
+    "setupFunction": "1400f0fe0",
+    "setupFunctionName": "FUN_1400f0fe0",
+    "dispatchMethod": "14010b1f0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f2c00",
+    "parserName": "FUN_1400f2c00",
+    "helperChain": [
+      "1400f0fe0",
+      "14010b1f0",
+      "1400f2c00"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 17,
+    "packetRef": "140ec0560",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "1401098c0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fa6a0",
+    "parserName": "FUN_1400fa6a0",
+    "helperChain": [
+      "1400e9470",
+      "1401098c0",
+      "1400fa6a0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 18,
+    "packetRef": "140ec05b0",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "140109b50",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f96c0",
+    "parserName": "FUN_1400f96c0",
+    "helperChain": [
+      "1400e9470",
+      "140109b50",
+      "1400f96c0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 19,
+    "packetRef": "140ec0600",
+    "setupFunction": "14010fdd0",
+    "setupFunctionName": "FUN_14010fdd0",
+    "dispatchMethod": "140140a00",
+    "dispatchName": "FUN_140140a00",
+    "parserTarget": "140140a00",
+    "parserName": "FUN_140140a00",
+    "helperChain": [
+      "14010fdd0",
+      "140140a00",
+      "140140a00"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 20,
+    "packetRef": "140ec0650",
+    "setupFunction": "1400f6330",
+    "setupFunctionName": "FUN_1400f6330",
+    "dispatchMethod": "14010a830",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f6fc0",
+    "parserName": "FUN_1400f6fc0",
+    "helperChain": [
+      "1400f6330",
+      "14010a830",
+      "1400f6fc0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 21,
+    "packetRef": "140ec06a0",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "1401094a0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fbf80",
+    "parserName": "FUN_1400fbf80",
+    "helperChain": [
+      "1400fadb0",
+      "1401094a0",
+      "1400fbf80"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 22,
+    "packetRef": "140ec06f0",
+    "setupFunction": "1400f6330",
+    "setupFunctionName": "FUN_1400f6330",
+    "dispatchMethod": "14010a590",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400f6330",
+      "14010a590"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 23,
+    "packetRef": "140ec0740",
+    "setupFunction": "1400f6330",
+    "setupFunctionName": "FUN_1400f6330",
+    "dispatchMethod": "14010a8f0",
+    "dispatchName": "FUN_14010a8f0",
+    "parserTarget": "14010a8f0",
+    "parserName": "FUN_14010a8f0",
+    "helperChain": [
+      "1400f6330",
+      "14010a8f0",
+      "14010a8f0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 24,
+    "packetRef": "140ec0790",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013f9f0",
+    "dispatchName": "<raw>",
+    "parserTarget": "140113af0",
+    "parserName": "FUN_140113af0",
+    "helperChain": [
+      "1401112c0",
+      "14013f9f0",
+      "140113af0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 26,
+    "packetRef": "140ec0830",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "1401085d0",
+    "dispatchName": "FUN_1401085d0",
+    "parserTarget": "1401085d0",
+    "parserName": "FUN_1401085d0",
+    "helperChain": [
+      "1400fadb0",
+      "1401085d0",
+      "1401085d0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 27,
+    "packetRef": "140ec0880",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "140109a80",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400e9470",
+      "140109a80"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 28,
+    "packetRef": "140ec08d0",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "140106920",
+    "dispatchName": "FUN_140106920",
+    "parserTarget": "140106920",
+    "parserName": "FUN_140106920",
+    "helperChain": [
+      "1400e9470",
+      "140106920",
+      "140106920"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 29,
+    "packetRef": "140ec0920",
+    "setupFunction": "1400ff000",
+    "setupFunctionName": "FUN_1400ff000",
+    "dispatchMethod": "140106320",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400ff3d0",
+    "parserName": "FUN_1400ff3d0",
+    "helperChain": [
+      "1400ff000",
+      "140106320",
+      "1400ff3d0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 30,
+    "packetRef": "140ec0970",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013faf0",
+    "dispatchName": "<raw>",
+    "parserTarget": "140112430",
+    "parserName": "FUN_140112430",
+    "helperChain": [
+      "1401112c0",
+      "14013faf0",
+      "140112430"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 31,
+    "packetRef": "140ec09c0",
+    "setupFunction": "1400f0fe0",
+    "setupFunctionName": "FUN_1400f0fe0",
+    "dispatchMethod": "14010b0b0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f40c0",
+    "parserName": "FUN_1400f40c0",
+    "helperChain": [
+      "1400f0fe0",
+      "14010b0b0",
+      "1400f40c0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 34,
+    "packetRef": "140ec0ab0",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010bbf0",
+    "dispatchName": "FUN_14010bbf0",
+    "parserTarget": "14010bbf0",
+    "parserName": "FUN_14010bbf0",
+    "helperChain": [
+      "1400f0570",
+      "14010bbf0",
+      "14010bbf0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 36,
+    "packetRef": "140ec0b50",
+    "setupFunction": "1400f6330",
+    "setupFunctionName": "FUN_1400f6330",
+    "dispatchMethod": "14010a640",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f7570",
+    "parserName": "FUN_1400f7570",
+    "helperChain": [
+      "1400f6330",
+      "14010a640",
+      "1400f7570"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 37,
+    "packetRef": "140ec0ba0",
+    "setupFunction": "1400f0fe0",
+    "setupFunctionName": "FUN_1400f0fe0",
+    "dispatchMethod": "14010b030",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f4c30",
+    "parserName": "FUN_1400f4c30",
+    "helperChain": [
+      "1400f0fe0",
+      "14010b030",
+      "1400f4c30"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 38,
+    "packetRef": "140ec0bf0",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140109560",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fb9d0",
+    "parserName": "FUN_1400fb9d0",
+    "helperChain": [
+      "1400fadb0",
+      "140109560",
+      "1400fb9d0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 39,
+    "packetRef": "140ec0c40",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "14010af70",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f5db0",
+    "parserName": "FUN_1400f5db0",
+    "helperChain": [
+      "1400e9470",
+      "14010af70",
+      "1400f5db0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 40,
+    "packetRef": "140ec0c90",
+    "setupFunction": "1400f0fe0",
+    "setupFunctionName": "FUN_1400f0fe0",
+    "dispatchMethod": "14010b1b0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f2e30",
+    "parserName": "FUN_1400f2e30",
+    "helperChain": [
+      "1400f0fe0",
+      "14010b1b0",
+      "1400f2e30"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 41,
+    "packetRef": "140ec0ce0",
+    "setupFunction": "1400eeda0",
+    "setupFunctionName": "FUN_1400eeda0",
+    "dispatchMethod": "14010cb50",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400ef020",
+    "parserName": "FUN_1400ef020",
+    "helperChain": [
+      "1400eeda0",
+      "14010cb50",
+      "1400ef020"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 42,
+    "packetRef": "140ec0d30",
+    "setupFunction": "1400ff000",
+    "setupFunctionName": "FUN_1400ff000",
+    "dispatchMethod": "140106360",
+    "dispatchName": "FUN_140106360",
+    "parserTarget": "140106360",
+    "parserName": "FUN_140106360",
+    "helperChain": [
+      "1400ff000",
+      "140106360",
+      "140106360"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 43,
+    "packetRef": "140ec0d80",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013fb30",
+    "dispatchName": "FUN_14013fb30",
+    "parserTarget": "14013fb30",
+    "parserName": "FUN_14013fb30",
+    "helperChain": [
+      "1401112c0",
+      "14013fb30",
+      "14013fb30"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 44,
+    "packetRef": "140ec0dd0",
+    "setupFunction": "1400f0cc0",
+    "setupFunctionName": "FUN_1400f0cc0",
+    "dispatchMethod": "14010b660",
+    "dispatchName": "FUN_14010b660",
+    "parserTarget": "14010b660",
+    "parserName": "FUN_14010b660",
+    "helperChain": [
+      "1400f0cc0",
+      "14010b660",
+      "14010b660"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 45,
+    "packetRef": "140ec0e20",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140108ec0",
+    "dispatchName": "FUN_140108ec0",
+    "parserTarget": "140108ec0",
+    "parserName": "FUN_140108ec0",
+    "helperChain": [
+      "1400fadb0",
+      "140108ec0",
+      "140108ec0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 46,
+    "packetRef": "140ec0e70",
+    "setupFunction": "1400f0fe0",
+    "setupFunctionName": "FUN_1400f0fe0",
+    "dispatchMethod": "14010b130",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f3ad0",
+    "parserName": "FUN_1400f3ad0",
+    "helperChain": [
+      "1400f0fe0",
+      "14010b130",
+      "1400f3ad0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 47,
+    "packetRef": "140ec0ec0",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "140109a40",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fa2e0",
+    "parserName": "FUN_1400fa2e0",
+    "helperChain": [
+      "1400e9470",
+      "140109a40",
+      "1400fa2e0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 48,
+    "packetRef": "140ec0f10",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140107920",
+    "dispatchName": "FUN_140107920",
+    "parserTarget": "140107920",
+    "parserName": "FUN_140107920",
+    "helperChain": [
+      "1400fadb0",
+      "140107920",
+      "140107920"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 49,
+    "packetRef": "140ec0f60",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010c660",
+    "dispatchName": "FUN_14010c660",
+    "parserTarget": "14010c660",
+    "parserName": "FUN_14010c660",
+    "helperChain": [
+      "1400f0570",
+      "14010c660",
+      "14010c660"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 50,
+    "packetRef": "140ec0fb0",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140109420",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fc630",
+    "parserName": "FUN_1400fc630",
+    "helperChain": [
+      "1400fadb0",
+      "140109420",
+      "1400fc630"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 51,
+    "packetRef": "140ec1000",
+    "setupFunction": "14010fdd0",
+    "setupFunctionName": "FUN_14010fdd0",
+    "dispatchMethod": "140140b10",
+    "dispatchName": "FUN_140140b10",
+    "parserTarget": "140140b10",
+    "parserName": "FUN_140140b10",
+    "helperChain": [
+      "14010fdd0",
+      "140140b10",
+      "140140b10"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 52,
+    "packetRef": "140ec1050",
+    "setupFunction": "1400f0cc0",
+    "setupFunctionName": "FUN_1400f0cc0",
+    "dispatchMethod": "14010ba30",
+    "dispatchName": "FUN_14010ba30",
+    "parserTarget": "14010ba30",
+    "parserName": "FUN_14010ba30",
+    "helperChain": [
+      "1400f0cc0",
+      "14010ba30",
+      "14010ba30"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 53,
+    "packetRef": "140ec10a0",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "1401074d0",
+    "dispatchName": "FUN_1401074d0",
+    "parserTarget": "1401074d0",
+    "parserName": "FUN_1401074d0",
+    "helperChain": [
+      "1400e9470",
+      "1401074d0",
+      "1401074d0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 54,
+    "packetRef": "140ec10f0",
+    "setupFunction": "1400eeda0",
+    "setupFunctionName": "FUN_1400eeda0",
+    "dispatchMethod": "14010cb10",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400ef360",
+    "parserName": "FUN_1400ef360",
+    "helperChain": [
+      "1400eeda0",
+      "14010cb10",
+      "1400ef360"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 55,
+    "packetRef": "140ec1140",
+    "setupFunction": "1400f0cc0",
+    "setupFunctionName": "FUN_1400f0cc0",
+    "dispatchMethod": "14010b8f0",
+    "dispatchName": "FUN_14010b8f0",
+    "parserTarget": "14010b8f0",
+    "parserName": "FUN_14010b8f0",
+    "helperChain": [
+      "1400f0cc0",
+      "14010b8f0",
+      "14010b8f0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 56,
+    "packetRef": "140ec1190",
+    "setupFunction": "1400f0fe0",
+    "setupFunctionName": "FUN_1400f0fe0",
+    "dispatchMethod": "14010b340",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f14d0",
+    "parserName": "FUN_1400f14d0",
+    "helperChain": [
+      "1400f0fe0",
+      "14010b340",
+      "1400f14d0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 57,
+    "packetRef": "140ec11e0",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140108fd0",
+    "dispatchName": "FUN_140108fd0",
+    "parserTarget": "140108fd0",
+    "parserName": "FUN_140108fd0",
+    "helperChain": [
+      "1400fadb0",
+      "140108fd0",
+      "140108fd0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 58,
+    "packetRef": "140ec1230",
+    "setupFunction": "1400f0cc0",
+    "setupFunctionName": "FUN_1400f0cc0",
+    "dispatchMethod": "14010b7b0",
+    "dispatchName": "FUN_14010b7b0",
+    "parserTarget": "14010b7b0",
+    "parserName": "FUN_14010b7b0",
+    "helperChain": [
+      "1400f0cc0",
+      "14010b7b0",
+      "14010b7b0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 59,
+    "packetRef": "140ec1280",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140109290",
+    "dispatchName": "FUN_140109290",
+    "parserTarget": "140109290",
+    "parserName": "FUN_140109290",
+    "helperChain": [
+      "1400fadb0",
+      "140109290",
+      "140109290"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 60,
+    "packetRef": "140ec12d0",
+    "setupFunction": "14010fdd0",
+    "setupFunctionName": "FUN_14010fdd0",
+    "dispatchMethod": "140140460",
+    "dispatchName": "FUN_140140460",
+    "parserTarget": "140140460",
+    "parserName": "FUN_140140460",
+    "helperChain": [
+      "14010fdd0",
+      "140140460",
+      "140140460"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 61,
+    "packetRef": "140ec1320",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140108700",
+    "dispatchName": "FUN_140108700",
+    "parserTarget": "140108700",
+    "parserName": "FUN_140108700",
+    "helperChain": [
+      "1400fadb0",
+      "140108700",
+      "140108700"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 62,
+    "packetRef": "140ec1370",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140108010",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fcbe0",
+    "parserName": "FUN_1400fcbe0",
+    "helperChain": [
+      "1400fadb0",
+      "140108010",
+      "1400fcbe0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 63,
+    "packetRef": "140ec13c0",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "14010ac00",
+    "dispatchName": "FUN_14010ac00",
+    "parserTarget": "14010ac00",
+    "parserName": "FUN_14010ac00",
+    "helperChain": [
+      "1400e9470",
+      "14010ac00",
+      "14010ac00"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 64,
+    "packetRef": "140ec1410",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013fa70",
+    "dispatchName": "<raw>",
+    "parserTarget": "1401132f0",
+    "parserName": "FUN_1401132f0",
+    "helperChain": [
+      "1401112c0",
+      "14013fa70",
+      "1401132f0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 65,
+    "packetRef": "140ec1460",
+    "setupFunction": "14010fdd0",
+    "setupFunctionName": "FUN_14010fdd0",
+    "dispatchMethod": "140140050",
+    "dispatchName": "FUN_140140050",
+    "parserTarget": "140140050",
+    "parserName": "FUN_140140050",
+    "helperChain": [
+      "14010fdd0",
+      "140140050",
+      "140140050"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 66,
+    "packetRef": "140ec14b0",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "140109900",
+    "dispatchName": "FUN_140109900",
+    "parserTarget": "140109900",
+    "parserName": "FUN_140109900",
+    "helperChain": [
+      "1400e9470",
+      "140109900",
+      "140109900"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 67,
+    "packetRef": "140ec1500",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140109520",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fbba0",
+    "parserName": "FUN_1400fbba0",
+    "helperChain": [
+      "1400fadb0",
+      "140109520",
+      "1400fbba0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 68,
+    "packetRef": "140ec1550",
+    "setupFunction": "1400f0fe0",
+    "setupFunctionName": "FUN_1400f0fe0",
+    "dispatchMethod": "14010b070",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f4680",
+    "parserName": "FUN_1400f4680",
+    "helperChain": [
+      "1400f0fe0",
+      "14010b070",
+      "1400f4680"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 70,
+    "packetRef": "140ec15f0",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010bd40",
+    "dispatchName": "FUN_14010bd40",
+    "parserTarget": "14010bd40",
+    "parserName": "FUN_14010bd40",
+    "helperChain": [
+      "1400f0570",
+      "14010bd40",
+      "14010bd40"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 71,
+    "packetRef": "140ec1640",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "1401093e0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fc7d0",
+    "parserName": "FUN_1400fc7d0",
+    "helperChain": [
+      "1400fadb0",
+      "1401093e0",
+      "1400fc7d0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 72,
+    "packetRef": "140ec1690",
+    "setupFunction": "14010fdd0",
+    "setupFunctionName": "FUN_14010fdd0",
+    "dispatchMethod": "140140be0",
+    "dispatchName": "FUN_140140be0",
+    "parserTarget": "140140be0",
+    "parserName": "FUN_140140be0",
+    "helperChain": [
+      "14010fdd0",
+      "140140be0",
+      "140140be0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 73,
+    "packetRef": "140ec16e0",
+    "setupFunction": "1400f0fe0",
+    "setupFunctionName": "FUN_1400f0fe0",
+    "dispatchMethod": "14010b270",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400f0fe0",
+      "14010b270"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 74,
+    "packetRef": "140ec1730",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140108da0",
+    "dispatchName": "FUN_140108da0",
+    "parserTarget": "140108da0",
+    "parserName": "FUN_140108da0",
+    "helperChain": [
+      "1400fadb0",
+      "140108da0",
+      "140108da0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 75,
+    "packetRef": "140ec1780",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "1401081e0",
+    "dispatchName": "FUN_1401081e0",
+    "parserTarget": "1401081e0",
+    "parserName": "FUN_1401081e0",
+    "helperChain": [
+      "1400fadb0",
+      "1401081e0",
+      "1401081e0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 76,
+    "packetRef": "140ec17d0",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010c530",
+    "dispatchName": "FUN_14010c530",
+    "parserTarget": "14010c530",
+    "parserName": "FUN_14010c530",
+    "helperChain": [
+      "1400f0570",
+      "14010c530",
+      "14010c530"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 77,
+    "packetRef": "140ec1820",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140108360",
+    "dispatchName": "FUN_140108360",
+    "parserTarget": "140108360",
+    "parserName": "FUN_140108360",
+    "helperChain": [
+      "1400fadb0",
+      "140108360",
+      "140108360"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 78,
+    "packetRef": "140ec1870",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013fa30",
+    "dispatchName": "<raw>",
+    "parserTarget": "140113830",
+    "parserName": "FUN_140113830",
+    "helperChain": [
+      "1401112c0",
+      "14013fa30",
+      "140113830"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 79,
+    "packetRef": "140ec18c0",
+    "setupFunction": "1400f0cc0",
+    "setupFunctionName": "FUN_1400f0cc0",
+    "dispatchMethod": "14010b4c0",
+    "dispatchName": "FUN_14010b4c0",
+    "parserTarget": "14010b4c0",
+    "parserName": "FUN_14010b4c0",
+    "helperChain": [
+      "1400f0cc0",
+      "14010b4c0",
+      "14010b4c0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 80,
+    "packetRef": "140ec1910",
+    "setupFunction": "1400fdea0",
+    "setupFunctionName": "FUN_1400fdea0",
+    "dispatchMethod": "140106e70",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400fdea0",
+      "140106e70"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 81,
+    "packetRef": "140ec1960",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "140107670",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fd210",
+    "parserName": "FUN_1400fd210",
+    "helperChain": [
+      "1400e9470",
+      "140107670",
+      "1400fd210"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 82,
+    "packetRef": "140ec19b0",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013fab0",
+    "dispatchName": "<raw>",
+    "parserTarget": "140112980",
+    "parserName": "FUN_140112980",
+    "helperChain": [
+      "1401112c0",
+      "14013fab0",
+      "140112980"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 83,
+    "packetRef": "140ec1a00",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "140109bd0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f8b30",
+    "parserName": "FUN_1400f8b30",
+    "helperChain": [
+      "1400e9470",
+      "140109bd0",
+      "1400f8b30"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 84,
+    "packetRef": "140ec1a50",
+    "setupFunction": "1400f6330",
+    "setupFunctionName": "FUN_1400f6330",
+    "dispatchMethod": "14010a870",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f6900",
+    "parserName": "FUN_1400f6900",
+    "helperChain": [
+      "1400f6330",
+      "14010a870",
+      "1400f6900"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 85,
+    "packetRef": "140ec1aa0",
+    "setupFunction": "1400ff000",
+    "setupFunctionName": "FUN_1400ff000",
+    "dispatchMethod": "140106440",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400ff000",
+      "140106440"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 86,
+    "packetRef": "140ec1af0",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "14010a2e0",
+    "dispatchName": "FUN_14010a2e0",
+    "parserTarget": "14010a2e0",
+    "parserName": "FUN_14010a2e0",
+    "helperChain": [
+      "1400e9470",
+      "14010a2e0",
+      "14010a2e0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 87,
+    "packetRef": "140ec1b40",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013f820",
+    "dispatchName": "FUN_14013f820",
+    "parserTarget": "14013f820",
+    "parserName": "FUN_14013f820",
+    "helperChain": [
+      "1401112c0",
+      "14013f820",
+      "14013f820"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 88,
+    "packetRef": "140ec1b90",
+    "setupFunction": "14010fdd0",
+    "setupFunctionName": "FUN_14010fdd0",
+    "dispatchMethod": "140140680",
+    "dispatchName": "FUN_140140680",
+    "parserTarget": "140140680",
+    "parserName": "FUN_140140680",
+    "helperChain": [
+      "14010fdd0",
+      "140140680",
+      "140140680"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 89,
+    "packetRef": "140ec1be0",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140108490",
+    "dispatchName": "FUN_140108490",
+    "parserTarget": "140108490",
+    "parserName": "FUN_140108490",
+    "helperChain": [
+      "1400fadb0",
+      "140108490",
+      "140108490"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 90,
+    "packetRef": "140ec1c30",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013fc90",
+    "dispatchName": "<raw>",
+    "parserTarget": "140111f70",
+    "parserName": "FUN_140111f70",
+    "helperChain": [
+      "1401112c0",
+      "14013fc90",
+      "140111f70"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 91,
+    "packetRef": "140ec1c80",
+    "setupFunction": "1400eeda0",
+    "setupFunctionName": "FUN_1400eeda0",
+    "dispatchMethod": "14010cad0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400ef6a0",
+    "parserName": "FUN_1400ef6a0",
+    "helperChain": [
+      "1400eeda0",
+      "14010cad0",
+      "1400ef6a0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 93,
+    "packetRef": "140ec1d20",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140109150",
+    "dispatchName": "FUN_140109150",
+    "parserTarget": "140109150",
+    "parserName": "FUN_140109150",
+    "helperChain": [
+      "1400fadb0",
+      "140109150",
+      "140109150"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 94,
+    "packetRef": "140ec1d70",
+    "setupFunction": "1400eeda0",
+    "setupFunctionName": "FUN_1400eeda0",
+    "dispatchMethod": "14010ca90",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400efb00",
+    "parserName": "FUN_1400efb00",
+    "helperChain": [
+      "1400eeda0",
+      "14010ca90",
+      "1400efb00"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 95,
+    "packetRef": "140ec1dc0",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "14010ae00",
+    "dispatchName": "FUN_14010ae00",
+    "parserTarget": "14010ae00",
+    "parserName": "FUN_14010ae00",
+    "helperChain": [
+      "1400e9470",
+      "14010ae00",
+      "14010ae00"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 96,
+    "packetRef": "140ec1e10",
+    "setupFunction": "1400f0cc0",
+    "setupFunctionName": "FUN_1400f0cc0",
+    "dispatchMethod": "14010b3b0",
+    "dispatchName": "FUN_14010b3b0",
+    "parserTarget": "14010b3b0",
+    "parserName": "FUN_14010b3b0",
+    "helperChain": [
+      "1400f0cc0",
+      "14010b3b0",
+      "14010b3b0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 97,
+    "packetRef": "140ec1e60",
+    "setupFunction": "1400ff000",
+    "setupFunctionName": "FUN_1400ff000",
+    "dispatchMethod": "140106200",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400ff000",
+      "140106200"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 98,
+    "packetRef": "140ec1eb0",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013f760",
+    "dispatchName": "FUN_14013f760",
+    "parserTarget": "14013f760",
+    "parserName": "FUN_14013f760",
+    "helperChain": [
+      "1401112c0",
+      "14013f760",
+      "14013f760"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 100,
+    "packetRef": "140ec1f50",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140107730",
+    "dispatchName": "FUN_140107730",
+    "parserTarget": "140107730",
+    "parserName": "FUN_140107730",
+    "helperChain": [
+      "1400fadb0",
+      "140107730",
+      "140107730"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 101,
+    "packetRef": "140ec1fa0",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "1401075f0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fd7f0",
+    "parserName": "FUN_1400fd7f0",
+    "helperChain": [
+      "1400e9470",
+      "1401075f0",
+      "1400fd7f0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 102,
+    "packetRef": "140ec1ff0",
+    "setupFunction": "1400f6330",
+    "setupFunctionName": "FUN_1400f6330",
+    "dispatchMethod": "14010aa00",
+    "dispatchName": "FUN_14010aa00",
+    "parserTarget": "14010aa00",
+    "parserName": "FUN_14010aa00",
+    "helperChain": [
+      "1400f6330",
+      "14010aa00",
+      "14010aa00"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 103,
+    "packetRef": "140ec2040",
+    "setupFunction": "1400f6330",
+    "setupFunctionName": "FUN_1400f6330",
+    "dispatchMethod": "14010a680",
+    "dispatchName": "FUN_14010a680",
+    "parserTarget": "14010a680",
+    "parserName": "FUN_14010a680",
+    "helperChain": [
+      "1400f6330",
+      "14010a680",
+      "14010a680"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 105,
+    "packetRef": "140ec20e0",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140108c70",
+    "dispatchName": "FUN_140108c70",
+    "parserTarget": "140108c70",
+    "parserName": "FUN_140108c70",
+    "helperChain": [
+      "1400fadb0",
+      "140108c70",
+      "140108c70"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 106,
+    "packetRef": "140ec2130",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "1401089c0",
+    "dispatchName": "FUN_1401089c0",
+    "parserTarget": "1401089c0",
+    "parserName": "FUN_1401089c0",
+    "helperChain": [
+      "1400fadb0",
+      "1401089c0",
+      "1401089c0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 107,
+    "packetRef": "140ec2180",
+    "setupFunction": "1400f0fe0",
+    "setupFunctionName": "FUN_1400f0fe0",
+    "dispatchMethod": "14010b0f0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f3eb0",
+    "parserName": "FUN_1400f3eb0",
+    "helperChain": [
+      "1400f0fe0",
+      "14010b0f0",
+      "1400f3eb0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 108,
+    "packetRef": "140ec21d0",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140109650",
+    "dispatchName": "FUN_140109650",
+    "parserTarget": "140109650",
+    "parserName": "FUN_140109650",
+    "helperChain": [
+      "1400fadb0",
+      "140109650",
+      "140109650"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 109,
+    "packetRef": "140ec2220",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "14013feb0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1401103a0",
+    "parserName": "FUN_1401103a0",
+    "helperChain": [
+      "1400e9470",
+      "14013feb0",
+      "1401103a0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 110,
+    "packetRef": "140ec2270",
+    "setupFunction": "1400f0cc0",
+    "setupFunctionName": "FUN_1400f0cc0",
+    "dispatchMethod": "14010baa0",
+    "dispatchName": "FUN_14010baa0",
+    "parserTarget": "14010baa0",
+    "parserName": "FUN_14010baa0",
+    "helperChain": [
+      "1400f0cc0",
+      "14010baa0",
+      "14010baa0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 111,
+    "packetRef": "140ec22c0",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "140105d00",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400e9470",
+      "140105d00"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 113,
+    "packetRef": "140ec2360",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "1401081a0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fca70",
+    "parserName": "FUN_1400fca70",
+    "helperChain": [
+      "1400fadb0",
+      "1401081a0",
+      "1400fca70"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 114,
+    "packetRef": "140ec23b0",
+    "setupFunction": "14010fdd0",
+    "setupFunctionName": "FUN_14010fdd0",
+    "dispatchMethod": "14013ff20",
+    "dispatchName": "FUN_14013ff20",
+    "parserTarget": "14013ff20",
+    "parserName": "FUN_14013ff20",
+    "helperChain": [
+      "14010fdd0",
+      "14013ff20",
+      "14013ff20"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 115,
+    "packetRef": "140ec2400",
+    "setupFunction": "14010fdd0",
+    "setupFunctionName": "FUN_14010fdd0",
+    "dispatchMethod": "140140580",
+    "dispatchName": "FUN_140140580",
+    "parserTarget": "140140580",
+    "parserName": "FUN_140140580",
+    "helperChain": [
+      "14010fdd0",
+      "140140580",
+      "140140580"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 116,
+    "packetRef": "140ec2450",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "1401094e0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fbd90",
+    "parserName": "FUN_1400fbd90",
+    "helperChain": [
+      "1400fadb0",
+      "1401094e0",
+      "1400fbd90"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 117,
+    "packetRef": "140ec24a0",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010bca0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f0af0",
+    "parserName": "FUN_1400f0af0",
+    "helperChain": [
+      "1400f0570",
+      "14010bca0",
+      "1400f0af0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 119,
+    "packetRef": "140ec2540",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140109760",
+    "dispatchName": "FUN_140109760",
+    "parserTarget": "140109760",
+    "parserName": "FUN_140109760",
+    "helperChain": [
+      "1400fadb0",
+      "140109760",
+      "140109760"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 120,
+    "packetRef": "140ec2590",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013fcd0",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1401112c0",
+      "14013fcd0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 121,
+    "packetRef": "140ec25e0",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "140107630",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fd510",
+    "parserName": "FUN_1400fd510",
+    "helperChain": [
+      "1400e9470",
+      "140107630",
+      "1400fd510"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 122,
+    "packetRef": "140ec2630",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013f970",
+    "dispatchName": "<raw>",
+    "parserTarget": "140114110",
+    "parserName": "FUN_140114110",
+    "helperChain": [
+      "1401112c0",
+      "14013f970",
+      "140114110"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 123,
+    "packetRef": "140ec2680",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "140109b90",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f91b0",
+    "parserName": "FUN_1400f91b0",
+    "helperChain": [
+      "1400e9470",
+      "140109b90",
+      "1400f91b0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 124,
+    "packetRef": "140ec26d0",
+    "setupFunction": "14010fdd0",
+    "setupFunctionName": "FUN_14010fdd0",
+    "dispatchMethod": "140140dd0",
+    "dispatchName": "FUN_140140dd0",
+    "parserTarget": "140140dd0",
+    "parserName": "FUN_140140dd0",
+    "helperChain": [
+      "14010fdd0",
+      "140140dd0",
+      "140140dd0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 125,
+    "packetRef": "140ec2720",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140107eb0",
+    "dispatchName": "FUN_140107eb0",
+    "parserTarget": "140107eb0",
+    "parserName": "FUN_140107eb0",
+    "helperChain": [
+      "1400fadb0",
+      "140107eb0",
+      "140107eb0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 126,
+    "packetRef": "140ec2770",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "1401095a0",
+    "dispatchName": "FUN_1401095a0",
+    "parserTarget": "1401095a0",
+    "parserName": "FUN_1401095a0",
+    "helperChain": [
+      "1400fadb0",
+      "1401095a0",
+      "1401095a0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 127,
+    "packetRef": "140ec27c0",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013f5b0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1401143f0",
+    "parserName": "FUN_1401143f0",
+    "helperChain": [
+      "1401112c0",
+      "14013f5b0",
+      "1401143f0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 128,
+    "packetRef": "140ec2810",
+    "setupFunction": "1400f8000",
+    "setupFunctionName": "FUN_1400f8000",
+    "dispatchMethod": "14010a080",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f8610",
+    "parserName": "FUN_1400f8610",
+    "helperChain": [
+      "1400f8000",
+      "14010a080",
+      "1400f8610"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 129,
+    "packetRef": "140ec2860",
+    "setupFunction": "14010f0a0",
+    "setupFunctionName": "FUN_14010f0a0",
+    "dispatchMethod": "1401412d0",
+    "dispatchName": "FUN_1401412d0",
+    "parserTarget": "1401412d0",
+    "parserName": "FUN_1401412d0",
+    "helperChain": [
+      "14010f0a0",
+      "1401412d0",
+      "1401412d0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 130,
+    "packetRef": "140ec28b0",
+    "setupFunction": "1400f0fe0",
+    "setupFunctionName": "FUN_1400f0fe0",
+    "dispatchMethod": "14010afb0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f5830",
+    "parserName": "FUN_1400f5830",
+    "helperChain": [
+      "1400f0fe0",
+      "14010afb0",
+      "1400f5830"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 131,
+    "packetRef": "140ec2900",
+    "setupFunction": "1400fdea0",
+    "setupFunctionName": "FUN_1400fdea0",
+    "dispatchMethod": "140106b30",
+    "dispatchName": "FUN_140106b30",
+    "parserTarget": "140106b30",
+    "parserName": "FUN_140106b30",
+    "helperChain": [
+      "1400fdea0",
+      "140106b30",
+      "140106b30"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 132,
+    "packetRef": "140ec2950",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013f4f0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1401149f0",
+    "parserName": "FUN_1401149f0",
+    "helperChain": [
+      "1401112c0",
+      "14013f4f0",
+      "1401149f0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 133,
+    "packetRef": "140ec29a0",
+    "setupFunction": "1400fd980",
+    "setupFunctionName": "FUN_1400fd980",
+    "dispatchMethod": "140107400",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400fd980",
+      "140107400"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 134,
+    "packetRef": "140ec29f0",
+    "setupFunction": "1400fdea0",
+    "setupFunctionName": "FUN_1400fdea0",
+    "dispatchMethod": "140106c70",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fe780",
+    "parserName": "FUN_1400fe780",
+    "helperChain": [
+      "1400fdea0",
+      "140106c70",
+      "1400fe780"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 135,
+    "packetRef": "140ec2a40",
+    "setupFunction": "1400fdea0",
+    "setupFunctionName": "FUN_1400fdea0",
+    "dispatchMethod": "140106df0",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400fdea0",
+      "140106df0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 136,
+    "packetRef": "140ec2a90",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010c1e0",
+    "dispatchName": "FUN_14010c1e0",
+    "parserTarget": "14010c1e0",
+    "parserName": "FUN_14010c1e0",
+    "helperChain": [
+      "1400f0570",
+      "14010c1e0",
+      "14010c1e0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 137,
+    "packetRef": "140ec2ae0",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140107c40",
+    "dispatchName": "FUN_140107c40",
+    "parserTarget": "140107c40",
+    "parserName": "FUN_140107c40",
+    "helperChain": [
+      "1400fadb0",
+      "140107c40",
+      "140107c40"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 138,
+    "packetRef": "140ec2b30",
+    "setupFunction": "14010fdd0",
+    "setupFunctionName": "FUN_14010fdd0",
+    "dispatchMethod": "140140cb0",
+    "dispatchName": "FUN_140140cb0",
+    "parserTarget": "140140cb0",
+    "parserName": "FUN_140140cb0",
+    "helperChain": [
+      "14010fdd0",
+      "140140cb0",
+      "140140cb0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 139,
+    "packetRef": "140ec2b80",
+    "setupFunction": "1400f6330",
+    "setupFunctionName": "FUN_1400f6330",
+    "dispatchMethod": "14010a410",
+    "dispatchName": "FUN_14010a410",
+    "parserTarget": "14010a410",
+    "parserName": "FUN_14010a410",
+    "helperChain": [
+      "1400f6330",
+      "14010a410",
+      "14010a410"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 140,
+    "packetRef": "140ec2bd0",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140108050",
+    "dispatchName": "FUN_140108050",
+    "parserTarget": "140108050",
+    "parserName": "FUN_140108050",
+    "helperChain": [
+      "1400fadb0",
+      "140108050",
+      "140108050"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 141,
+    "packetRef": "140ec2c20",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "140106510",
+    "dispatchName": "FUN_140106510",
+    "parserTarget": "140106510",
+    "parserName": "FUN_140106510",
+    "helperChain": [
+      "1400e9470",
+      "140106510",
+      "140106510"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 142,
+    "packetRef": "140ec2c70",
+    "setupFunction": "14010f0a0",
+    "setupFunctionName": "FUN_14010f0a0",
+    "dispatchMethod": "140141610",
+    "dispatchName": "FUN_140141610",
+    "parserTarget": "140141610",
+    "parserName": "FUN_140141610",
+    "helperChain": [
+      "14010f0a0",
+      "140141610",
+      "140141610"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 143,
+    "packetRef": "140ec2cc0",
+    "setupFunction": "1400fdea0",
+    "setupFunctionName": "FUN_1400fdea0",
+    "dispatchMethod": "140106f00",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fe270",
+    "parserName": "FUN_1400fe270",
+    "helperChain": [
+      "1400fdea0",
+      "140106f00",
+      "1400fe270"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 144,
+    "packetRef": "140ec2d10",
+    "setupFunction": "1400ff000",
+    "setupFunctionName": "FUN_1400ff000",
+    "dispatchMethod": "140105d40",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400ff000",
+      "140105d40"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 145,
+    "packetRef": "140ec2d60",
+    "setupFunction": "1400f8000",
+    "setupFunctionName": "FUN_1400f8000",
+    "dispatchMethod": "14010a100",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f8280",
+    "parserName": "FUN_1400f8280",
+    "helperChain": [
+      "1400f8000",
+      "14010a100",
+      "1400f8280"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 146,
+    "packetRef": "140ec2db0",
+    "setupFunction": "1400fd980",
+    "setupFunctionName": "FUN_1400fd980",
+    "dispatchMethod": "140105d00",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400fd980",
+      "140105d00"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 147,
+    "packetRef": "140ec2e00",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013f430",
+    "dispatchName": "<raw>",
+    "parserTarget": "140115220",
+    "parserName": "FUN_140115220",
+    "helperChain": [
+      "1401112c0",
+      "14013f430",
+      "140115220"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 148,
+    "packetRef": "140ec2e50",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "1401066c0",
+    "dispatchName": "FUN_1401066c0",
+    "parserTarget": "1401066c0",
+    "parserName": "FUN_1401066c0",
+    "helperChain": [
+      "1400e9470",
+      "1401066c0",
+      "1401066c0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 149,
+    "packetRef": "140ec2ea0",
+    "setupFunction": "1400fd980",
+    "setupFunctionName": "FUN_1400fd980",
+    "dispatchMethod": "140106f40",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fdbf0",
+    "parserName": "FUN_1400fdbf0",
+    "helperChain": [
+      "1400fd980",
+      "140106f40",
+      "1400fdbf0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 150,
+    "packetRef": "140ec2ef0",
+    "setupFunction": "1400fdea0",
+    "setupFunctionName": "FUN_1400fdea0",
+    "dispatchMethod": "140106c10",
+    "dispatchName": "FUN_140106c10",
+    "parserTarget": "140106c10",
+    "parserName": "FUN_140106c10",
+    "helperChain": [
+      "1400fdea0",
+      "140106c10",
+      "140106c10"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 151,
+    "packetRef": "140ec2f40",
+    "setupFunction": "14010f0a0",
+    "setupFunctionName": "FUN_14010f0a0",
+    "dispatchMethod": "140141120",
+    "dispatchName": "FUN_140141120",
+    "parserTarget": "140141120",
+    "parserName": "FUN_140141120",
+    "helperChain": [
+      "14010f0a0",
+      "140141120",
+      "140141120"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 152,
+    "packetRef": "140ec2f90",
+    "setupFunction": "1400f8000",
+    "setupFunctionName": "FUN_1400f8000",
+    "dispatchMethod": "14010a140",
+    "dispatchName": "FUN_14010a140",
+    "parserTarget": "14010a140",
+    "parserName": "FUN_14010a140",
+    "helperChain": [
+      "1400f8000",
+      "14010a140",
+      "14010a140"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 153,
+    "packetRef": "140ec2fe0",
+    "setupFunction": "14010f0a0",
+    "setupFunctionName": "FUN_14010f0a0",
+    "dispatchMethod": "140141530",
+    "dispatchName": "<raw>",
+    "parserTarget": "14010f930",
+    "parserName": "FUN_14010f930",
+    "helperChain": [
+      "14010f0a0",
+      "140141530",
+      "14010f930"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 154,
+    "packetRef": "140ec3030",
+    "setupFunction": "1400fd980",
+    "setupFunctionName": "FUN_1400fd980",
+    "dispatchMethod": "140106f80",
+    "dispatchName": "FUN_140106f80",
+    "parserTarget": "140106f80",
+    "parserName": "FUN_140106f80",
+    "helperChain": [
+      "1400fd980",
+      "140106f80",
+      "140106f80"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 155,
+    "packetRef": "140ec3080",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "14010ab00",
+    "dispatchName": "FUN_14010ab00",
+    "parserTarget": "14010ab00",
+    "parserName": "FUN_14010ab00",
+    "helperChain": [
+      "1400e9470",
+      "14010ab00",
+      "14010ab00"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 156,
+    "packetRef": "140ec30d0",
+    "setupFunction": "14010f0a0",
+    "setupFunctionName": "FUN_14010f0a0",
+    "dispatchMethod": "140141570",
+    "dispatchName": "FUN_140141570",
+    "parserTarget": "140141570",
+    "parserName": "FUN_140141570",
+    "helperChain": [
+      "14010f0a0",
+      "140141570",
+      "140141570"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 157,
+    "packetRef": "140ec3120",
+    "setupFunction": "14010f0a0",
+    "setupFunctionName": "FUN_14010f0a0",
+    "dispatchMethod": "140141480",
+    "dispatchName": "FUN_140141480",
+    "parserTarget": "140141480",
+    "parserName": "FUN_140141480",
+    "helperChain": [
+      "14010f0a0",
+      "140141480",
+      "140141480"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 158,
+    "packetRef": "140ec3170",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010c260",
+    "dispatchName": "FUN_14010c260",
+    "parserTarget": "14010c260",
+    "parserName": "FUN_14010c260",
+    "helperChain": [
+      "1400f0570",
+      "14010c260",
+      "14010c260"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 159,
+    "packetRef": "140ec31c0",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013f470",
+    "dispatchName": "<raw>",
+    "parserTarget": "140114e80",
+    "parserName": "FUN_140114e80",
+    "helperChain": [
+      "1401112c0",
+      "14013f470",
+      "140114e80"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 160,
+    "packetRef": "140ec3210",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010c050",
+    "dispatchName": "FUN_14010c050",
+    "parserTarget": "14010c050",
+    "parserName": "FUN_14010c050",
+    "helperChain": [
+      "1400f0570",
+      "14010c050",
+      "14010c050"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 161,
+    "packetRef": "140ec3260",
+    "setupFunction": "1400ff000",
+    "setupFunctionName": "FUN_1400ff000",
+    "dispatchMethod": "1401060d0",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400ff000",
+      "1401060d0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 162,
+    "packetRef": "140ec32b0",
+    "setupFunction": "1400fdea0",
+    "setupFunctionName": "FUN_1400fdea0",
+    "dispatchMethod": "140106d30",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fe570",
+    "parserName": "FUN_1400fe570",
+    "helperChain": [
+      "1400fdea0",
+      "140106d30",
+      "1400fe570"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 163,
+    "packetRef": "140ec3300",
+    "setupFunction": "1400ff000",
+    "setupFunctionName": "FUN_1400ff000",
+    "dispatchMethod": "140105f70",
+    "dispatchName": "FUN_140105f70",
+    "parserTarget": "140105f70",
+    "parserName": "FUN_140105f70",
+    "helperChain": [
+      "1400ff000",
+      "140105f70",
+      "140105f70"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 164,
+    "packetRef": "140ec3350",
+    "setupFunction": "1400fd980",
+    "setupFunctionName": "FUN_1400fd980",
+    "dispatchMethod": "1401071e0",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400fd980",
+      "1401071e0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 165,
+    "packetRef": "140ec33a0",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "140106810",
+    "dispatchName": "FUN_140106810",
+    "parserTarget": "140106810",
+    "parserName": "FUN_140106810",
+    "helperChain": [
+      "1400e9470",
+      "140106810",
+      "140106810"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 166,
+    "packetRef": "140ec33f0",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010bce0",
+    "dispatchName": "FUN_14010bce0",
+    "parserTarget": "14010bce0",
+    "parserName": "FUN_14010bce0",
+    "helperChain": [
+      "1400f0570",
+      "14010bce0",
+      "14010bce0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 167,
+    "packetRef": "140ec3440",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010c120",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400f0570",
+      "14010c120"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 168,
+    "packetRef": "140ec3490",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "1401064d0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fee20",
+    "parserName": "FUN_1400fee20",
+    "helperChain": [
+      "1400e9470",
+      "1401064d0",
+      "1400fee20"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 169,
+    "packetRef": "140ec34e0",
+    "setupFunction": "1400ff000",
+    "setupFunctionName": "FUN_1400ff000",
+    "dispatchMethod": "140106060",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400ff000",
+      "140106060"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 170,
+    "packetRef": "140ec3530",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "140105d00",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400e9470",
+      "140105d00"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 171,
+    "packetRef": "140ec3580",
+    "setupFunction": "1400fd980",
+    "setupFunctionName": "FUN_1400fd980",
+    "dispatchMethod": "140107080",
+    "dispatchName": "FUN_140107080",
+    "parserTarget": "140107080",
+    "parserName": "FUN_140107080",
+    "helperChain": [
+      "1400fd980",
+      "140107080",
+      "140107080"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 172,
+    "packetRef": "140ec35d0",
+    "setupFunction": "1400f8000",
+    "setupFunctionName": "FUN_1400f8000",
+    "dispatchMethod": "14010a0c0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f8450",
+    "parserName": "FUN_1400f8450",
+    "helperChain": [
+      "1400f8000",
+      "14010a0c0",
+      "1400f8450"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 173,
+    "packetRef": "140ec3620",
+    "setupFunction": "1400fdea0",
+    "setupFunctionName": "FUN_1400fdea0",
+    "dispatchMethod": "140106bd0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fe9b0",
+    "parserName": "FUN_1400fe9b0",
+    "helperChain": [
+      "1400fdea0",
+      "140106bd0",
+      "1400fe9b0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 174,
+    "packetRef": "140ec3670",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "140106680",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fec30",
+    "parserName": "FUN_1400fec30",
+    "helperChain": [
+      "1400e9470",
+      "140106680",
+      "1400fec30"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 175,
+    "packetRef": "140ec36c0",
+    "setupFunction": "1400ff000",
+    "setupFunctionName": "FUN_1400ff000",
+    "dispatchMethod": "140106140",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400ff000",
+      "140106140"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 176,
+    "packetRef": "140ec3710",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140107fd0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400fce90",
+    "parserName": "FUN_1400fce90",
+    "helperChain": [
+      "1400fadb0",
+      "140107fd0",
+      "1400fce90"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 177,
+    "packetRef": "140ec3760",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "14013fd90",
+    "dispatchName": "FUN_14013fd90",
+    "parserTarget": "14013fd90",
+    "parserName": "FUN_14013fd90",
+    "helperChain": [
+      "1400e9470",
+      "14013fd90",
+      "14013fd90"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 178,
+    "packetRef": "140ec37b0",
+    "setupFunction": "14010f0a0",
+    "setupFunctionName": "FUN_14010f0a0",
+    "dispatchMethod": "140141820",
+    "dispatchName": "<raw>",
+    "parserTarget": "14010f7e0",
+    "parserName": "FUN_14010f7e0",
+    "helperChain": [
+      "14010f0a0",
+      "140141820",
+      "14010f7e0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 179,
+    "packetRef": "140ec3800",
+    "setupFunction": "1400fdea0",
+    "setupFunctionName": "FUN_1400fdea0",
+    "dispatchMethod": "140106d70",
+    "dispatchName": "FUN_140106d70",
+    "parserTarget": "140106d70",
+    "parserName": "FUN_140106d70",
+    "helperChain": [
+      "1400fdea0",
+      "140106d70",
+      "140106d70"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 180,
+    "packetRef": "140ec3850",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140107a20",
+    "dispatchName": "FUN_140107a20",
+    "parserTarget": "140107a20",
+    "parserName": "FUN_140107a20",
+    "helperChain": [
+      "1400fadb0",
+      "140107a20",
+      "140107a20"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 181,
+    "packetRef": "140ec38a0",
+    "setupFunction": "1400fdea0",
+    "setupFunctionName": "FUN_1400fdea0",
+    "dispatchMethod": "140106cb0",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400fdea0",
+      "140106cb0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 182,
+    "packetRef": "140ec38f0",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140108860",
+    "dispatchName": "FUN_140108860",
+    "parserTarget": "140108860",
+    "parserName": "FUN_140108860",
+    "helperChain": [
+      "1400fadb0",
+      "140108860",
+      "140108860"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 183,
+    "packetRef": "140ec3940",
+    "setupFunction": "14010fdd0",
+    "setupFunctionName": "FUN_14010fdd0",
+    "dispatchMethod": "140140760",
+    "dispatchName": "FUN_140140760",
+    "parserTarget": "140140760",
+    "parserName": "FUN_140140760",
+    "helperChain": [
+      "14010fdd0",
+      "140140760",
+      "140140760"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 184,
+    "packetRef": "140ec3990",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010c410",
+    "dispatchName": "FUN_14010c410",
+    "parserTarget": "14010c410",
+    "parserName": "FUN_14010c410",
+    "helperChain": [
+      "1400f0570",
+      "14010c410",
+      "14010c410"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 185,
+    "packetRef": "140ec39e0",
+    "setupFunction": "1400eeda0",
+    "setupFunctionName": "FUN_1400eeda0",
+    "dispatchMethod": "14010c830",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400efc90",
+    "parserName": "FUN_1400efc90",
+    "helperChain": [
+      "1400eeda0",
+      "14010c830",
+      "1400efc90"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 186,
+    "packetRef": "140ec3a30",
+    "setupFunction": "14010f0a0",
+    "setupFunctionName": "FUN_14010f0a0",
+    "dispatchMethod": "140141860",
+    "dispatchName": "<raw>",
+    "parserTarget": "14010f470",
+    "parserName": "FUN_14010f470",
+    "helperChain": [
+      "14010f0a0",
+      "140141860",
+      "14010f470"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 187,
+    "packetRef": "140ec3a80",
+    "setupFunction": "1400f6330",
+    "setupFunctionName": "FUN_1400f6330",
+    "dispatchMethod": "14010a4d0",
+    "dispatchName": "FUN_14010a4d0",
+    "parserTarget": "14010a4d0",
+    "parserName": "FUN_14010a4d0",
+    "helperChain": [
+      "1400f6330",
+      "14010a4d0",
+      "14010a4d0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 188,
+    "packetRef": "140ec3ad0",
+    "setupFunction": "1400fd980",
+    "setupFunctionName": "FUN_1400fd980",
+    "dispatchMethod": "140107340",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400fd980",
+      "140107340"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 189,
+    "packetRef": "140ec3b20",
+    "setupFunction": "1400e9470",
+    "setupFunctionName": "ConnectionManager",
+    "dispatchMethod": "14010a2a0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f7a40",
+    "parserName": "FUN_1400f7a40",
+    "helperChain": [
+      "1400e9470",
+      "14010a2a0",
+      "1400f7a40"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 190,
+    "packetRef": "140ec3b70",
+    "setupFunction": "1400f8000",
+    "setupFunctionName": "FUN_1400f8000",
+    "dispatchMethod": "140109d60",
+    "dispatchName": "FUN_140109d60",
+    "parserTarget": "140109d60",
+    "parserName": "FUN_140109d60",
+    "helperChain": [
+      "1400f8000",
+      "140109d60",
+      "140109d60"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 191,
+    "packetRef": "140ec3bc0",
+    "setupFunction": "14010f0a0",
+    "setupFunctionName": "FUN_14010f0a0",
+    "dispatchMethod": "140141290",
+    "dispatchName": "<raw>",
+    "parserTarget": "14010fa70",
+    "parserName": "FUN_14010fa70",
+    "helperChain": [
+      "14010f0a0",
+      "140141290",
+      "14010fa70"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 192,
+    "packetRef": "140ec3c10",
+    "setupFunction": "1400fdea0",
+    "setupFunctionName": "FUN_1400fdea0",
+    "dispatchMethod": "140106980",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400fdea0",
+      "140106980"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 193,
+    "packetRef": "140ec3c60",
+    "setupFunction": "1400eeda0",
+    "setupFunctionName": "FUN_1400eeda0",
+    "dispatchMethod": "14010c7f0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f0080",
+    "parserName": "FUN_1400f0080",
+    "helperChain": [
+      "1400eeda0",
+      "14010c7f0",
+      "1400f0080"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 194,
+    "packetRef": "140ec3cb0",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013f3f0",
+    "dispatchName": "<raw>",
+    "parserTarget": "140115600",
+    "parserName": "FUN_140115600",
+    "helperChain": [
+      "1401112c0",
+      "14013f3f0",
+      "140115600"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 195,
+    "packetRef": "140ec3d00",
+    "setupFunction": "1400f8000",
+    "setupFunctionName": "FUN_1400f8000",
+    "dispatchMethod": "14010a040",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f8890",
+    "parserName": "FUN_1400f8890",
+    "helperChain": [
+      "1400f8000",
+      "14010a040",
+      "1400f8890"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 196,
+    "packetRef": "140ec3d50",
+    "setupFunction": "1400f0cc0",
+    "setupFunctionName": "FUN_1400f0cc0",
+    "dispatchMethod": "140105d00",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400f0cc0",
+      "140105d00"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 197,
+    "packetRef": "140ec3da0",
+    "setupFunction": "1400f8000",
+    "setupFunctionName": "FUN_1400f8000",
+    "dispatchMethod": "140109c10",
+    "dispatchName": "FUN_140109c10",
+    "parserTarget": "140109c10",
+    "parserName": "FUN_140109c10",
+    "helperChain": [
+      "1400f8000",
+      "140109c10",
+      "140109c10"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 198,
+    "packetRef": "140ec3df0",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013f4b0",
+    "dispatchName": "<raw>",
+    "parserTarget": "140114b90",
+    "parserName": "FUN_140114b90",
+    "helperChain": [
+      "1401112c0",
+      "14013f4b0",
+      "140114b90"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 199,
+    "packetRef": "140ec3e40",
+    "setupFunction": "1400f6330",
+    "setupFunctionName": "FUN_1400f6330",
+    "dispatchMethod": "14010a8b0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f66b0",
+    "parserName": "FUN_1400f66b0",
+    "helperChain": [
+      "1400f6330",
+      "14010a8b0",
+      "1400f66b0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 200,
+    "packetRef": "140ec3e90",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010be80",
+    "dispatchName": "FUN_14010be80",
+    "parserTarget": "14010be80",
+    "parserName": "FUN_14010be80",
+    "helperChain": [
+      "1400f0570",
+      "14010be80",
+      "14010be80"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 201,
+    "packetRef": "140ec3ee0",
+    "setupFunction": "1400f0fe0",
+    "setupFunctionName": "FUN_1400f0fe0",
+    "dispatchMethod": "14010aff0",
+    "dispatchName": "<raw>",
+    "parserTarget": "1400f5210",
+    "parserName": "FUN_1400f5210",
+    "helperChain": [
+      "1400f0fe0",
+      "14010aff0",
+      "1400f5210"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 202,
+    "packetRef": "140ec3f30",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "140107b20",
+    "dispatchName": "FUN_140107b20",
+    "parserTarget": "140107b20",
+    "parserName": "FUN_140107b20",
+    "helperChain": [
+      "1400fadb0",
+      "140107b20",
+      "140107b20"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 203,
+    "packetRef": "140ec3f80",
+    "setupFunction": "1400fdea0",
+    "setupFunctionName": "FUN_1400fdea0",
+    "dispatchMethod": "140106a10",
+    "dispatchName": "FUN_140106a10",
+    "parserTarget": "140106a10",
+    "parserName": "FUN_140106a10",
+    "helperChain": [
+      "1400fdea0",
+      "140106a10",
+      "140106a10"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 204,
+    "packetRef": "140ec3fd0",
+    "setupFunction": "1400fd980",
+    "setupFunctionName": "FUN_1400fd980",
+    "dispatchMethod": "140107280",
+    "dispatchName": "<raw>",
+    "parserTarget": "",
+    "parserName": "<raw>",
+    "helperChain": [
+      "1400fd980",
+      "140107280"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 205,
+    "packetRef": "140ec4020",
+    "setupFunction": "1400ff000",
+    "setupFunctionName": "FUN_1400ff000",
+    "dispatchMethod": "140105df0",
+    "dispatchName": "FUN_140105df0",
+    "parserTarget": "140105df0",
+    "parserName": "FUN_140105df0",
+    "helperChain": [
+      "1400ff000",
+      "140105df0",
+      "140105df0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 206,
+    "packetRef": "140ec4070",
+    "setupFunction": "14010fdd0",
+    "setupFunctionName": "FUN_14010fdd0",
+    "dispatchMethod": "140140290",
+    "dispatchName": "FUN_140140290",
+    "parserTarget": "140140290",
+    "parserName": "FUN_140140290",
+    "helperChain": [
+      "14010fdd0",
+      "140140290",
+      "140140290"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 207,
+    "packetRef": "140ec40c0",
+    "setupFunction": "1400fadb0",
+    "setupFunctionName": "FUN_1400fadb0",
+    "dispatchMethod": "1401076b0",
+    "dispatchName": "FUN_1401076b0",
+    "parserTarget": "1401076b0",
+    "parserName": "FUN_1401076b0",
+    "helperChain": [
+      "1400fadb0",
+      "1401076b0",
+      "1401076b0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 208,
+    "packetRef": "140ec4110",
+    "setupFunction": "14010f0a0",
+    "setupFunctionName": "FUN_14010f0a0",
+    "dispatchMethod": "140141390",
+    "dispatchName": "FUN_140141390",
+    "parserTarget": "140141390",
+    "parserName": "FUN_140141390",
+    "helperChain": [
+      "14010f0a0",
+      "140141390",
+      "140141390"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 209,
+    "packetRef": "140ec4160",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010bb40",
+    "dispatchName": "FUN_14010bb40",
+    "parserTarget": "14010bb40",
+    "parserName": "FUN_14010bb40",
+    "helperChain": [
+      "1400f0570",
+      "14010bb40",
+      "14010bb40"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 210,
+    "packetRef": "140ec41b0",
+    "setupFunction": "1400f8000",
+    "setupFunctionName": "FUN_1400f8000",
+    "dispatchMethod": "140109ec0",
+    "dispatchName": "FUN_140109ec0",
+    "parserTarget": "140109ec0",
+    "parserName": "FUN_140109ec0",
+    "helperChain": [
+      "1400f8000",
+      "140109ec0",
+      "140109ec0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 211,
+    "packetRef": "140ec4200",
+    "setupFunction": "14010f0a0",
+    "setupFunctionName": "FUN_14010f0a0",
+    "dispatchMethod": "1401416f0",
+    "dispatchName": "FUN_1401416f0",
+    "parserTarget": "1401416f0",
+    "parserName": "FUN_1401416f0",
+    "helperChain": [
+      "14010f0a0",
+      "1401416f0",
+      "1401416f0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 212,
+    "packetRef": "140ec4250",
+    "setupFunction": "1400eeda0",
+    "setupFunctionName": "FUN_1400eeda0",
+    "dispatchMethod": "14010c870",
+    "dispatchName": "FUN_14010c870",
+    "parserTarget": "14010c870",
+    "parserName": "FUN_14010c870",
+    "helperChain": [
+      "1400eeda0",
+      "14010c870",
+      "14010c870"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 213,
+    "packetRef": "140ec42a0",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010bf30",
+    "dispatchName": "FUN_14010bf30",
+    "parserTarget": "14010bf30",
+    "parserName": "FUN_14010bf30",
+    "helperChain": [
+      "1400f0570",
+      "14010bf30",
+      "14010bf30"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 214,
+    "packetRef": "140ec42f0",
+    "setupFunction": "1401112c0",
+    "setupFunctionName": "FUN_1401112c0",
+    "dispatchMethod": "14013f9b0",
+    "dispatchName": "<raw>",
+    "parserTarget": "140113e10",
+    "parserName": "FUN_140113e10",
+    "helperChain": [
+      "1401112c0",
+      "14013f9b0",
+      "140113e10"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 215,
+    "packetRef": "140ec4340",
+    "setupFunction": "14010f0a0",
+    "setupFunctionName": "FUN_14010f0a0",
+    "dispatchMethod": "1401411e0",
+    "dispatchName": "FUN_1401411e0",
+    "parserTarget": "1401411e0",
+    "parserName": "FUN_1401411e0",
+    "helperChain": [
+      "14010f0a0",
+      "1401411e0",
+      "1401411e0"
+    ]
+  },
+  {
+    "side": "server",
+    "opcode": 216,
+    "packetRef": "140ec4390",
+    "setupFunction": "1400f0570",
+    "setupFunctionName": "FUN_1400f0570",
+    "dispatchMethod": "14010c160",
+    "dispatchName": "FUN_14010c160",
+    "parserTarget": "14010c160",
+    "parserName": "FUN_14010c160",
+    "helperChain": [
+      "1400f0570",
+      "14010c160",
+      "14010c160"
+    ]
+  }
+]

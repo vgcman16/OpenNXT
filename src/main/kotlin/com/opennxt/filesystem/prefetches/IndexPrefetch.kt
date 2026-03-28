@@ -1,6 +1,7 @@
 package com.opennxt.filesystem.prefetches
 
 import com.opennxt.filesystem.Filesystem
+import com.opennxt.filesystem.Index
 import mu.KotlinLogging
 
 class IndexPrefetch(private val index: Int) : Prefetch {
@@ -35,5 +36,59 @@ class IndexPrefetch(private val index: Int) : Prefetch {
         }
 
         return value + buf.capacity()
+    }
+
+    override fun describe(): String = "index:${Index.nameOf(index)}($index)"
+
+    override fun diagnose(store: Filesystem): List<String> {
+        val problems = mutableListOf<String>()
+        val refTable = store.readReferenceTable(index)
+        if (refTable == null) {
+            problems += "missing-reference-table"
+            return problems
+        }
+
+        val table = store.getReferenceTable(index)
+        if (table == null) {
+            problems += "missing-decoded-table"
+            return problems
+        }
+
+        if (table.mask and 0x4 == 0) {
+            val missingArchives = table.archives.keys.count { archiveId ->
+                store.read(index, archiveId) == null
+            }
+            if (missingArchives > 0) {
+                problems += "missing-archives=$missingArchives"
+            }
+        }
+
+        return problems
+    }
+
+    override fun needs(store: Filesystem): List<String> {
+        val needs = mutableListOf<String>()
+        val refTable = store.readReferenceTable(index)
+        if (refTable == null) {
+            needs += "reference table for ${Index.nameOf(index)}($index)"
+            return needs
+        }
+
+        val table = store.getReferenceTable(index)
+        if (table == null) {
+            needs += "decoded reference table for ${Index.nameOf(index)}($index)"
+            return needs
+        }
+
+        if (table.mask and 0x4 == 0) {
+            val missingArchives = table.archives.keys.count { archiveId ->
+                store.read(index, archiveId) == null
+            }
+            if (missingArchives > 0) {
+                needs += "$missingArchives archive container(s) in ${Index.nameOf(index)}($index)"
+            }
+        }
+
+        return needs
     }
 }

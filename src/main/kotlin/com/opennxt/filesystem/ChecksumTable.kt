@@ -114,14 +114,22 @@ class ChecksumTable(val entries: Array<TableEntry>) {
             temp.flip()
             temp = temp.rsaEncrypt(modulus, exponent)
 
-            val signature = ByteArray(temp.limit())
-            temp.get(signature)
+            val rawSignature = ByteArray(temp.limit())
+            temp.get(rawSignature)
 
-            // Native NXT accepts a signed big integer encoding here. When the encrypted value is a full-width
-            // 4096-bit positive number, include an explicit leading 0 byte so the result stays positive.
-            if (signature.size == modulusBytes && signature.isNotEmpty() && signature[0].toInt() and 0x80 == 0) {
-                os.writeByte(0)
+            // JS5 expects a fixed-width unsigned RSA block, not a sign-extended BigInteger encoding.
+            val signature = when {
+                rawSignature.size == modulusBytes + 1 && rawSignature[0] == 0.toByte() ->
+                    rawSignature.copyOfRange(1, rawSignature.size)
+                rawSignature.size < modulusBytes ->
+                    ByteArray(modulusBytes - rawSignature.size) + rawSignature
+                rawSignature.size == modulusBytes ->
+                    rawSignature
+                else -> throw IllegalStateException(
+                    "Unexpected checksum signature width ${rawSignature.size}; expected <= ${modulusBytes + 1}"
+                )
             }
+
             os.write(signature)
 
             return bout.toByteArray()

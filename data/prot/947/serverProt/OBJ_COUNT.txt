@@ -1,0 +1,4 @@
+packedCoord ubyte
+id ushort
+oldCount ushort
+newCount ushort

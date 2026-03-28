@@ -116,13 +116,32 @@ class WorldList(var entries: Array<WorldListEntry> = emptyArray()) {
     }
 
     fun handleRequest(oldChecksum: Int, output: ConnectedClient) {
+        handleRequestInternal(oldChecksum) { lastChunk, chunk ->
+            output.write(WorldListFetchReply(lastChunk, chunk))
+        }
+    }
+
+    fun handleCompatRequest(oldChecksum: Int, output: ConnectedClient, rawOpcode: Int) {
+        handleRequestInternal(oldChecksum) { lastChunk, chunk ->
+            val buffer = Unpooled.buffer(chunk.size + 1)
+            WorldListFetchReply.Codec.encode(WorldListFetchReply(lastChunk, chunk), com.opennxt.net.buf.GamePacketBuilder(buffer))
+            output.write(com.opennxt.net.proxy.UnidentifiedPacket(com.opennxt.net.game.pipeline.OpcodeWithBuffer(rawOpcode, buffer)))
+        }
+    }
+
+    private inline fun handleRequestInternal(oldChecksum: Int, sendChunk: (lastChunk: Boolean, chunk: ByteArray) -> Unit) {
         val checksum = this.hashCode()
         if (checksum == oldChecksum) {
-            output.write(WorldListFetchReply(true, byteArrayOf(0)))
+            logger.info { "World list checksum unchanged: checksum=$checksum, entries=${entries.size}" }
+            sendChunk(true, byteArrayOf(0))
             return
         }
 
         val requiresFullUpdate = requiresFullUpdate()
+        logger.info {
+            "Building world list reply: clientChecksum=$oldChecksum, " +
+                "serverChecksum=$checksum, fullUpdate=$requiresFullUpdate, entries=${entries.size}"
+        }
         val buffer = Unpooled.buffer(if (requiresFullUpdate) 1000 else 30)
 
         buffer.writeByte(2) // update required
@@ -181,14 +200,17 @@ class WorldList(var entries: Array<WorldListEntry> = emptyArray()) {
             buffer.writeShort(entry.playercount)
         }
 
+        var chunkCount = 0
         while (buffer.isReadable) {
             val chunkSize = if (buffer.readableBytes() > 2999) 2999 else buffer.readableBytes()
 
             val chunk = ByteArray(chunkSize)
             buffer.readBytes(chunk)
 
-            output.write(WorldListFetchReply(!buffer.isReadable, chunk))
+            chunkCount++
+            sendChunk(!buffer.isReadable, chunk)
         }
+        logger.info { "Sent world list reply: chunks=$chunkCount, checksum=$checksum" }
     }
 
     override fun toString(): String {

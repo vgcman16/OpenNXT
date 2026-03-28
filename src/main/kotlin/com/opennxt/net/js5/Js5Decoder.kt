@@ -38,12 +38,12 @@ class Js5Decoder(val session: Js5Session) : ByteToMessageDecoder() {
             val build = buf.readBuild()
             val token = buf.readString()
             val language = buf.readUnsignedByte().toInt()
-
-            check(!buf.isReadable) { "buffer is readable after reading js5 handshake" }
+            val remaining = buf.readableBytes()
 
             logger.info {
                 "Decoded js5 handshake for session#${session.id} from ${ctx.channel().remoteAddress()} " +
-                    "with build=${build.major}.${build.minor}, language=$language, tokenLength=${token.length}"
+                    "with build=${build.major}.${build.minor}, language=$language, tokenLength=${token.length}, " +
+                    "remaining=$remaining"
             }
             out.add(Js5Packet.Handshake(build.major, build.minor, token, language))
 
@@ -81,7 +81,9 @@ class Js5Decoder(val session: Js5Session) : ByteToMessageDecoder() {
                     "JS5 connection initialized from ${ctx.channel().remoteAddress()} " +
                         "with value=${packet.value}, build=${packet.build}"
                 }
-                ctx.channel().attr(Js5Session.ATTR_KEY).get().initialize()
+                ctx.channel().attr(Js5Session.ATTR_KEY).get().apply {
+                    initialize()
+                }
             }
 
             Js5PacketCodec.RequestTermination.opcode -> {
@@ -99,13 +101,16 @@ class Js5Decoder(val session: Js5Session) : ByteToMessageDecoder() {
             Js5PacketCodec.LoggedIn.opcode -> {
                 val packet = Js5PacketCodec.LoggedIn.decode(GamePacketReader(buf))
                 logger.info { "JS5 logged in state from ${ctx.channel().remoteAddress()} for build=${packet.build}" }
-                ctx.channel().attr(Js5Session.LOGGED_IN).set(true)
+                ctx.channel().attr(Js5Session.ATTR_KEY).get().apply {
+                    updateLoggedInState(true)
+                    sendPrefetchTableIfNeeded("logged-in")
+                }
             }
 
             Js5PacketCodec.LoggedOut.opcode -> {
                 val packet = Js5PacketCodec.LoggedOut.decode(GamePacketReader(buf))
                 logger.info { "JS5 logged out state from ${ctx.channel().remoteAddress()} for build=${packet.build}" }
-                ctx.channel().attr(Js5Session.LOGGED_IN).set(false)
+                ctx.channel().attr(Js5Session.ATTR_KEY).get().updateLoggedInState(false)
             }
 
             else -> {

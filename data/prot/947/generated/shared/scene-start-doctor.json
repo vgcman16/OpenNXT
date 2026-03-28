@@ -1,0 +1,2632 @@
+{
+  "advisoryOnly": true,
+  "artifacts": {
+    "sceneStartDoctorJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-start-doctor.json",
+    "sceneStartDoctorMarkdown": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-start-doctor.md"
+  },
+  "attempts": [
+    {
+      "attemptIndex": 1,
+      "closeLoadingOverlay": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "contentSession": {
+        "archiveRequests": 0,
+        "exists": true,
+        "firstRequestLabel": "",
+        "referenceTableRequests": 0,
+        "requestCount": 0,
+        "responseBytes": 0,
+        "responseHeaderCount": 0
+      },
+      "controlBursts": [],
+      "deferredCompletionTailAfterSync": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "initialFollowupWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "2",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial-followup"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 7393,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:11.223376300Z"
+      },
+      "initialWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "1",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 7386,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:11.219855100Z"
+      },
+      "likelyBlocker": "accepted-ready-overlay-not-closed",
+      "needs": [
+        "explicit loading-overlay close on the accepted-ready minimal branch",
+        "post-ready client 17/83 signal capture to confirm the plateau stays alive after world sync"
+      ],
+      "postReadyClientSignals": [],
+      "readyAccepted": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "source": "latched-post-bootstrap"
+        },
+        "kind": "world-ready-signal",
+        "lineNumber": 7378,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:11.213842700Z"
+      },
+      "readyLatched": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "replaced": "-1",
+          "source": "synthetic-forced-map-build-fallback"
+        },
+        "kind": "world-ready-signal-latched",
+        "lineNumber": 7376,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:11.211325200Z"
+      },
+      "rebuild": {
+        "data": {
+          "areaType": "474",
+          "chunkX": "402",
+          "chunkY": "402",
+          "hash1": "-2147483648",
+          "hash2": "2147483647",
+          "mapSize": "5",
+          "name": "demon",
+          "npcBits": "7"
+        },
+        "kind": "world-send-rebuild-tail",
+        "lineNumber": 7331,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:10.563096800Z"
+      },
+      "rebuildBeforeBootstrapControls": false,
+      "rebuildBeforeReadyAccepted": true,
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 4.799,
+        "endLine": 7415,
+        "endTimestamp": "2026-03-22T18:54:15.353061Z",
+        "eventCount": 87,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 3,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7327,
+        "startTimestamp": "2026-03-22T18:54:10.553790600Z"
+      }
+    },
+    {
+      "attemptIndex": 2,
+      "closeLoadingOverlay": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "contentSession": {
+        "archiveRequests": 0,
+        "exists": true,
+        "firstRequestLabel": "",
+        "referenceTableRequests": 0,
+        "requestCount": 0,
+        "responseBytes": 0,
+        "responseHeaderCount": 0
+      },
+      "controlBursts": [],
+      "deferredCompletionTailAfterSync": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "initialFollowupWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "2",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial-followup"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 7481,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:16.032323700Z"
+      },
+      "initialWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "1",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 7474,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:16.028783800Z"
+      },
+      "likelyBlocker": "accepted-ready-overlay-not-closed",
+      "needs": [
+        "explicit loading-overlay close on the accepted-ready minimal branch",
+        "post-ready client 17/83 signal capture to confirm the plateau stays alive after world sync"
+      ],
+      "postReadyClientSignals": [],
+      "readyAccepted": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "source": "latched-post-bootstrap"
+        },
+        "kind": "world-ready-signal",
+        "lineNumber": 7466,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:16.026449Z"
+      },
+      "readyLatched": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "replaced": "-1",
+          "source": "synthetic-forced-map-build-fallback"
+        },
+        "kind": "world-ready-signal-latched",
+        "lineNumber": 7464,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:16.023451700Z"
+      },
+      "rebuild": {
+        "data": {
+          "areaType": "474",
+          "chunkX": "402",
+          "chunkY": "402",
+          "hash1": "-2147483648",
+          "hash2": "2147483647",
+          "mapSize": "5",
+          "name": "demon",
+          "npcBits": "7"
+        },
+        "kind": "world-send-rebuild-tail",
+        "lineNumber": 7420,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:15.362592Z"
+      },
+      "rebuildBeforeBootstrapControls": false,
+      "rebuildBeforeReadyAccepted": true,
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 3.59,
+        "endLine": 7502,
+        "endTimestamp": "2026-03-22T18:54:18.945322200Z",
+        "eventCount": 86,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 2,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7416,
+        "startTimestamp": "2026-03-22T18:54:15.355079200Z"
+      }
+    },
+    {
+      "attemptIndex": 3,
+      "closeLoadingOverlay": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "contentSession": {
+        "archiveRequests": 0,
+        "exists": true,
+        "firstRequestLabel": "reference-table[0]",
+        "referenceTableRequests": 1,
+        "requestCount": 1,
+        "responseBytes": 4191,
+        "responseHeaderCount": 2
+      },
+      "controlBursts": [],
+      "deferredCompletionTailAfterSync": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "initialFollowupWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "2",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial-followup"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 7569,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:19.637490800Z"
+      },
+      "initialWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "1",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 7562,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:19.633492Z"
+      },
+      "likelyBlocker": "accepted-ready-overlay-not-closed",
+      "needs": [
+        "explicit loading-overlay close on the accepted-ready minimal branch",
+        "first non-reference /ms archive request after reference-table[0]",
+        "post-ready client 17/83 signal capture to confirm the plateau stays alive after world sync"
+      ],
+      "postReadyClientSignals": [],
+      "readyAccepted": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "source": "latched-post-bootstrap"
+        },
+        "kind": "world-ready-signal",
+        "lineNumber": 7554,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:19.628452600Z"
+      },
+      "readyLatched": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "replaced": "-1",
+          "source": "synthetic-forced-map-build-fallback"
+        },
+        "kind": "world-ready-signal-latched",
+        "lineNumber": 7552,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:19.625433700Z"
+      },
+      "rebuild": {
+        "data": {
+          "areaType": "474",
+          "chunkX": "402",
+          "chunkY": "402",
+          "hash1": "-2147483648",
+          "hash2": "2147483647",
+          "mapSize": "5",
+          "name": "demon",
+          "npcBits": "7"
+        },
+        "kind": "world-send-rebuild-tail",
+        "lineNumber": 7507,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:18.954351500Z"
+      },
+      "rebuildBeforeBootstrapControls": false,
+      "rebuildBeforeReadyAccepted": true,
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 4.196,
+        "endLine": 7591,
+        "endTimestamp": "2026-03-22T18:54:23.142451400Z",
+        "eventCount": 87,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 3,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7503,
+        "startTimestamp": "2026-03-22T18:54:18.946831700Z"
+      }
+    },
+    {
+      "attemptIndex": 4,
+      "closeLoadingOverlay": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "contentSession": {
+        "archiveRequests": 0,
+        "exists": true,
+        "firstRequestLabel": "reference-table[0]",
+        "referenceTableRequests": 1,
+        "requestCount": 1,
+        "responseBytes": 4191,
+        "responseHeaderCount": 2
+      },
+      "controlBursts": [],
+      "deferredCompletionTailAfterSync": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "initialFollowupWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "2",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial-followup"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 7658,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:23.820267900Z"
+      },
+      "initialWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "1",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 7651,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:23.815135500Z"
+      },
+      "likelyBlocker": "accepted-ready-overlay-not-closed",
+      "needs": [
+        "explicit loading-overlay close on the accepted-ready minimal branch",
+        "first non-reference /ms archive request after reference-table[0]",
+        "post-ready client 17/83 signal capture to confirm the plateau stays alive after world sync"
+      ],
+      "postReadyClientSignals": [],
+      "readyAccepted": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "source": "latched-post-bootstrap"
+        },
+        "kind": "world-ready-signal",
+        "lineNumber": 7643,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:23.812153Z"
+      },
+      "readyLatched": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "replaced": "-1",
+          "source": "synthetic-forced-map-build-fallback"
+        },
+        "kind": "world-ready-signal-latched",
+        "lineNumber": 7641,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:23.809119200Z"
+      },
+      "rebuild": {
+        "data": {
+          "areaType": "474",
+          "chunkX": "402",
+          "chunkY": "402",
+          "hash1": "-2147483648",
+          "hash2": "2147483647",
+          "mapSize": "5",
+          "name": "demon",
+          "npcBits": "7"
+        },
+        "kind": "world-send-rebuild-tail",
+        "lineNumber": 7596,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:23.149875400Z"
+      },
+      "rebuildBeforeBootstrapControls": false,
+      "rebuildBeforeReadyAccepted": true,
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 4.206,
+        "endLine": 7680,
+        "endTimestamp": "2026-03-22T18:54:27.349903700Z",
+        "eventCount": 87,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 3,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7592,
+        "startTimestamp": "2026-03-22T18:54:23.143463600Z"
+      }
+    },
+    {
+      "attemptIndex": 5,
+      "closeLoadingOverlay": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "contentSession": {
+        "archiveRequests": 0,
+        "exists": true,
+        "firstRequestLabel": "reference-table[0]",
+        "referenceTableRequests": 1,
+        "requestCount": 1,
+        "responseBytes": 4191,
+        "responseHeaderCount": 2
+      },
+      "controlBursts": [],
+      "deferredCompletionTailAfterSync": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "initialFollowupWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "2",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial-followup"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 7749,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:28.161262500Z"
+      },
+      "initialWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "1",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 7742,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:28.149382300Z"
+      },
+      "likelyBlocker": "accepted-ready-overlay-not-closed",
+      "needs": [
+        "explicit loading-overlay close on the accepted-ready minimal branch",
+        "first non-reference /ms archive request after reference-table[0]"
+      ],
+      "postReadyClientSignals": [
+        {
+          "bytes": 1,
+          "kind": "world-ignore-client-compat",
+          "lineNumber": 7764,
+          "opcode": 83,
+          "preview": "00"
+        }
+      ],
+      "readyAccepted": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "source": "latched-post-bootstrap"
+        },
+        "kind": "world-ready-signal",
+        "lineNumber": 7734,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:28.137509700Z"
+      },
+      "readyLatched": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "replaced": "-1",
+          "source": "synthetic-forced-map-build-fallback"
+        },
+        "kind": "world-ready-signal-latched",
+        "lineNumber": 7732,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:28.131854100Z"
+      },
+      "rebuild": {
+        "data": {
+          "areaType": "474",
+          "chunkX": "402",
+          "chunkY": "402",
+          "hash1": "-2147483648",
+          "hash2": "2147483647",
+          "mapSize": "5",
+          "name": "demon",
+          "npcBits": "7"
+        },
+        "kind": "world-send-rebuild-tail",
+        "lineNumber": 7685,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:27.360089500Z"
+      },
+      "rebuildBeforeBootstrapControls": false,
+      "rebuildBeforeReadyAccepted": true,
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1,
+          "83": 2
+        },
+        "durationSeconds": 5.403,
+        "endLine": 7771,
+        "endTimestamp": "2026-03-22T18:54:32.756016900Z",
+        "eventCount": 90,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-ignore-client-compat": 2,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 2,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7681,
+        "startTimestamp": "2026-03-22T18:54:27.353415600Z"
+      }
+    },
+    {
+      "attemptIndex": 6,
+      "closeLoadingOverlay": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "contentSession": {
+        "archiveRequests": 0,
+        "exists": true,
+        "firstRequestLabel": "reference-table[0]",
+        "referenceTableRequests": 1,
+        "requestCount": 1,
+        "responseBytes": 4191,
+        "responseHeaderCount": 2
+      },
+      "controlBursts": [],
+      "deferredCompletionTailAfterSync": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "initialFollowupWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "2",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial-followup"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 7838,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:33.496036700Z"
+      },
+      "initialWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "1",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 7831,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:33.485011700Z"
+      },
+      "likelyBlocker": "accepted-ready-overlay-not-closed",
+      "needs": [
+        "explicit loading-overlay close on the accepted-ready minimal branch",
+        "first non-reference /ms archive request after reference-table[0]",
+        "post-ready client 17/83 signal capture to confirm the plateau stays alive after world sync"
+      ],
+      "postReadyClientSignals": [],
+      "readyAccepted": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "source": "latched-post-bootstrap"
+        },
+        "kind": "world-ready-signal",
+        "lineNumber": 7823,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:33.472149200Z"
+      },
+      "readyLatched": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "replaced": "-1",
+          "source": "synthetic-forced-map-build-fallback"
+        },
+        "kind": "world-ready-signal-latched",
+        "lineNumber": 7821,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:33.467638600Z"
+      },
+      "rebuild": {
+        "data": {
+          "areaType": "474",
+          "chunkX": "402",
+          "chunkY": "402",
+          "hash1": "-2147483648",
+          "hash2": "2147483647",
+          "mapSize": "5",
+          "name": "demon",
+          "npcBits": "7"
+        },
+        "kind": "world-send-rebuild-tail",
+        "lineNumber": 7776,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:32.765533300Z"
+      },
+      "rebuildBeforeBootstrapControls": false,
+      "rebuildBeforeReadyAccepted": true,
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 5.383,
+        "endLine": 7860,
+        "endTimestamp": "2026-03-22T18:54:38.141058100Z",
+        "eventCount": 87,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 3,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7772,
+        "startTimestamp": "2026-03-22T18:54:32.758017800Z"
+      }
+    },
+    {
+      "attemptIndex": 7,
+      "closeLoadingOverlay": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "contentSession": {
+        "archiveRequests": 0,
+        "exists": true,
+        "firstRequestLabel": "reference-table[0]",
+        "referenceTableRequests": 1,
+        "requestCount": 1,
+        "responseBytes": 4191,
+        "responseHeaderCount": 2
+      },
+      "controlBursts": [],
+      "deferredCompletionTailAfterSync": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "initialFollowupWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "2",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial-followup"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 7927,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:38.868112800Z"
+      },
+      "initialWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "1",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 7920,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:38.858601400Z"
+      },
+      "likelyBlocker": "accepted-ready-overlay-not-closed",
+      "needs": [
+        "explicit loading-overlay close on the accepted-ready minimal branch",
+        "first non-reference /ms archive request after reference-table[0]",
+        "post-ready client 17/83 signal capture to confirm the plateau stays alive after world sync"
+      ],
+      "postReadyClientSignals": [],
+      "readyAccepted": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "source": "latched-post-bootstrap"
+        },
+        "kind": "world-ready-signal",
+        "lineNumber": 7912,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:38.848586200Z"
+      },
+      "readyLatched": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "replaced": "-1",
+          "source": "synthetic-forced-map-build-fallback"
+        },
+        "kind": "world-ready-signal-latched",
+        "lineNumber": 7910,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:38.845586500Z"
+      },
+      "rebuild": {
+        "data": {
+          "areaType": "474",
+          "chunkX": "402",
+          "chunkY": "402",
+          "hash1": "-2147483648",
+          "hash2": "2147483647",
+          "mapSize": "5",
+          "name": "demon",
+          "npcBits": "7"
+        },
+        "kind": "world-send-rebuild-tail",
+        "lineNumber": 7865,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:38.152397700Z"
+      },
+      "rebuildBeforeBootstrapControls": false,
+      "rebuildBeforeReadyAccepted": true,
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 4.801,
+        "endLine": 7949,
+        "endTimestamp": "2026-03-22T18:54:42.943716600Z",
+        "eventCount": 87,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 3,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7861,
+        "startTimestamp": "2026-03-22T18:54:38.142858800Z"
+      }
+    },
+    {
+      "attemptIndex": 8,
+      "closeLoadingOverlay": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "contentSession": {
+        "archiveRequests": 0,
+        "exists": true,
+        "firstRequestLabel": "reference-table[0]",
+        "referenceTableRequests": 1,
+        "requestCount": 1,
+        "responseBytes": 4191,
+        "responseHeaderCount": 2
+      },
+      "controlBursts": [],
+      "deferredCompletionTailAfterSync": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "initialFollowupWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "2",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial-followup"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 8015,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:43.672711300Z"
+      },
+      "initialWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "1",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 8008,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:43.662882800Z"
+      },
+      "likelyBlocker": "accepted-ready-overlay-not-closed",
+      "needs": [
+        "explicit loading-overlay close on the accepted-ready minimal branch",
+        "first non-reference /ms archive request after reference-table[0]",
+        "post-ready client 17/83 signal capture to confirm the plateau stays alive after world sync"
+      ],
+      "postReadyClientSignals": [],
+      "readyAccepted": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "source": "latched-post-bootstrap"
+        },
+        "kind": "world-ready-signal",
+        "lineNumber": 8000,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:43.654372400Z"
+      },
+      "readyLatched": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "replaced": "-1",
+          "source": "synthetic-forced-map-build-fallback"
+        },
+        "kind": "world-ready-signal-latched",
+        "lineNumber": 7998,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:43.652370200Z"
+      },
+      "rebuild": {
+        "data": {
+          "areaType": "474",
+          "chunkX": "402",
+          "chunkY": "402",
+          "hash1": "-2147483648",
+          "hash2": "2147483647",
+          "mapSize": "5",
+          "name": "demon",
+          "npcBits": "7"
+        },
+        "kind": "world-send-rebuild-tail",
+        "lineNumber": 7954,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:42.953748Z"
+      },
+      "rebuildBeforeBootstrapControls": false,
+      "rebuildBeforeReadyAccepted": true,
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 9.001,
+        "endLine": 8036,
+        "endTimestamp": "2026-03-22T18:54:51.947723500Z",
+        "eventCount": 86,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 2,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "57": 1,
+          "59": 1,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 2,
+          "134": 1,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 7950,
+        "startTimestamp": "2026-03-22T18:54:42.946231900Z"
+      }
+    },
+    {
+      "attemptIndex": 9,
+      "closeLoadingOverlay": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "contentSession": {
+        "archiveRequests": 0,
+        "exists": true,
+        "firstRequestLabel": "reference-table[0]",
+        "referenceTableRequests": 1,
+        "requestCount": 1,
+        "responseBytes": 4191,
+        "responseHeaderCount": 2
+      },
+      "controlBursts": [],
+      "deferredCompletionTailAfterSync": {
+        "data": {},
+        "kind": "",
+        "lineNumber": null,
+        "present": false,
+        "timestamp": ""
+      },
+      "initialFollowupWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "2",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial-followup"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 8103,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:52.651341400Z"
+      },
+      "initialWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "1",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 8096,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:52.644825800Z"
+      },
+      "likelyBlocker": "accepted-ready-overlay-not-closed",
+      "needs": [
+        "explicit loading-overlay close on the accepted-ready minimal branch",
+        "first non-reference /ms archive request after reference-table[0]",
+        "post-ready client 17/83 signal capture to confirm the plateau stays alive after world sync"
+      ],
+      "postReadyClientSignals": [],
+      "readyAccepted": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "source": "latched-post-bootstrap"
+        },
+        "kind": "world-ready-signal",
+        "lineNumber": 8088,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:52.635779200Z"
+      },
+      "readyLatched": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "replaced": "-1",
+          "source": "synthetic-forced-map-build-fallback"
+        },
+        "kind": "world-ready-signal-latched",
+        "lineNumber": 8086,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:52.632262600Z"
+      },
+      "rebuild": {
+        "data": {
+          "areaType": "474",
+          "chunkX": "402",
+          "chunkY": "402",
+          "hash1": "-2147483648",
+          "hash2": "2147483647",
+          "mapSize": "5",
+          "name": "demon",
+          "npcBits": "7"
+        },
+        "kind": "world-send-rebuild-tail",
+        "lineNumber": 8041,
+        "present": true,
+        "timestamp": "2026-03-22T18:54:51.958753200Z"
+      },
+      "rebuildBeforeBootstrapControls": false,
+      "rebuildBeforeReadyAccepted": true,
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 185.167,
+        "endLine": 9571,
+        "endTimestamp": "2026-03-22T18:57:57.116850Z",
+        "eventCount": 1525,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 2,
+          "world-client-display-config": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-force-local-appearance": 2,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 2,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 21,
+          "39": 1,
+          "42": 2,
+          "45": 1,
+          "51": 552,
+          "57": 1,
+          "59": 1,
+          "72": 833,
+          "106": 1,
+          "126": 2,
+          "128": 4,
+          "129": 29,
+          "131": 5,
+          "134": 2,
+          "141": 2,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 8037,
+        "startTimestamp": "2026-03-22T18:54:51.949722300Z"
+      }
+    },
+    {
+      "attemptIndex": 10,
+      "closeLoadingOverlay": {
+        "data": {
+          "component": "508",
+          "id": "1417",
+          "name": "demon",
+          "parent": "1477",
+          "reason": "forced-map-build-fallback-post-hold"
+        },
+        "kind": "world-close-loading-overlay",
+        "lineNumber": 9660,
+        "present": true,
+        "timestamp": "2026-03-22T18:57:58.474153400Z"
+      },
+      "contentSession": {
+        "archiveRequests": 0,
+        "exists": true,
+        "firstRequestLabel": "reference-table[0]",
+        "referenceTableRequests": 1,
+        "requestCount": 1,
+        "responseBytes": 4191,
+        "responseHeaderCount": 2
+      },
+      "controlBursts": [],
+      "deferredCompletionTailAfterSync": {
+        "data": {
+          "name": "demon",
+          "reason": "post-sync-hold-cleared"
+        },
+        "kind": "world-send-deferred-completion-tail-after-sync",
+        "lineNumber": 9662,
+        "present": true,
+        "timestamp": "2026-03-22T18:57:58.474153400Z"
+      },
+      "initialFollowupWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "2",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial-followup"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 9638,
+        "present": true,
+        "timestamp": "2026-03-22T18:57:58.447013600Z"
+      },
+      "initialWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "1",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 9631,
+        "present": true,
+        "timestamp": "2026-03-22T18:57:58.444326300Z"
+      },
+      "likelyBlocker": "region-advertised-too-late",
+      "needs": [
+        "first non-reference /ms archive request after reference-table[0]",
+        "post-ready client 17/83 signal capture to confirm the plateau stays alive after world sync"
+      ],
+      "postReadyClientSignals": [],
+      "readyAccepted": {
+        "data": {
+          "bytes": "105",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "090effff02900351c201e9029b05578f6d6d02c804d28067",
+          "source": "latched-post-bootstrap"
+        },
+        "kind": "world-ready-signal",
+        "lineNumber": 9623,
+        "present": true,
+        "timestamp": "2026-03-22T18:57:58.413539200Z"
+      },
+      "readyLatched": {
+        "data": {
+          "bytes": "105",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "090effff02900351c201e9029b05578f6d6d02c804d28067",
+          "replaced": "-1",
+          "source": "live-early"
+        },
+        "kind": "world-ready-signal-latched",
+        "lineNumber": 9583,
+        "present": true,
+        "timestamp": "2026-03-22T18:57:58.312185800Z"
+      },
+      "rebuild": {
+        "data": {
+          "areaType": "474",
+          "chunkX": "402",
+          "chunkY": "402",
+          "hash1": "-2147483648",
+          "hash2": "2147483647",
+          "mapSize": "5",
+          "name": "demon",
+          "npcBits": "7"
+        },
+        "kind": "world-send-rebuild-tail",
+        "lineNumber": 9576,
+        "present": true,
+        "timestamp": "2026-03-22T18:57:57.615566100Z"
+      },
+      "rebuildBeforeBootstrapControls": false,
+      "rebuildBeforeReadyAccepted": true,
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1,
+          "48": 1
+        },
+        "durationSeconds": 8.38,
+        "endLine": 11260,
+        "endTimestamp": "2026-03-22T18:58:05.507633Z",
+        "eventCount": 1683,
+        "exists": true,
+        "markerCounts": {
+          "world-accelerate-post-initial-sync-hold-clear": 1,
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-arm-scene-start-sync-burst": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-clear-post-initial-sync-hold": 1,
+          "world-client-display-config": 1,
+          "world-close-loading-overlay": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-deferred-completion-announcement-scripts": 1,
+          "world-defer-deferred-completion-event-delta": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-defer-late-root-interface-events": 1,
+          "world-force-local-appearance": 5,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-forced-fallback-scene-bridge": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-open-minimal-supplemental-child": 2,
+          "world-open-restored-interface": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-late-default-varps-followup-sync": 1,
+          "world-prime-late-default-varps-keepalive": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-queued-deferred-default-varps": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-deferred-completion-structure": 1,
+          "world-send-deferred-completion-tail": 1,
+          "world-send-deferred-completion-tail-after-sync": 1,
+          "world-send-deferred-default-varps": 1,
+          "world-send-deferred-forced-fallback-completion-companions": 1,
+          "world-send-forced-fallback-deferred-completion-scripts": 1,
+          "world-send-forced-fallback-light-tail-scripts": 1,
+          "world-send-forced-fallback-restored-world-panels": 1,
+          "world-send-forced-fallback-utility-panel-deck": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-light-interface-tail": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 5,
+          "world-send-player-info": 5,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-scene-start-sync-burst": 3,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-forced-fallback-deferred-completion-events": 1,
+          "world-skip-forced-fallback-light-tail-events": 1,
+          "world-skip-forced-fallback-supplemental-events": 1,
+          "world-skip-forced-fallback-utility-panel-events": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 5,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 9,
+          "38": 59,
+          "39": 1,
+          "42": 9,
+          "45": 8,
+          "50": 1,
+          "51": 552,
+          "57": 6,
+          "59": 31,
+          "72": 833,
+          "106": 1,
+          "126": 1,
+          "128": 8,
+          "131": 4,
+          "134": 1,
+          "141": 49,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "late-default-varps": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces",
+          "late-default-varps"
+        ],
+        "startLine": 9572,
+        "startTimestamp": "2026-03-22T18:57:57.127359900Z"
+      }
+    },
+    {
+      "attemptIndex": 11,
+      "closeLoadingOverlay": {
+        "data": {
+          "component": "508",
+          "id": "1417",
+          "name": "demon",
+          "parent": "1477",
+          "reason": "forced-map-build-fallback-post-hold"
+        },
+        "kind": "world-close-loading-overlay",
+        "lineNumber": 11350,
+        "present": true,
+        "timestamp": "2026-03-22T18:58:06.209752700Z"
+      },
+      "contentSession": {
+        "archiveRequests": 0,
+        "exists": true,
+        "firstRequestLabel": "reference-table[0]",
+        "referenceTableRequests": 1,
+        "requestCount": 1,
+        "responseBytes": 4191,
+        "responseHeaderCount": 2
+      },
+      "controlBursts": [],
+      "deferredCompletionTailAfterSync": {
+        "data": {
+          "name": "demon",
+          "reason": "post-sync-hold-cleared"
+        },
+        "kind": "world-send-deferred-completion-tail-after-sync",
+        "lineNumber": 11352,
+        "present": true,
+        "timestamp": "2026-03-22T18:58:06.210674800Z"
+      },
+      "initialFollowupWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "2",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial-followup"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 11327,
+        "present": true,
+        "timestamp": "2026-03-22T18:58:06.192112Z"
+      },
+      "initialWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "1",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 11320,
+        "present": true,
+        "timestamp": "2026-03-22T18:58:06.188419400Z"
+      },
+      "likelyBlocker": "region-advertised-too-late",
+      "needs": [
+        "first non-reference /ms archive request after reference-table[0]",
+        "post-ready client 17/83 signal capture to confirm the plateau stays alive after world sync"
+      ],
+      "postReadyClientSignals": [],
+      "readyAccepted": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "source": "latched-post-bootstrap"
+        },
+        "kind": "world-ready-signal",
+        "lineNumber": 11312,
+        "present": true,
+        "timestamp": "2026-03-22T18:58:06.184398400Z"
+      },
+      "readyLatched": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "replaced": "-1",
+          "source": "synthetic-forced-map-build-fallback"
+        },
+        "kind": "world-ready-signal-latched",
+        "lineNumber": 11310,
+        "present": true,
+        "timestamp": "2026-03-22T18:58:06.182312Z"
+      },
+      "rebuild": {
+        "data": {
+          "areaType": "474",
+          "chunkX": "402",
+          "chunkY": "402",
+          "hash1": "-2147483648",
+          "hash2": "2147483647",
+          "mapSize": "5",
+          "name": "demon",
+          "npcBits": "7"
+        },
+        "kind": "world-send-rebuild-tail",
+        "lineNumber": 11265,
+        "present": true,
+        "timestamp": "2026-03-22T18:58:05.517650Z"
+      },
+      "rebuildBeforeBootstrapControls": false,
+      "rebuildBeforeReadyAccepted": true,
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 9.002,
+        "endLine": 12947,
+        "endTimestamp": "2026-03-22T18:58:14.511548300Z",
+        "eventCount": 1680,
+        "exists": true,
+        "markerCounts": {
+          "world-accelerate-post-initial-sync-hold-clear": 1,
+          "world-added": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-arm-scene-start-sync-burst": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-channel-inactive": 1,
+          "world-clear-post-initial-sync-hold": 1,
+          "world-client-display-config": 1,
+          "world-close-loading-overlay": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-deferred-completion-announcement-scripts": 1,
+          "world-defer-deferred-completion-event-delta": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-defer-late-root-interface-events": 1,
+          "world-force-local-appearance": 5,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-forced-fallback-scene-bridge": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-open-minimal-supplemental-child": 2,
+          "world-open-restored-interface": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-late-default-varps-followup-sync": 1,
+          "world-prime-late-default-varps-keepalive": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-queued-deferred-default-varps": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-deferred-completion-structure": 1,
+          "world-send-deferred-completion-tail": 1,
+          "world-send-deferred-completion-tail-after-sync": 1,
+          "world-send-deferred-default-varps": 1,
+          "world-send-deferred-forced-fallback-completion-companions": 1,
+          "world-send-forced-fallback-deferred-completion-scripts": 1,
+          "world-send-forced-fallback-light-tail-scripts": 1,
+          "world-send-forced-fallback-restored-world-panels": 1,
+          "world-send-forced-fallback-utility-panel-deck": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-light-interface-tail": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 5,
+          "world-send-player-info": 5,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-scene-start-sync-burst": 3,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-forced-fallback-deferred-completion-events": 1,
+          "world-skip-forced-fallback-light-tail-events": 1,
+          "world-skip-forced-fallback-supplemental-events": 1,
+          "world-skip-forced-fallback-utility-panel-events": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 5,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 8,
+          "38": 59,
+          "39": 1,
+          "42": 8,
+          "45": 8,
+          "50": 1,
+          "51": 552,
+          "57": 6,
+          "59": 31,
+          "72": 833,
+          "106": 1,
+          "126": 1,
+          "128": 8,
+          "131": 4,
+          "134": 1,
+          "141": 49,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "late-default-varps": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces",
+          "late-default-varps"
+        ],
+        "startLine": 11261,
+        "startTimestamp": "2026-03-22T18:58:05.509616700Z"
+      }
+    },
+    {
+      "attemptIndex": 12,
+      "closeLoadingOverlay": {
+        "data": {
+          "component": "508",
+          "id": "1417",
+          "name": "demon",
+          "parent": "1477",
+          "reason": "forced-map-build-fallback-post-hold"
+        },
+        "kind": "world-close-loading-overlay",
+        "lineNumber": 13037,
+        "present": true,
+        "timestamp": "2026-03-22T18:58:15.180978100Z"
+      },
+      "contentSession": {
+        "archiveRequests": 0,
+        "exists": true,
+        "firstRequestLabel": "reference-table[0]",
+        "referenceTableRequests": 1,
+        "requestCount": 1,
+        "responseBytes": 4191,
+        "responseHeaderCount": 2
+      },
+      "controlBursts": [],
+      "deferredCompletionTailAfterSync": {
+        "data": {
+          "name": "demon",
+          "reason": "post-sync-hold-cleared"
+        },
+        "kind": "world-send-deferred-completion-tail-after-sync",
+        "lineNumber": 13039,
+        "present": true,
+        "timestamp": "2026-03-22T18:58:15.182409Z"
+      },
+      "initialFollowupWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "2",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial-followup"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 13014,
+        "present": true,
+        "timestamp": "2026-03-22T18:58:15.168559400Z"
+      },
+      "initialWorldSync": {
+        "data": {
+          "bytes": "64",
+          "frame": "1",
+          "name": "demon",
+          "opcode": "42",
+          "reason": "initial"
+        },
+        "kind": "world-send-player-info",
+        "lineNumber": 13007,
+        "present": true,
+        "timestamp": "2026-03-22T18:58:15.162564900Z"
+      },
+      "likelyBlocker": "region-advertised-too-late",
+      "needs": [
+        "first non-reference /ms archive request after reference-table[0]",
+        "post-ready client 17/83 signal capture to confirm the plateau stays alive after world sync"
+      ],
+      "postReadyClientSignals": [],
+      "readyAccepted": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "source": "latched-post-bootstrap"
+        },
+        "kind": "world-ready-signal",
+        "lineNumber": 12999,
+        "present": true,
+        "timestamp": "2026-03-22T18:58:15.158985600Z"
+      },
+      "readyLatched": {
+        "data": {
+          "bytes": "0",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "<synthetic>",
+          "replaced": "-1",
+          "source": "synthetic-forced-map-build-fallback"
+        },
+        "kind": "world-ready-signal-latched",
+        "lineNumber": 12997,
+        "present": true,
+        "timestamp": "2026-03-22T18:58:15.156984700Z"
+      },
+      "rebuild": {
+        "data": {
+          "areaType": "474",
+          "chunkX": "402",
+          "chunkY": "402",
+          "hash1": "-2147483648",
+          "hash2": "2147483647",
+          "mapSize": "5",
+          "name": "demon",
+          "npcBits": "7"
+        },
+        "kind": "world-send-rebuild-tail",
+        "lineNumber": 12952,
+        "present": true,
+        "timestamp": "2026-03-22T18:58:14.519056900Z"
+      },
+      "rebuildBeforeBootstrapControls": false,
+      "rebuildBeforeReadyAccepted": true,
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1
+        },
+        "durationSeconds": 4.854,
+        "endLine": 14415,
+        "endTimestamp": "2026-03-22T18:58:19.368052300Z",
+        "eventCount": 1462,
+        "exists": true,
+        "markerCounts": {
+          "world-accelerate-post-initial-sync-hold-clear": 1,
+          "world-allow-deferred-default-varps": 1,
+          "world-arm-scene-start-sync-burst": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-clear-post-initial-sync-hold": 1,
+          "world-client-display-config": 1,
+          "world-close-loading-overlay": 1,
+          "world-defer-default-varps": 1,
+          "world-defer-deferred-completion-announcement-scripts": 1,
+          "world-defer-deferred-completion-event-delta": 1,
+          "world-defer-forced-fallback-completion-companions": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-defer-forced-fallback-light-tail": 1,
+          "world-defer-forced-fallback-light-tail-pre-hold": 1,
+          "world-defer-forced-fallback-restored-world-panels": 1,
+          "world-defer-forced-fallback-scene-bridge": 1,
+          "world-defer-forced-fallback-supplemental-children": 2,
+          "world-defer-forced-fallback-utility-panel-deck": 1,
+          "world-defer-late-root-interface-events": 1,
+          "world-force-local-appearance": 3,
+          "world-force-minimal-interface-bootstrap": 1,
+          "world-hold-keepalive": 1,
+          "world-hold-post-initial-sync": 1,
+          "world-keep-post-initial-sync-hold": 1,
+          "world-map-build-complete-compat": 1,
+          "world-open-forced-fallback-scene-bridge": 1,
+          "world-open-loading-notes": 1,
+          "world-open-minimal-child": 1,
+          "world-open-minimal-supplemental-child": 2,
+          "world-open-restored-interface": 1,
+          "world-prime-forced-fallback-pre-deferred-families": 1,
+          "world-prime-late-default-varps-followup-sync": 1,
+          "world-prime-late-default-varps-keepalive": 1,
+          "world-prime-post-initial-sync-hold": 1,
+          "world-prime-post-initial-sync-hold-keepalive": 1,
+          "world-queue-deferred-completion-tail": 1,
+          "world-queued-deferred-default-varps": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-accelerate-followup": 1,
+          "world-ready-signal-consume-latched": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-deferred-completion-structure": 1,
+          "world-send-deferred-completion-tail": 1,
+          "world-send-deferred-completion-tail-after-sync": 1,
+          "world-send-deferred-default-varps": 1,
+          "world-send-deferred-forced-fallback-completion-companions": 1,
+          "world-send-forced-fallback-deferred-completion-scripts": 1,
+          "world-send-forced-fallback-light-tail-scripts": 1,
+          "world-send-forced-fallback-restored-world-panels": 1,
+          "world-send-forced-fallback-utility-panel-deck": 1,
+          "world-send-immediate-followup-sync": 1,
+          "world-send-light-interface-tail": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 3,
+          "world-send-player-info": 3,
+          "world-send-rebuild-tail": 1,
+          "world-send-reset-client-varcache": 1,
+          "world-send-serverperm-ack-candidate": 1,
+          "world-skip-active-player": 1,
+          "world-skip-bootstrap-script": 1,
+          "world-skip-close-loading-overlay": 1,
+          "world-skip-forced-fallback-completion-companions": 1,
+          "world-skip-forced-fallback-deferred-completion-events": 1,
+          "world-skip-forced-fallback-light-tail-events": 1,
+          "world-skip-forced-fallback-supplemental-events": 1,
+          "world-skip-forced-fallback-utility-panel-events": 1,
+          "world-skip-hold-sync": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 1,
+          "world-skip-prime-post-initial-sync-hold-sync": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 3,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 3,
+          "38": 59,
+          "39": 1,
+          "42": 3,
+          "45": 8,
+          "50": 1,
+          "51": 487,
+          "57": 6,
+          "59": 31,
+          "72": 703,
+          "106": 1,
+          "126": 1,
+          "128": 8,
+          "131": 4,
+          "134": 1,
+          "141": 49,
+          "206": 1
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "late-default-varps": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces",
+          "late-default-varps"
+        ],
+        "startLine": 12948,
+        "startTimestamp": "2026-03-22T18:58:14.514053400Z"
+      }
+    }
+  ],
+  "build": 946,
+  "generatedAt": "2026-03-22T19:54:51.453689+00:00",
+  "inputs": {
+    "attemptLimit": 12,
+    "clusterId": "",
+    "contentCaptureDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\lobby-tls-terminator",
+    "inputFingerprint": "41a50a95131c93d8a3ff642007acefe19486bcecd518360fbda75814b8d0d1bc",
+    "serverLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tmp-manual-js5.err.log",
+    "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log"
+  },
+  "schemaVersion": 1,
+  "status": "ok",
+  "summary": {
+    "attemptCount": 12,
+    "attemptsWithCloseLoadingOverlay": 3,
+    "attemptsWithReadyAccepted": 12,
+    "attemptsWithRebuildBeforeBootstrapControls": 0,
+    "clusterId": "20260321-093106",
+    "latestArchiveRequests": 0,
+    "latestContentFirstRequestLabel": "reference-table[0]",
+    "latestHasCloseLoadingOverlay": true,
+    "latestRebuildBeforeBootstrapControls": false
+  },
+  "tool": "run_946_scene_start_doctor",
+  "verdict": {
+    "likelyBlocker": "region-advertised-too-late",
+    "needs": [
+      "first non-reference /ms archive request after reference-table[0]",
+      "post-ready client 17/83 signal capture to confirm the plateau stays alive after world sync"
+    ],
+    "recommendation": "Client bootstrap controls start before the server has clearly advertised the rebuild/region payload, so the scene start may still be racing the world handoff."
+  }
+}

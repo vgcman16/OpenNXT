@@ -41,3 +41,16 @@ fun ChannelHandlerContext.sendHttpText(text: ByteArray) {
 
     channel().writeAndFlush(response).addListener(ChannelFutureListener.CLOSE)
 }
+
+fun ChannelHandlerContext.sendHttpBytes(content: ByteArray, contentType: String) {
+    val response = DefaultFullHttpResponse(
+        HttpVersion.HTTP_1_1,
+        HttpResponseStatus.OK,
+        Unpooled.wrappedBuffer(content)
+    )
+    response.headers().set(HttpHeaderNames.SERVER, "JaGeX/3.1")
+    response.headers().set(HttpHeaderNames.CONTENT_TYPE, contentType)
+    response.headers().set(HttpHeaderNames.CONTENT_LENGTH, content.size)
+
+    channel().writeAndFlush(response).addListener(ChannelFutureListener.CLOSE)
+}

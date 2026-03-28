@@ -1,0 +1,2089 @@
+[
+  {
+    "opcode": 0,
+    "size": -2,
+    "packet": "140ebf770",
+    "primarySender": "14014dba0",
+    "primarySenderName": "FUN_14014dba0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "14014dba0",
+        "name": "FUN_14014dba0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 1,
+    "size": 9,
+    "packet": "140ebf780",
+    "primarySender": "1400fe270",
+    "primarySenderName": "FUN_1400fe270",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400fe270",
+        "name": "FUN_1400fe270",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 2,
+    "size": 6,
+    "packet": "140ebf790",
+    "primarySender": "1400d08e0",
+    "primarySenderName": "FUN_1400d08e0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400d08e0",
+        "name": "FUN_1400d08e0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 3,
+    "size": -2,
+    "packet": "140ebf7a0",
+    "primarySender": "140093ab0",
+    "primarySenderName": "FUN_140093ab0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140093ab0",
+        "name": "FUN_140093ab0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 4,
+    "size": -1,
+    "packet": "140ebf7b0",
+    "primarySender": "140099710",
+    "primarySenderName": "FUN_140099710",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140099710",
+        "name": "FUN_140099710",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 5,
+    "size": 15,
+    "packet": "140ebf7c0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 6,
+    "size": 3,
+    "packet": "140ebf7d0",
+    "primarySender": "1400e6bc0",
+    "primarySenderName": "FUN_1400e6bc0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e6bc0",
+        "name": "FUN_1400e6bc0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 10,
+        "totalRefs": 20,
+        "role": "family-wrapper",
+        "score": 210
+      }
+    ]
+  },
+  {
+    "opcode": 7,
+    "size": -2,
+    "packet": "140ebf7e0",
+    "primarySender": "14008d840",
+    "primarySenderName": "FUN_14008d840",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "14008d840",
+        "name": "FUN_14008d840",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 8,
+    "size": 4,
+    "packet": "140ebf7f0",
+    "primarySender": "1401fd800",
+    "primarySenderName": "FUN_1401fd800",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401fd800",
+        "name": "FUN_1401fd800",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 9,
+    "size": 3,
+    "packet": "140ebf800",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 10,
+    "size": -2,
+    "packet": "140ebf810",
+    "primarySender": "14008db20",
+    "primarySenderName": "FUN_14008db20",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "14008db20",
+        "name": "FUN_14008db20",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 11,
+    "size": 4,
+    "packet": "140ebf820",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 12,
+    "size": 16,
+    "packet": "140ebf830",
+    "primarySender": "1401a60d0",
+    "primarySenderName": "FUN_1401a60d0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401a60d0",
+        "name": "FUN_1401a60d0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 13,
+    "size": 2,
+    "packet": "140ebf840",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 14,
+    "size": 3,
+    "packet": "140ebf850",
+    "primarySender": "1400e6bc0",
+    "primarySenderName": "FUN_1400e6bc0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e6bc0",
+        "name": "FUN_1400e6bc0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 10,
+        "totalRefs": 20,
+        "role": "family-wrapper",
+        "score": 210
+      }
+    ]
+  },
+  {
+    "opcode": 15,
+    "size": 0,
+    "packet": "140ebf860",
+    "primarySender": "14014fe10",
+    "primarySenderName": "FUN_14014fe10",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "14014fe10",
+        "name": "FUN_14014fe10",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 16,
+    "size": 11,
+    "packet": "140ebf870",
+    "primarySender": "1400e5d10",
+    "primarySenderName": "FUN_1400e5d10",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e5d10",
+        "name": "FUN_1400e5d10",
+        "opcodeRefCount": 1,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 1,
+        "role": "single-opcode",
+        "score": 309
+      }
+    ]
+  },
+  {
+    "opcode": 17,
+    "size": -1,
+    "packet": "140ebf880",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 18,
+    "size": 8,
+    "packet": "140ebf890",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 19,
+    "size": 3,
+    "packet": "140ebf8a0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 20,
+    "size": 3,
+    "packet": "140ebf8b0",
+    "primarySender": "1400e6bc0",
+    "primarySenderName": "FUN_1400e6bc0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e6bc0",
+        "name": "FUN_1400e6bc0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 10,
+        "totalRefs": 20,
+        "role": "family-wrapper",
+        "score": 210
+      }
+    ]
+  },
+  {
+    "opcode": 21,
+    "size": 0,
+    "packet": "140ebf8c0",
+    "primarySender": "14019abd0",
+    "primarySenderName": "FUN_14019abd0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "14019abd0",
+        "name": "FUN_14019abd0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 22,
+    "size": 1,
+    "packet": "140ebf8d0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 23,
+    "size": 7,
+    "packet": "140ebf8e0",
+    "primarySender": "1401bbf60",
+    "primarySenderName": "FUN_1401bbf60",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401bbf60",
+        "name": "FUN_1401bbf60",
+        "opcodeRefCount": 1,
+        "distinctOpcodeCount": 6,
+        "totalRefs": 6,
+        "role": "family-wrapper",
+        "score": 218
+      }
+    ]
+  },
+  {
+    "opcode": 24,
+    "size": -1,
+    "packet": "140ebf8f0",
+    "primarySender": "1401fe390",
+    "primarySenderName": "FUN_1401fe390",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401fe390",
+        "name": "FUN_1401fe390",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 25,
+    "size": 7,
+    "packet": "140ebf900",
+    "primarySender": "1401bbf60",
+    "primarySenderName": "FUN_1401bbf60",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401bbf60",
+        "name": "FUN_1401bbf60",
+        "opcodeRefCount": 1,
+        "distinctOpcodeCount": 6,
+        "totalRefs": 6,
+        "role": "family-wrapper",
+        "score": 218
+      }
+    ]
+  },
+  {
+    "opcode": 26,
+    "size": 7,
+    "packet": "140ebf910",
+    "primarySender": "1401bbf60",
+    "primarySenderName": "FUN_1401bbf60",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401bbf60",
+        "name": "FUN_1401bbf60",
+        "opcodeRefCount": 1,
+        "distinctOpcodeCount": 6,
+        "totalRefs": 6,
+        "role": "family-wrapper",
+        "score": 218
+      }
+    ]
+  },
+  {
+    "opcode": 27,
+    "size": 12,
+    "packet": "140ebf920",
+    "primarySender": "1400e53e0",
+    "primarySenderName": "FUN_1400e53e0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e53e0",
+        "name": "FUN_1400e53e0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 28,
+    "size": -1,
+    "packet": "140ebf930",
+    "primarySender": "1400cfcb0",
+    "primarySenderName": "FUN_1400cfcb0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400cfcb0",
+        "name": "FUN_1400cfcb0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 4,
+        "totalRefs": 8,
+        "role": "family-wrapper",
+        "score": 228
+      }
+    ]
+  },
+  {
+    "opcode": 29,
+    "size": -1,
+    "packet": "140ebf940",
+    "primarySender": "140099e30",
+    "primarySenderName": "FUN_140099e30",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140099e30",
+        "name": "FUN_140099e30",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 30,
+    "size": 3,
+    "packet": "140ebf950",
+    "primarySender": "1400e6bc0",
+    "primarySenderName": "FUN_1400e6bc0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e6bc0",
+        "name": "FUN_1400e6bc0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 10,
+        "totalRefs": 20,
+        "role": "family-wrapper",
+        "score": 210
+      }
+    ]
+  },
+  {
+    "opcode": 31,
+    "size": -2,
+    "packet": "140ebf960",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 32,
+    "size": -1,
+    "packet": "140ebf970",
+    "primarySender": "1401bdca0",
+    "primarySenderName": "FUN_1401bdca0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401bdca0",
+        "name": "FUN_1401bdca0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 33,
+    "size": 5,
+    "packet": "140ebf980",
+    "primarySender": "1400e4cd0",
+    "primarySenderName": "FUN_1400e4cd0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e4cd0",
+        "name": "FUN_1400e4cd0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 2,
+        "totalRefs": 4,
+        "role": "family-wrapper",
+        "score": 234
+      }
+    ]
+  },
+  {
+    "opcode": 34,
+    "size": 0,
+    "packet": "140ebf990",
+    "primarySender": "1401f6b50",
+    "primarySenderName": "FUN_1401f6b50",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401f6b50",
+        "name": "FUN_1401f6b50",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 35,
+    "size": 3,
+    "packet": "140ebf9a0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 36,
+    "size": 3,
+    "packet": "140ebf9b0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 37,
+    "size": 15,
+    "packet": "140ebf9c0",
+    "primarySender": "1400e6190",
+    "primarySenderName": "FUN_1400e6190",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e6190",
+        "name": "FUN_1400e6190",
+        "opcodeRefCount": 1,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 1,
+        "role": "single-opcode",
+        "score": 309
+      },
+      {
+        "entryPoint": "1400e66f0",
+        "name": "FUN_1400e66f0",
+        "opcodeRefCount": 1,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 1,
+        "role": "single-opcode",
+        "score": 309
+      }
+    ]
+  },
+  {
+    "opcode": 38,
+    "size": 9,
+    "packet": "140ebf9d0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 39,
+    "size": -1,
+    "packet": "140ebf9e0",
+    "primarySender": "14014b4f0",
+    "primarySenderName": "FUN_14014b4f0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "14014b4f0",
+        "name": "FUN_14014b4f0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 40,
+    "size": 9,
+    "packet": "140ebf9f0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 41,
+    "size": 0,
+    "packet": "140ebfa00",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 42,
+    "size": 3,
+    "packet": "140ebfa10",
+    "primarySender": "140195e30",
+    "primarySenderName": "FUN_140195e30",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140195e30",
+        "name": "FUN_140195e30",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 43,
+    "size": 9,
+    "packet": "140ebfa20",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 44,
+    "size": -2,
+    "packet": "140ebfa30",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 45,
+    "size": -2,
+    "packet": "140ebfa40",
+    "primarySender": "1400cfcb0",
+    "primarySenderName": "FUN_1400cfcb0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400cfcb0",
+        "name": "FUN_1400cfcb0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 4,
+        "totalRefs": 8,
+        "role": "family-wrapper",
+        "score": 228
+      }
+    ]
+  },
+  {
+    "opcode": 46,
+    "size": 3,
+    "packet": "140ebfa50",
+    "primarySender": "1400e6bc0",
+    "primarySenderName": "FUN_1400e6bc0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e6bc0",
+        "name": "FUN_1400e6bc0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 10,
+        "totalRefs": 20,
+        "role": "family-wrapper",
+        "score": 210
+      }
+    ]
+  },
+  {
+    "opcode": 47,
+    "size": 8,
+    "packet": "140ebfa60",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 48,
+    "size": -1,
+    "packet": "140ebfa70",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 49,
+    "size": -2,
+    "packet": "140ebfa80",
+    "primarySender": "140099a90",
+    "primarySenderName": "FUN_140099a90",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140099a90",
+        "name": "FUN_140099a90",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 50,
+    "size": 4,
+    "packet": "140ebfa90",
+    "primarySender": "1400ca430",
+    "primarySenderName": "FUN_1400ca430",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400ca430",
+        "name": "FUN_1400ca430",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 51,
+    "size": 4,
+    "packet": "140ebfaa0",
+    "primarySender": "1400cfcb0",
+    "primarySenderName": "FUN_1400cfcb0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400cfcb0",
+        "name": "FUN_1400cfcb0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 4,
+        "totalRefs": 8,
+        "role": "family-wrapper",
+        "score": 228
+      }
+    ]
+  },
+  {
+    "opcode": 52,
+    "size": -2,
+    "packet": "140ebfab0",
+    "primarySender": "140150030",
+    "primarySenderName": "FUN_140150030",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140150030",
+        "name": "FUN_140150030",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 53,
+    "size": 9,
+    "packet": "140ebfac0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 54,
+    "size": 8,
+    "packet": "140ebfad0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 55,
+    "size": 1,
+    "packet": "140ebfae0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 56,
+    "size": -1,
+    "packet": "140ebfaf0",
+    "primarySender": "14008d5e0",
+    "primarySenderName": "FUN_14008d5e0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "14008d5e0",
+        "name": "FUN_14008d5e0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 57,
+    "size": 9,
+    "packet": "140ebfb00",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 58,
+    "size": 17,
+    "packet": "140ebfb10",
+    "primarySender": "1400e5780",
+    "primarySenderName": "FUN_1400e5780",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e5780",
+        "name": "FUN_1400e5780",
+        "opcodeRefCount": 1,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 1,
+        "role": "single-opcode",
+        "score": 309
+      }
+    ]
+  },
+  {
+    "opcode": 59,
+    "size": 3,
+    "packet": "140ebfb20",
+    "primarySender": "1400e6bc0",
+    "primarySenderName": "FUN_1400e6bc0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e6bc0",
+        "name": "FUN_1400e6bc0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 10,
+        "totalRefs": 20,
+        "role": "family-wrapper",
+        "score": 210
+      }
+    ]
+  },
+  {
+    "opcode": 60,
+    "size": 3,
+    "packet": "140ebfb30",
+    "primarySender": "1400e6bc0",
+    "primarySenderName": "FUN_1400e6bc0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e6bc0",
+        "name": "FUN_1400e6bc0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 10,
+        "totalRefs": 20,
+        "role": "family-wrapper",
+        "score": 210
+      }
+    ]
+  },
+  {
+    "opcode": 61,
+    "size": 8,
+    "packet": "140ebfb40",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 62,
+    "size": -1,
+    "packet": "140ebfb50",
+    "primarySender": "1401c5c10",
+    "primarySenderName": "FUN_1401c5c10",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401c5c10",
+        "name": "FUN_1401c5c10",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 63,
+    "size": 8,
+    "packet": "140ebfb60",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 64,
+    "size": 8,
+    "packet": "140ebfb70",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 65,
+    "size": 4,
+    "packet": "140ebfb80",
+    "primarySender": "1400bbf80",
+    "primarySenderName": "FUN_1400bbf80",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400bbf80",
+        "name": "FUN_1400bbf80",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 66,
+    "size": 4,
+    "packet": "140ebfb90",
+    "primarySender": "140118140",
+    "primarySenderName": "FUN_140118140",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140118140",
+        "name": "FUN_140118140",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 67,
+    "size": -1,
+    "packet": "140ebfba0",
+    "primarySender": "1401fd5b0",
+    "primarySenderName": "FUN_1401fd5b0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401fd5b0",
+        "name": "FUN_1401fd5b0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 68,
+    "size": 9,
+    "packet": "140ebfbb0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 69,
+    "size": 3,
+    "packet": "140ebfbc0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 70,
+    "size": 4,
+    "packet": "140ebfbd0",
+    "primarySender": "1400e5120",
+    "primarySenderName": "FUN_1400e5120",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e5120",
+        "name": "FUN_1400e5120",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 71,
+    "size": -1,
+    "packet": "140ebfbe0",
+    "primarySender": "14009a410",
+    "primarySenderName": "FUN_14009a410",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "14009a410",
+        "name": "FUN_14009a410",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 72,
+    "size": 1,
+    "packet": "140ebfbf0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 73,
+    "size": 18,
+    "packet": "140ebfc00",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 74,
+    "size": -2,
+    "packet": "140ebfc10",
+    "primarySender": "14014f8d0",
+    "primarySenderName": "FUN_14014f8d0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "14014f8d0",
+        "name": "FUN_14014f8d0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 75,
+    "size": -2,
+    "packet": "140ebfc20",
+    "primarySender": "1401a42e0",
+    "primarySenderName": "FUN_1401a42e0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401a42e0",
+        "name": "FUN_1401a42e0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 76,
+    "size": 2,
+    "packet": "140ebfc30",
+    "primarySender": "1401fdd20",
+    "primarySenderName": "FUN_1401fdd20",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401fdd20",
+        "name": "FUN_1401fdd20",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 77,
+    "size": 7,
+    "packet": "140ebfc40",
+    "primarySender": "1401bbf60",
+    "primarySenderName": "FUN_1401bbf60",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401bbf60",
+        "name": "FUN_1401bbf60",
+        "opcodeRefCount": 1,
+        "distinctOpcodeCount": 6,
+        "totalRefs": 6,
+        "role": "family-wrapper",
+        "score": 218
+      }
+    ]
+  },
+  {
+    "opcode": 78,
+    "size": -1,
+    "packet": "140ebfc50",
+    "primarySender": "1401bdf20",
+    "primarySenderName": "FUN_1401bdf20",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401bdf20",
+        "name": "FUN_1401bdf20",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 79,
+    "size": 1,
+    "packet": "140ebfc60",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 80,
+    "size": 0,
+    "packet": "140ebfc70",
+    "primarySender": "1400ea070",
+    "primarySenderName": "FUN_1400ea070",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400ea070",
+        "name": "FUN_1400ea070",
+        "opcodeRefCount": 4,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 4,
+        "role": "single-opcode",
+        "score": 336
+      }
+    ]
+  },
+  {
+    "opcode": 81,
+    "size": -1,
+    "packet": "140ebfc80",
+    "primarySender": "14009a760",
+    "primarySenderName": "FUN_14009a760",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "14009a760",
+        "name": "FUN_14009a760",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 82,
+    "size": 3,
+    "packet": "140ebfc90",
+    "primarySender": "140098720",
+    "primarySenderName": "FUN_140098720",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140098720",
+        "name": "FUN_140098720",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 83,
+    "size": 1,
+    "packet": "140ebfca0",
+    "primarySender": "1400cfcb0",
+    "primarySenderName": "FUN_1400cfcb0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400cfcb0",
+        "name": "FUN_1400cfcb0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 4,
+        "totalRefs": 8,
+        "role": "family-wrapper",
+        "score": 228
+      }
+    ]
+  },
+  {
+    "opcode": 84,
+    "size": -1,
+    "packet": "140ebfcb0",
+    "primarySender": "1401bea30",
+    "primarySenderName": "FUN_1401bea30",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401bea30",
+        "name": "FUN_1401bea30",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 85,
+    "size": 7,
+    "packet": "140ebfcc0",
+    "primarySender": "140144a60",
+    "primarySenderName": "FUN_140144a60",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140144a60",
+        "name": "FUN_140144a60",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 86,
+    "size": -1,
+    "packet": "140ebfcd0",
+    "primarySender": "140188c40",
+    "primarySenderName": "FUN_140188c40",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140188c40",
+        "name": "FUN_140188c40",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 87,
+    "size": 0,
+    "packet": "140ebfce0",
+    "primarySender": "1401fe5e0",
+    "primarySenderName": "FUN_1401fe5e0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401fe5e0",
+        "name": "FUN_1401fe5e0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 88,
+    "size": 2,
+    "packet": "140ebfcf0",
+    "primarySender": "1401fe180",
+    "primarySenderName": "FUN_1401fe180",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401fe180",
+        "name": "FUN_1401fe180",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 89,
+    "size": 5,
+    "packet": "140ebfd00",
+    "primarySender": "1401bace0",
+    "primarySenderName": "FUN_1401bace0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401bace0",
+        "name": "FUN_1401bace0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 90,
+    "size": 7,
+    "packet": "140ebfd10",
+    "primarySender": "1401bbf60",
+    "primarySenderName": "FUN_1401bbf60",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401bbf60",
+        "name": "FUN_1401bbf60",
+        "opcodeRefCount": 1,
+        "distinctOpcodeCount": 6,
+        "totalRefs": 6,
+        "role": "family-wrapper",
+        "score": 218
+      }
+    ]
+  },
+  {
+    "opcode": 91,
+    "size": 3,
+    "packet": "140ebfd20",
+    "primarySender": "1400e6bc0",
+    "primarySenderName": "FUN_1400e6bc0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e6bc0",
+        "name": "FUN_1400e6bc0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 10,
+        "totalRefs": 20,
+        "role": "family-wrapper",
+        "score": 210
+      }
+    ]
+  },
+  {
+    "opcode": 92,
+    "size": 18,
+    "packet": "140ebfd30",
+    "primarySender": "1400e4cd0",
+    "primarySenderName": "FUN_1400e4cd0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e4cd0",
+        "name": "FUN_1400e4cd0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 2,
+        "totalRefs": 4,
+        "role": "family-wrapper",
+        "score": 234
+      }
+    ]
+  },
+  {
+    "opcode": 93,
+    "size": -1,
+    "packet": "140ebfd40",
+    "primarySender": "1401fdf30",
+    "primarySenderName": "FUN_1401fdf30",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401fdf30",
+        "name": "FUN_1401fdf30",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 94,
+    "size": -1,
+    "packet": "140ebfd50",
+    "primarySender": "140147d50",
+    "primarySenderName": "FUN_140147d50",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140147d50",
+        "name": "FUN_140147d50",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 95,
+    "size": 4,
+    "packet": "140ebfd60",
+    "primarySender": "140093920",
+    "primarySenderName": "FUN_140093920",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140093920",
+        "name": "FUN_140093920",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 96,
+    "size": 3,
+    "packet": "140ebfd70",
+    "primarySender": "1400e6bc0",
+    "primarySenderName": "FUN_1400e6bc0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e6bc0",
+        "name": "FUN_1400e6bc0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 10,
+        "totalRefs": 20,
+        "role": "family-wrapper",
+        "score": 210
+      }
+    ]
+  },
+  {
+    "opcode": 97,
+    "size": 8,
+    "packet": "140ebfd80",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 98,
+    "size": -1,
+    "packet": "140ebfd90",
+    "primarySender": "140148020",
+    "primarySenderName": "FUN_140148020",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140148020",
+        "name": "FUN_140148020",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 99,
+    "size": 2,
+    "packet": "140ebfda0",
+    "primarySender": "1400992d0",
+    "primarySenderName": "FUN_1400992d0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400992d0",
+        "name": "FUN_1400992d0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      },
+      {
+        "entryPoint": "140099500",
+        "name": "FUN_140099500",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 100,
+    "size": 4,
+    "packet": "140ebfdb0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 101,
+    "size": 9,
+    "packet": "140ebfdc0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 102,
+    "size": -2,
+    "packet": "140ebfdd0",
+    "primarySender": "14017d110",
+    "primarySenderName": "FUN_14017d110",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "14017d110",
+        "name": "FUN_14017d110",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 103,
+    "size": 7,
+    "packet": "140ebfde0",
+    "primarySender": "1401bbf60",
+    "primarySenderName": "FUN_1401bbf60",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401bbf60",
+        "name": "FUN_1401bbf60",
+        "opcodeRefCount": 1,
+        "distinctOpcodeCount": 6,
+        "totalRefs": 6,
+        "role": "family-wrapper",
+        "score": 218
+      }
+    ]
+  },
+  {
+    "opcode": 104,
+    "size": -1,
+    "packet": "140ebfdf0",
+    "primarySender": "1401c4a90",
+    "primarySenderName": "FUN_1401c4a90",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401c4a90",
+        "name": "FUN_1401c4a90",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 105,
+    "size": 11,
+    "packet": "140ebfe00",
+    "primarySender": "1400e6ea0",
+    "primarySenderName": "FUN_1400e6ea0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e6ea0",
+        "name": "FUN_1400e6ea0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 106,
+    "size": 6,
+    "packet": "140ebfe10",
+    "primarySender": "1400d0620",
+    "primarySenderName": "FUN_1400d0620",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400d0620",
+        "name": "FUN_1400d0620",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 107,
+    "size": -1,
+    "packet": "140ebfe20",
+    "primarySender": "1401a3df0",
+    "primarySenderName": "FUN_1401a3df0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401a3df0",
+        "name": "FUN_1401a3df0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 108,
+    "size": -2,
+    "packet": "140ebfe30",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 109,
+    "size": -1,
+    "packet": "140ebfe40",
+    "primarySender": "1401c3fa0",
+    "primarySenderName": "FUN_1401c3fa0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401c3fa0",
+        "name": "FUN_1401c3fa0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 110,
+    "size": 4,
+    "packet": "140ebfe50",
+    "primarySender": "14015dab0",
+    "primarySenderName": "FUN_14015dab0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "14015dab0",
+        "name": "FUN_14015dab0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 111,
+    "size": 9,
+    "packet": "140ebfe60",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 112,
+    "size": -1,
+    "packet": "140ebfe70",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 113,
+    "size": 4,
+    "packet": "140ebfe80",
+    "primarySender": "1400ced60",
+    "primarySenderName": "FUN_1400ced60",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400ced60",
+        "name": "FUN_1400ced60",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 114,
+    "size": 22,
+    "packet": "140ebfe90",
+    "primarySender": "1401a4520",
+    "primarySenderName": "FUN_1401a4520",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401a4520",
+        "name": "FUN_1401a4520",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 115,
+    "size": 3,
+    "packet": "140ebfea0",
+    "primarySender": "1400e6bc0",
+    "primarySenderName": "FUN_1400e6bc0",
+    "confidence": "candidate",
+    "senderCandidates": [
+      {
+        "entryPoint": "1400e6bc0",
+        "name": "FUN_1400e6bc0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 10,
+        "totalRefs": 20,
+        "role": "family-wrapper",
+        "score": 210
+      }
+    ]
+  },
+  {
+    "opcode": 116,
+    "size": -1,
+    "packet": "140ebfeb0",
+    "primarySender": "14014fb80",
+    "primarySenderName": "FUN_14014fb80",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "14014fb80",
+        "name": "FUN_14014fb80",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 117,
+    "size": 6,
+    "packet": "140ebfec0",
+    "primarySender": "1401a5e00",
+    "primarySenderName": "FUN_1401a5e00",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401a5e00",
+        "name": "FUN_1401a5e00",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 118,
+    "size": 8,
+    "packet": "140ebfed0",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 119,
+    "size": -1,
+    "packet": "140ebfee0",
+    "primarySender": "140147a80",
+    "primarySenderName": "FUN_140147a80",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140147a80",
+        "name": "FUN_140147a80",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 120,
+    "size": 11,
+    "packet": "140ebfef0",
+    "primarySender": "1401a40a0",
+    "primarySenderName": "FUN_1401a40a0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401a40a0",
+        "name": "FUN_1401a40a0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 121,
+    "size": -1,
+    "packet": "140ebff00",
+    "primarySender": "14014b1c0",
+    "primarySenderName": "FUN_14014b1c0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "14014b1c0",
+        "name": "FUN_14014b1c0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      },
+      {
+        "entryPoint": "14014b8d0",
+        "name": "FUN_14014b8d0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 122,
+    "size": 16,
+    "packet": "140ebff10",
+    "primarySender": "140169660",
+    "primarySenderName": "FUN_140169660",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140169660",
+        "name": "FUN_140169660",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 123,
+    "size": 1,
+    "packet": "140ebff20",
+    "primarySender": "140150370",
+    "primarySenderName": "FUN_140150370",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "140150370",
+        "name": "FUN_140150370",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 124,
+    "size": 8,
+    "packet": "140ebff30",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 125,
+    "size": 3,
+    "packet": "140ebff40",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 126,
+    "size": -1,
+    "packet": "140ebff50",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 127,
+    "size": -1,
+    "packet": "140ebff60",
+    "primarySender": "1401bf8b0",
+    "primarySenderName": "FUN_1401bf8b0",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401bf8b0",
+        "name": "FUN_1401bf8b0",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  },
+  {
+    "opcode": 128,
+    "size": 8,
+    "packet": "140ebff70",
+    "primarySender": "",
+    "primarySenderName": "",
+    "confidence": "unknown",
+    "senderCandidates": []
+  },
+  {
+    "opcode": 129,
+    "size": 8,
+    "packet": "140ebff80",
+    "primarySender": "1401fda40",
+    "primarySenderName": "FUN_1401fda40",
+    "confidence": "strong",
+    "senderCandidates": [
+      {
+        "entryPoint": "1401fda40",
+        "name": "FUN_1401fda40",
+        "opcodeRefCount": 2,
+        "distinctOpcodeCount": 1,
+        "totalRefs": 2,
+        "role": "single-opcode",
+        "score": 318
+      }
+    ]
+  }
+]

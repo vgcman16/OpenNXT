@@ -1,0 +1,32 @@
+{
+  "959546:965703": {
+    "label": "stable",
+    "note": "Current-era stable stripped plateau with real ready signal, minimal varcs, and long-lived interfaces stage.",
+    "role": "seed"
+  },
+  "238890:245238": {
+    "label": "stable",
+    "note": "Long-lived stable session from the active-player experiment era; useful as a second positive reference.",
+    "role": "stable"
+  },
+  "223284:238746": {
+    "label": "stable",
+    "note": "Representative stable interfaces session from the modern bootstrap traces.",
+    "role": "stable"
+  },
+  "121859:121874": {
+    "label": "loop",
+    "note": "Short looping world handoff session.",
+    "role": "bad"
+  },
+  "121748:121766": {
+    "label": "crash",
+    "note": "Crash-edge short session in the same unstable family.",
+    "role": "crash"
+  },
+  "207750:207756": {
+    "label": "rebuild-fail",
+    "note": "Representative rebuild-only failure that never settles into interfaces.",
+    "role": "bad"
+  }
+}

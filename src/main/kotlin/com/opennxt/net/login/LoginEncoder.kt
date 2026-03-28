@@ -108,7 +108,7 @@ class LoginEncoder: MessageToByteEncoder<LoginPacket>() {
                 tmp.writeByte(msg.byte5)
                 tmp.writeByte(msg.byte6)
                 tmp.writeShort(msg.playerIndex)
-//                tmp.writeByte(msg.byte8)
+                tmp.writeByte(msg.byte8)
                 tmp.writeMedium(msg.medium9)
                 tmp.writeByte(msg.isMember)
                 tmp.writeNullCircumfixedString(msg.username)

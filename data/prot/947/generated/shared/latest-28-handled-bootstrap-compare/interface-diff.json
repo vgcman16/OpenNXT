@@ -1,0 +1,264 @@
+{
+  "activePlayerComparison": {
+    "badSession": {
+      "activePlayer116Sent": false,
+      "bootstrapMarkerPresent": false,
+      "configEnabled": null,
+      "markerSamples": [],
+      "packetRegistered": null,
+      "sendSamples": [],
+      "skipReasons": []
+    },
+    "detectedDisabledSession": "goodSession",
+    "detectedEnabledSession": "unknown",
+    "goodSession": {
+      "activePlayer116Sent": false,
+      "bootstrapMarkerPresent": false,
+      "configEnabled": false,
+      "markerSamples": [],
+      "packetRegistered": true,
+      "sendSamples": [],
+      "skipReasons": [
+        "experimental-opensub-disabled"
+      ]
+    }
+  },
+  "advisoryOnly": true,
+  "artifacts": {
+    "interface_diff": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\latest-28-handled-bootstrap-compare\\interface-diff.md"
+  },
+  "badSession": {
+    "categories": {
+      "activeSubBindings": {},
+      "childInterfaces": {},
+      "headModelBindings": {},
+      "rootInterfaces": {},
+      "uiState": {}
+    },
+    "samples": {
+      "activeSubBindings": [],
+      "childInterfaces": [],
+      "headModelBindings": [],
+      "rootInterfaces": [],
+      "uiState": []
+    },
+    "summary": {
+      "clientOpcodeCounts": {
+        "17": 2,
+        "48": 2,
+        "83": 2
+      },
+      "durationSeconds": 59.382,
+      "endLine": 1006900,
+      "endTimestamp": "2026-03-16T18:09:19.692989400Z",
+      "eventCount": 216,
+      "exists": true,
+      "markerCounts": {},
+      "playerName": "",
+      "serverOpcodeCounts": {
+        "28": 99,
+        "42": 99,
+        "131": 12
+      },
+      "stageCounts": {},
+      "stageSequence": [],
+      "startLine": 1006615,
+      "startTimestamp": "2026-03-16T18:08:20.310599Z"
+    }
+  },
+  "build": 946,
+  "diff": {
+    "activeSubBindings": {
+      "extraInBad": {},
+      "missingInBad": {}
+    },
+    "childInterfaces": {
+      "extraInBad": {},
+      "missingInBad": {
+        "IF_OPENSUB": 1
+      }
+    },
+    "headModelBindings": {
+      "extraInBad": {},
+      "missingInBad": {
+        "IF_SETPLAYERMODEL_SELF": 1
+      }
+    },
+    "rootInterfaces": {
+      "extraInBad": {},
+      "missingInBad": {
+        "IF_OPENTOP": 1
+      }
+    },
+    "uiState": {
+      "extraInBad": {},
+      "missingInBad": {
+        "CLIENT_SETVARC_SMALL": 4,
+        "opcode-206": 2
+      }
+    }
+  },
+  "generatedAt": "2026-03-16T18:22:22.936903+00:00",
+  "goodSession": {
+    "categories": {
+      "activeSubBindings": {},
+      "childInterfaces": {
+        "IF_OPENSUB": 1
+      },
+      "headModelBindings": {
+        "IF_SETPLAYERMODEL_SELF": 1
+      },
+      "rootInterfaces": {
+        "IF_OPENTOP": 1
+      },
+      "uiState": {
+        "CLIENT_SETVARC_SMALL": 4,
+        "opcode-206": 2
+      }
+    },
+    "samples": {
+      "activeSubBindings": [],
+      "childInterfaces": [
+        {
+          "bytes": 23,
+          "lineNumber": 959568,
+          "preview": "000000001b00c50500000000000000007f4a0500000000",
+          "stage": "interfaces"
+        }
+      ],
+      "headModelBindings": [
+        {
+          "bytes": 4,
+          "lineNumber": 959570,
+          "preview": "ca050100",
+          "stage": "interfaces"
+        }
+      ],
+      "rootInterfaces": [
+        {
+          "bytes": 19,
+          "lineNumber": 959567,
+          "preview": "000000000000000000000000c5050000000000",
+          "stage": "interfaces"
+        }
+      ],
+      "uiState": [
+        {
+          "bytes": 0,
+          "lineNumber": 959559,
+          "preview": "<empty>",
+          "stage": "rebuild"
+        },
+        {
+          "bytes": 0,
+          "lineNumber": 959610,
+          "preview": "<empty>",
+          "stage": "interfaces"
+        }
+      ]
+    },
+    "summary": {
+      "clientOpcodeCounts": {
+        "0": 2,
+        "17": 2,
+        "28": 1,
+        "48": 3,
+        "83": 1,
+        "113": 4
+      },
+      "durationSeconds": 1309.193,
+      "endLine": 965668,
+      "endTimestamp": "2026-03-16T15:30:08.895775300Z",
+      "eventCount": 4647,
+      "exists": true,
+      "markerCounts": {
+        "world-skip-active-player": 1
+      },
+      "playerName": "demon",
+      "serverOpcodeCounts": {
+        "28": 2180,
+        "38": 1,
+        "39": 1,
+        "42": 2180,
+        "106": 1,
+        "126": 1,
+        "128": 4,
+        "131": 257,
+        "206": 2
+      },
+      "stageCounts": {
+        "appearance": 1,
+        "default-state": 1,
+        "interfaces": 1,
+        "login-response": 1,
+        "pipeline-switch": 1,
+        "rebuild": 1
+      },
+      "stageSequence": [
+        "appearance",
+        "login-response",
+        "pipeline-switch",
+        "rebuild",
+        "default-state",
+        "interfaces"
+      ],
+      "startLine": 959546,
+      "startTimestamp": "2026-03-16T15:08:19.702328900Z"
+    }
+  },
+  "inputs": {
+    "badWindow": "1006615:1006900",
+    "bootstrapOnly": true,
+    "goodWindow": "959546:965703",
+    "mode": "world-log-windows",
+    "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log"
+  },
+  "schemaVersion": 1,
+  "status": "ok",
+  "summary": {
+    "badSessionExists": true,
+    "goodSessionExists": true,
+    "handoffOutcomeChanged": "unknown",
+    "interfaceStageDelta": "material",
+    "topFindingCount": 5
+  },
+  "tool": "run_946_interface_diff",
+  "topFindings": [
+    {
+      "category": "headModelBindings",
+      "label": "IF_SETPLAYERMODEL_SELF",
+      "reason": "present in good session but missing in bad (1 event(s))",
+      "score": 56
+    },
+    {
+      "category": "rootInterfaces",
+      "label": "IF_OPENTOP",
+      "reason": "present in good session but missing in bad (1 event(s))",
+      "score": 51
+    },
+    {
+      "category": "childInterfaces",
+      "label": "IF_OPENSUB",
+      "reason": "present in good session but missing in bad (1 event(s))",
+      "score": 41
+    },
+    {
+      "category": "uiState",
+      "label": "CLIENT_SETVARC_SMALL",
+      "reason": "present in good session but missing in bad (4 event(s))",
+      "score": 29
+    },
+    {
+      "category": "uiState",
+      "label": "opcode-206",
+      "reason": "present in good session but missing in bad (2 event(s))",
+      "score": 27
+    }
+  ],
+  "verdict": {
+    "activePlayer116Sent": "no",
+    "bootstrapMarkerPresent": "no",
+    "handoffOutcomeChanged": "unknown",
+    "interfaceStageDelta": "material"
+  }
+}

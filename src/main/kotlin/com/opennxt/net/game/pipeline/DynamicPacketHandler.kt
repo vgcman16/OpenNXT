@@ -20,6 +20,17 @@ class DynamicPacketHandler : SimpleChannelInboundHandler<OpcodeWithBuffer>() {
 
     override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) {
         logger.error(cause) { "Exception caught in packet handler" }
+        ctx.channel().attr(RSChannelAttributes.CONNECTED_CLIENT).get()?.let { client ->
+            val currentStage = client.currentBootstrapStage
+            val stage = currentStage ?: client.lastCompletedBootstrapStage ?: "none"
+            client.traceBootstrap(
+                "world-pipeline-exception remote=${ctx.channel().remoteAddress()} " +
+                    "stage=$stage current=${currentStage ?: "none"} " +
+                    "completed=${client.completedBootstrapStages.joinToString()} " +
+                    "type=${cause::class.qualifiedName ?: cause::class.simpleName ?: "unknown"} " +
+                    "message=${cause.message ?: "<none>"}"
+            )
+        }
     }
 
     override fun channelInactive(ctx: ChannelHandlerContext) {
@@ -28,6 +39,12 @@ class DynamicPacketHandler : SimpleChannelInboundHandler<OpcodeWithBuffer>() {
             val currentStage = client.currentBootstrapStage
             val stage = currentStage ?: client.lastCompletedBootstrapStage
             if (stage != null) {
+                client.traceBootstrap(
+                    "world-channel-inactive remote=${ctx.channel().remoteAddress()} " +
+                        "side=${ctx.channel().attr(RSChannelAttributes.SIDE).get()} " +
+                        "stage=$stage current=${currentStage ?: "none"} " +
+                        "completed=${client.completedBootstrapStages.joinToString()}"
+                )
                 logger.info {
                     "Channel ${ctx.channel().remoteAddress()} closed after bootstrap stage $stage " +
                         "(current=${currentStage ?: "none"}, completed=${client.completedBootstrapStages.joinToString()})"

@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-03-16T17:27:00.031054+00:00",
+  "programName": "rs2client.exe",
+  "projectDir": "C:\\Users\\Demon\\Documents\\New project\\ghidra-projects\\OpenNXT946Scratch2",
+  "projectName": "OpenNXT946Scratch2",
+  "ghidraDir": "C:\\Users\\Demon\\Tools\\ghidra\\ghidra_12.0.4_PUBLIC",
+  "ghidraScripts": "C:\\Users\\Demon\\Documents\\New project\\ghidra-scripts",
+  "outputDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase1",
+  "driver": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_extraction.py",
+  "exportScript": "ExportProtocolRegistrars.java"
+}

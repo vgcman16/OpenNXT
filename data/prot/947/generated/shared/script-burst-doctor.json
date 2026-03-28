@@ -1,0 +1,106 @@
+{
+  "advisoryOnly": true,
+  "artifacts": {
+    "scriptBurstDoctorJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\script-burst-doctor.json",
+    "scriptBurstDoctorMarkdown": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\script-burst-doctor.md"
+  },
+  "attempts": [
+    {
+      "attemptIndex": 1,
+      "contentSession": {
+        "archiveRequests": 0,
+        "exists": true,
+        "firstRequestLabel": "reference-table[0]",
+        "referenceTableRequests": 1
+      },
+      "disconnectLine": 54,
+      "dominantServerOpcode": 141,
+      "dominantServerOpcodeCount": 9,
+      "likelyPivot": "post-ready-script-unclassified",
+      "needs": [
+        "first non-reference /ms archive request after reference-table[0]"
+      ],
+      "pivotStartLine": 1,
+      "runClientScriptPacketSizes": {
+        "10": 3,
+        "15": 2,
+        "30": 2,
+        "37": 2
+      },
+      "scriptFamilies": [
+        {
+          "count": 1,
+          "family": "light-interface-tail",
+          "marker": "world-send-light-interface-tail",
+          "summary": "scripts=11145,8420,8310"
+        }
+      ],
+      "skippedScriptFamilies": [],
+      "worldSession": {
+        "clientOpcodeCounts": {},
+        "durationSeconds": 0.216,
+        "endLine": 54,
+        "endTimestamp": "2026-03-22T17:32:48.609135400Z",
+        "eventCount": 54,
+        "exists": true,
+        "markerCounts": {
+          "world-channel-inactive": 1,
+          "world-defer-forced-fallback-completion-structure": 1,
+          "world-defer-forced-fallback-deferred-completion-scripts": 1,
+          "world-force-local-appearance": 1,
+          "world-hold-keepalive": 2,
+          "world-hold-post-initial-sync": 2,
+          "world-open-forced-fallback-scene-bridge": 1,
+          "world-send-forced-fallback-light-tail-pre-hold": 1,
+          "world-send-forced-fallback-utility-panel-deck": 1,
+          "world-send-light-interface-tail": 1,
+          "world-send-npc-info": 2,
+          "world-send-player-info": 2,
+          "world-skip-forced-fallback-light-tail-events": 1,
+          "world-skip-forced-fallback-utility-panel-events": 1,
+          "world-skip-prime-forced-fallback-pre-deferred-families": 2,
+          "world-sync-frame": 2
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2,
+          "38": 12,
+          "42": 2,
+          "45": 4,
+          "131": 3,
+          "141": 9
+        },
+        "stageCounts": {},
+        "stageSequence": [],
+        "startLine": 1,
+        "startTimestamp": "2026-03-22T17:32:48.392833100Z"
+      }
+    }
+  ],
+  "build": 946,
+  "generatedAt": "2026-03-22T17:32:48.782295+00:00",
+  "inputs": {
+    "attemptLimit": 12,
+    "clusterId": "20260322-170307",
+    "contentCaptureDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\lobby-tls-terminator",
+    "serverLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tmp-manual-js5.err.log",
+    "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log"
+  },
+  "schemaVersion": 1,
+  "status": "ok",
+  "summary": {
+    "attemptCount": 1,
+    "clusterId": "20260322-170307",
+    "latestDominantServerOpcode": 141,
+    "latestDominantServerOpcodeCount": 9,
+    "runClientScriptBurstAttemptCount": 0
+  },
+  "tool": "run_946_script_burst_doctor",
+  "verdict": {
+    "likelyBlocker": "post-ready-script-unclassified",
+    "needs": [
+      "first non-reference /ms archive request after reference-table[0]"
+    ],
+    "recommendation": "RUNCLIENTSCRIPT traffic is present, but the latest cluster does not yet isolate one script family as the blocker."
+  }
+}

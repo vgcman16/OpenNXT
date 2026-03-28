@@ -1,0 +1,144 @@
+{
+  "label": "rebuild-fail",
+  "normalizedOutcome": "rebuild_fail",
+  "note": "Representative rebuild-only failure that never settles into interfaces.",
+  "role": "bad",
+  "session": {
+    "clientOpcodeCounts": {},
+    "durationSeconds": 0.252,
+    "endLine": 207756,
+    "endTimestamp": "2026-03-15T12:24:47.838756800Z",
+    "eventCount": 7,
+    "events": [
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon",
+          "stage": "appearance"
+        },
+        "kind": "world-stage",
+        "lineNumber": 207750,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-15T12:24:47.586456400Z world-stage name=demon stage=appearance",
+        "stage": "appearance",
+        "timestamp": "2026-03-15T12:24:47.586456400Z"
+      },
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon",
+          "stage": "login-response"
+        },
+        "kind": "world-stage",
+        "lineNumber": 207751,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-15T12:24:47.657446500Z world-stage name=demon stage=login-response",
+        "stage": "login-response",
+        "timestamp": "2026-03-15T12:24:47.657446500Z"
+      },
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon",
+          "stage": "pipeline-switch"
+        },
+        "kind": "world-stage",
+        "lineNumber": 207752,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-15T12:24:47.800433200Z world-stage name=demon stage=pipeline-switch",
+        "stage": "pipeline-switch",
+        "timestamp": "2026-03-15T12:24:47.800433200Z"
+      },
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon",
+          "stage": "rebuild"
+        },
+        "kind": "world-stage",
+        "lineNumber": 207753,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-15T12:24:47.801239600Z world-stage name=demon stage=rebuild",
+        "stage": "rebuild",
+        "timestamp": "2026-03-15T12:24:47.801239600Z"
+      },
+      {
+        "bytes": 5137,
+        "data": {
+          "bytes": "5137",
+          "opcode": "39",
+          "preview": "0c96325b00003000030000300003000030000300003000030000300003000030",
+          "remote": "/127.0.0.1:55591",
+          "stage": "rebuild"
+        },
+        "kind": "send-raw",
+        "lineNumber": 207754,
+        "opcode": 39,
+        "playerName": "",
+        "preview": "0c96325b00003000030000300003000030000300003000030000300003000030",
+        "raw": "2026-03-15T12:24:47.835726100Z send-raw opcode=39 bytes=5137 remote=/127.0.0.1:55591 stage=rebuild preview=0c96325b00003000030000300003000030000300003000030000300003000030",
+        "stage": "rebuild",
+        "timestamp": "2026-03-15T12:24:47.835726100Z"
+      },
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon"
+        },
+        "kind": "world-waiting-map-build-complete",
+        "lineNumber": 207755,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-15T12:24:47.837241900Z world-waiting-map-build-complete name=demon",
+        "stage": "",
+        "timestamp": "2026-03-15T12:24:47.837241900Z"
+      },
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon"
+        },
+        "kind": "world-added",
+        "lineNumber": 207756,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-15T12:24:47.838756800Z world-added name=demon",
+        "stage": "",
+        "timestamp": "2026-03-15T12:24:47.838756800Z"
+      }
+    ],
+    "markerCounts": {
+      "world-added": 1,
+      "world-waiting-map-build-complete": 1
+    },
+    "playerName": "demon",
+    "serverOpcodeCounts": {
+      "39": 1
+    },
+    "stageCounts": {
+      "appearance": 1,
+      "login-response": 1,
+      "pipeline-switch": 1,
+      "rebuild": 1
+    },
+    "stageSequence": [
+      "appearance",
+      "login-response",
+      "pipeline-switch",
+      "rebuild"
+    ],
+    "startLine": 207750,
+    "startTimestamp": "2026-03-15T12:24:47.586456400Z"
+  },
+  "window": "207750:207756"
+}

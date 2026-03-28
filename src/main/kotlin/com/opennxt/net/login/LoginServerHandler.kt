@@ -47,17 +47,17 @@ class LoginServerHandler : SimpleChannelInboundHandler<LoginPacket>() {
 
                         val map = Int2IntOpenHashMap()
                         TODORefactorThisClass.populateServerpermVarcs(map)
-                        val response = LoginPacket.ServerpermVarcChunk(true, emptyMap())
+                        val response = LoginPacket.ServerpermVarcChunk(true, map)
                         ctx.channel().writeAndFlush(response)
 
-                        logger.info { "Sending serverperm varcs" }
+                        logger.info { "Sending serverperm varcs (count=${map.size})" }
 
                         return@login
                     }
 
                     val response = LoginPacket.LobbyLoginResponse(
                         byte0 = 0,
-                        rights = 2,
+                        rights = OpenNXT.config.lobbyLoginResponse.rights,
                         byte2 = 0,
                         byte3 = 0,
                         medium4 = 0,
@@ -73,7 +73,7 @@ class LoginServerHandler : SimpleChannelInboundHandler<LoginPacket>() {
                         short14 = 0,
                         short15 = 0,
                         short16 = 0,
-                        ip = 213076433,
+                        ip = OpenNXT.config.lobbyLoginResponse.ip,
                         byte17 = 0,
                         short18 = 0,
                         short19 = 0,
@@ -82,10 +82,17 @@ class LoginServerHandler : SimpleChannelInboundHandler<LoginPacket>() {
                         byte22 = 0,
                         int23 = 0,
                         short24 = 0,
-                        defaultWorld = OpenNXT.config.hostname,
+                        defaultWorld = OpenNXT.config.gameHostname,
                         defaultWorldPort1 = OpenNXT.config.ports.game,
-                        defaultWorldPort2 = OpenNXT.config.ports.game,
+                        defaultWorldPort2 = OpenNXT.config.lobbyLoginResponse.defaultWorldPort2,
                     )
+
+                    logger.info {
+                        "Sending lobby login response to ${ctx.channel().remoteAddress()}: " +
+                            "defaultWorld=${response.defaultWorld}, " +
+                            "ports=${response.defaultWorldPort1}/${response.defaultWorldPort2}, " +
+                            "rights=${response.rights}, ip=${response.ip}"
+                    }
 
                     ctx.channel().writeAndFlush(response).addListener { future ->
                         if (!future.isSuccess) {

@@ -1,0 +1,2 @@
+# opcode=7
+# candidates=IF_OPENSUB_ACTIVE_OBJ

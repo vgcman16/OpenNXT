@@ -33,7 +33,7 @@ class Js5WireCompare : Tool(
     private val localHost by option(help = "Local JS5 host").default("127.0.0.1")
     private val localPort by option(help = "Local JS5 port").int()
     private val tokenUrl by option(help = "jav_config.ws URL used to fetch JS5 version/token")
-        .default("https://world5.runescape.com/jav_config.ws")
+        .default("https://rs.config.runescape.com/k=5/l=0/jav_config.ws")
     private val timeoutMillis by option(help = "Socket timeout in milliseconds").int().default(10_000)
     private val index by option(help = "JS5 index to request").int().default(255)
     private val archive by option(help = "JS5 archive to request").int().default(255)
@@ -114,14 +114,14 @@ class Js5WireCompare : Tool(
 
             val responseBytes: ByteArray
             val trailingBytes: ByteArray
-            val parsed: ParsedHeader?
+            val parsed: Js5WireSupport.ParsedResponseHeader?
             if (skipRequest) {
                 parsed = null
                 trailingBytes = drainTrailing(input)
                 responseBytes = byteArrayOf(handshakeResponse.toByte())
             } else {
                 val headerBytes = readFully(input, 10)
-                parsed = parseHeader(headerBytes)
+                parsed = Js5WireSupport.parseResponseHeader(headerBytes)
                 val bodyBytes = readFully(input, parsed.containerBytes - 5)
 
                 responseBytes = ByteArray(1 + headerBytes.size + bodyBytes.size)
@@ -212,27 +212,6 @@ class Js5WireCompare : Tool(
         }
 
         return bytes.toByteArray()
-    }
-
-    private fun parseHeader(bytes: ByteArray): ParsedHeader {
-        check(bytes.size == 10) { "Expected 10 header bytes, got ${bytes.size}" }
-
-        val index = bytes[0].toInt() and 0xff
-        val hash = readInt(bytes, 1)
-        val compression = bytes[5].toInt() and 0xff
-        val fileSize = readInt(bytes, 6)
-        val priority = (hash and Int.MIN_VALUE) == 0
-        val archive = hash and Int.MAX_VALUE
-        val containerBytes = fileSize + if (compression == 0) 5 else 9
-
-        return ParsedHeader(index, archive, priority, compression, fileSize, containerBytes)
-    }
-
-    private fun readInt(bytes: ByteArray, offset: Int): Int {
-        return ((bytes[offset].toInt() and 0xff) shl 24) or
-            ((bytes[offset + 1].toInt() and 0xff) shl 16) or
-            ((bytes[offset + 2].toInt() and 0xff) shl 8) or
-            (bytes[offset + 3].toInt() and 0xff)
     }
 
     private fun readFully(input: BufferedInputStream, length: Int): ByteArray {
@@ -363,15 +342,6 @@ class Js5WireCompare : Tool(
         return copyOfRange(0, min(size, length)).joinToString(" ") { "%02x".format(it.toInt() and 0xff) }
     }
 
-    private data class ParsedHeader(
-        val index: Int,
-        val archive: Int,
-        val priority: Boolean,
-        val compression: Int,
-        val fileSize: Int,
-        val containerBytes: Int
-    )
-
     private data class Capture(
         val label: String,
         val host: String,
@@ -380,7 +350,7 @@ class Js5WireCompare : Tool(
         val responseBytes: ByteArray,
         val trailingBytes: ByteArray,
         val handshakeResponse: Int,
-        val header: ParsedHeader?,
+        val header: Js5WireSupport.ParsedResponseHeader?,
         val skipRequest: Boolean
     )
 

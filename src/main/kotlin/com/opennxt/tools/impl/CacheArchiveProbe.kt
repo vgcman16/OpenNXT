@@ -43,7 +43,7 @@ class CacheArchiveProbe : Tool(
 
                     appendLine(
                         "  archive=$archiveId status=present compressedSize=${entry.compressedSize} " +
-                            "uncompressedSize=${entry.uncompressedSize} version=${entry.version}"
+                            "uncompressedSize=${entry.uncompressedSize} version=${entry.version} crc=${entry.crc}"
                     )
 
                     if (!includeFiles) return@forEach

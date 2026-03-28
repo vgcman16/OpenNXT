@@ -10,7 +10,9 @@ import com.opennxt.model.worldlist.WorldList
 import com.opennxt.model.worldlist.WorldListEntry
 import com.opennxt.model.worldlist.WorldListLocation
 import com.opennxt.net.ConnectedClient
+import com.opennxt.net.Side
 import com.opennxt.net.game.GamePacket
+import com.opennxt.net.game.PacketRegistry
 import com.opennxt.net.game.clientprot.ClientCheat
 import com.opennxt.net.game.clientprot.WorldlistFetch
 import com.opennxt.net.game.handlers.ClientCheatHandler
@@ -27,12 +29,177 @@ import mu.KotlinLogging
 import kotlin.reflect.KClass
 
 class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, name) {
+    private data class LobbyChildInterface(
+        val id: Int,
+        val component: Int
+    )
+
+    private data class LobbyNewsItem(
+        val slot: Int,
+        val imageId: Int,
+        val category: Int,
+        val title: String,
+        val body: String,
+        val slug: String,
+        val date: String,
+        val featured: Int
+    )
+
+    private companion object {
+        val LOBBY_SUPPLEMENTAL_CHILD_INTERFACES = listOf(
+            LobbyChildInterface(id = 907, component = 65),
+            LobbyChildInterface(id = 910, component = 66),
+            LobbyChildInterface(id = 909, component = 67),
+            LobbyChildInterface(id = 912, component = 69),
+            LobbyChildInterface(id = 589, component = 68),
+            LobbyChildInterface(id = 911, component = 70),
+            LobbyChildInterface(id = 914, component = 128),
+            LobbyChildInterface(id = 915, component = 129),
+            LobbyChildInterface(id = 913, component = 130),
+            LobbyChildInterface(id = 815, component = 137),
+            LobbyChildInterface(id = 803, component = 132),
+            LobbyChildInterface(id = 822, component = 133),
+            LobbyChildInterface(id = 825, component = 115),
+            LobbyChildInterface(id = 821, component = 116),
+            LobbyChildInterface(id = 808, component = 114),
+            LobbyChildInterface(id = 820, component = 134),
+            LobbyChildInterface(id = 811, component = 131),
+            LobbyChildInterface(id = 826, component = 82),
+            LobbyChildInterface(id = 801, component = 36)
+        )
+
+        val LOBBY_NEWS_ITEMS = listOf(
+            LobbyNewsItem(
+                slot = 0,
+                imageId = 16302,
+                category = 1,
+                title = "This Week In RuneScape: Double XP LIVE & Improved Divination Training",
+                body = "This Week In RuneScape we're bringing you the new and improved Divination skill! Why not test it out during Double XP LIVE?",
+                slug = "this-week-in-runescape-double-xp-live--improved-divination-training",
+                date = "04-May-2021",
+                featured = 1
+            ),
+            LobbyNewsItem(
+                slot = 1,
+                imageId = 16301,
+                category = 12,
+                title = "New & Improved Divination",
+                body = "A major update is coming to Divination next week. Click here to learn all about it!",
+                slug = "new--improved-divination",
+                date = "29-Apr-2021",
+                featured = 0
+            ),
+            LobbyNewsItem(
+                slot = 2,
+                imageId = 16293,
+                category = 1,
+                title = "This Week In RuneScape: Dailies & Distractions & Diversions Week Begins!",
+                body = "It's Dailies & Distractions & Diversions Week!",
+                slug = "this-week-in-runescape-dailies--distractions--diversions-week-begins",
+                date = "26-Apr-2021",
+                featured = 0
+            ),
+            LobbyNewsItem(
+                slot = 3,
+                imageId = 16282,
+                category = 12,
+                title = "Double XP LIVE Returns Soon!",
+                body = "Double XP LIVE is coming again soon!",
+                slug = "double-xp-live-returns-soon",
+                date = "23-Apr-2021",
+                featured = 0
+            ),
+            LobbyNewsItem(
+                slot = 4,
+                imageId = 16291,
+                category = 7,
+                title = "RuneScape On Mobile This Summer - A Message From Mod Warden",
+                body = "RuneScape is coming to mobile this Summer, and you can register today for free rewards!",
+                slug = "runescape-on-mobile-this-summer---a-message-from-mod-warden",
+                date = "22-Apr-2021",
+                featured = 0
+            ),
+            LobbyNewsItem(
+                slot = 5,
+                imageId = 16275,
+                category = 1,
+                title = "This Week In RuneScape: Rex Matriarchs & Combat Week!",
+                body = "This week the Rex Matriarchs come roaring into the game with a new combat challenge for experienced fighters. Which is fitting, because it's also Combat Week!",
+                slug = "this-week-in-runescape-rex-matriarchs--combat-week",
+                date = "19-Apr-2021",
+                featured = 0
+            ),
+            LobbyNewsItem(
+                slot = 6,
+                imageId = 16270,
+                category = 1,
+                title = "This Week In RuneScape: Skilling Week Begins",
+                body = "This Week In RuneScape Awesome April begins, bringing with it Skilling Week!",
+                slug = "this-week-in-runescape-skilling-week-begins",
+                date = "12-Apr-2021",
+                featured = 0
+            ),
+            LobbyNewsItem(
+                slot = 7,
+                imageId = 16257,
+                category = 3,
+                title = "Lockout Account Returns - Updates",
+                body = "Welcoming back The Returned.",
+                slug = "lockout-account-returns---updates",
+                date = "08-Apr-2021",
+                featured = 0
+            ),
+            LobbyNewsItem(
+                slot = 8,
+                imageId = 16258,
+                category = 1,
+                title = "This Week In RuneScape: The RS20 mini-quest series continues!",
+                body = "This Week In RuneScape the Ninja Team returns for Strike 21. We've also got the next part of the RS20: Once Upon a Time miniquest series!",
+                slug = "this-week-in-runescape-the-rs20-mini-quest-series-continues",
+                date = "05-Apr-2021",
+                featured = 0
+            ),
+            LobbyNewsItem(
+                slot = 9,
+                imageId = 16243,
+                category = 1,
+                title = "This Week In RuneScape: The Spring Festival Begins!",
+                body = "This Week In RuneScape marks the beginning of the Spring Festival!",
+                slug = "this-week-in-runescape-the-spring-festival-begins",
+                date = "29-Mar-2021",
+                featured = 0
+            ),
+            LobbyNewsItem(
+                slot = 10,
+                imageId = 16248,
+                category = 3,
+                title = "Account Returning Begins & Making Things Right",
+                body = "An update on the Login Lockout situation, including the first details on the return of accounts and more.",
+                slug = "account-returning-begins--making-things-right",
+                date = "26-Mar-2021",
+                featured = 0
+            ),
+            LobbyNewsItem(
+                slot = 11,
+                imageId = 16219,
+                category = 3,
+                title = "Login Lockout Daily Updates",
+                body = "This page is where we'll post the most recent news on the Login Lockout situation. Check back regularly for updates.",
+                slug = "login-lockout-daily-updates",
+                date = "26-Mar-2021",
+                featured = 0
+            )
+        )
+    }
+
     private val handlers =
         Object2ObjectOpenHashMap<KClass<out GamePacket>, GamePacketHandler<in BasePlayer, out GamePacket>>()
     private val logger = KotlinLogging.logger { }
 
     override val interfaces: InterfaceManager = InterfaceManager(this)
     override val stats: StatContainer = PlayerStatContainer(this)
+
+    private fun worldHost(): String = OpenNXT.config.gameHostname
 
     val worldList = WorldList(
         arrayOf(
@@ -41,7 +208,7 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
                 location = WorldListLocation(225, "Live"),
                 flag = WorldFlag.createFlag(),
                 activity = "Free To Play",
-                host = "127.0.0.1",
+                host = worldHost(),
                 playercount = 69
             ),
             WorldListEntry(
@@ -49,7 +216,7 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
                 location = WorldListLocation(225, "Live"),
                 flag = WorldFlag.createFlag(WorldFlag.MEMBERS_ONLY),
                 activity = "Members only",
-                host = "127.0.0.1",
+                host = worldHost(),
                 playercount = 69
             ),
             WorldListEntry(
@@ -57,7 +224,7 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
                 location = WorldListLocation(161, "Local"),
                 flag = WorldFlag.createFlag(WorldFlag.VETERAN_WORLD),
                 activity = "Veteran only",
-                host = "127.0.0.1",
+                host = worldHost(),
                 playercount = 69
             ),
             WorldListEntry(
@@ -65,7 +232,7 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
                 location = WorldListLocation(161, "Local"),
                 flag = WorldFlag.createFlag(WorldFlag.BETA_WORLD),
                 activity = "Beta world",
-                host = "localhost",
+                host = worldHost(),
                 playercount = 69
             ),
             WorldListEntry(
@@ -73,7 +240,7 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
                 location = WorldListLocation(161, "Local"),
                 flag = WorldFlag.createFlag(WorldFlag.VIP_WORLD),
                 activity = "VIP Only",
-                host = "127.0.0.1",
+                host = worldHost(),
                 playercount = 69
             ),
         )
@@ -106,15 +273,20 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
         val stageTracker = LobbyBootstrapStageTracker(client, name)
 
         logger.info {
-            "Lobby bootstrap toggles for $name: " +
+                "Lobby bootstrap toggles for $name: " +
                 "defaultVarps=${bootstrap.sendDefaultVarps}, " +
+                "defaultVarpRange=${bootstrap.defaultVarpMinId}..${bootstrap.defaultVarpMaxId}, " +
                 "root=${bootstrap.openRootInterface}, " +
+                "supplementalChildren=${bootstrap.openSupplementalChildInterfaces}, " +
                 "child814=${bootstrap.openPrimaryChild814}, " +
                 "child1322=${bootstrap.openAlternateChild1322}, " +
                 "varcLarge2771=${bootstrap.sendPrimaryVarcLarge2771}, " +
                 "varcSmall3496=${bootstrap.sendPrimaryVarcSmall3496}, " +
                 "varcString2508=${bootstrap.sendPrimaryVarcString2508}, " +
-                "script10936=${bootstrap.sendPrimaryClientScript10936}"
+                "script10936=${bootstrap.sendPrimaryClientScript10936}, " +
+                "secondaryVarcs=${bootstrap.sendSecondaryLobbyVarcs}, " +
+                "newsScripts=${bootstrap.sendLobbyNewsScripts}, " +
+                "socialInit=${bootstrap.sendSocialInitPackets}"
         }
 
         stageTracker.run(LobbyBootstrapStage.RESET) {
@@ -148,6 +320,25 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
             }
         }
 
+        stageTracker.run(LobbyBootstrapStage.SECONDARY_VARCS) {
+            if (bootstrap.sendSecondaryLobbyVarcs) {
+                client.write(ClientSetvarcSmall(4659, 0))
+                client.write(ClientSetvarcLarge(4660, 500))
+                client.write(ClientSetvarcSmall(1800, 0))
+                client.write(ClientSetvarcLarge(1648, 500))
+                client.write(ClientSetvarcSmall(4968, 0))
+                client.write(ClientSetvarcSmall(4969, 0))
+                client.write(ClientSetvarcSmall(3905, 0))
+                client.write(ClientSetvarcSmall(4266, 1))
+                client.write(ClientSetvarcSmall(4267, 110))
+                client.write(ClientSetvarcSmall(4263, -1))
+                client.write(ClientSetvarcSmall(4264, -1))
+                client.write(ClientSetvarcSmall(4265, -1))
+            } else {
+                logger.info { "Skipping secondary lobby varc bootstrap for $name due to bootstrap config" }
+            }
+        }
+
         stageTracker.run(LobbyBootstrapStage.RUNCLIENTSCRIPT) {
             if (bootstrap.sendPrimaryClientScript10936) {
                 client.write(RunClientScript(script = 10936, args = emptyArray()))
@@ -167,14 +358,59 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
         }
 
         stageTracker.run(LobbyBootstrapStage.CHILD_INTERFACES) {
+            if (bootstrap.openSupplementalChildInterfaces) {
+                for (child in LOBBY_SUPPLEMENTAL_CHILD_INTERFACES) {
+                    interfaces.open(id = child.id, parent = 906, component = child.component, walkable = true)
+                }
+            }
             if (bootstrap.openPrimaryChild814) {
                 interfaces.open(id = 814, parent = 906, component = 37, walkable = true)
             }
             if (bootstrap.openAlternateChild1322) {
                 interfaces.open(id = 1322, parent = 906, component = 151, walkable = true)
             }
-            if (!bootstrap.openPrimaryChild814 && !bootstrap.openAlternateChild1322) {
-                logger.info { "Skipping lobby child interface bootstrap for $name due to bootstrap config" }
+            if (
+                !bootstrap.openSupplementalChildInterfaces &&
+                !bootstrap.openPrimaryChild814 &&
+                !bootstrap.openAlternateChild1322
+            ) {
+                logger.info { "Skipping all lobby child interfaces for $name due to bootstrap config" }
+            }
+        }
+
+        stageTracker.run(LobbyBootstrapStage.NEWS_SCRIPTS) {
+            if (bootstrap.sendLobbyNewsScripts) {
+                sendLobbyNewsFeed()
+            } else {
+                logger.info { "Skipping lobby news bootstrap for $name due to bootstrap config" }
+            }
+        }
+
+        stageTracker.run(LobbyBootstrapStage.SOCIAL_STATE) {
+            if (bootstrap.sendSocialInitPackets) {
+                val canSendPrivateChatFilter =
+                    PacketRegistry.getRegistration(Side.SERVER, ChatFilterSettingsPrivatechat::class) != null
+                if (canSendPrivateChatFilter) {
+                    client.write(ChatFilterSettingsPrivatechat(0))
+                } else {
+                    logger.info {
+                        "Skipping CHAT_FILTER_SETTINGS_PRIVATECHAT for $name: " +
+                            "build ${OpenNXT.config.build} has no server opcode mapping"
+                    }
+                }
+
+                val canSendFriendlistLoaded =
+                    PacketRegistry.getRegistration(Side.SERVER, FriendlistLoaded::class) != null
+                if (canSendFriendlistLoaded) {
+                    client.write(FriendlistLoaded)
+                } else {
+                    logger.info {
+                        "Skipping FRIENDLIST_LOADED for $name: " +
+                            "build ${OpenNXT.config.build} has no server opcode mapping"
+                    }
+                }
+            } else {
+                logger.info { "Skipping lobby social bootstrap for $name due to bootstrap config" }
             }
         }
 
@@ -397,6 +633,27 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
 //        client.write(ChatFilterSettingsPrivatechat(0))
 //        client.write(FriendlistLoaded)
         logger.info { "Finished lobby bootstrap for $name" }
+    }
+
+    private fun sendLobbyNewsFeed() {
+        for (item in LOBBY_NEWS_ITEMS) {
+            client.write(
+                RunClientScript(
+                    script = 10931,
+                    args = arrayOf(
+                        item.slot,
+                        item.imageId,
+                        item.category,
+                        -1,
+                        item.title,
+                        item.body,
+                        item.slug,
+                        item.date,
+                        item.featured
+                    )
+                )
+            )
+        }
     }
 
     override fun tick() {
