@@ -61,6 +61,8 @@ $runtimeHotCacheRepairScript = Join-Path $PSScriptRoot "repair_runescape_runtime
 $installedRuntimeSyncTool = Join-Path $PSScriptRoot "sync_runescape_installed_runtime.py"
 $directPatchTrace = Join-Path $root "data\\debug\\direct-rs2client-patch\\latest-live.jsonl"
 $directPatchSummary = Join-Path $root "data\\debug\\direct-rs2client-patch\\latest-live.json"
+$directPatchStdout = Join-Path $root "data\\debug\\direct-rs2client-patch\\latest-live.stdout.log"
+$directPatchStderr = Join-Path $root "data\\debug\\direct-rs2client-patch\\latest-live.stderr.log"
 $directPatchStartupHookOutput = Join-Path $root "data\\debug\\direct-rs2client-patch\\latest-live-hook.jsonl"
 $wrapperRewriteTrace = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-live.jsonl"
 $wrapperRewriteSummary = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-live.json"
@@ -355,6 +357,69 @@ function Invoke-DirectPatchedLiveLaunch {
     if (-not [string]::IsNullOrWhiteSpace($StartupHookOutputPath) -and (Test-Path $StartupHookOutputPath)) {
         Remove-Item $StartupHookOutputPath -Force -ErrorAction SilentlyContinue
     }
+    Remove-Item $directPatchStdout, $directPatchStderr -Force -ErrorAction SilentlyContinue
+
+    function Read-DirectPatchSummary {
+        param([string]$Path)
+
+        $lastError = $null
+        for ($attempt = 0; $attempt -lt 20; $attempt++) {
+            try {
+                $rawSummary = Get-Content -Path $Path -Raw -ErrorAction Stop
+                if (-not [string]::IsNullOrWhiteSpace($rawSummary)) {
+                    return $rawSummary | ConvertFrom-Json -ErrorAction Stop
+                }
+            } catch {
+                $lastError = $_
+            }
+
+            Start-Sleep -Milliseconds 250
+        }
+
+        if ($lastError) {
+            throw "Direct rs2client patch launch summary could not be parsed: $Path. $($lastError.Exception.Message)"
+        }
+
+        throw "Direct rs2client patch launch summary was empty: $Path"
+    }
+
+    function Stop-DirectPatchAttemptArtifacts {
+        param(
+            [System.Diagnostics.Process]$HelperProcess,
+            [string]$LaunchedClientPath
+        )
+
+        $targetPids = @()
+        if ($HelperProcess) {
+            $targetPids += $HelperProcess.Id
+        }
+
+        if (-not [string]::IsNullOrWhiteSpace($LaunchedClientPath) -and (Test-Path $LaunchedClientPath)) {
+            $resolvedClientPath = [System.IO.Path]::GetFullPath($LaunchedClientPath)
+            $targetPids += @(
+                Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+                    Where-Object {
+                        $_.ProcessId -ne $PID -and
+                        $null -ne $_.ExecutablePath -and
+                        [string]::Equals([System.IO.Path]::GetFullPath($_.ExecutablePath), $resolvedClientPath, [System.StringComparison]::OrdinalIgnoreCase)
+                    } |
+                    Select-Object -ExpandProperty ProcessId -Unique
+            )
+        }
+
+        $targetPids = @(
+            $targetPids |
+                Where-Object { $_ -and $_ -ne $PID } |
+                Sort-Object -Unique
+        )
+        foreach ($processId in $targetPids) {
+            try {
+                taskkill /PID $processId /T /F | Out-Null
+            } catch {}
+        }
+
+        return $targetPids
+    }
 
     $directPatchArgs = @(
         $DirectPatchToolPath,
@@ -395,35 +460,87 @@ function Invoke-DirectPatchedLiveLaunch {
     }
 
     $pythonExe = (Get-Command python -ErrorAction Stop).Source
-    Push-Location $WorkspaceRoot
-    try {
-        & $pythonExe @directPatchArgs
-        $directPatchExitCode = $LASTEXITCODE
-    } finally {
-        Pop-Location
+    $quotedDirectPatchArgs = @($directPatchArgs | ForEach-Object { Quote-ProcessArgument $_ })
+    Write-LaunchTrace ("direct patch helper start exe={0}" -f $ClientExePath)
+    $directPatchHelper = Start-Process `
+        -FilePath $pythonExe `
+        -ArgumentList $quotedDirectPatchArgs `
+        -WorkingDirectory $WorkspaceRoot `
+        -RedirectStandardOutput $directPatchStdout `
+        -RedirectStandardError $directPatchStderr `
+        -PassThru
+    Write-LaunchTrace ("direct patch helper pid={0}" -f $directPatchHelper.Id)
+    $summaryDeadline = (Get-Date).AddSeconds([Math]::Max(15, $MonitorSeconds))
+    while ((Get-Date) -lt $summaryDeadline -and -not (Test-Path $SummaryPath)) {
+        $helperStillRunning = Get-Process -Id $directPatchHelper.Id -ErrorAction SilentlyContinue
+        if ($null -eq $helperStillRunning) {
+            break
+        }
+
+        Start-Sleep -Milliseconds 500
     }
-    if ($directPatchExitCode -ne 0) {
-        throw "Direct rs2client patch launch failed with exit code $directPatchExitCode."
-    }
+
     if (-not (Test-Path $SummaryPath)) {
+        $directPatchExitCode = $null
+        try {
+            $directPatchHelper.Refresh()
+            if ($directPatchHelper.HasExited) {
+                $directPatchExitCode = $directPatchHelper.ExitCode
+            }
+        } catch {}
+        Write-LaunchTrace ("direct patch helper summary missing helperPid={0} exitCode={1}" -f $directPatchHelper.Id, $(if ($null -ne $directPatchExitCode) { $directPatchExitCode } else { "running" }))
+        if (Test-Path $directPatchStderr) {
+            $stderrTail = (Get-Content -Path $directPatchStderr -ErrorAction SilentlyContinue | Select-Object -Last 20) -join " | "
+            if (-not [string]::IsNullOrWhiteSpace($stderrTail)) {
+                Write-LaunchTrace ("direct patch helper stderr tail={0}" -f $stderrTail)
+            }
+        }
+        $terminatedPids = @(Stop-DirectPatchAttemptArtifacts -HelperProcess $directPatchHelper -LaunchedClientPath $ClientExePath)
+        if ($terminatedPids.Count -gt 0) {
+            Write-LaunchTrace ("direct patch helper cleanup pids={0}" -f ($terminatedPids -join ","))
+        }
+        if ($null -ne $directPatchExitCode) {
+            throw "Direct rs2client patch launch failed with exit code $directPatchExitCode."
+        }
         throw "Direct rs2client patch launch completed without a summary output: $SummaryPath"
     }
 
-    $directPatchLaunchSummary = Get-Content -Path $SummaryPath -Raw | ConvertFrom-Json
+    Write-LaunchTrace ("direct patch helper summary ready helperPid={0}" -f $directPatchHelper.Id)
+    $directPatchLaunchSummary = Read-DirectPatchSummary -Path $SummaryPath
+    $summaryStage = if ($directPatchLaunchSummary.PSObject.Properties.Name -contains "summaryStage") {
+        [string]$directPatchLaunchSummary.summaryStage
+    } else {
+        "unknown"
+    }
+    Write-LaunchTrace ("direct patch helper summary loaded helperPid={0} pid={1} stage={2}" -f $directPatchHelper.Id, $directPatchLaunchSummary.pid, $summaryStage)
     $resolvedClientPid = [int]$directPatchLaunchSummary.pid
-    $client = Get-Process -Id $resolvedClientPid -ErrorAction SilentlyContinue
-    if ($null -eq $client -and [bool]$directPatchLaunchSummary.processAlive) {
-        $client = Resolve-MainClientProcess -BootstrapPid $resolvedClientPid -TimeoutSeconds 10
+    $client = $null
+    $resolveDeadline = (Get-Date).AddSeconds(10)
+    while ((Get-Date) -lt $resolveDeadline -and $null -eq $client) {
+        $client = Get-Process -Id $resolvedClientPid -ErrorAction SilentlyContinue
+        if ($null -eq $client -and [bool]$directPatchLaunchSummary.processAlive) {
+            $client = Resolve-MainClientProcess -BootstrapPid $resolvedClientPid -TimeoutSeconds 2
+        }
+        if ($null -eq $client) {
+            Start-Sleep -Milliseconds 250
+        }
     }
     if ($null -eq $client) {
+        Write-LaunchTrace ("direct patch helper client resolution failed helperPid={0} pid={1}" -f $directPatchHelper.Id, $resolvedClientPid)
+        $terminatedPids = @(Stop-DirectPatchAttemptArtifacts -HelperProcess $directPatchHelper -LaunchedClientPath $ClientExePath)
+        if ($terminatedPids.Count -gt 0) {
+            Write-LaunchTrace ("direct patch helper cleanup pids={0}" -f ($terminatedPids -join ","))
+        }
         throw "Direct rs2client patch launch completed but no live client process could be resolved."
     }
+    Write-LaunchTrace ("direct patch helper client resolved helperPid={0} pid={1}" -f $directPatchHelper.Id, $client.Id)
 
     return [pscustomobject]@{
         Summary = $directPatchLaunchSummary
         BootstrapClient = [pscustomobject]@{ Id = $resolvedClientPid }
         Client = $client
         ResolvedClientPid = $resolvedClientPid
+        HelperProcess = $directPatchHelper
     }
 }
 
@@ -823,8 +940,22 @@ function Sync-ContentHostsOverride {
         return
     }
 
-    $hostsScript = if ($script:UseContentTlsRoute) { $setContentHostsOverrideScript } else { $clearContentHostsOverrideScript }
-    $action = if ($script:UseContentTlsRoute) { "apply" } else { "clear" }
+    $hostsScript = if ($use947RetailConfigHost) {
+        # The secure 947 retail startup contract must keep rs.config retail-shaped.
+        # Clearing any stale hosts overrides here prevents a silent localhost detour.
+        $clearContentHostsOverrideScript
+    } elseif ($script:UseContentTlsRoute) {
+        $setContentHostsOverrideScript
+    } else {
+        $clearContentHostsOverrideScript
+    }
+    $action = if ($use947RetailConfigHost) {
+        "clear-secure-947-retail-route"
+    } elseif ($script:UseContentTlsRoute) {
+        "apply"
+    } else {
+        "clear"
+    }
 
     Write-LaunchTrace ("content host override {0}=start" -f $action)
     & $powershellExe -ExecutionPolicy Bypass -File $hostsScript | Out-Null
@@ -1756,15 +1887,22 @@ if ($configuredClientBuild -ge 947) {
     }
 }
 if ($script:UseContentTlsRoute) {
-    if (-not $prefer947PatchedDirectClient) {
-        # Keep the canonical MITM launch shape explicit for the wrapper/retail route.
+    if (-not $prefer947PatchedDirectClient -and -not $configUrlOverrideExplicit) {
+        # Keep the default 947 wrapper route fully retail-shaped. Explicit
+        # ConfigUrlOverride experiments are allowed to keep their local rewrite
+        # contract, but the default live path must not reintroduce a localhost
+        # codebase hop during the splash bootstrap.
         $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "hostRewrite" -Value "0"
         $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "lobbyHostRewrite" -Value "0"
         if ($configuredClientBuild -ge 947) {
+            $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "gamePortOverride"
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "contentRouteRewrite" -Value "0"
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "worldUrlRewrite" -Value "0"
-            $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "codebaseRewrite" -Value "1"
+            $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "codebaseRewrite" -Value "0"
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "gameHostRewrite" -Value "0"
+            $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "baseConfigSource"
+            $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "liveCache"
+            $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "baseConfigSnapshotPath"
         } else {
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "contentRouteRewrite" -Value "1"
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "gameHostOverride" -Value $canonicalLoopbackGameHost
@@ -1772,7 +1910,9 @@ if ($script:UseContentTlsRoute) {
         }
     }
 } else {
-    $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "contentRouteRewrite" -Value "0"
+    if (-not $configUrlOverrideExplicit) {
+        $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "contentRouteRewrite" -Value "0"
+    }
 }
 if ($useRuneScapeWrapperPreview) {
     if ($configuredClientBuild -lt 947) {
@@ -2734,7 +2874,9 @@ $json = [pscustomobject]@{
         "direct-client"
     }
 } | ConvertTo-Json -Depth 3
+Write-LaunchTrace ("writing launch state file={0}" -f $launchStateFile)
 Set-Content -Path $launchStateFile -Value $json -Encoding ASCII
+Write-LaunchTrace ("launch state written file={0}" -f $launchStateFile)
 Write-Output $json
 Write-LaunchTrace "launch-win64c-live completed"
 

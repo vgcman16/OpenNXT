@@ -9,6 +9,27 @@ TOOLS_DIR = Path(__file__).resolve().parent
 
 
 class WrapperLaunchContractTest(unittest.TestCase):
+    def test_direct_patch_launchers_use_summary_handshake(self) -> None:
+        live_text = (TOOLS_DIR / "launch-win64c-live.ps1").read_text(encoding="utf-8")
+        self.assertIn('$directPatchStdout = Join-Path $root "data\\\\debug\\\\direct-rs2client-patch\\\\latest-live.stdout.log"', live_text)
+        self.assertIn('$directPatchStderr = Join-Path $root "data\\\\debug\\\\direct-rs2client-patch\\\\latest-live.stderr.log"', live_text)
+        self.assertIn('$directPatchHelper = Start-Process `', live_text)
+        self.assertIn('-RedirectStandardOutput $directPatchStdout `', live_text)
+        self.assertIn('-RedirectStandardError $directPatchStderr `', live_text)
+        self.assertIn('Write-LaunchTrace ("direct patch helper start exe={0}" -f $ClientExePath)', live_text)
+        self.assertIn('Write-LaunchTrace ("direct patch helper summary ready helperPid={0}" -f $directPatchHelper.Id)', live_text)
+        self.assertIn('Write-LaunchTrace ("direct patch helper summary loaded helperPid={0} pid={1} stage={2}" -f $directPatchHelper.Id, $directPatchLaunchSummary.pid, $summaryStage)', live_text)
+        self.assertIn('Write-LaunchTrace ("direct patch helper client resolved helperPid={0} pid={1}" -f $directPatchHelper.Id, $client.Id)', live_text)
+        self.assertIn('Write-LaunchTrace ("launch state written file={0}" -f $launchStateFile)', live_text)
+
+        client_text = (TOOLS_DIR / "launch-client-only.ps1").read_text(encoding="utf-8")
+        self.assertIn('$directPatchStdout = Join-Path $root "data\\\\debug\\\\direct-rs2client-patch\\\\latest-client-only.stdout.log"', client_text)
+        self.assertIn('$directPatchStderr = Join-Path $root "data\\\\debug\\\\direct-rs2client-patch\\\\latest-client-only.stderr.log"', client_text)
+        self.assertIn('$helperProcess = Start-Process `', client_text)
+        self.assertIn('-RedirectStandardOutput $directPatchStdout `', client_text)
+        self.assertIn('-RedirectStandardError $directPatchStderr `', client_text)
+        self.assertIn('Direct patch launch retrying without pre-resume Frida startup hook or startup redirects', client_text)
+
     def test_direct_947_startup_contract_stays_retail_shaped(self) -> None:
         client_text = (TOOLS_DIR / "launch-client-only.ps1").read_text(encoding="utf-8")
         self.assertIn("Keep the direct 947 startup contract retail-shaped", client_text)
@@ -82,6 +103,8 @@ class WrapperLaunchContractTest(unittest.TestCase):
         self.assertIn('"https://rs.config.runescape.com/k=5/l=0/jav_config.ws?binaryType=6&hostRewrite=0&lobbyHostRewrite=0&contentRouteRewrite=0&worldUrlRewrite=0&codebaseRewrite=0&gameHostRewrite=0"', text)
         self.assertIn("Convert-ToLoopbackJavConfigUrl", text)
         self.assertIn('gameHostRewrite=0', text)
+        self.assertIn("keep the 947 wrapper startup contract", text)
+        self.assertIn('Set-QueryParameter -Url $launchArg -Name "codebaseRewrite" -Value "0"', text)
         self.assertIn('Set-QueryParameter -Url $ConfigUrl -Name "contentRouteRewrite" -Value "1"', text)
         self.assertIn('Set-QueryParameter -Url $ConfigUrl -Name "worldUrlRewrite" -Value "1"', text)
         self.assertIn('$use947RetailConfigRoute = $ConfigUrl -like "https://rs.config.runescape.com*"', text)
@@ -303,6 +326,7 @@ class WrapperLaunchContractTest(unittest.TestCase):
         self.assertIn('Set-QueryParameter -Url $effectiveLaunchArg -Name "worldUrlRewrite" -Value "0"', text)
         self.assertIn('Set-QueryParameter -Url $effectiveLaunchArg -Name "codebaseRewrite" -Value "0"', text)
         self.assertIn('Remove-QueryParameter -Url $effectiveLaunchArg -Name "gamePortOverride"', text)
+        self.assertIn("Keep the default 947 wrapper route fully retail-shaped", text)
         self.assertIn('Remove-QueryParameter -Url $effectiveLaunchArg -Name "baseConfigSource"', text)
         self.assertIn('Remove-QueryParameter -Url $effectiveLaunchArg -Name "liveCache"', text)
         self.assertIn('Remove-QueryParameter -Url $effectiveLaunchArg -Name "baseConfigSnapshotPath"', text)
