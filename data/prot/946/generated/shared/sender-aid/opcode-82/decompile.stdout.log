@@ -1,0 +1,179 @@
+INFO  Using log config file: jar:file:/C:/Users/Demon/Tools/ghidra/ghidra_12.0.4_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml (LoggingInitialization)  
+INFO  Using log file: C:\Users\Demon\AppData\Roaming\ghidra\ghidra_12.0.4_PUBLIC\application.log (LoggingInitialization)  
+INFO  Loading user preferences: C:\Users\Demon\AppData\Roaming\ghidra\ghidra_12.0.4_PUBLIC\preferences (Preferences)  
+INFO  Searching for classes... (ClassSearcher)  
+INFO  Class search complete (621 ms) (ClassSearcher)  
+INFO  Initializing SSL Context (DefaultSSLContextInitializer)  
+INFO  Initializing Random Number Generator... (SecureRandomFactory)  
+INFO  Random Number Generator initialization complete: SHA1PRNG (SecureRandomFactory)  
+INFO  Trust manager disabled, cacerts have not been set (DefaultTrustManagerFactory)  
+INFO  Headless startup complete (1694 ms) (AnalyzeHeadless)  
+INFO  Class searcher loaded 58 extension points (18 false positives) (ClassSearcher)  
+INFO  HEADLESS Script Paths:
+    C:\Users\Demon\Documents\New project\ghidra-scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Processors\JVM\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\Base\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\SystemEmulation\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\BSim\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\SwiftDemangler\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\VersionTracking\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Processors\PIC\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\GnuDemangler\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\FileFormats\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\FunctionID\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Processors\8051\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\PyGhidra\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\WildcardAssembler\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Debug\Debugger-rmi-trace\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\BytePatterns\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Processors\DATA\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\Decompiler\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\MicrosoftCodeAnalyzer\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\DecompilerDependent\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\Jython\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Debug\Debugger\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\PDB\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Processors\Atmel\ghidra_scripts (HeadlessAnalyzer)  
+INFO  HEADLESS: execution starts (HeadlessAnalyzer)  
+INFO  Opening existing project: C:\Users\Demon\AppData\Local\Temp\opennxt-ghidra-clones\rs2client-headless-unlocked-sender-opcode-82-sgrutnky\rs2client-headless-unlocked (HeadlessAnalyzer)  
+INFO  Opening project: C:\Users\Demon\AppData\Local\Temp\opennxt-ghidra-clones\rs2client-headless-unlocked-sender-opcode-82-sgrutnky\rs2client-headless-unlocked (HeadlessProject)  
+INFO  Removed old presave file: C:\Users\Demon\AppData\Local\Temp\opennxt-ghidra-clones\rs2client-headless-unlocked-sender-opcode-82-sgrutnky\rs2client-headless-unlocked.rep\idata\00\~00000000.db\tmp2391663023144005692.ps (LocalBufferFile)  
+INFO  REPORT: Processing project file: /rs2client.exe (HeadlessAnalyzer)  
+INFO  REPORT: Execute script: DecompileFunction.java '140098720'  (HeadlessAnalyzer)  
+INFO  SCRIPT: C:\Users\Demon\Documents\New project\ghidra-scripts\DecompileFunction.java (HeadlessAnalyzer)  
+INFO  Function: FUN_140098640 @ 140098640 (GhidraScript)  
+INFO  
+undefined4 * FUN_140098640(longlong param_1,longlong param_2)
+
+{
+  int *piVar1;
+  longlong lVar2;
+  int iVar3;
+  undefined4 uVar4;
+  undefined4 uVar5;
+  undefined4 uVar6;
+  longlong *plVar7;
+  longlong lVar8;
+  longlong *plVar9;
+  longlong *plVar10;
+  undefined8 local_res8;
+  undefined *local_res10;
+  longlong *local_28;
+  longlong local_20;
+  
+  lVar2 = param_2 + 0x100;
+  iVar3 = *(int *)(param_2 + 0x10a0);
+  *(uint *)(param_2 + 0x10a0) = iVar3 - 1U;
+  uVar4 = *(undefined4 *)(lVar2 + (ulonglong)(iVar3 - 1U) * 4);
+  *(uint *)(param_2 + 0x10a0) = iVar3 - 2U;
+  uVar5 = *(undefined4 *)(lVar2 + (ulonglong)(iVar3 - 2U) * 4);
+  *(uint *)(param_2 + 0x10a0) = iVar3 - 3U;
+  uVar6 = *(undefined4 *)(lVar2 + (ulonglong)(iVar3 - 3U) * 4);
+  *(undefined4 *)(*(longlong *)(param_1 + 0x19840) + 0x10) = uVar6;
+  *(undefined4 *)(*(longlong *)(param_1 + 0x19930) + 0x60) = uVar5;
+  *(undefined4 *)(*(longlong *)(param_1 + 0x19840) + 0x14) = uVar4;
+  lVar2 = *(longlong *)(param_1 + 0x19878);
+  iVar3 = *(int *)(*(longlong *)(lVar2 + 8) + 0x19f60);
+  if ((iVar3 == 0x14) || (iVar3 == 0x17)) {
+    lVar8 = *(longlong *)(lVar2 + 0x28);
+    plVar9 = (longlong *)(lVar2 + 0x28);
+    if ((lVar8 == 0) || ((*(int **)(lVar8 + 8) == (int *)0x0 || (**(int **)(lVar8 + 8) != 2))))
+    goto LAB_1400986d7;
+  }
+  else {
+LAB_1400986d7:
+    lVar8 = *(longlong *)(lVar2 + 0x18);
+    plVar9 = (longlong *)(lVar2 + 0x18);
+    if (((lVar8 == 0) || ((*(int **)(lVar8 + 8) == (int *)0x0 || (**(int **)(lVar8 + 8) != 2)))) &&
+       (plVar9 = &DAT_140e56f08, lVar8 = DAT_140e56f08, DAT_140e56f08 == 0)) goto LAB_140098880;
+  }
+  local_res8 = *(undefined8 *)(lVar8 + 0x40);
+  local_res10 = &DAT_140e57430;
+  FUN_1400adab0(&local_28,&local_res10,&DAT_140e57434,&local_res8);
+  lVar8 = local_20;
+  plVar10 = local_28;
+  *(char *)(*(longlong *)(local_20 + 0x20) + *(longlong *)(local_20 + 0x18)) = (char)uVar6;
+  *(longlong *)(local_20 + 0x20) = *(longlong *)(local_20 + 0x20) + 1;
+  *(char *)(*(longlong *)(local_20 + 0x20) + *(longlong *)(local_20 + 0x18)) = (char)uVar5;
+  *(longlong *)(local_20 + 0x20) = *(longlong *)(local_20 + 0x20) + 1;
+  *(char *)(*(longlong *)(local_20 + 0x20) + *(longlong *)(local_20 + 0x18)) = (char)uVar4;
+  *(longlong *)(local_20 + 0x20) = *(longlong *)(local_20 + 0x20) + 1;
+  lVar2 = *plVar9;
+  if (local_28 != (longlong *)0x0) {
+    LOCK();
+    *(int *)(local_28 + 1) = (int)local_28[1] + 1;
+    UNLOCK();
+  }
+  plVar9 = *(longlong **)(lVar2 + 0x58);
+  if (plVar9 == (longlong *)0x0) {
+    plVar9 = *(longlong **)(lVar2 + 0x60);
+    if (plVar9 == *(longlong **)(lVar2 + 0x68)) {
+      plVar9 = (longlong *)FUN_140791660(*(longlong *)(lVar2 + 0x70),0x10);
+    }
+    else {
+      *(longlong *)(lVar2 + 0x60) = *(longlong *)(lVar2 + 0x70) + (longlong)plVar9;
+    }
+  }
+  else {
+    *(longlong *)(lVar2 + 0x58) = *plVar9;
+  }
+  plVar7 = local_28;
+  plVar9[2] = (longlong)plVar10;
+  plVar9[3] = lVar8;
+  if (plVar10 != (longlong *)0x0) {
+    LOCK();
+    *(int *)(plVar10 + 1) = (int)plVar10[1] + 1;
+    UNLOCK();
+    lVar8 = local_20;
+    plVar10 = local_28;
+  }
+  *plVar9 = lVar2 + 0x48;
+  plVar9[1] = *(longlong *)(lVar2 + 0x50);
+  **(undefined8 **)(lVar2 + 0x50) = plVar9;
+  *(longlong *)(lVar2 + 0x88) = *(longlong *)(lVar2 + 0x88) + 1;
+  *(longlong **)(lVar2 + 0x50) = plVar9;
+  iVar3 = *(int *)(lVar8 + 0x20);
+  *(int *)(lVar8 + 0x28) = iVar3;
+  *(undefined8 *)(lVar8 + 0x20) = 0;
+  *(int *)(lVar2 + 0x2b0) = *(int *)(lVar2 + 0x2b0) + iVar3;
+  if (plVar10 != (longlong *)0x0) {
+    LOCK();
+    plVar9 = plVar10 + 1;
+    lVar2 = *plVar9;
+    *(int *)plVar9 = (int)*plVar9 + -1;
+    UNLOCK();
+    if ((int)lVar2 == 1) {
+      (**(code **)(*local_28 + 8))(local_28);
+      LOCK();
+      piVar1 = (int *)((longlong)plVar7 + 0xc);
+      iVar3 = *piVar1;
+      *piVar1 = *piVar1 + -1;
+      UNLOCK();
+      if (iVar3 == 1) {
+        (**(code **)(*local_28 + 0x10))();
+      }
+    }
+    plVar9 = local_28;
+    LOCK();
+    plVar10 = plVar10 + 1;
+    lVar2 = *plVar10;
+    *(int *)plVar10 = (int)*plVar10 + -1;
+    UNLOCK();
+    if ((int)lVar2 == 1) {
+      (**(code **)(*local_28 + 8))(local_28);
+      LOCK();
+      piVar1 = (int *)((longlong)plVar9 + 0xc);
+      iVar3 = *piVar1;
+      *piVar1 = *piVar1 + -1;
+      UNLOCK();
+      if (iVar3 == 1) {
+        (**(code **)(*local_28 + 0x10))();
+      }
+    }
+  }
+LAB_140098880:
+  return &DAT_140c366f0;
+}
+
+ (GhidraScript)  
+INFO  REPORT: Save succeeded for processed file: /rs2client.exe (HeadlessAnalyzer)  

@@ -1,0 +1,36 @@
+{
+  "changes": [],
+  "leftSession": {
+    "clientOpcodeCounts": {},
+    "durationSeconds": null,
+    "endLine": null,
+    "endTimestamp": "",
+    "eventCount": 0,
+    "exists": false,
+    "markerCounts": {},
+    "playerName": "",
+    "serverOpcodeCounts": {},
+    "stageCounts": {},
+    "stageSequence": [],
+    "startLine": null,
+    "startTimestamp": ""
+  },
+  "onlyInLeft": [],
+  "onlyInRight": [],
+  "rightSession": {
+    "clientOpcodeCounts": {},
+    "durationSeconds": null,
+    "endLine": null,
+    "endTimestamp": "",
+    "eventCount": 0,
+    "exists": false,
+    "markerCounts": {},
+    "playerName": "",
+    "serverOpcodeCounts": {},
+    "stageCounts": {},
+    "stageSequence": [],
+    "startLine": null,
+    "startTimestamp": ""
+  },
+  "status": "partial"
+}

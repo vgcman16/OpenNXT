@@ -1,0 +1,82 @@
+{
+  "advisoryOnly": true,
+  "artifacts": {
+    "fixture_pack": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\fixtures\\fixture-pack.md"
+  },
+  "build": 946,
+  "fixtures": [
+    {
+      "eventCount": 19,
+      "label": "crash",
+      "normalizedOutcome": "short_loop",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\fixtures\\short_loop\\session_121748_121766.json",
+      "role": "crash",
+      "status": "ok",
+      "window": "121748:121766"
+    },
+    {
+      "eventCount": 15,
+      "label": "loop",
+      "normalizedOutcome": "short_loop",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\fixtures\\short_loop\\session_121859_121874.json",
+      "role": "bad",
+      "status": "ok",
+      "window": "121859:121874"
+    },
+    {
+      "eventCount": 7,
+      "label": "rebuild-fail",
+      "normalizedOutcome": "rebuild_fail",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\fixtures\\rebuild_fail\\session_207750_207756.json",
+      "role": "bad",
+      "status": "ok",
+      "window": "207750:207756"
+    },
+    {
+      "eventCount": 12205,
+      "label": "stable",
+      "normalizedOutcome": "stable_interfaces",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\fixtures\\stable_interfaces\\session_223284_238746.json",
+      "role": "stable",
+      "status": "ok",
+      "window": "223284:238746"
+    },
+    {
+      "eventCount": 5030,
+      "label": "stable",
+      "normalizedOutcome": "stable_interfaces",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\fixtures\\stable_interfaces\\session_238890_245238.json",
+      "role": "stable",
+      "status": "ok",
+      "window": "238890:245238"
+    },
+    {
+      "eventCount": 4865,
+      "label": "stable",
+      "normalizedOutcome": "stable_interfaces",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\fixtures\\stable_interfaces\\session_959546_965703.json",
+      "role": "seed",
+      "status": "ok",
+      "window": "959546:965703"
+    }
+  ],
+  "generatedAt": "2026-03-16T17:25:53.287950+00:00",
+  "inputs": {
+    "labels": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\curated-session-labels.json",
+    "requestedWindows": [],
+    "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log"
+  },
+  "labels": {
+    "appliedCount": 6,
+    "format": "rich-map",
+    "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\curated-session-labels.json",
+    "present": true
+  },
+  "schemaVersion": 1,
+  "status": "ok",
+  "summary": {
+    "fixtureCount": 6,
+    "missingCount": 0
+  },
+  "tool": "run_946_fixture_pack"
+}

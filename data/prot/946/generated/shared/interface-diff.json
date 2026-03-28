@@ -1,0 +1,138 @@
+{
+  "activePlayerComparison": {
+    "badSession": {
+      "activePlayer116Sent": false,
+      "bootstrapMarkerPresent": false,
+      "configEnabled": null,
+      "markerSamples": [],
+      "packetRegistered": null,
+      "sendSamples": [],
+      "skipReasons": []
+    },
+    "detectedDisabledSession": "unknown",
+    "detectedEnabledSession": "unknown",
+    "goodSession": {
+      "activePlayer116Sent": false,
+      "bootstrapMarkerPresent": false,
+      "configEnabled": null,
+      "markerSamples": [],
+      "packetRegistered": null,
+      "sendSamples": [],
+      "skipReasons": []
+    }
+  },
+  "advisoryOnly": true,
+  "artifacts": {
+    "interface_diff": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\interface-diff.md"
+  },
+  "badSession": {
+    "categories": {
+      "activeSubBindings": {},
+      "childInterfaces": {},
+      "headModelBindings": {},
+      "rootInterfaces": {},
+      "uiState": {}
+    },
+    "samples": {
+      "activeSubBindings": [],
+      "childInterfaces": [],
+      "headModelBindings": [],
+      "rootInterfaces": [],
+      "uiState": []
+    },
+    "summary": {
+      "clientOpcodeCounts": {},
+      "durationSeconds": null,
+      "endLine": null,
+      "endTimestamp": "",
+      "eventCount": 0,
+      "exists": false,
+      "markerCounts": {},
+      "playerName": "",
+      "serverOpcodeCounts": {},
+      "stageCounts": {},
+      "stageSequence": [],
+      "startLine": null,
+      "startTimestamp": ""
+    }
+  },
+  "build": 946,
+  "diff": {
+    "activeSubBindings": {
+      "extraInBad": {},
+      "missingInBad": {}
+    },
+    "childInterfaces": {
+      "extraInBad": {},
+      "missingInBad": {}
+    },
+    "headModelBindings": {
+      "extraInBad": {},
+      "missingInBad": {}
+    },
+    "rootInterfaces": {
+      "extraInBad": {},
+      "missingInBad": {}
+    },
+    "uiState": {
+      "extraInBad": {},
+      "missingInBad": {}
+    }
+  },
+  "generatedAt": "2026-03-22T08:12:27.316928+00:00",
+  "goodSession": {
+    "categories": {
+      "activeSubBindings": {},
+      "childInterfaces": {},
+      "headModelBindings": {},
+      "rootInterfaces": {},
+      "uiState": {}
+    },
+    "samples": {
+      "activeSubBindings": [],
+      "childInterfaces": [],
+      "headModelBindings": [],
+      "rootInterfaces": [],
+      "uiState": []
+    },
+    "summary": {
+      "clientOpcodeCounts": {},
+      "durationSeconds": null,
+      "endLine": null,
+      "endTimestamp": "",
+      "eventCount": 0,
+      "exists": false,
+      "markerCounts": {},
+      "playerName": "",
+      "serverOpcodeCounts": {},
+      "stageCounts": {},
+      "stageSequence": [],
+      "startLine": null,
+      "startTimestamp": ""
+    }
+  },
+  "inputs": {
+    "badWindow": "194382:197622",
+    "bootstrapOnly": false,
+    "goodWindow": "959546:965703",
+    "mode": "world-log-windows",
+    "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log"
+  },
+  "schemaVersion": 1,
+  "status": "partial",
+  "summary": {
+    "badSessionExists": false,
+    "goodSessionExists": false,
+    "handoffOutcomeChanged": "unknown",
+    "interfaceStageDelta": "none",
+    "topFindingCount": 0
+  },
+  "tool": "run_946_interface_diff",
+  "topFindings": [],
+  "verdict": {
+    "activePlayer116Sent": "no",
+    "bootstrapMarkerPresent": "no",
+    "handoffOutcomeChanged": "unknown",
+    "interfaceStageDelta": "none"
+  }
+}

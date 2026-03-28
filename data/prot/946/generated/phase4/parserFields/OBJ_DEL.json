@@ -1,0 +1,53 @@
+{
+  "programName": "rs2client.exe",
+  "functionName": "FUN_14013f760",
+  "functionEntryPoint": "14013f760",
+  "targetAddress": "14013f760",
+  "packetName": "OBJ_DEL",
+  "bufferParam": "param_2",
+  "legacyShape": [],
+  "status": "ok",
+  "fieldCount": 1,
+  "statements": [
+    "undefined * FUN_14013f760(longlong param_1,longlong param_2)\r\n\r\n{\r\n  ushort uVar1;",
+    "longlong lVar2;",
+    "byte bVar3;",
+    "undefined4 local_18;",
+    "int local_14;",
+    "int local_10;",
+    "lVar2 = *(longlong *)(param_2 + 0x18);",
+    "*(longlong *)(param_2 + 0x18) = lVar2 + 1;",
+    "bVar3 = 0x80 - *(char *)(*(longlong *)(param_2 + 0x10) + lVar2);",
+    "*(longlong *)(param_2 + 0x18) = lVar2 + 3;",
+    "uVar1 = *(ushort *)(*(longlong *)(param_2 + 0x10) + lVar2 + 1);",
+    "local_18 = (undefined4)DAT_140c99950;",
+    "local_10 = (bVar3 & 7) + DAT_140c99958;",
+    "local_14 = (bVar3 >> 4 & 7) + DAT_140c99950._4_4_;",
+    "FUN_140352960(*(undefined8 *)(*(longlong *)(param_1 + 8) + 0x198f8),&local_18,\r\n                uVar1 << 8 | uVar1 >> 8);",
+    "return &DAT_140c9c250;",
+    "}"
+  ],
+  "decompiledC": "\r\nundefined * FUN_14013f760(longlong param_1,longlong param_2)\r\n\r\n{\r\n  ushort uVar1;\r\n  longlong lVar2;\r\n  byte bVar3;\r\n  undefined4 local_18;\r\n  int local_14;\r\n  int local_10;\r\n  \r\n  lVar2 = *(longlong *)(param_2 + 0x18);\r\n  *(longlong *)(param_2 + 0x18) = lVar2 + 1;\r\n  bVar3 = 0x80 - *(char *)(*(longlong *)(param_2 + 0x10) + lVar2);\r\n  *(longlong *)(param_2 + 0x18) = lVar2 + 3;\r\n  uVar1 = *(ushort *)(*(longlong *)(param_2 + 0x10) + lVar2 + 1);\r\n  local_18 = (undefined4)DAT_140c99950;\r\n  local_10 = (bVar3 & 7) + DAT_140c99958;\r\n  local_14 = (bVar3 >> 4 & 7) + DAT_140c99950._4_4_;\r\n  FUN_140352960(*(undefined8 *)(*(longlong *)(param_1 + 8) + 0x198f8),&local_18,\r\n                uVar1 << 8 | uVar1 >> 8);\r\n  return &DAT_140c9c250;\r\n}\r\n\r\n",
+  "fields": [
+    {
+      "index": 0,
+      "statementIndex": 10,
+      "accessKind": "read",
+      "width": 2,
+      "rawType": "ushort",
+      "candidateType": "ushort",
+      "confidence": "strong",
+      "source": "direct-scalar-load",
+      "legacyType": "",
+      "legacyAligned": false,
+      "evidence": [
+        "load-offset=1",
+        "uVar1 = *(ushort *)(*(longlong *)(param_2 + 0x10) + lVar2 + 1);"
+      ]
+    }
+  ],
+  "phase4TargetKind": "parser",
+  "phase4QueuePriority": 92,
+  "phase4QueueOpcode": 98,
+  "phase4Side": "server"
+}

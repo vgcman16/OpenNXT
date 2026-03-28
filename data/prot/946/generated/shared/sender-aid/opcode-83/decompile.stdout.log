@@ -1,0 +1,553 @@
+INFO  Using log config file: jar:file:/C:/Users/Demon/Tools/ghidra/ghidra_12.0.4_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml (LoggingInitialization)  
+INFO  Using log file: C:\Users\Demon\AppData\Roaming\ghidra\ghidra_12.0.4_PUBLIC\application.log (LoggingInitialization)  
+INFO  Loading user preferences: C:\Users\Demon\AppData\Roaming\ghidra\ghidra_12.0.4_PUBLIC\preferences (Preferences)  
+INFO  Searching for classes... (ClassSearcher)  
+INFO  Class search complete (631 ms) (ClassSearcher)  
+INFO  Initializing SSL Context (DefaultSSLContextInitializer)  
+INFO  Initializing Random Number Generator... (SecureRandomFactory)  
+INFO  Random Number Generator initialization complete: SHA1PRNG (SecureRandomFactory)  
+INFO  Trust manager disabled, cacerts have not been set (DefaultTrustManagerFactory)  
+INFO  Headless startup complete (1874 ms) (AnalyzeHeadless)  
+INFO  Class searcher loaded 58 extension points (18 false positives) (ClassSearcher)  
+INFO  HEADLESS Script Paths:
+    C:\Users\Demon\Documents\New project\ghidra-scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Processors\JVM\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\Base\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\SystemEmulation\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\BSim\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\SwiftDemangler\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\VersionTracking\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Processors\PIC\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\GnuDemangler\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\FileFormats\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\FunctionID\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Processors\8051\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\PyGhidra\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\WildcardAssembler\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Debug\Debugger-rmi-trace\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\BytePatterns\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Processors\DATA\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\Decompiler\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\MicrosoftCodeAnalyzer\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\DecompilerDependent\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\Jython\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Debug\Debugger\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\PDB\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Processors\Atmel\ghidra_scripts (HeadlessAnalyzer)  
+INFO  HEADLESS: execution starts (HeadlessAnalyzer)  
+INFO  Opening existing project: C:\Users\Demon\AppData\Local\Temp\opennxt-ghidra-clones\rs2client-headless-unlocked-sender-opcode-83-1iv1v241\rs2client-headless-unlocked (HeadlessAnalyzer)  
+INFO  Opening project: C:\Users\Demon\AppData\Local\Temp\opennxt-ghidra-clones\rs2client-headless-unlocked-sender-opcode-83-1iv1v241\rs2client-headless-unlocked (HeadlessProject)  
+INFO  Removed old presave file: C:\Users\Demon\AppData\Local\Temp\opennxt-ghidra-clones\rs2client-headless-unlocked-sender-opcode-83-1iv1v241\rs2client-headless-unlocked.rep\idata\00\~00000000.db\tmp2391663023144005692.ps (LocalBufferFile)  
+INFO  REPORT: Processing project file: /rs2client.exe (HeadlessAnalyzer)  
+INFO  REPORT: Execute script: DecompileFunction.java '1400cfcb0'  (HeadlessAnalyzer)  
+INFO  SCRIPT: C:\Users\Demon\Documents\New project\ghidra-scripts\DecompileFunction.java (HeadlessAnalyzer)  
+INFO  Function: FUN_1400cfbd0 @ 1400cfbd0 (GhidraScript)  
+INFO  
+void FUN_1400cfbd0(longlong param_1)
+
+{
+  int iVar1;
+  longlong lVar2;
+  int *piVar3;
+  undefined1 *puVar4;
+  longlong *plVar5;
+  char cVar6;
+  int iVar7;
+  HWND pHVar8;
+  longlong lVar9;
+  ulonglong uVar10;
+  longlong *plVar11;
+  longlong lVar12;
+  longlong lVar13;
+  uint uVar14;
+  longlong *plVar15;
+  ulonglong uVar16;
+  undefined1 *puVar17;
+  int local_res8 [2];
+  undefined1 local_res10 [8];
+  undefined8 local_res18;
+  undefined *local_res20;
+  longlong *local_f8;
+  longlong local_f0;
+  longlong *local_e8;
+  longlong local_e0;
+  longlong *local_d8;
+  longlong local_d0;
+  longlong *local_c8;
+  longlong local_c0;
+  undefined8 local_b8;
+  undefined *local_b0;
+  undefined8 local_a8;
+  undefined *local_a0;
+  undefined8 local_98;
+  undefined *local_90;
+  undefined1 local_88 [8];
+  longlong local_80;
+  longlong local_78;
+  ulonglong local_70;
+  undefined8 local_68;
+  undefined8 uStack_60;
+  undefined4 local_58;
+  undefined4 uStack_54;
+  undefined4 uStack_50;
+  undefined4 uStack_4c;
+  
+  if (*(int *)(*(longlong *)(param_1 + 8) + 0x19f60) == 0x1e) {
+    lVar2 = *(longlong *)(*(longlong *)(param_1 + 8) + 0x19878);
+    if (((*(longlong *)(lVar2 + 0x18) != 0) &&
+        (piVar3 = *(int **)(*(longlong *)(lVar2 + 0x18) + 8), piVar3 != (int *)0x0)) &&
+       (*piVar3 == 2)) {
+      FUN_140144d10(param_1 + 0x10);
+      FUN_140144d10(param_1 + 0x38);
+      lVar9 = *(longlong *)(*(longlong *)(param_1 + 8) + 0x198c0);
+      lVar13 = *(longlong *)(lVar9 + 0xb0);
+      lVar12 = *(longlong *)(lVar9 + 0xa8);
+      if (((int)(lVar13 - lVar12 >> 5) != 0) && (iVar7 = 0, lVar12 != lVar13)) {
+        do {
+          iVar1 = iVar7 + 1;
+          if (*(char *)(lVar12 + 0xc) != '\0') {
+            iVar1 = iVar7;
+          }
+          iVar7 = iVar1;
+          lVar12 = lVar12 + 0x20;
+        } while (lVar12 != lVar13);
+        if (iVar7 != 0) {
+          local_res18 = *(undefined8 *)(*(longlong *)(lVar2 + 0x18) + 0x40);
+          local_res20 = &DAT_140e571e0;
+          FUN_1400adab0(&local_e8,&local_res20,&DAT_140e571e4,&local_res18);
+          lVar13 = local_e0;
+          plVar15 = local_e8;
+          *(ushort *)(*(longlong *)(local_e0 + 0x18) + *(longlong *)(local_e0 + 0x20)) =
+               (short)iVar7 << 10 | (short)((short)iVar7 << 2) >> 8 & 0xffU;
+          *(longlong *)(local_e0 + 0x20) = *(longlong *)(local_e0 + 0x20) + 2;
+          puVar4 = *(undefined1 **)(lVar9 + 0xb0);
+          for (puVar17 = *(undefined1 **)(lVar9 + 0xa8); puVar17 != puVar4; puVar17 = puVar17 + 0x20
+              ) {
+            if (puVar17[0xc] == '\0') {
+              uVar16 = *(longlong *)(puVar17 + 0x18) - *(longlong *)(param_1 + 0x2858);
+              *(longlong *)(param_1 + 0x2858) = *(longlong *)(puVar17 + 0x18);
+              if (0xffffff < uVar16) {
+                uVar16 = 0xffffff;
+              }
+              *(undefined1 *)(*(longlong *)(local_e0 + 0x18) + *(longlong *)(local_e0 + 0x20)) =
+                   *puVar17;
+              lVar9 = *(longlong *)(local_e0 + 0x20);
+              *(longlong *)(local_e0 + 0x20) = lVar9 + 2;
+              *(char *)(lVar9 + 1 + *(longlong *)(local_e0 + 0x18)) = (char)(uVar16 >> 0x10);
+              lVar9 = *(longlong *)(local_e0 + 0x20);
+              *(longlong *)(local_e0 + 0x20) = lVar9 + 1;
+              *(char *)(lVar9 + *(longlong *)(local_e0 + 0x18)) = (char)(uVar16 >> 8);
+              lVar9 = *(longlong *)(local_e0 + 0x20);
+              *(longlong *)(local_e0 + 0x20) = lVar9 + 1;
+              *(char *)(lVar9 + *(longlong *)(local_e0 + 0x18)) = (char)uVar16;
+            }
+          }
+          lVar9 = *(longlong *)(lVar2 + 0x18);
+          if (local_e8 != (longlong *)0x0) {
+            LOCK();
+            *(int *)(local_e8 + 1) = (int)local_e8[1] + 1;
+            UNLOCK();
+          }
+          plVar11 = *(longlong **)(lVar9 + 0x58);
+          if (plVar11 == (longlong *)0x0) {
+            plVar11 = *(longlong **)(lVar9 + 0x60);
+            if (plVar11 == *(longlong **)(lVar9 + 0x68)) {
+              plVar11 = (longlong *)FUN_140791660(*(longlong *)(lVar9 + 0x70),0x10);
+            }
+            else {
+              *(longlong *)(lVar9 + 0x60) = *(longlong *)(lVar9 + 0x70) + (longlong)plVar11;
+            }
+          }
+          else {
+            *(longlong *)(lVar9 + 0x58) = *plVar11;
+          }
+          plVar5 = local_e8;
+          plVar11[2] = (longlong)plVar15;
+          plVar11[3] = lVar13;
+          if (plVar15 != (longlong *)0x0) {
+            LOCK();
+            *(int *)(plVar15 + 1) = (int)plVar15[1] + 1;
+            UNLOCK();
+            lVar13 = local_e0;
+            plVar15 = local_e8;
+          }
+          *plVar11 = lVar9 + 0x48;
+          plVar11[1] = *(longlong *)(lVar9 + 0x50);
+          **(undefined8 **)(lVar9 + 0x50) = plVar11;
+          *(longlong *)(lVar9 + 0x88) = *(longlong *)(lVar9 + 0x88) + 1;
+          *(longlong **)(lVar9 + 0x50) = plVar11;
+          iVar7 = *(int *)(lVar13 + 0x20);
+          *(int *)(lVar13 + 0x28) = iVar7;
+          *(undefined8 *)(lVar13 + 0x20) = 0;
+          *(int *)(lVar9 + 0x2b0) = *(int *)(lVar9 + 0x2b0) + iVar7;
+          if (plVar15 != (longlong *)0x0) {
+            LOCK();
+            plVar11 = plVar15 + 1;
+            lVar9 = *plVar11;
+            *(int *)plVar11 = (int)*plVar11 + -1;
+            UNLOCK();
+            if ((int)lVar9 == 1) {
+              (**(code **)(*local_e8 + 8))(local_e8);
+              LOCK();
+              piVar3 = (int *)((longlong)plVar5 + 0xc);
+              iVar7 = *piVar3;
+              *piVar3 = *piVar3 + -1;
+              UNLOCK();
+              if (iVar7 == 1) {
+                (**(code **)(*local_e8 + 0x10))();
+              }
+            }
+            plVar11 = local_e8;
+            LOCK();
+            plVar15 = plVar15 + 1;
+            lVar9 = *plVar15;
+            *(int *)plVar15 = (int)*plVar15 + -1;
+            UNLOCK();
+            if ((int)lVar9 == 1) {
+              (**(code **)(*local_e8 + 8))(local_e8);
+              LOCK();
+              piVar3 = (int *)((longlong)plVar11 + 0xc);
+              iVar7 = *piVar3;
+              *piVar3 = *piVar3 + -1;
+              UNLOCK();
+              if (iVar7 == 1) {
+                (**(code **)(*local_e8 + 0x10))();
+              }
+            }
+          }
+        }
+      }
+      lVar9 = *(longlong *)(*(longlong *)(param_1 + 8) + 0x19858);
+      plVar15 = (longlong *)(lVar9 + 0x2a0);
+      iVar7 = (**(code **)(*plVar15 + 0x18))(plVar15);
+      if (iVar7 == 6) {
+        plVar15 = (longlong *)(lVar9 + 0x98);
+      }
+      iVar7 = *(int *)(param_1 + 0x2860);
+      iVar1 = *(int *)(plVar15[1] + 4);
+      if (0 < iVar7) {
+        iVar7 = iVar7 + -1;
+        *(int *)(param_1 + 0x2860) = iVar7;
+      }
+      if (((*(char *)(*(longlong *)(*(longlong *)(param_1 + 8) + 0x19858) + 0x5c8) != '\0') &&
+          (iVar7 < 1)) &&
+         (cVar6 = (*(code *)**(undefined8 **)((longlong)plVar15 + (longlong)iVar1 + 8))
+                            ((longlong)plVar15 + (longlong)iVar1 + 8), cVar6 != '\0')) {
+        *(undefined4 *)(param_1 + 0x2860) = 0x14;
+        *(undefined1 *)(*(longlong *)(*(longlong *)(param_1 + 8) + 0x19858) + 0x5c8) = 0;
+        local_68 = 0;
+        uStack_60 = 0;
+        local_58 = 0;
+        uStack_54 = 0;
+        uStack_50 = 0;
+        uStack_4c = 0x3ff00000;
+        (**(code **)(*(longlong *)((longlong)plVar15 + (longlong)iVar1 + 8) + 0xa8))
+                  ((longlong)plVar15 + (longlong)iVar1 + 8,&local_68);
+        FUN_1403d35b0(local_res10,local_res8,&local_68);
+        uVar14 = 0xc00U - local_res8[0] & 0x800007ff;
+        if ((int)uVar14 < 0) {
+          uVar14 = (uVar14 - 1 | 0xfffff800) + 1;
+        }
+        local_b8 = *(undefined8 *)(*(longlong *)(lVar2 + 0x18) + 0x40);
+        local_b0 = &DAT_140e57240;
+        FUN_1400adab0(&local_d8,&local_b0,&DAT_140e57244,&local_b8);
+        lVar13 = local_d0;
+        plVar15 = local_d8;
+        lVar9 = *(longlong *)(local_d0 + 0x20);
+        *(longlong *)(local_d0 + 0x20) = lVar9 + 1;
+        *(char *)(lVar9 + *(longlong *)(local_d0 + 0x18)) = (char)(uVar14 >> 8);
+        lVar9 = *(longlong *)(local_d0 + 0x20);
+        *(longlong *)(local_d0 + 0x20) = lVar9 + 1;
+        *(char *)(lVar9 + *(longlong *)(local_d0 + 0x18)) = (char)uVar14 + -0x80;
+        lVar9 = *(longlong *)(local_d0 + 0x20);
+        *(longlong *)(local_d0 + 0x20) = lVar9 + 1;
+        *(char *)(lVar9 + *(longlong *)(local_d0 + 0x18)) = (char)local_res10._0_2_;
+        lVar9 = *(longlong *)(local_d0 + 0x20);
+        *(longlong *)(local_d0 + 0x20) = lVar9 + 1;
+        *(char *)(lVar9 + *(longlong *)(local_d0 + 0x18)) = SUB21(local_res10._0_2_,1);
+        lVar9 = *(longlong *)(lVar2 + 0x18);
+        if (local_d8 != (longlong *)0x0) {
+          LOCK();
+          *(int *)(local_d8 + 1) = (int)local_d8[1] + 1;
+          UNLOCK();
+        }
+        plVar11 = *(longlong **)(lVar9 + 0x58);
+        if (plVar11 == (longlong *)0x0) {
+          plVar11 = *(longlong **)(lVar9 + 0x60);
+          if (plVar11 == *(longlong **)(lVar9 + 0x68)) {
+            plVar11 = (longlong *)FUN_140791660(*(longlong *)(lVar9 + 0x70),0x10);
+          }
+          else {
+            *(longlong *)(lVar9 + 0x60) = *(longlong *)(lVar9 + 0x70) + (longlong)plVar11;
+          }
+        }
+        else {
+          *(longlong *)(lVar9 + 0x58) = *plVar11;
+        }
+        plVar5 = local_d8;
+        plVar11[2] = (longlong)plVar15;
+        plVar11[3] = lVar13;
+        if (plVar15 != (longlong *)0x0) {
+          LOCK();
+          *(int *)(plVar15 + 1) = (int)plVar15[1] + 1;
+          UNLOCK();
+          plVar15 = local_d8;
+          lVar13 = local_d0;
+        }
+        *plVar11 = lVar9 + 0x48;
+        plVar11[1] = *(longlong *)(lVar9 + 0x50);
+        **(undefined8 **)(lVar9 + 0x50) = plVar11;
+        *(longlong *)(lVar9 + 0x88) = *(longlong *)(lVar9 + 0x88) + 1;
+        *(longlong **)(lVar9 + 0x50) = plVar11;
+        iVar7 = *(int *)(lVar13 + 0x20);
+        *(int *)(lVar13 + 0x28) = iVar7;
+        *(undefined8 *)(lVar13 + 0x20) = 0;
+        *(int *)(lVar9 + 0x2b0) = *(int *)(lVar9 + 0x2b0) + iVar7;
+        if (plVar15 != (longlong *)0x0) {
+          LOCK();
+          plVar11 = plVar15 + 1;
+          lVar9 = *plVar11;
+          *(int *)plVar11 = (int)*plVar11 + -1;
+          UNLOCK();
+          if ((int)lVar9 == 1) {
+            (**(code **)(*local_d8 + 8))(local_d8);
+            LOCK();
+            piVar3 = (int *)((longlong)plVar5 + 0xc);
+            iVar7 = *piVar3;
+            *piVar3 = *piVar3 + -1;
+            UNLOCK();
+            if (iVar7 == 1) {
+              (**(code **)(*local_d8 + 0x10))();
+            }
+          }
+          plVar11 = local_d8;
+          LOCK();
+          plVar15 = plVar15 + 1;
+          lVar9 = *plVar15;
+          *(int *)plVar15 = (int)*plVar15 + -1;
+          UNLOCK();
+          if ((int)lVar9 == 1) {
+            (**(code **)(*local_d8 + 8))(local_d8);
+            LOCK();
+            piVar3 = (int *)((longlong)plVar11 + 0xc);
+            iVar7 = *piVar3;
+            *piVar3 = *piVar3 + -1;
+            UNLOCK();
+            if (iVar7 == 1) {
+              (**(code **)(*local_d8 + 0x10))();
+            }
+          }
+        }
+      }
+      lVar9 = *(longlong *)(*(longlong *)(param_1 + 8) + 0x186a8);
+      if ((((lVar9 == 0) || (lVar9 = *(longlong *)(lVar9 + 0xe0), lVar9 == 0)) ||
+          (*(longlong *)(lVar9 + 0x20) == 0)) ||
+         (pHVar8 = GetFocus(), pHVar8 != *(HWND *)(lVar9 + 0x20))) {
+        cVar6 = '\0';
+      }
+      else {
+        cVar6 = '\x01';
+      }
+      if (cVar6 != *(char *)(param_1 + 0x2850)) {
+        *(char *)(param_1 + 0x2850) = cVar6;
+        local_a8 = *(undefined8 *)(*(longlong *)(lVar2 + 0x18) + 0x40);
+        local_a0 = &DAT_140e57440;
+        FUN_1400adab0(&local_c8,&local_a0,&DAT_140e57444,&local_a8);
+        lVar13 = local_c0;
+        plVar15 = local_c8;
+        *(bool *)(*(longlong *)(local_c0 + 0x18) + *(longlong *)(local_c0 + 0x20)) =
+             *(char *)(param_1 + 0x2850) != '\0';
+        *(longlong *)(local_c0 + 0x20) = *(longlong *)(local_c0 + 0x20) + 1;
+        lVar9 = *(longlong *)(lVar2 + 0x18);
+        if (local_c8 != (longlong *)0x0) {
+          LOCK();
+          *(int *)(local_c8 + 1) = (int)local_c8[1] + 1;
+          UNLOCK();
+        }
+        plVar11 = *(longlong **)(lVar9 + 0x58);
+        if (plVar11 == (longlong *)0x0) {
+          plVar11 = *(longlong **)(lVar9 + 0x60);
+          if (plVar11 == *(longlong **)(lVar9 + 0x68)) {
+            plVar11 = (longlong *)FUN_140791660(*(longlong *)(lVar9 + 0x70),0x10);
+          }
+          else {
+            *(longlong *)(lVar9 + 0x60) = *(longlong *)(lVar9 + 0x70) + (longlong)plVar11;
+          }
+        }
+        else {
+          *(longlong *)(lVar9 + 0x58) = *plVar11;
+        }
+        plVar5 = local_c8;
+        plVar11[2] = (longlong)plVar15;
+        plVar11[3] = lVar13;
+        if (plVar15 != (longlong *)0x0) {
+          LOCK();
+          *(int *)(plVar15 + 1) = (int)plVar15[1] + 1;
+          UNLOCK();
+          plVar15 = local_c8;
+          lVar13 = local_c0;
+        }
+        *plVar11 = lVar9 + 0x48;
+        plVar11[1] = *(longlong *)(lVar9 + 0x50);
+        **(undefined8 **)(lVar9 + 0x50) = plVar11;
+        *(longlong *)(lVar9 + 0x88) = *(longlong *)(lVar9 + 0x88) + 1;
+        *(longlong **)(lVar9 + 0x50) = plVar11;
+        iVar7 = *(int *)(lVar13 + 0x20);
+        *(int *)(lVar13 + 0x28) = iVar7;
+        *(undefined8 *)(lVar13 + 0x20) = 0;
+        *(int *)(lVar9 + 0x2b0) = *(int *)(lVar9 + 0x2b0) + iVar7;
+        if (plVar15 != (longlong *)0x0) {
+          LOCK();
+          plVar11 = plVar15 + 1;
+          lVar9 = *plVar11;
+          *(int *)plVar11 = (int)*plVar11 + -1;
+          UNLOCK();
+          if ((int)lVar9 == 1) {
+            (**(code **)(*local_c8 + 8))(local_c8);
+            LOCK();
+            piVar3 = (int *)((longlong)plVar5 + 0xc);
+            iVar7 = *piVar3;
+            *piVar3 = *piVar3 + -1;
+            UNLOCK();
+            if (iVar7 == 1) {
+              (**(code **)(*local_c8 + 0x10))();
+            }
+          }
+          plVar11 = local_c8;
+          LOCK();
+          plVar15 = plVar15 + 1;
+          lVar9 = *plVar15;
+          *(int *)plVar15 = (int)*plVar15 + -1;
+          UNLOCK();
+          if ((int)lVar9 == 1) {
+            (**(code **)(*local_c8 + 8))(local_c8);
+            LOCK();
+            piVar3 = (int *)((longlong)plVar11 + 0xc);
+            iVar7 = *piVar3;
+            *piVar3 = *piVar3 + -1;
+            UNLOCK();
+            if (iVar7 == 1) {
+              (**(code **)(*local_c8 + 0x10))();
+            }
+          }
+        }
+      }
+      lVar9 = (**(code **)(**(longlong **)(param_1 + 8) + 0x58))();
+      if ((lVar9 != 0) &&
+         (lVar9 = (**(code **)(**(longlong **)(param_1 + 8) + 0x58))(),
+         (*(char *)(lVar9 + 0x108) != '\0') + 2 != *(int *)(param_1 + 0x2864))) {
+        FUN_1400d0540(param_1);
+      }
+      if (*(char *)(param_1 + 0x2868) == '\0') {
+        local_98 = *(undefined8 *)(*(longlong *)(lVar2 + 0x18) + 0x40);
+        local_90 = &DAT_140e570d0;
+        FUN_1400adab0(&local_f8,&local_90,&DAT_140e570d4,&local_98);
+        FUN_1403d8170(*(undefined8 *)(*(longlong *)(param_1 + 8) + 0x53590),local_88);
+        lVar9 = local_f0;
+        *(char *)(*(longlong *)(local_f0 + 0x18) + *(longlong *)(local_f0 + 0x20)) = (char)local_70;
+        lVar13 = *(longlong *)(local_f0 + 0x20) + 1;
+        *(longlong *)(local_f0 + 0x20) = lVar13;
+        if (local_70 != 0) {
+          uVar16 = local_70;
+          if (local_78 != 0) {
+            uVar10 = *(longlong *)(local_f0 + 0x10) - lVar13;
+            if (uVar10 < local_70) {
+              uVar16 = uVar10;
+            }
+            FUN_1407b77b0(lVar13 + *(longlong *)(local_f0 + 0x18),local_78,uVar16);
+          }
+          plVar15 = (longlong *)(lVar9 + 0x20);
+          *plVar15 = *plVar15 + uVar16;
+        }
+        plVar15 = local_f8;
+        lVar2 = *(longlong *)(lVar2 + 0x18);
+        if (local_f8 != (longlong *)0x0) {
+          LOCK();
+          *(int *)(local_f8 + 1) = (int)local_f8[1] + 1;
+          UNLOCK();
+          lVar9 = local_f0;
+        }
+        plVar11 = *(longlong **)(lVar2 + 0x58);
+        if (plVar11 == (longlong *)0x0) {
+          plVar11 = *(longlong **)(lVar2 + 0x60);
+          if (plVar11 == *(longlong **)(lVar2 + 0x68)) {
+            plVar11 = (longlong *)FUN_140791660(*(longlong *)(lVar2 + 0x70),0x10);
+          }
+          else {
+            *(longlong *)(lVar2 + 0x60) = *(longlong *)(lVar2 + 0x70) + (longlong)plVar11;
+          }
+        }
+        else {
+          *(longlong *)(lVar2 + 0x58) = *plVar11;
+        }
+        plVar5 = local_f8;
+        plVar11[2] = (longlong)plVar15;
+        plVar11[3] = lVar9;
+        if (plVar15 != (longlong *)0x0) {
+          LOCK();
+          *(int *)(plVar15 + 1) = (int)plVar15[1] + 1;
+          UNLOCK();
+          plVar15 = local_f8;
+          lVar9 = local_f0;
+        }
+        *plVar11 = lVar2 + 0x48;
+        plVar11[1] = *(longlong *)(lVar2 + 0x50);
+        **(undefined8 **)(lVar2 + 0x50) = plVar11;
+        *(longlong *)(lVar2 + 0x88) = *(longlong *)(lVar2 + 0x88) + 1;
+        *(longlong **)(lVar2 + 0x50) = plVar11;
+        iVar7 = *(int *)(lVar9 + 0x20);
+        *(int *)(lVar9 + 0x28) = iVar7;
+        *(undefined8 *)(lVar9 + 0x20) = 0;
+        *(int *)(lVar2 + 0x2b0) = *(int *)(lVar2 + 0x2b0) + iVar7;
+        plVar11 = (longlong *)0x0;
+        if (plVar15 != (longlong *)0x0) {
+          LOCK();
+          plVar15 = plVar15 + 1;
+          lVar2 = *plVar15;
+          *(int *)plVar15 = (int)*plVar15 + -1;
+          UNLOCK();
+          plVar11 = local_f8;
+          if ((int)lVar2 == 1) {
+            (**(code **)(*local_f8 + 8))(local_f8);
+            plVar11 = local_f8;
+            LOCK();
+            piVar3 = (int *)((longlong)plVar5 + 0xc);
+            iVar7 = *piVar3;
+            *piVar3 = *piVar3 + -1;
+            UNLOCK();
+            if (iVar7 == 1) {
+              (**(code **)(*local_f8 + 0x10))(local_f8);
+            }
+          }
+        }
+        *(undefined1 *)(param_1 + 0x2868) = 1;
+        if ((local_78 != 0) && (local_80 != 0)) {
+          FUN_1407a4820(local_78);
+        }
+        plVar15 = local_f8;
+        if (plVar11 != (longlong *)0x0) {
+          LOCK();
+          plVar11 = plVar11 + 1;
+          lVar2 = *plVar11;
+          *(int *)plVar11 = (int)*plVar11 + -1;
+          UNLOCK();
+          if ((int)lVar2 == 1) {
+            (**(code **)(*local_f8 + 8))(local_f8);
+            LOCK();
+            piVar3 = (int *)((longlong)plVar15 + 0xc);
+            iVar7 = *piVar3;
+            *piVar3 = *piVar3 + -1;
+            UNLOCK();
+            if (iVar7 == 1) {
+              (**(code **)(*local_f8 + 0x10))();
+            }
+          }
+        }
+      }
+    }
+  }
+  return;
+}
+
+ (GhidraScript)  
+INFO  REPORT: Save succeeded for processed file: /rs2client.exe (HeadlessAnalyzer)  

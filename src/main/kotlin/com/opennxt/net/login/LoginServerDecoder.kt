@@ -242,8 +242,10 @@ class LoginServerDecoder(val rsaPair: RsaConfig.RsaKeyPair) : ByteToMessageDecod
             val build = payload.readBuild()
             val header = payload.readLoginHeader(type, rsaPair.exponent, rsaPair.modulus)
 
-            if (header !is LoginRSAHeader.Fresh && type != LoginType.LOBBY) {
-                logger.info { "got reconnecting block in lobby? what?" } // literally impossible but ok.
+            if (type == LoginType.LOBBY && header !is LoginRSAHeader.Fresh) {
+                logger.warn {
+                    "Client from ${ctx.channel().remoteAddress()} attempted a reconnect-style lobby login; rejecting"
+                }
                 ctx.channel()
                     .writeAndFlush(LoginPacket.LoginResponse(GenericResponse.MALFORMED_PACKET))
                     .addListener(ChannelFutureListener.CLOSE)
@@ -251,6 +253,43 @@ class LoginServerDecoder(val rsaPair: RsaConfig.RsaKeyPair) : ByteToMessageDecod
             }
 
             payload.decipherXtea(header.seeds)
+
+            if ((type == LoginType.GAME || type == LoginType.GAME_ALT) && header is LoginRSAHeader.Reconnecting) {
+                val snapshot = LoginHandoffStore.recall(ctx.channel().remoteAddress())
+                if (snapshot == null) {
+                    logger.warn {
+                        "Reconnect-style game login from ${ctx.channel().remoteAddress()} had no stored lobby snapshot"
+                    }
+                    ctx.channel()
+                        .writeAndFlush(LoginPacket.LoginResponse(GenericResponse.LOGINSERVER_REJECTED))
+                        .addListener(ChannelFutureListener.CLOSE)
+                    return
+                }
+
+                if (header.uniqueId != ctx.channel().attr(RSChannelAttributes.LOGIN_UNIQUE_ID).get()) {
+                    logger.error { "Unique id mismatch on reconnecting game login - possible replay attack?" }
+                    ctx.channel()
+                        .writeAndFlush(LoginPacket.LoginResponse(GenericResponse.MALFORMED_PACKET))
+                        .addListener(ChannelFutureListener.CLOSE)
+                    return
+                }
+
+                ctx.channel().attr(RSChannelAttributes.LOGIN_USERNAME).set(snapshot.username)
+                logger.info {
+                    "Attempted reconnecting game login: ${snapshot.username}, ***** " +
+                        "(type=$type, remote=${ctx.channel().remoteAddress()})"
+                }
+                out.add(
+                    LoginPacket.GameLoginRequest(
+                        snapshot.build,
+                        header,
+                        snapshot.username,
+                        snapshot.password,
+                        Unpooled.wrappedBuffer(snapshot.remaining.copyOf())
+                    )
+                )
+                return
+            }
 
             payload.markReaderIndex()
             val original = ByteArray(payload.readableBytes())

@@ -1,0 +1,90 @@
+{
+  "programName": "rs2client.exe",
+  "functionName": "FUN_140107920",
+  "functionEntryPoint": "140107920",
+  "targetAddress": "140107920",
+  "packetName": "OPCODE_48",
+  "bufferParam": "param_2",
+  "legacyShape": [
+    "int",
+    "ubyte"
+  ],
+  "recoveryMode": "decompiler-c",
+  "decompileAttempted": true,
+  "decompileCompleted": true,
+  "status": "ok",
+  "fieldCount": 2,
+  "analysisNotes": [],
+  "statements": [
+    "undefined * FUN_140107920(longlong param_1,longlong param_2)\r\n\r\n{\r\n  int *piVar1;",
+    "longlong lVar2;",
+    "char cVar3;",
+    "byte bVar4;",
+    "byte bVar5;",
+    "byte bVar6;",
+    "byte bVar7;",
+    "longlong lVar8;",
+    "undefined8 uVar9;",
+    "longlong lVar10;",
+    "lVar10 = *(longlong *)(param_2 + 0x18);",
+    "*(longlong *)(param_2 + 0x18) = lVar10 + 1;",
+    "lVar8 = *(longlong *)(param_2 + 0x10);",
+    "cVar3 = *(char *)(lVar8 + lVar10);",
+    "lVar10 = lVar10 + 5;",
+    "*(longlong *)(param_2 + 0x18) = lVar10;",
+    "lVar2 = lVar8 + lVar10;",
+    "bVar4 = *(byte *)(lVar8 + -1 + lVar10);",
+    "bVar5 = *(byte *)(lVar2 + -2);",
+    "bVar6 = *(byte *)(lVar2 + -4);",
+    "bVar7 = *(byte *)(lVar2 + -3);",
+    "lVar10 = *(longlong *)(*(longlong *)(param_1 + 8) + 0x19888);",
+    "piVar1 = (int *)(lVar10 + 0x10);",
+    "*piVar1 = *piVar1 + 1;",
+    "*(undefined1 *)(lVar10 + 0x14) = 1;",
+    "uVar9 = *(undefined8 *)(*(longlong *)(param_1 + 8) + 0x19888);",
+    "lVar10 = FUN_1400cbe70(uVar9,0x15,\r\n                         (((uint)bVar5 * 0x100 + (uint)bVar4) * 0x100 + (uint)bVar6) * 0x100 +\r\n                         (uint)bVar7);",
+    "FUN_1400cc1b0(uVar9,lVar10,1);",
+    "if (*(char *)(lVar10 + 0x38) != '\\0') {\r\n    FUN_14002cf90(lVar10 + 0x20);",
+    "*(undefined1 *)(lVar10 + 0x38) = 0;",
+    "}\r\n  *(uint *)(lVar10 + 0x20) = (uint)(cVar3 == '\\x01');",
+    "return &DAT_140c9c250;",
+    "}"
+  ],
+  "decompiledC": "\r\nundefined * FUN_140107920(longlong param_1,longlong param_2)\r\n\r\n{\r\n  int *piVar1;\r\n  longlong lVar2;\r\n  char cVar3;\r\n  byte bVar4;\r\n  byte bVar5;\r\n  byte bVar6;\r\n  byte bVar7;\r\n  longlong lVar8;\r\n  undefined8 uVar9;\r\n  longlong lVar10;\r\n  \r\n  lVar10 = *(longlong *)(param_2 + 0x18);\r\n  *(longlong *)(param_2 + 0x18) = lVar10 + 1;\r\n  lVar8 = *(longlong *)(param_2 + 0x10);\r\n  cVar3 = *(char *)(lVar8 + lVar10);\r\n  lVar10 = lVar10 + 5;\r\n  *(longlong *)(param_2 + 0x18) = lVar10;\r\n  lVar2 = lVar8 + lVar10;\r\n  bVar4 = *(byte *)(lVar8 + -1 + lVar10);\r\n  bVar5 = *(byte *)(lVar2 + -2);\r\n  bVar6 = *(byte *)(lVar2 + -4);\r\n  bVar7 = *(byte *)(lVar2 + -3);\r\n  lVar10 = *(longlong *)(*(longlong *)(param_1 + 8) + 0x19888);\r\n  piVar1 = (int *)(lVar10 + 0x10);\r\n  *piVar1 = *piVar1 + 1;\r\n  *(undefined1 *)(lVar10 + 0x14) = 1;\r\n  uVar9 = *(undefined8 *)(*(longlong *)(param_1 + 8) + 0x19888);\r\n  lVar10 = FUN_1400cbe70(uVar9,0x15,\r\n                         (((uint)bVar5 * 0x100 + (uint)bVar4) * 0x100 + (uint)bVar6) * 0x100 +\r\n                         (uint)bVar7);\r\n  FUN_1400cc1b0(uVar9,lVar10,1);\r\n  if (*(char *)(lVar10 + 0x38) != '\\0') {\r\n    FUN_14002cf90(lVar10 + 0x20);\r\n    *(undefined1 *)(lVar10 + 0x38) = 0;\r\n  }\r\n  *(uint *)(lVar10 + 0x20) = (uint)(cVar3 == '\\x01');\r\n  return &DAT_140c9c250;\r\n}\r\n\r\n",
+  "fields": [
+    {
+      "index": 0,
+      "statementIndex": 13,
+      "accessKind": "read",
+      "width": 1,
+      "rawType": "ubyte",
+      "candidateType": "ubyte",
+      "confidence": "strong",
+      "source": "direct-scalar-load",
+      "legacyType": "int",
+      "legacyAligned": false,
+      "evidence": [
+        "load-offset=0",
+        "cVar3 = *(char *)(lVar8 + lVar10);"
+      ]
+    },
+    {
+      "index": 1,
+      "statementIndex": 17,
+      "accessKind": "read",
+      "width": 4,
+      "rawType": "int",
+      "candidateType": "intv1",
+      "confidence": "strong",
+      "source": "decompiler-four-byte-expression",
+      "legacyType": "ubyte",
+      "legacyAligned": false,
+      "evidence": [
+        "offset-order=[-2, -1, -4, -3]",
+        "vars=[bVar5, bVar4, bVar6, bVar7]",
+        "(((uint)bVar5 * 0x100 + (uint)bVar4) * 0x100 + (uint)bVar6) * 0x100 + (uint)bVar7",
+        "lVar10 = FUN_1400cbe70(uVar9,0x15, (((uint)bVar5 * 0x100 + (uint)bVar4) * 0x100 + (uint)bVar6) * 0x100 + (uint)bVar7);"
+      ]
+    }
+  ]
+}

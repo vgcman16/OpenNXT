@@ -1,0 +1,9 @@
+{
+  "interface-diff": {
+    "inputFingerprint": "f9cee2dbfcc7b908e3245bc46892f243c69f63c8d6a45acfbaed8b432dac4c25",
+    "outputs": [
+      "data\\prot\\946\\generated\\shared\\current-vs-stable2-bootstrap\\interface-diff.json",
+      "data\\prot\\946\\generated\\shared\\current-vs-stable2-bootstrap\\interface-diff.md"
+    ]
+  }
+}

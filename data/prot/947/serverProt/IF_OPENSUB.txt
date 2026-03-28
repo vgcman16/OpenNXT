@@ -1,0 +1,7 @@
+xtea0 int
+parent intle
+xtea1 int
+xtea2 int
+flag u128byte
+id ushortle128
+xtea3 int

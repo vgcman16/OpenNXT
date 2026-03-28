@@ -1,0 +1,16 @@
+{
+  "candidateCount": 1,
+  "client": {
+    "contiguous": 130,
+    "entryPoint": "140301100",
+    "status": "ok",
+    "stride": 16
+  },
+  "programName": "rs2client.exe",
+  "server": {
+    "contiguous": 217,
+    "entryPoint": "140301280",
+    "status": "ok",
+    "stride": 80
+  }
+}

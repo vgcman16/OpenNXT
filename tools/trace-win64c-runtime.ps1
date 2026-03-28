@@ -103,7 +103,7 @@ try {
         --timeout-seconds $TraceTimeoutSeconds `
         --output $OutputPath
 } finally {
-    foreach ($pidValue in @(
+    $cleanupProcessIds = @(
         $launchState.ClientPid,
         $launchState.WatchdogPid,
         $launchState.LobbyProxyPid,
@@ -111,13 +111,15 @@ try {
         $launchState.ServerPid,
         $launchState.WrapperPid,
         $launchWrapper.Id
-    )) {
+    ) | Where-Object { $null -ne $_ } | Select-Object -Unique
+
+    foreach ($pidValue in $cleanupProcessIds) {
         if ($null -eq $pidValue) {
             continue
         }
 
         try {
-            taskkill /PID $pidValue /F | Out-Null
+            Stop-Process -Id ([int]$pidValue) -Force -ErrorAction SilentlyContinue
         } catch {
         }
     }

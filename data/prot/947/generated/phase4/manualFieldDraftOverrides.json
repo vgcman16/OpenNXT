@@ -1,0 +1,82 @@
+[
+  {
+    "packetName": "OBJ_DEL",
+    "side": "server",
+    "opcode": 98,
+    "targetAddress": "14013f760",
+    "targetKind": "parser",
+    "functionName": "FUN_14013f760",
+    "status": "reviewed-override",
+    "fieldCount": 2,
+    "candidateTypes": [
+      "u128byte",
+      "ushort"
+    ],
+    "notes": [
+      "Reviewed against decompiled FUN_14013f760.",
+      "Offset 0 is packed coord via 0x80 - byte transform.",
+      "Offset 1..2 is item id, byte-swapped before semantic use, matching ushort."
+    ]
+  },
+  {
+    "packetName": "OBJ_COUNT",
+    "side": "server",
+    "opcode": 127,
+    "targetAddress": "1401143f0",
+    "targetKind": "parser",
+    "functionName": "FUN_1401143f0",
+    "status": "reviewed-override",
+    "fieldCount": 4,
+    "candidateTypes": [
+      "ubyte",
+      "ushort",
+      "ushort",
+      "ushort"
+    ],
+    "notes": [
+      "Reviewed against decompiled FUN_1401143f0.",
+      "Offset 0 is packed coord byte used directly for local tile coordinates.",
+      "Offsets 1..2, 3..4, and 5..6 are byte-swapped before semantic use, matching ushort item/count fields."
+    ]
+  },
+  {
+    "packetName": "OBJ_ADD",
+    "side": "server",
+    "opcode": 87,
+    "targetAddress": "14013f820",
+    "targetKind": "parser",
+    "functionName": "FUN_14013f820",
+    "status": "reviewed-override",
+    "reviewSource": "reviewed-override",
+    "fieldCount": 3,
+    "candidateTypes": [
+      "ushortle128",
+      "ubytec",
+      "ushort128"
+    ],
+    "semanticFieldNames": [
+      "count",
+      "packedCoord",
+      "id"
+    ],
+    "helperSemanticHints": {
+      "helperFunction": "FUN_1403526d0",
+      "helperFieldOrder": [
+        "id",
+        "count"
+      ],
+      "semanticFieldNames": [
+        "count",
+        "packedCoord",
+        "id"
+      ],
+      "proofRule": "Use raw read order as packet order, then map the last FUN_1403526d0 short argument to count and the first helper short argument to id based on the verified OBJ_REVEAL sibling."
+    },
+    "notes": [
+      "Reviewed against decompiled FUN_14013f820 and sibling helper usage in OBJ_REVEAL.",
+      "Raw read order is short, byte, short, which preserves packet order as count, packedCoord, id.",
+      "FUN_1403526d0 receives helper arguments in semantic order id then count for the ground-item family.",
+      "The last helper short argument is count, and the first helper short argument is id."
+    ]
+  }
+]

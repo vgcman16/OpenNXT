@@ -1,0 +1,130 @@
+{
+  "programName": "rs2client.exe",
+  "functionName": "FUN_14013f820",
+  "functionEntryPoint": "14013f820",
+  "targetAddress": "14013f820",
+  "packetName": "OBJ_ADD",
+  "bufferParam": "param_2",
+  "legacyShape": [],
+  "recoveryMode": "decompiler-c",
+  "decompileAttempted": true,
+  "decompileCompleted": true,
+  "status": "ok",
+  "fieldCount": 3,
+  "analysisNotes": [
+    "Decompiler recovery produced ambiguous endian-heavy field types; comparing against the instruction fallback.",
+    "Decompiler recovery produced ambiguous endian-heavy field types; comparing against the instruction fallback."
+  ],
+  "statements": [
+    "undefined * FUN_14013f820(longlong param_1,longlong param_2)\r\n\r\n{\r\n  char cVar1;",
+    "byte bVar2;",
+    "char cVar3;",
+    "int iVar4;",
+    "longlong lVar5;",
+    "longlong lVar6;",
+    "undefined8 *puVar7;",
+    "longlong lVar8;",
+    "undefined4 local_18;",
+    "int local_14;",
+    "int local_10;",
+    "lVar5 = *(longlong *)(param_2 + 0x18);",
+    "lVar8 = lVar5 + 2;",
+    "*(longlong *)(param_2 + 0x18) = lVar8;",
+    "lVar6 = *(longlong *)(param_2 + 0x10);",
+    "cVar1 = *(char *)(lVar6 + -2 + lVar8);",
+    "bVar2 = *(byte *)(lVar6 + -1 + lVar8);",
+    "*(longlong *)(param_2 + 0x18) = lVar5 + 3;",
+    "cVar3 = *(char *)(lVar6 + lVar8);",
+    "*(longlong *)(param_2 + 0x18) = lVar5 + 5;",
+    "lVar6 = lVar5 + 5 + lVar6;",
+    "local_14 = ((byte)-cVar3 >> 4 & 7) + DAT_140c99950._4_4_;",
+    "local_10 = DAT_140c99958 + ((byte)-cVar3 & 7);",
+    "lVar5 = *(longlong *)(param_1 + 8);",
+    "local_18 = (undefined4)DAT_140c99950;",
+    "lVar8 = *(longlong *)(lVar5 + 0x198f8);",
+    "if (((((*(int *)(lVar8 + 0x40) <= local_14) && (local_14 <= *(int *)(lVar8 + 0x44))) &&\r\n       (*(int *)(lVar8 + 0x48) <= local_10)) && (local_10 <= *(int *)(lVar8 + 0x4c))) ||\r\n     (*(int *)(*(longlong *)(lVar5 + 0x19858) + 0x68c) - 6U < 2)) {\r\n    iVar4 = *(int *)(*(longlong *)(lVar5 + 0x19990) + 0x70);",
+    "if (iVar4 == -1) {\r\n      puVar7 = &DAT_140ec49b0;",
+    "}\r\n    else {\r\n      puVar7 = (undefined8 *)\r\n               ((longlong)iVar4 * 0x10 + *(longlong *)(*(longlong *)(lVar5 + 0x19990) + 0x58));",
+    "}\r\n    FUN_1403526d0(lVar8,puVar7,*(undefined8 *)(lVar5 + 0x18d28),&local_18,\r\n                  (uint)(byte)(*(char *)(lVar6 + -1) + 0x80) + (uint)*(byte *)(lVar6 + -2) * 0x100,\r\n                  (uint)(byte)(cVar1 + 0x80) + (uint)bVar2 * 0x100);",
+    "}\r\n  return &DAT_140c9c250;",
+    "}"
+  ],
+  "decompiledC": "\r\nundefined * FUN_14013f820(longlong param_1,longlong param_2)\r\n\r\n{\r\n  char cVar1;\r\n  byte bVar2;\r\n  char cVar3;\r\n  int iVar4;\r\n  longlong lVar5;\r\n  longlong lVar6;\r\n  undefined8 *puVar7;\r\n  longlong lVar8;\r\n  undefined4 local_18;\r\n  int local_14;\r\n  int local_10;\r\n  \r\n  lVar5 = *(longlong *)(param_2 + 0x18);\r\n  lVar8 = lVar5 + 2;\r\n  *(longlong *)(param_2 + 0x18) = lVar8;\r\n  lVar6 = *(longlong *)(param_2 + 0x10);\r\n  cVar1 = *(char *)(lVar6 + -2 + lVar8);\r\n  bVar2 = *(byte *)(lVar6 + -1 + lVar8);\r\n  *(longlong *)(param_2 + 0x18) = lVar5 + 3;\r\n  cVar3 = *(char *)(lVar6 + lVar8);\r\n  *(longlong *)(param_2 + 0x18) = lVar5 + 5;\r\n  lVar6 = lVar5 + 5 + lVar6;\r\n  local_14 = ((byte)-cVar3 >> 4 & 7) + DAT_140c99950._4_4_;\r\n  local_10 = DAT_140c99958 + ((byte)-cVar3 & 7);\r\n  lVar5 = *(longlong *)(param_1 + 8);\r\n  local_18 = (undefined4)DAT_140c99950;\r\n  lVar8 = *(longlong *)(lVar5 + 0x198f8);\r\n  if (((((*(int *)(lVar8 + 0x40) <= local_14) && (local_14 <= *(int *)(lVar8 + 0x44))) &&\r\n       (*(int *)(lVar8 + 0x48) <= local_10)) && (local_10 <= *(int *)(lVar8 + 0x4c))) ||\r\n     (*(int *)(*(longlong *)(lVar5 + 0x19858) + 0x68c) - 6U < 2)) {\r\n    iVar4 = *(int *)(*(longlong *)(lVar5 + 0x19990) + 0x70);\r\n    if (iVar4 == -1) {\r\n      puVar7 = &DAT_140ec49b0;\r\n    }\r\n    else {\r\n      puVar7 = (undefined8 *)\r\n               ((longlong)iVar4 * 0x10 + *(longlong *)(*(longlong *)(lVar5 + 0x19990) + 0x58));\r\n    }\r\n    FUN_1403526d0(lVar8,puVar7,*(undefined8 *)(lVar5 + 0x18d28),&local_18,\r\n                  (uint)(byte)(*(char *)(lVar6 + -1) + 0x80) + (uint)*(byte *)(lVar6 + -2) * 0x100,\r\n                  (uint)(byte)(cVar1 + 0x80) + (uint)bVar2 * 0x100);\r\n  }\r\n  return &DAT_140c9c250;\r\n}\r\n\r\n",
+  "fields": [
+    {
+      "index": 0,
+      "statementIndex": 15,
+      "accessKind": "read",
+      "width": 2,
+      "rawType": "ushort",
+      "candidateType": "ushortle128",
+      "confidence": "strong",
+      "source": "call-argument-short-expression",
+      "legacyType": "",
+      "legacyAligned": false,
+      "evidence": [
+        "offset-order=[4, 3]",
+        "vars=[bVar2, cVar1]",
+        "arg=, (uint)(byte)(cVar1 + 0x80) + (uint)bVar2 * 0x100",
+        "argument-order=low-then-high",
+        "transform=add",
+        "arg=(uint)(byte)(cVar1 + 0x80) + (uint)bVar2 * 0x100",
+        "offset-order=[3, 4]",
+        "(uint)(byte)(cVar1 + 0x80) + (uint)bVar2 * 0x100"
+      ]
+    },
+    {
+      "index": 1,
+      "statementIndex": 18,
+      "accessKind": "read",
+      "width": 1,
+      "rawType": "ubyte",
+      "candidateType": "ubytec",
+      "confidence": "strong",
+      "source": "direct-scalar-load",
+      "legacyType": "",
+      "legacyAligned": false,
+      "evidence": [
+        "load-offset=5",
+        "cVar3 = *(char *)(lVar6 + lVar8);"
+      ]
+    },
+    {
+      "index": 2,
+      "statementIndex": 29,
+      "accessKind": "read",
+      "width": 2,
+      "rawType": "ushort",
+      "candidateType": "ushort128",
+      "confidence": "strong",
+      "source": "decompiler-byte-expression",
+      "legacyType": "",
+      "legacyAligned": false,
+      "evidence": [
+        "offset-order=[-1, -2]",
+        "(uint)(byte)(*(char *)(lVar6 + -1) + 0x80) + (uint)*(byte *)(lVar6 + -2) * 0x100",
+        "transform=add"
+      ]
+    }
+  ],
+  "helperSemanticHints": {
+    "helperFunction": "FUN_1403526d0",
+    "helperFieldOrder": [
+      "id",
+      "count"
+    ],
+    "semanticFieldNames": [
+      "count",
+      "packedCoord",
+      "id"
+    ],
+    "proofRule": "Use raw read order as packet order, then map the last FUN_1403526d0 short argument to count and the first helper short argument to id based on the verified OBJ_REVEAL sibling."
+  },
+  "notes": [
+    "Use raw read order as packet order, then map the last FUN_1403526d0 short argument to count and the first helper short argument to id based on the verified OBJ_REVEAL sibling."
+  ],
+  "phase4TargetKind": "parser",
+  "phase4QueuePriority": 92,
+  "phase4QueueOpcode": 87,
+  "phase4Side": "server"
+}

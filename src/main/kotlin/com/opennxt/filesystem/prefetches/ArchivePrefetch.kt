@@ -1,6 +1,7 @@
 package com.opennxt.filesystem.prefetches
 
 import com.opennxt.filesystem.Filesystem
+import com.opennxt.filesystem.Index
 import mu.KotlinLogging
 
 class ArchivePrefetch(private val index: Int, private val archive: Int) : Prefetch {
@@ -15,4 +16,20 @@ class ArchivePrefetch(private val index: Int, private val archive: Int) : Prefet
 
         return file.capacity() - 2
     }
+
+    override fun describe(): String = "archive:${Index.nameOf(index)}($index)/$archive"
+
+    override fun diagnose(store: Filesystem): List<String> =
+        if (store.read(index, archive) == null) {
+            listOf("missing-archive=$archive")
+        } else {
+            emptyList()
+        }
+
+    override fun needs(store: Filesystem): List<String> =
+        if (store.read(index, archive) == null) {
+            listOf("archive $archive in ${Index.nameOf(index)}($index)")
+        } else {
+            emptyList()
+        }
 }

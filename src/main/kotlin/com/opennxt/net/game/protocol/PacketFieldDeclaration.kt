@@ -49,6 +49,7 @@ data class PacketFieldDeclaration(val key: String, val dataCodec: DataCodec<Any>
             codecs["intle"] = IntLECodec
             codecs["intv1"] = IntV1Codec
             codecs["intv2"] = IntV2Codec
+            codecs["long"] = LongCodec
         }
 
         object StringCodec : DataCodec<String> {
@@ -183,6 +184,11 @@ data class PacketFieldDeclaration(val key: String, val dataCodec: DataCodec<Any>
 
             override fun write(buffer: GamePacketBuilder, value: Int) =
                 buffer.put(DataType.INT, DataOrder.INVERSED_MIDDLE, value)
+        }
+
+        object LongCodec : DataCodec<Long> {
+            override fun read(buffer: GamePacketReader): Long = buffer.getSigned(DataType.LONG)
+            override fun write(buffer: GamePacketBuilder, value: Long) = buffer.put(DataType.LONG, value)
         }
     }
 }

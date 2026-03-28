@@ -7,6 +7,19 @@ import com.opennxt.resources.config.params.ParamDiskCodec
 import com.opennxt.resources.config.params.ParamFilesystemCodec
 import com.opennxt.resources.config.structs.StructDiskCodec
 import com.opennxt.resources.config.structs.StructFilesystemCodec
+import com.opennxt.resources.config.varbits.VarbitDiskCodec
+import com.opennxt.resources.config.varbits.VarbitFilesystemCodec
+import com.opennxt.resources.config.vars.VarDefinitionFilesystemCodec
+import com.opennxt.resources.config.vars.VarConfigArchiveGroups
+import com.opennxt.resources.config.vars.VarDefinitionDiskCodec
+import com.opennxt.resources.config.vars.impl.VarClanDefinition
+import com.opennxt.resources.config.vars.impl.VarClanSettingDefinition
+import com.opennxt.resources.config.vars.impl.VarClientDefinition
+import com.opennxt.resources.config.vars.impl.VarNpcDefinition
+import com.opennxt.resources.config.vars.impl.VarObjectDefinition
+import com.opennxt.resources.config.vars.impl.VarPlayerDefinition
+import com.opennxt.resources.config.vars.impl.VarRegionDefinition
+import com.opennxt.resources.config.vars.impl.VarWorldDefinition
 import com.opennxt.resources.defaults.Defaults
 import java.nio.file.Files
 import java.nio.file.Path
@@ -32,10 +45,52 @@ class FilesystemResources(val filesystem: Filesystem, val path: Path) {
         fsCodices[ResourceType.ENUM] = EnumFilesystemCodec
         fsCodices[ResourceType.PARAM] = ParamFilesystemCodec
         fsCodices[ResourceType.STRUCT] = StructFilesystemCodec
+        fsCodices[ResourceType.VAR_PLAYER] = VarDefinitionFilesystemCodec(
+            archiveCandidates = VarConfigArchiveGroups.PLAYER,
+            emptyProvider = ::VarPlayerDefinition
+        )
+        fsCodices[ResourceType.VAR_NPC] = VarDefinitionFilesystemCodec(
+            archiveCandidates = VarConfigArchiveGroups.NPC,
+            emptyProvider = ::VarNpcDefinition
+        )
+        fsCodices[ResourceType.VAR_CLIENT] = VarDefinitionFilesystemCodec(
+            archiveCandidates = VarConfigArchiveGroups.CLIENT,
+            emptyProvider = ::VarClientDefinition
+        )
+        fsCodices[ResourceType.VAR_WORLD] = VarDefinitionFilesystemCodec(
+            archiveCandidates = VarConfigArchiveGroups.WORLD,
+            emptyProvider = ::VarWorldDefinition
+        )
+        fsCodices[ResourceType.VAR_REGION] = VarDefinitionFilesystemCodec(
+            archiveCandidates = VarConfigArchiveGroups.REGION,
+            emptyProvider = ::VarRegionDefinition
+        )
+        fsCodices[ResourceType.VAR_OBJECT] = VarDefinitionFilesystemCodec(
+            archiveCandidates = VarConfigArchiveGroups.OBJECT,
+            emptyProvider = ::VarObjectDefinition
+        )
+        fsCodices[ResourceType.VAR_CLAN] = VarDefinitionFilesystemCodec(
+            archiveCandidates = VarConfigArchiveGroups.CLAN,
+            emptyProvider = ::VarClanDefinition
+        )
+        fsCodices[ResourceType.VAR_CLAN_SETTING] = VarDefinitionFilesystemCodec(
+            archiveCandidates = VarConfigArchiveGroups.CLAN_SETTING,
+            emptyProvider = ::VarClanSettingDefinition
+        )
+        fsCodices[ResourceType.VARBIT] = VarbitFilesystemCodec
 
         diskCodices[ResourceType.ENUM] = EnumDiskCodec
         diskCodices[ResourceType.PARAM] = ParamDiskCodec
         diskCodices[ResourceType.STRUCT] = StructDiskCodec
+        diskCodices[ResourceType.VAR_PLAYER] = VarDefinitionDiskCodec(::VarPlayerDefinition)
+        diskCodices[ResourceType.VAR_NPC] = VarDefinitionDiskCodec(::VarNpcDefinition)
+        diskCodices[ResourceType.VAR_CLIENT] = VarDefinitionDiskCodec(::VarClientDefinition)
+        diskCodices[ResourceType.VAR_WORLD] = VarDefinitionDiskCodec(::VarWorldDefinition)
+        diskCodices[ResourceType.VAR_REGION] = VarDefinitionDiskCodec(::VarRegionDefinition)
+        diskCodices[ResourceType.VAR_OBJECT] = VarDefinitionDiskCodec(::VarObjectDefinition)
+        diskCodices[ResourceType.VAR_CLAN] = VarDefinitionDiskCodec(::VarClanDefinition)
+        diskCodices[ResourceType.VAR_CLAN_SETTING] = VarDefinitionDiskCodec(::VarClanSettingDefinition)
+        diskCodices[ResourceType.VARBIT] = VarbitDiskCodec
     }
 
     fun getFilesystemCodex(type: KClass<*>): FilesystemResourceCodec<*> {

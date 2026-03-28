@@ -1,6 +1,24 @@
 .gradle
 .idea
 build
+.kotlin
+com
+OpenNXT
+capture-win64c-state.json
+hs_err_pid*.log
+myeasylog.log
+replay_pid*.log
+server-js5.err.log
+server-js5.out.log
+tmp-*
+tools/*.err.log
+tools/*.out.log
+tools/__pycache__/
+tools/bin/
+discord-bot/node_modules
+discord-bot/dist
+discord-bot/runtime
+discord-bot/.env
 
 !data/
 data/*

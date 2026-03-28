@@ -24,6 +24,11 @@ class GamePacketEncoder : MessageToByteEncoder<OpcodeWithBuffer>() {
     private lateinit var mapping: Int2IntMap
     private lateinit var side: Side
 
+    private fun bootstrapStage(channel: Channel): String {
+        val client = channel.attr(RSChannelAttributes.CONNECTED_CLIENT).get()
+        return client?.currentBootstrapStage ?: client?.lastCompletedBootstrapStage ?: "none"
+    }
+
     private fun init(channel: Channel) {
         inited = true
 
@@ -38,6 +43,10 @@ class GamePacketEncoder : MessageToByteEncoder<OpcodeWithBuffer>() {
 
             if (!mapping.containsKey(msg.opcode)) {
                 logger.error { "No opcode->size mapping for opcode ${msg.opcode} (side=$side)" }
+                ctx.channel().attr(RSChannelAttributes.CONNECTED_CLIENT).get()?.traceBootstrap(
+                    "world-encoder-close remote=${ctx.channel().remoteAddress()} stage=${bootstrapStage(ctx.channel())} " +
+                        "reason=missing-opcode-mapping opcode=${msg.opcode} side=$side"
+                )
                 ctx.channel().close()
                 return
             }
@@ -62,6 +71,12 @@ class GamePacketEncoder : MessageToByteEncoder<OpcodeWithBuffer>() {
             }
         } catch (e: Exception) {
             logger.error(e) { "on side $side" }
+            ctx.channel().attr(RSChannelAttributes.CONNECTED_CLIENT).get()?.traceBootstrap(
+                "world-encoder-close remote=${ctx.channel().remoteAddress()} stage=${bootstrapStage(ctx.channel())} " +
+                    "reason=encode-exception opcode=${msg.opcode} side=$side " +
+                    "type=${e::class.qualifiedName ?: e::class.simpleName ?: "unknown"} " +
+                    "message=${e.message ?: "<none>"}"
+            )
             ctx.channel().close()
         }
     }

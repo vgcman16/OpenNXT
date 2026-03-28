@@ -195,7 +195,7 @@ class LoginClientHandler : SimpleChannelInboundHandler<LoginPacket>() {
 
                     // we want to be admin at all times >:D
                     passthrough.writeAndFlush(
-                        msg.copy(rights = 2, defaultWorld = OpenNXT.config.hostname)
+                        msg.copy(rights = 2, defaultWorld = OpenNXT.config.gameHostname)
                     ).addListener {
                         if (!it.isSuccess) {
                             logger.error(it.cause()) { "???" }

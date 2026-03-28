@@ -1,0 +1,363 @@
+{
+  "label": "crash",
+  "normalizedOutcome": "short_loop",
+  "note": "Crash-edge short session in the same unstable family.",
+  "role": "crash",
+  "session": {
+    "clientOpcodeCounts": {
+      "48": 2,
+      "106": 1,
+      "113": 1
+    },
+    "durationSeconds": 3.596,
+    "endLine": 121766,
+    "endTimestamp": "2026-03-14T00:12:31.789402500Z",
+    "eventCount": 19,
+    "events": [
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon",
+          "stage": "appearance"
+        },
+        "kind": "world-stage",
+        "lineNumber": 121748,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-14T00:12:28.192981100Z world-stage name=demon stage=appearance",
+        "stage": "appearance",
+        "timestamp": "2026-03-14T00:12:28.192981100Z"
+      },
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon",
+          "stage": "login-response"
+        },
+        "kind": "world-stage",
+        "lineNumber": 121749,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-14T00:12:28.288145600Z world-stage name=demon stage=login-response",
+        "stage": "login-response",
+        "timestamp": "2026-03-14T00:12:28.288145600Z"
+      },
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon",
+          "stage": "pipeline-switch"
+        },
+        "kind": "world-stage",
+        "lineNumber": 121750,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-14T00:12:28.291431400Z world-stage name=demon stage=pipeline-switch",
+        "stage": "pipeline-switch",
+        "timestamp": "2026-03-14T00:12:28.291431400Z"
+      },
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon",
+          "stage": "rebuild"
+        },
+        "kind": "world-stage",
+        "lineNumber": 121751,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-14T00:12:28.294930400Z world-stage name=demon stage=rebuild",
+        "stage": "rebuild",
+        "timestamp": "2026-03-14T00:12:28.294930400Z"
+      },
+      {
+        "bytes": 5137,
+        "data": {
+          "bytes": "5137",
+          "opcode": "39",
+          "preview": "0c96325b00003000030000300003000030000300003000030000300003000030",
+          "remote": "/127.0.0.1:51233",
+          "stage": "rebuild"
+        },
+        "kind": "send-raw",
+        "lineNumber": 121752,
+        "opcode": 39,
+        "playerName": "",
+        "preview": "0c96325b00003000030000300003000030000300003000030000300003000030",
+        "raw": "2026-03-14T00:12:28.310557300Z send-raw opcode=39 bytes=5137 remote=/127.0.0.1:51233 stage=rebuild preview=0c96325b00003000030000300003000030000300003000030000300003000030",
+        "stage": "rebuild",
+        "timestamp": "2026-03-14T00:12:28.310557300Z"
+      },
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon"
+        },
+        "kind": "world-waiting-map-build-complete",
+        "lineNumber": 121753,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-14T00:12:28.314072300Z world-waiting-map-build-complete name=demon",
+        "stage": "",
+        "timestamp": "2026-03-14T00:12:28.314072300Z"
+      },
+      {
+        "bytes": 6,
+        "data": {
+          "bytes": "6",
+          "opcode": "106",
+          "preview": "02050002d002",
+          "remote": "/127.0.0.1:51233",
+          "stage": "rebuild"
+        },
+        "kind": "recv-raw",
+        "lineNumber": 121754,
+        "opcode": 106,
+        "playerName": "",
+        "preview": "02050002d002",
+        "raw": "2026-03-14T00:12:28.382265500Z recv-raw opcode=106 bytes=6 remote=/127.0.0.1:51233 stage=rebuild preview=02050002d002",
+        "stage": "rebuild",
+        "timestamp": "2026-03-14T00:12:28.382265500Z"
+      },
+      {
+        "bytes": 246,
+        "data": {
+          "bytes": "246",
+          "opcode": "48",
+          "preview": "0959ffff02060258e52e0201025983b44c83fa4e83d4773fa73a6f38bb37ee37",
+          "remote": "/127.0.0.1:51233",
+          "stage": "rebuild"
+        },
+        "kind": "recv-raw",
+        "lineNumber": 121755,
+        "opcode": 48,
+        "playerName": "",
+        "preview": "0959ffff02060258e52e0201025983b44c83fa4e83d4773fa73a6f38bb37ee37",
+        "raw": "2026-03-14T00:12:28.384260700Z recv-raw opcode=48 bytes=246 remote=/127.0.0.1:51233 stage=rebuild preview=0959ffff02060258e52e0201025983b44c83fa4e83d4773fa73a6f38bb37ee37",
+        "stage": "rebuild",
+        "timestamp": "2026-03-14T00:12:28.384260700Z"
+      },
+      {
+        "bytes": 8,
+        "data": {
+          "bytes": "8",
+          "opcode": "48",
+          "preview": "050237e238211821",
+          "remote": "/127.0.0.1:51233",
+          "stage": "rebuild"
+        },
+        "kind": "recv-raw",
+        "lineNumber": 121756,
+        "opcode": 48,
+        "playerName": "",
+        "preview": "050237e238211821",
+        "raw": "2026-03-14T00:12:28.397122600Z recv-raw opcode=48 bytes=8 remote=/127.0.0.1:51233 stage=rebuild preview=050237e238211821",
+        "stage": "rebuild",
+        "timestamp": "2026-03-14T00:12:28.397122600Z"
+      },
+      {
+        "bytes": 4,
+        "data": {
+          "bytes": "4",
+          "opcode": "113",
+          "preview": "000000e4",
+          "remote": "/127.0.0.1:51233",
+          "stage": "rebuild"
+        },
+        "kind": "recv-raw",
+        "lineNumber": 121757,
+        "opcode": 113,
+        "playerName": "",
+        "preview": "000000e4",
+        "raw": "2026-03-14T00:12:28.399124600Z recv-raw opcode=113 bytes=4 remote=/127.0.0.1:51233 stage=rebuild preview=000000e4",
+        "stage": "rebuild",
+        "timestamp": "2026-03-14T00:12:28.399124600Z"
+      },
+      {
+        "bytes": 6,
+        "data": {
+          "awaitingMapBuildComplete": "true",
+          "awaitingWorldReadySignal": "false",
+          "bytes": "6",
+          "name": "demon",
+          "opcode": "106",
+          "preview": "02050002d002"
+        },
+        "kind": "world-ignore-client-display",
+        "lineNumber": 121758,
+        "opcode": 106,
+        "playerName": "demon",
+        "preview": "02050002d002",
+        "raw": "2026-03-14T00:12:28.794626700Z world-ignore-client-display name=demon opcode=106 bytes=6 awaitingMapBuildComplete=true awaitingWorldReadySignal=false preview=02050002d002",
+        "stage": "",
+        "timestamp": "2026-03-14T00:12:28.794626700Z"
+      },
+      {
+        "bytes": 246,
+        "data": {
+          "awaitingMapBuildComplete": "true",
+          "awaitingWorldReadySignal": "false",
+          "bytes": "246",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "0959ffff02060258e52e0201025983b44c83fa4e83d4773f"
+        },
+        "kind": "world-ignore-client-compat",
+        "lineNumber": 121759,
+        "opcode": 48,
+        "playerName": "demon",
+        "preview": "0959ffff02060258e52e0201025983b44c83fa4e83d4773f",
+        "raw": "2026-03-14T00:12:28.803412700Z world-ignore-client-compat name=demon opcode=48 bytes=246 awaitingMapBuildComplete=true awaitingWorldReadySignal=false preview=0959ffff02060258e52e0201025983b44c83fa4e83d4773f",
+        "stage": "",
+        "timestamp": "2026-03-14T00:12:28.803412700Z"
+      },
+      {
+        "bytes": 8,
+        "data": {
+          "awaitingMapBuildComplete": "true",
+          "awaitingWorldReadySignal": "false",
+          "bytes": "8",
+          "name": "demon",
+          "opcode": "48",
+          "preview": "050237e238211821"
+        },
+        "kind": "world-ignore-client-compat",
+        "lineNumber": 121760,
+        "opcode": 48,
+        "playerName": "demon",
+        "preview": "050237e238211821",
+        "raw": "2026-03-14T00:12:28.806001400Z world-ignore-client-compat name=demon opcode=48 bytes=8 awaitingMapBuildComplete=true awaitingWorldReadySignal=false preview=050237e238211821",
+        "stage": "",
+        "timestamp": "2026-03-14T00:12:28.806001400Z"
+      },
+      {
+        "bytes": 4,
+        "data": {
+          "bytes": "4",
+          "name": "demon",
+          "opcode": "113",
+          "preview": "000000e4"
+        },
+        "kind": "world-compat-map-build",
+        "lineNumber": 121761,
+        "opcode": 113,
+        "playerName": "demon",
+        "preview": "000000e4",
+        "raw": "2026-03-14T00:12:28.811221600Z world-compat-map-build name=demon opcode=113 bytes=4 preview=000000e4",
+        "stage": "",
+        "timestamp": "2026-03-14T00:12:28.811221600Z"
+      },
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon",
+          "stage": "stats"
+        },
+        "kind": "world-stage",
+        "lineNumber": 121762,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-14T00:12:28.813735400Z world-stage name=demon stage=stats",
+        "stage": "stats",
+        "timestamp": "2026-03-14T00:12:28.813735400Z"
+      },
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon",
+          "stage": "default-state"
+        },
+        "kind": "world-stage",
+        "lineNumber": 121763,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-14T00:12:28.864421400Z world-stage name=demon stage=default-state",
+        "stage": "default-state",
+        "timestamp": "2026-03-14T00:12:28.864421400Z"
+      },
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon",
+          "stage": "interfaces"
+        },
+        "kind": "world-stage",
+        "lineNumber": 121764,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-14T00:12:28.875836400Z world-stage name=demon stage=interfaces",
+        "stage": "interfaces",
+        "timestamp": "2026-03-14T00:12:28.875836400Z"
+      },
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon"
+        },
+        "kind": "world-waiting-ready-signal",
+        "lineNumber": 121765,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-14T00:12:28.883738800Z world-waiting-ready-signal name=demon",
+        "stage": "",
+        "timestamp": "2026-03-14T00:12:28.883738800Z"
+      },
+      {
+        "bytes": null,
+        "data": {
+          "name": "demon"
+        },
+        "kind": "world-added",
+        "lineNumber": 121766,
+        "opcode": null,
+        "playerName": "demon",
+        "preview": "",
+        "raw": "2026-03-14T00:12:31.789402500Z world-added name=demon",
+        "stage": "",
+        "timestamp": "2026-03-14T00:12:31.789402500Z"
+      }
+    ],
+    "markerCounts": {
+      "world-added": 1,
+      "world-compat-map-build": 1,
+      "world-ignore-client-compat": 2,
+      "world-ignore-client-display": 1,
+      "world-waiting-map-build-complete": 1,
+      "world-waiting-ready-signal": 1
+    },
+    "playerName": "demon",
+    "serverOpcodeCounts": {
+      "39": 1
+    },
+    "stageCounts": {
+      "appearance": 1,
+      "default-state": 1,
+      "interfaces": 1,
+      "login-response": 1,
+      "pipeline-switch": 1,
+      "rebuild": 1,
+      "stats": 1
+    },
+    "stageSequence": [
+      "appearance",
+      "login-response",
+      "pipeline-switch",
+      "rebuild",
+      "stats",
+      "default-state",
+      "interfaces"
+    ],
+    "startLine": 121748,
+    "startTimestamp": "2026-03-14T00:12:28.192981100Z"
+  },
+  "window": "121748:121766"
+}

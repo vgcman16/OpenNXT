@@ -3,6 +3,7 @@ package com.opennxt.resources
 import com.opennxt.resources.config.enums.EnumDefinition
 import com.opennxt.resources.config.params.ParamDefinition
 import com.opennxt.resources.config.structs.StructDefinition
+import com.opennxt.resources.config.varbits.VarbitDefinition
 import com.opennxt.resources.config.vars.impl.VarClanDefinition
 import com.opennxt.resources.config.vars.impl.VarClanSettingDefinition
 import com.opennxt.resources.config.vars.impl.VarClientDefinition
@@ -25,6 +26,7 @@ enum class ResourceType(val identifier: String, val kclass: KClass<*>) {
     VAR_OBJECT("var-object", VarObjectDefinition::class),
     VAR_CLAN("var-clan", VarClanDefinition::class),
     VAR_CLAN_SETTING("var-clan-setting", VarClanSettingDefinition::class),
+    VARBIT("varbit", VarbitDefinition::class),
     ;
 
     companion object {

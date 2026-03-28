@@ -2,12 +2,14 @@ package com.opennxt.tools.impl
 
 import com.github.ajalt.clikt.parameters.options.defaultLazy
 import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.types.int
 import com.google.common.io.ByteStreams
 import com.opennxt.Constants
 import com.opennxt.config.RsaConfig
 import com.opennxt.config.ServerConfig
 import com.opennxt.config.TomlConfig
+import com.opennxt.ext.indexOf
 import com.opennxt.ext.replaceFirst
 import com.opennxt.model.files.BinaryType
 import com.opennxt.model.files.ClientConfig
@@ -33,10 +35,81 @@ class ClientPatcher :
     Tool("client-patcher", "Patches all clients and configs files. Uses most recent revision by default") {
 
     private val RUNESCAPE_REGEX = "^https?://[a-z0-9\\-]*\\.?runescape.com(:[0-9]+)?/\u0000"
-    private val RUNESCAPE_CONFIG_URL = "http://www.runescape.com/k=5/l=$(Language:0)/jav_config.ws\u0000"
+    private val RUNESCAPE_CONFIG_URLS = listOf(
+        "http://www.runescape.com/k=5/l=$(Language:0)/jav_config.ws",
+        "https://rs.config.runescape.com/k=5/l=$(Language:0)/jav_config.ws"
+    )
     private val ASCII = Charsets.US_ASCII
 
     private val PATCHED_REGEX = "^.*"
+    private data class BinaryPatch(
+        val offset: Int,
+        val expected: ByteArray,
+        val replacement: ByteArray,
+        val description: String
+    )
+
+    private val secureWorldValidationBypassPatches = mapOf(
+        BinaryType.WIN64C to listOf(
+            BinaryPatch(
+                offset = 0x648b4b,
+                expected = byteArrayOf(0x4d, 0x8b.toByte(), 0xc7.toByte()),
+                replacement = byteArrayOf(0x45, 0x33, 0xc0.toByte()),
+                description = "Clear secure world Schannel target principal"
+            ),
+            BinaryPatch(
+                offset = 0x648d56,
+                expected = byteArrayOf(0x0f, 0x84.toByte(), 0x26, 0x01, 0x00, 0x00),
+                replacement = byteArrayOf(0xe9.toByte(), 0x27, 0x01, 0x00, 0x00, 0x90.toByte()),
+                description = "Skip secure world pinned public key validation block"
+            ),
+            BinaryPatch(
+                offset = 0x648e8a,
+                expected = byteArrayOf(0x0f, 0x84.toByte(), 0x98.toByte(), 0x00, 0x00, 0x00),
+                replacement = byteArrayOf(0xe9.toByte(), 0x99.toByte(), 0x00, 0x00, 0x00, 0x90.toByte()),
+                description = "Skip secure world certificate validation branch"
+            ),
+            BinaryPatch(
+                offset = 0xe9a12,
+                expected = byteArrayOf(
+                    0x83.toByte(), 0x38, 0x00,
+                    0x75, 0x04,
+                    0xc6.toByte(), 0x46, 0x48, 0x00,
+                    0x8b.toByte(), 0x00,
+                    0x85.toByte(), 0xc0.toByte(),
+                    0x74, 0x75,
+                    0x83.toByte(), 0xf8.toByte(), 0x01,
+                    0x75, 0x70
+                ),
+                replacement = byteArrayOf(
+                    0x48, 0x85.toByte(), 0xc0.toByte(),
+                    0x74, 0x7f,
+                    0x8b.toByte(), 0x00,
+                    0x85.toByte(), 0xc0.toByte(),
+                    0x74, 0x79,
+                    0x83.toByte(), 0xf8.toByte(), 0x01,
+                    0x75, 0x74,
+                    0x90.toByte(), 0x90.toByte(), 0x90.toByte(), 0x90.toByte()
+                ),
+                description = "Treat null secure world status pointers as handshake failure instead of crashing"
+            ),
+            BinaryPatch(
+                offset = 0x1405e0,
+                expected = byteArrayOf(
+                    0x40, 0x53,
+                    0x48, 0x83.toByte(), 0xec.toByte(), 0x20,
+                    0x48, 0x8b.toByte(), 0x42, 0x18
+                ),
+                replacement = byteArrayOf(
+                    0x53,
+                    0x48, 0x83.toByte(), 0xec.toByte(), 0x20,
+                    0xe9.toByte(), 0x70, 0x00, 0x00, 0x00
+                ),
+                description = "Skip crashing secure world decoder that feeds uninitialized 0x68-byte entries"
+            )
+        )
+    )
+
     private val nativeRuntimeFiles = listOf(
         "chrome_100_percent.pak",
         "chrome_200_percent.pak",
@@ -72,12 +145,24 @@ class ClientPatcher :
             version
         }
 
+    private val skipLauncher by option(
+        help = "Skip patching launcher binaries and only patch client/config files."
+    ).flag(default = false)
+
     var oldJs5: ByteArray? = null
     var oldLogin: ByteArray? = null
     var oldLauncher: ByteArray? = null
 
     lateinit var rsaConfig: RsaConfig
     lateinit var serverConfig: ServerConfig
+
+    private fun shouldSkipJs5Patch(): Boolean {
+        return System.getenv("OPENNXT_SKIP_JS5_CLIENT_PATCH")
+            ?.trim()
+            ?.lowercase()
+            ?.let { it == "1" || it == "true" || it == "yes" }
+            ?: false
+    }
 
     override fun runTool() {
         logger.info { "Patching clients for version $version" }
@@ -96,11 +181,6 @@ class ClientPatcher :
 
         serverConfig = TomlConfig.load(ServerConfig.DEFAULT_PATH)
         logger.info { "Using server config from ${ServerConfig.DEFAULT_PATH}" }
-
-        if (serverConfig.configUrl.length >= RUNESCAPE_CONFIG_URL.length) {
-            logger.error { "Server config URL length is greater than RuneScape config URL" }
-            exitProcess(1)
-        }
 
         BinaryType.values().forEach { type ->
             val fromDirectory =
@@ -136,6 +216,11 @@ class ClientPatcher :
             }
         }
 
+        if (skipLauncher) {
+            logger.info { "Skipping launcher patching because --skip-launcher was requested" }
+            return
+        }
+
         logger.info { "Patching launchers from ${Constants.LAUNCHERS_PATH}" }
         if (!Files.exists(Constants.LAUNCHERS_PATH) || Files.list(Constants.LAUNCHERS_PATH).count() == 0L) {
             logger.warn { "No launchers found in ${Constants.LAUNCHERS_PATH}" }
@@ -157,6 +242,7 @@ class ClientPatcher :
 
             logger.info { "Patching launcher $from to $to" }
             patchLauncher(from, to)
+            copyLauncherRuntimeCompanions(type)
         }
     }
 
@@ -172,6 +258,28 @@ class ClientPatcher :
         }
 
         logger.info { "Syncing native runtime companion files for $type from $launcherRoot" }
+
+        nativeRuntimeFiles.forEach { name ->
+            val source = launcherRoot.resolve(name)
+            val destination = toDirectory.resolve(name)
+            if (!Files.exists(source) || Files.exists(destination)) {
+                return@forEach
+            }
+            Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING)
+        }
+
+        copyDirectoryIfExists(launcherRoot.resolve("locales"), toDirectory.resolve("locales"))
+        copyDirectoryIfExists(launcherRoot.resolve("swiftshader"), toDirectory.resolve("swiftshader"))
+    }
+
+    private fun copyLauncherRuntimeCompanions(toDirectory: Path) {
+        val launcherRoot = findLauncherRoot()
+        if (launcherRoot == null) {
+            logger.warn { "Could not find a Jagex Launcher install root; skipping launcher runtime companion copy" }
+            return
+        }
+
+        logger.info { "Syncing launcher runtime companion files from $launcherRoot" }
 
         nativeRuntimeFiles.forEach { name ->
             val source = launcherRoot.resolve(name)
@@ -215,9 +323,12 @@ class ClientPatcher :
     }
 
     private fun patchConfig(type: BinaryType, config: ClientConfig, filesPath: Path) {
-        // Preserve the live host/port transport layout from Jagex. The local world destination is
-        // supplied later by the lobby login response, and forcing pre-login transport params to the
-        // local server can strand the native client on the loading screen before login UI renders.
+        // Keep the original secure hostnames intact so the client still validates against
+        // RuneScape endpoints on the secure path. We only rewrite the game socket ports here;
+        // hostname interception is handled externally when needed.
+        for (param in listOf(41, 43, 45, 47)) {
+            config["param=$param"] = serverConfig.ports.game.toString()
+        }
 
         config.getFiles().forEach { file ->
             val data = Files.readAllBytes(filesPath.resolve(file.name))
@@ -230,8 +341,34 @@ class ClientPatcher :
         ClientConfig.save(config, filesPath.resolve("jav_config.ws"))
     }
 
+    private fun applyBinaryPatch(raw: ByteArray, type: BinaryType, patch: BinaryPatch): Boolean {
+        val end = patch.offset + patch.expected.size
+        if (end > raw.size || patch.replacement.size != patch.expected.size) {
+            logger.warn { "Invalid ${patch.description} patch definition for $type at 0x${patch.offset.toString(16)}" }
+            return false
+        }
+
+        val window = raw.copyOfRange(patch.offset, end)
+        if (window.contentEquals(patch.replacement)) {
+            logger.info { "${patch.description} already present for $type at 0x${patch.offset.toString(16)}" }
+            return true
+        }
+
+        if (!window.contentEquals(patch.expected)) {
+            logger.warn {
+                "Skipping ${patch.description} for $type at 0x${patch.offset.toString(16)} because bytes did not match"
+            }
+            return false
+        }
+
+        patch.replacement.copyInto(raw, patch.offset)
+        logger.info { "Applied ${patch.description} for $type at 0x${patch.offset.toString(16)}" }
+        return true
+    }
+
     private fun patchFile(type: BinaryType, from: Path, to: Path, isClient: Boolean) {
         val raw = Files.readAllBytes(from)
+        val skipJs5Patch = shouldSkipJs5Patch()
 
         // nothing to patch in non-client files
         if (!isClient) {
@@ -239,7 +376,7 @@ class ClientPatcher :
             return
         }
 
-        if (oldJs5 == null) {
+        if (!skipJs5Patch && oldJs5 == null) {
             val key = RSAUtil.findRSAKey(raw, 4096)
             if (key == null) {
                 logger.warn { "Failed to find js5 RSA key in $from - copying file unchanged" }
@@ -261,7 +398,9 @@ class ClientPatcher :
             logger.info { "Jagex public login key: ${key.toString(16)}" }
         }
 
-        if (!raw.replaceFirst(oldJs5!!, rsaConfig.js5.modulus.toString(16).toByteArray())) {
+        if (skipJs5Patch) {
+            logger.warn { "Skipping js5 key patch in ${type.name} file $from because OPENNXT_SKIP_JS5_CLIENT_PATCH is enabled" }
+        } else if (!raw.replaceFirst(oldJs5!!, rsaConfig.js5.modulus.toString(16).toByteArray())) {
             logger.warn { "Failed to patch js5 key in ${type.name} file $from - copying file unchanged" }
             Files.write(to, raw)
             return
@@ -273,11 +412,19 @@ class ClientPatcher :
             return
         }
 
+        secureWorldValidationBypassPatches[type]?.forEach { patch ->
+            applyBinaryPatch(raw, type, patch)
+        }
+
         Files.write(to, raw)
     }
 
     private fun patchLauncher(from: Path, to: Path) {
         val raw = Files.readAllBytes(from)
+
+        if (serverConfig.configUrl.length >= RUNESCAPE_CONFIG_URLS.maxOf { it.length }) {
+            throw RuntimeException("Failed to patch launcher config url in $from because server config URL is too long")
+        }
 
         if (oldLauncher == null) {
             val key = RSAUtil.findRSAKey(raw, 4096)
@@ -294,11 +441,22 @@ class ClientPatcher :
         if (!raw.replaceFirst(RUNESCAPE_REGEX.toByteArray(ASCII), "${PATCHED_REGEX}\u0000".toByteArray(ASCII)))
             throw RuntimeException("Failed to patch launcher regex in $from")
 
-        if (!raw.replaceFirst(
-                RUNESCAPE_CONFIG_URL.toByteArray(ASCII),
-                "${serverConfig.configUrl}\u0000".toByteArray(ASCII)
-            )
-        )
+        val replacementConfigUrl = serverConfig.configUrl.toByteArray(ASCII)
+        val patchedConfigUrl = RUNESCAPE_CONFIG_URLS.any { configUrl ->
+            val needle = configUrl.toByteArray(ASCII)
+            val index = raw.indexOf(needle)
+            if (index == -1) {
+                return@any false
+            }
+
+            for (offset in needle.indices) {
+                raw[index + offset] = 0
+            }
+            replacementConfigUrl.copyInto(raw, index)
+            true
+        }
+
+        if (!patchedConfigUrl)
             throw RuntimeException("Failed to patch launcher config url in $from")
 
         Files.write(to, raw)

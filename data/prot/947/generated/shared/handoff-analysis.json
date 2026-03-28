@@ -1,0 +1,941 @@
+{
+  "build": 946,
+  "notes": [
+    "Sender-aid output was used to normalize mixed-encoding decomp evidence.",
+    "One or more suspects currently look like periodic/state-report traffic rather than a direct handoff blocker."
+  ],
+  "playerInfo": {
+    "appearanceBurstPresent": true,
+    "encoderEvidence": {
+      "exists": true,
+      "notes": [
+        "The first world frame must include the local player's appearance block or the client can sit on the loading screen with a valid world connection but nothing to render."
+      ],
+      "sendAppearanceUpdates": true,
+      "sourceFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\main\\kotlin\\com\\opennxt\\model\\entity\\updating\\PlayerInfoEncoder.kt"
+    },
+    "firstLargeSendSize": 64,
+    "largestSize": 64,
+    "needsReview": true,
+    "opcode": 42,
+    "recommendedNextAction": "Verify why PLAYER_INFO collapses to repeated 3-byte frames after the initial appearance burst.",
+    "repeatedTinyFrameCount": 3040,
+    "repeatedTinyFrames": true,
+    "samplePreviews": [
+      {
+        "bytes": 64,
+        "lineNumber": 172354,
+        "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+        "stage": "interfaces"
+      },
+      {
+        "bytes": 64,
+        "lineNumber": 172361,
+        "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+        "stage": "interfaces"
+      },
+      {
+        "bytes": 64,
+        "lineNumber": 172387,
+        "preview": "c07ff401c500ff0003006e6f6d65648b0a000000000000000000000000000000",
+        "stage": "interfaces"
+      }
+    ],
+    "sizes": [
+      64,
+      64,
+      64,
+      64,
+      3,
+      3,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "smallestSize": 3,
+    "stageDistribution": {
+      "interfaces": 3067
+    }
+  },
+  "session": {
+    "clientOpcodeCounts": {
+      "0": 2,
+      "17": 6,
+      "48": 7,
+      "83": 3
+    },
+    "durationSeconds": 1839.606,
+    "endLine": 181650,
+    "endTimestamp": "2026-03-22T08:14:50.157716900Z",
+    "eventCount": 7557,
+    "exists": true,
+    "markerCounts": {
+      "world-accept-late-scene-ready-signal": 4,
+      "world-arm-scene-start-sync-burst": 12,
+      "world-await-late-scene-ready-signal": 1,
+      "world-awaiting-ready-signal": 1,
+      "world-bind-local-player-model": 1,
+      "world-clear-post-initial-sync-hold": 1,
+      "world-client-bootstrap-blob": 1,
+      "world-client-bootstrap-control": 11,
+      "world-client-display-config": 5,
+      "world-close-loading-overlay": 1,
+      "world-continue-await-late-scene-ready-signal": 3,
+      "world-defer-deferred-completion-announcement-scripts": 1,
+      "world-defer-deferred-completion-event-delta": 1,
+      "world-defer-deferred-completion-event-delta-phase3-until-late-ready": 1,
+      "world-defer-forced-fallback-completion-companions": 1,
+      "world-defer-forced-fallback-light-tail": 1,
+      "world-defer-forced-fallback-supplemental-children": 1,
+      "world-defer-late-root-interface-events": 1,
+      "world-force-local-appearance": 27,
+      "world-force-minimal-interface-bootstrap": 1,
+      "world-hold-keepalive": 4,
+      "world-hold-post-initial-sync": 4,
+      "world-ignore-client-compat": 11,
+      "world-keep-post-initial-sync-hold": 1,
+      "world-map-build-complete-compat": 1,
+      "world-open-loading-notes": 1,
+      "world-open-minimal-child": 1,
+      "world-open-minimal-supplemental-child": 2,
+      "world-queue-deferred-completion-tail": 1,
+      "world-ready-signal": 1,
+      "world-ready-signal-accelerate-followup": 1,
+      "world-ready-signal-consume-delayed": 1,
+      "world-ready-signal-consume-latched": 1,
+      "world-ready-signal-deferred": 1,
+      "world-ready-signal-latched": 1,
+      "world-ready-wait-keepalive": 1,
+      "world-recv-serverperm-varcs": 2,
+      "world-send-deferred-completion-announcement-scripts": 1,
+      "world-send-deferred-completion-announcement-scripts-after-late-ready": 1,
+      "world-send-deferred-completion-event-delta-after-scene-start": 1,
+      "world-send-deferred-completion-event-delta-phase2-after-scene-start": 1,
+      "world-send-deferred-completion-event-delta-phase3-after-late-ready": 1,
+      "world-send-deferred-completion-structure": 1,
+      "world-send-deferred-completion-tail": 1,
+      "world-send-deferred-completion-tail-after-sync": 1,
+      "world-send-deferred-forced-fallback-completion-companions": 1,
+      "world-send-deferred-light-tail-scripts-after-scene-start": 1,
+      "world-send-forced-fallback-completion-companion-events-after-late-ready": 1,
+      "world-send-forced-fallback-completion-structure-events-after-late-ready": 1,
+      "world-send-forced-fallback-deferred-completion-scripts": 1,
+      "world-send-forced-fallback-light-tail-events-after-late-ready": 1,
+      "world-send-forced-fallback-supplemental-events-after-late-ready": 1,
+      "world-send-immediate-followup-sync": 1,
+      "world-send-late-root-interface-events": 1,
+      "world-send-late-root-interface-events-after-late-ready": 1,
+      "world-send-late-scene-ready-followup": 4,
+      "world-send-light-interface-tail": 1,
+      "world-send-minimal-varcs": 1,
+      "world-send-npc-info": 66,
+      "world-send-player-info": 66,
+      "world-send-rebuild-tail": 1,
+      "world-send-scene-start-sync-burst": 19,
+      "world-send-serverperm-ack-candidate": 2,
+      "world-skip-active-player": 1,
+      "world-skip-close-loading-overlay": 1,
+      "world-skip-deferred-default-varps": 1,
+      "world-skip-forced-fallback-completion-companions": 1,
+      "world-skip-forced-fallback-deferred-completion-events": 1,
+      "world-skip-forced-fallback-light-tail-events": 1,
+      "world-skip-forced-fallback-light-tail-scripts": 1,
+      "world-skip-forced-fallback-supplemental-events": 1,
+      "world-skip-init-state": 1,
+      "world-skip-stats": 1,
+      "world-sync-frame": 66,
+      "world-waiting-map-build-complete": 1
+    },
+    "playerName": "demon",
+    "serverOpcodeCounts": {
+      "28": 3067,
+      "38": 30,
+      "39": 1,
+      "42": 3067,
+      "45": 8,
+      "50": 1,
+      "57": 5,
+      "59": 581,
+      "106": 1,
+      "126": 1,
+      "128": 4,
+      "131": 362,
+      "141": 36,
+      "206": 2
+    },
+    "stageCounts": {
+      "appearance": 1,
+      "default-state": 1,
+      "interfaces": 1,
+      "login-response": 1,
+      "pipeline-switch": 1,
+      "rebuild": 1,
+      "stats": 1
+    },
+    "stageSequence": [
+      "appearance",
+      "login-response",
+      "pipeline-switch",
+      "rebuild",
+      "stats",
+      "default-state",
+      "interfaces"
+    ],
+    "startLine": 172294,
+    "startTimestamp": "2026-03-22T07:44:10.551786300Z"
+  },
+  "sources": {
+    "decompLogDir": "C:\\Users\\Demon\\Documents\\New project\\ghidra-projects",
+    "phase3NameCandidates": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase3\\nameCandidates.json",
+    "phase5GeneratedPackets": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase5\\generatedPackets.json",
+    "playerInfoEncoder": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\main\\kotlin\\com\\opennxt\\model\\entity\\updating\\PlayerInfoEncoder.kt",
+    "senderAnalysisJson": "",
+    "sharedEvidenceIndex": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\evidence-index.json",
+    "sharedVerifiedPackets": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\verified-packets.json",
+    "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log"
+  },
+  "status": "partial",
+  "suspects": [
+    {
+      "candidateStatus": "draft",
+      "coverageStatus": "unresolved",
+      "decompLog": {
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-0\\decompile.stdout.log",
+        "snippet": [
+          "  }",
+          "  return;",
+          "}",
+          " (GhidraScript)",
+          "WARNING: A terminally deprecated method in sun.misc.Unsafe has been called",
+          "WARNING: sun.misc.Unsafe::staticFieldOffset has been called by org.apache.felix.framework.util.SecureAction (file:/C:/Users/Demon/Tools/ghidra/ghidra_12.0.4_PUBLIC/Ghidra/Features/Base/lib/org.apache.felix.framework-7.0.5.jar)",
+          "WARNING: Please consider reporting this to the maintainers of class org.apache.felix.framework.util.SecureAction",
+          "WARNING: sun.misc.Unsafe::staticFieldOffset will be removed in a future release"
+        ],
+        "status": "clean"
+      },
+      "family": "",
+      "firstSeenStage": "rebuild",
+      "hasManualRegistration": false,
+      "lastSeenStage": "interfaces",
+      "observedCount": 2,
+      "observedStageCounts": {
+        "interfaces": 1,
+        "rebuild": 1
+      },
+      "opcode": 0,
+      "packetName": "",
+      "parserFunction": "",
+      "parserTarget": "",
+      "recommendedNextAction": "Treat opcode 0 as handled bootstrap traffic unless a later behavioral diff proves it still needs semantics.",
+      "runtimeMarkers": {
+        "handled": 2
+      },
+      "samplePreviews": [
+        {
+          "bytes": 1291,
+          "lineNumber": 172303,
+          "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+          "stage": "rebuild"
+        },
+        {
+          "bytes": 139,
+          "lineNumber": 172389,
+          "preview": "010b2f29ffffff1ff500ff00001ff8001602121ff91363d0001b34ffffffff0c",
+          "stage": "interfaces"
+        }
+      ],
+      "senderAddress": "14014dba0",
+      "senderAid": {
+        "artifacts": {
+          "callerStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-0\\callers.stderr.log",
+          "callerStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-0\\callers.stdout.log",
+          "decompileStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-0\\decompile.stderr.log",
+          "decompileStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-0\\decompile.stdout.log",
+          "perOpcodeDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-0",
+          "requestedCallerStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-0\\callers.requested.stderr.log",
+          "requestedCallerStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-0\\callers.requested.stdout.log",
+          "resolvedCallerStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-0\\callers.resolved.stderr.log",
+          "resolvedCallerStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-0\\callers.resolved.stdout.log"
+        },
+        "callerChain": [],
+        "callerLookupAddress": "14014dba0",
+        "callerLookupFunction": "FUN_14014dba0",
+        "callerLookupSource": "requested-address",
+        "callerRefs": [],
+        "cloneCleanupError": "",
+        "cloneCleanupStatus": "cleaned",
+        "cloneStrategy": "disposable-project-clone",
+        "decompSnippet": [
+          "  }",
+          "  return;",
+          "}",
+          " (GhidraScript)",
+          "WARNING: A terminally deprecated method in sun.misc.Unsafe has been called",
+          "WARNING: sun.misc.Unsafe::staticFieldOffset has been called by org.apache.felix.framework.util.SecureAction (file:/C:/Users/Demon/Tools/ghidra/ghidra_12.0.4_PUBLIC/Ghidra/Features/Base/lib/org.apache.felix.framework-7.0.5.jar)",
+          "WARNING: Please consider reporting this to the maintainers of class org.apache.felix.framework.util.SecureAction",
+          "WARNING: sun.misc.Unsafe::staticFieldOffset will be removed in a future release"
+        ],
+        "decompiledBody": "void FUN_14014dab0(longlong param_1,longlong param_2)\n\n{\n  int iVar1;\n  short sVar2;\n  undefined4 uVar3;\n  int iVar4;\n  undefined8 *puVar5;\n  int *piVar6;\n  undefined8 *puVar7;\n  longlong *plVar8;\n  longlong lVar9;\n  undefined4 *puVar10;\n  int **ppiVar11;\n  longlong *plVar12;\n  longlong *plVar13;\n  longlong *plVar14;\n  ushort uVar15;\n  ulonglong uVar16;\n  undefined4 *puVar17;\n  undefined8 *puVar18;\n  longlong lVar19;\n  int *piVar20;\n  undefined4 *puVar21;\n  longlong lVar22;\n  undefined4 *puVar23;\n  longlong *plVar24;\n  undefined8 local_res20;\n  longlong *local_c8;\n  longlong local_c0;\n  undefined *local_b8;\n  undefined4 *local_b0;\n  longlong local_a8;\n  longlong *local_a0;\n  longlong local_98;\n  ulonglong local_90;\n  undefined1 local_88 [24];\n  char local_70;\n  int *local_68;\n  longlong local_60;\n  int *local_58;\n  longlong lStack_50;\n  \n  local_90 = DAT_140e55a90;\n  if (*(ulonglong *)(param_1 + 0xa0) <= DAT_140e55a90) {\n    plVar13 = (longlong *)(param_1 + 0xa8);\n    if (*plVar13 == *(longlong *)(param_1 + 0xb0)) {\n      uVar16 = *(ulonglong *)(param_1 + 0x88);\n      if (uVar16 == 0) {\n        return;\n      }\n      if ((ulonglong)((*(longlong *)(param_1 + 0xb8) - *plVar13) / 0x28) < uVar16) {\n        puVar10 = (undefined4 *)FUN_140791660(uVar16 * 0x28,0x10);\n        puVar23 = *(undefined4 **)(param_1 + 0xb0);\n        puVar21 = (undefined4 *)*plVar13;\n        puVar17 = puVar10;\n        if (puVar21 != puVar23) {\n          lVar22 = (longlong)puVar10 - (longlong)puVar21;\n          do {\n            *puVar17 = *puVar21;\n            FUN_140032200((longlong)puVar21 + lVar22 + 8);\n            puVar21 = puVar21 + 10;\n            puVar17 = puVar17 + 10;\n          } while (puVar21 != puVar23);\n        }\n        lVar22 = *(longlong *)(param_1 + 0xb0);\n        for (lVar19 = *plVar13; lVar19 != lVar22; lVar19 = lVar19 + 0x28) {\n          FUN_14001bab0(lVar19 + 8);\n        }\n        if (*plVar13 != 0) {\n          if (*(longlong *)(DAT_140e55a70 + 0x100) == *(longlong *)(DAT_140e55a70 + 0x108)) {\n            plVar14 = *(longlong **)(DAT_140e55a70 + 0x198);\n          }\n          else {\n            plVar14 = *(longlong **)(*(longlong *)(DAT_140e55a70 + 0x108) + -8);\n          }\n          if (*(longlong *)(DAT_140e55a70 + 0x1a0) == *(longlong *)(DAT_140e55a70 + 0x1a8)) {\n            uVar3 = *(undefined4 *)(DAT_140e55a70 + 0x1f8);\n          }\n          else {\n            uVar3 = *(undefined4 *)(*(longlong *)(DAT_140e55a70 + 0x1a8) + -4);\n          }\n          (**(code **)(*plVar14 + 0x20))(plVar14,*plVar13,uVar3);\n        }\n        *plVar13 = (longlong)puVar10;\n        *(undefined4 **)(param_1 + 0xb0) = puVar17;\n        *(undefined4 **)(param_1 + 0xb8) = puVar10 + uVar16 * 10;\n      }\n      FUN_14016bfb0(plVar13);\n      puVar5 = *(undefined8 **)(param_1 + 0x78);\n      piVar20 = (int *)*puVar5;\n      puVar18 = puVar5;\n      if (piVar20 == (int *)0x0) {\n        piVar20 = (int *)puVar5[1];\n        puVar7 = puVar5;\n        while (puVar18 = puVar7 + 1, piVar20 == (int *)0x0) {\n          piVar20 = (int *)puVar7[2];\n          puVar7 = puVar18;\n        }\n      }\n      if (piVar20 != (int *)puVar5[*(longlong *)(param_1 + 0x80)]) {\n        do {\n          lVar22 = *(longlong *)(param_1 + 0x18);\n          uVar16 = (ulonglong)(longlong)*piVar20 % (ulonglong)*(uint *)(param_1 + 0x20);\n          for (piVar6 = *(int **)(lVar22 + uVar16 * 8); piVar6 != (int *)0x0;\n              piVar6 = *(int **)(piVar6 + 10)) {\n            if (*piVar20 == *piVar6) {\n              local_68 = piVar6;\n              ppiVar11 = &local_68;\n              local_60 = lVar22 + uVar16 * 8;\n              goto LAB_14014dcd8;\n            }\n          }\n          local_58 = *(int **)(lVar22 + *(longlong *)(param_1 + 0x20) * 8);\n          ppiVar11 = &local_58;\n          lStack_50 = lVar22 + *(longlong *)(param_1 + 0x20) * 8;\nLAB_14014dcd8:\n          if (*ppiVar11 == *(int **)(lVar22 + *(longlong *)(param_1 + 0x20) * 8)) {\n            local_70 = '\\x04';\n          }\n          else {\n            FUN_140032530(local_88,*ppiVar11 + 2);\n          }\n          FUN_14016d5f0(plVar13,piVar20,local_88);\n          if (local_70 != '\\x04') {\n            FUN_14002cf60(local_88);\n            local_70 = '\\x04';\n          }\n          piVar20 = *(int **)(piVar20 + 2);\n          while (piVar20 == (int *)0x0) {\n            puVar5 = puVar18 + 1;\n            puVar18 = puVar18 + 1;\n            piVar20 = (int *)*puVar5;\n          }\n        } while (piVar20 !=\n                 *(int **)(*(longlong *)(param_1 + 0x78) + *(longlong *)(param_1 + 0x80) * 8));\n      }\n      *(undefined4 *)(param_1 + 0xc0) = 0;\n      FUN_1400d8e30(param_1 + 0x70);\n    }\n    if ((*plVar13 != *(longlong *)(param_1 + 0xb0)) &&\n       ((ulonglong)*(uint *)(param_1 + 0xc0) <\n        (ulonglong)((*(longlong *)(param_1 + 0xb0) - *plVar13) / 0x28))) {\n      lVar22 = *(longlong *)(param_2 + 0x19878);\n      iVar4 = *(int *)(*(longlong *)(lVar22 + 8) + 0x19f60);\n      if (((iVar4 == 0x14) || (iVar4 == 0x17)) &&\n         (((*(longlong *)(lVar22 + 0x28) != 0 &&\n           (piVar20 = *(int **)(*(longlong *)(lVar22 + 0x28) + 8), piVar20 != (int *)0x0)) &&\n          (*piVar20 == 2)))) {\n        plVar14 = (longlong *)(lVar22 + 0x20);\n      }\n      else if (((*(longlong *)(lVar22 + 0x18) == 0) ||\n               (piVar20 = *(int **)(*(longlong *)(lVar22 + 0x18) + 8), piVar20 == (int *)0x0)) ||\n              (*piVar20 != 2)) {\n        plVar14 = &DAT_140e56f00;\n      }\n      else {\n        plVar14 = (longlong *)(lVar22 + 0x10);\n      }\n      plVar24 = (longlong *)*plVar14;\n      lVar22 = plVar14[1];\n      plVar14 = plVar24 + 1;\n      if (plVar24 != (longlong *)0x0) {\n        LOCK();\n        *(int *)plVar14 = (int)*plVar14 + 1;\n        UNLOCK();\n      }\n      local_a0 = plVar24;\n      if ((lVar22 != 0) && (iVar4 = *(int *)(lVar22 + 0x2b0), iVar4 < 0x4b1)) {\n        local_res20 = *(undefined8 *)(lVar22 + 0x40);\n        local_b8 = &DAT_140e56f10;\n        FUN_1400adab0(&local_c8,&local_b8,&DAT_140e56f14,&local_res20);\n        lVar9 = local_c0;\n        *(undefined2 *)(*(longlong *)(local_c0 + 0x18) + *(longlong *)(local_c0 + 0x20)) = 0;\n        local_98 = *(longlong *)(local_c0 + 0x20) + 2;\n        *(longlong *)(local_c0 + 0x20) = *(longlong *)(local_c0 + 0x20) + 3;\n        lVar19 = *plVar13;\n        uVar16 = (ulonglong)*(uint *)(param_1 + 0xc0);\n        local_a8 = *(longlong *)(*(longlong *)(param_2 + 0x18d28) + 0x1c0);\n        if (uVar16 < (ulonglong)((*(longlong *)(param_1 + 0xb0) - lVar19) / 0x28)) {\n          do {\n            plVar24 = local_a0;\n            if (0x5dc < (ulonglong)((longlong)iVar4 + *(longlong *)(lVar9 + 0x20))) break;\n            sVar2 = *(short *)(lVar19 + uVar16 * 0x28);\n            local_b0 = (undefined4 *)(lVar19 + uVar16 * 0x28);\n            *(ushort *)(*(longlong *)(lVar9 + 0x20) + *(longlong *)(lVar9 + 0x18)) =\n                 sVar2 >> 8 & 0xffU | sVar2 << 8;\n            *(longlong *)(lVar9 + 0x20) = *(longlong *)(lVar9 + 0x20) + 2;\n            plVar12 = (longlong *)\n                      (**(code **)(**(longlong **)(local_a8 + 0x40) + 0x38))\n                                (*(longlong **)(local_a8 + 0x40),*local_b0,0);\n            plVar24 = (longlong *)*plVar12;\n            lVar19 = plVar12[1];\n            if (plVar24 != (longlong *)0x0) {\n              LOCK();\n              *(int *)(plVar24 + 1) = (int)plVar24[1] + 1;\n              UNLOCK();\n            }\n            plVar12 = *(longlong **)(*(longlong *)(lVar19 + 0x40) + 8);\n            (**(code **)(*plVar12 + 0x20))(plVar12,local_b0 + 2,lVar9 + 8);\n            if (plVar24 != (longlong *)0x0) {\n              LOCK();\n              plVar12 = plVar24 + 1;\n              lVar19 = *plVar12;\n              *(int *)plVar12 = (int)*plVar12 + -1;\n              UNLOCK();\n              if ((int)lVar19 == 1) {\n                (**(code **)(*plVar24 + 8))(plVar24);\n                LOCK();\n                piVar20 = (int *)((longlong)plVar24 + 0xc);\n                iVar1 = *piVar20;\n                *piVar20 = *piVar20 + -1;\n                UNLOCK();\n                if (iVar1 == 1) {\n                  (**(code **)(*plVar24 + 0x10))(plVar24);\n                }\n              }\n            }\n            *(int *)(param_1 + 0xc0) = *(int *)(param_1 + 0xc0) + 1;\n            lVar19 = *plVar13;\n            uVar16 = (ulonglong)*(uint *)(param_1 + 0xc0);\n            plVar24 = local_a0;\n          } while ((ulonglong)*(uint *)(param_1 + 0xc0) <\n                   (ulonglong)((*(longlong *)(param_1 + 0xb0) - lVar19) / 0x28));\n        }\n        plVar12 = local_c8;\n        uVar15 = *(short *)(lVar9 + 0x20) - (short)local_98;\n        *(ushort *)\n         ((*(longlong *)(lVar9 + 0x20) - (ulonglong)uVar15) + -2 + *(longlong *)(lVar9 + 0x18)) =\n             uVar15 * 0x100 | uVar15 >> 8;\n        *(bool *)(*(longlong *)(lVar9 + 0x18) + local_98) =\n             (ulonglong)((*(longlong *)(param_1 + 0xb0) - *plVar13) / 0x28) <=\n             (ulonglong)*(uint *)(param_1 + 0xc0);\n        if (local_c8 != (longlong *)0x0) {\n          LOCK();\n          *(int *)(local_c8 + 1) = (int)local_c8[1] + 1;\n          UNLOCK();\n        }\n        plVar13 = *(longlong **)(lVar22 + 0x58);\n        if (plVar13 == (longlong *)0x0) {\n          plVar13 = *(longlong **)(lVar22 + 0x60);\n          if (plVar13 == *(longlong **)(lVar22 + 0x68)) {\n            plVar13 = (longlong *)FUN_140791660(*(longlong *)(lVar22 + 0x70),0x10);\n          }\n          else {\n            *(longlong *)(lVar22 + 0x60) = *(longlong *)(lVar22 + 0x70) + (longlong)plVar13;\n          }\n        }\n        else {\n          *(longlong *)(lVar22 + 0x58) = *plVar13;\n        }\n        plVar8 = local_c8;\n        plVar13[3] = local_c0;\n        plVar13[2] = (longlong)plVar12;\n        if (plVar12 != (longlong *)0x0) {\n          LOCK();\n          *(int *)(plVar12 + 1) = (int)plVar12[1] + 1;\n          UNLOCK();\n          plVar12 = local_c8;\n        }\n        *plVar13 = lVar22 + 0x48;\n        plVar13[1] = *(longlong *)(lVar22 + 0x50);\n        **(undefined8 **)(lVar22 + 0x50) = plVar13;\n        *(longlong *)(lVar22 + 0x88) = *(longlong *)(lVar22 + 0x88) + 1;\n        *(longlong **)(lVar22 + 0x50) = plVar13;\n        iVar4 = *(int *)(local_c0 + 0x20);\n        *(int *)(local_c0 + 0x28) = iVar4;\n        *(undefined8 *)(local_c0 + 0x20) = 0;\n        *(int *)(lVar22 + 0x2b0) = *(int *)(lVar22 + 0x2b0) + iVar4;\n        plVar13 = (longlong *)0x0;\n        if (plVar12 != (longlong *)0x0) {\n          LOCK();\n          plVar12 = plVar12 + 1;\n          lVar22 = *plVar12;\n          *(int *)plVar12 = (int)*plVar12 + -1;\n          UNLOCK();\n          plVar13 = local_c8;\n          if ((int)lVar22 == 1) {\n            (**(code **)(*local_c8 + 8))(local_c8);\n            plVar13 = local_c8;\n            LOCK();\n            piVar20 = (int *)((longlong)plVar8 + 0xc);\n            iVar4 = *piVar20;\n            *piVar20 = *piVar20 + -1;\n            UNLOCK();\n            if (iVar4 == 1) {\n              (**(code **)(*local_c8 + 0x10))(local_c8);\n            }\n          }\n        }\n        plVar12 = local_c8;\n        *(ulonglong *)(param_1 + 0xa0) = local_90 + 1000;\n        if (plVar13 != (longlong *)0x0) {\n          LOCK();\n          plVar13 = plVar13 + 1;\n          lVar22 = *plVar13;\n          *(int *)plVar13 = (int)*plVar13 + -1;\n          UNLOCK();\n          if ((int)lVar22 == 1) {\n            (**(code **)(*local_c8 + 8))(local_c8);\n            LOCK();\n            piVar20 = (int *)((longlong)plVar12 + 0xc);\n            iVar4 = *piVar20;\n            *piVar20 = *piVar20 + -1;\n            UNLOCK();\n            if (iVar4 == 1) {\n              (**(code **)(*local_c8 + 0x10))();\n            }\n          }\n        }\n      }\n      if (plVar24 != (longlong *)0x0) {\n        LOCK();\n        lVar22 = *plVar14;\n        *(int *)plVar14 = (int)*plVar14 + -1;\n        UNLOCK();\n        if ((int)lVar22 == 1) {\n          (**(code **)(*plVar24 + 8))(plVar24);\n          LOCK();\n          piVar20 = (int *)((longlong)plVar24 + 0xc);\n          iVar4 = *piVar20;\n          *piVar20 = *piVar20 + -1;\n          UNLOCK();\n          if (iVar4 == 1) {\n            (**(code **)(*plVar24 + 0x10))(plVar24);\n          }\n        }\n      }\n    }\n  }\n  return;\n}",
+        "descriptorEvidence": {
+          "callerHighlights": [],
+          "namedTokens": [],
+          "symbols": {
+            "data": [
+              "DAT_140e55a70",
+              "DAT_140e55a90",
+              "DAT_140e56f00",
+              "DAT_140e56f10",
+              "DAT_140e56f14"
+            ],
+            "functions": [
+              "FUN_14001bab0",
+              "FUN_14002cf60",
+              "FUN_140032200",
+              "FUN_140032530",
+              "FUN_1400adab0",
+              "FUN_1400d8e30",
+              "FUN_14014dab0",
+              "FUN_14016bfb0",
+              "FUN_14016d5f0",
+              "FUN_140791660"
+            ]
+          }
+        },
+        "errorKind": "",
+        "errors": [],
+        "family": "",
+        "notes": [],
+        "opcode": 0,
+        "packetName": "",
+        "packetSizeEvidence": {
+          "observedCount": 2,
+          "observedStageCounts": {
+            "interfaces": 1,
+            "rebuild": 1
+          },
+          "samplePreviews": [
+            {
+              "bytes": 1291,
+              "lineNumber": 1027336,
+              "preview": "010b2f2936ffff0b30264445350b31ff3728270b32ffffffff0b33232446380b",
+              "stage": "rebuild"
+            },
+            {
+              "bytes": 139,
+              "lineNumber": 1027390,
+              "preview": "010b2f29ffffff1ff500ff00001ff8001602121ff91363d0001b34ffffffff0c",
+              "stage": "interfaces"
+            }
+          ]
+        },
+        "requestedSenderAddress": "14014dba0",
+        "requestedSenderFunction": "FUN_14014dba0",
+        "resolvedFunctionEntry": "14014dab0",
+        "resolvedFunctionName": "FUN_14014dab0",
+        "senderAddress": "14014dba0",
+        "senderFunction": "FUN_14014dba0",
+        "side": "client",
+        "size": -2,
+        "status": "clean",
+        "suggestedName": "",
+        "usedFallbackLogs": false,
+        "warnings": [
+          "WARNING: A terminally deprecated method in sun.misc.Unsafe has been called",
+          "WARNING: sun.misc.Unsafe::staticFieldOffset has been called by org.apache.felix.framework.util.SecureAction (file:/C:/Users/Demon/Tools/ghidra/ghidra_12.0.4_PUBLIC/Ghidra/Features/Base/lib/org.apache.felix.framework-7.0.5.jar)",
+          "WARNING: Please consider reporting this to the maintainers of class org.apache.felix.framework.util.SecureAction",
+          "WARNING: sun.misc.Unsafe::staticFieldOffset will be removed in a future release"
+        ]
+      },
+      "senderFunction": "FUN_14014dba0",
+      "side": "client",
+      "size": -2,
+      "suggestedName": "",
+      "suspectClass": "handled-report"
+    },
+    {
+      "candidateStatus": "draft",
+      "coverageStatus": "unresolved",
+      "decompLog": {
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-17\\decompile.stdout.log",
+        "snippet": [],
+        "status": "missing-sender"
+      },
+      "family": "",
+      "firstSeenStage": "interfaces",
+      "hasManualRegistration": false,
+      "lastSeenStage": "interfaces",
+      "observedCount": 6,
+      "observedStageCounts": {
+        "interfaces": 6
+      },
+      "opcode": 17,
+      "packetName": "",
+      "parserFunction": "",
+      "parserTarget": "",
+      "recommendedNextAction": "Treat opcode 17 as a likely state-report until a caller proves it blocks the handoff.",
+      "runtimeMarkers": {
+        "ignored": 4
+      },
+      "samplePreviews": [
+        {
+          "bytes": 9,
+          "lineNumber": 172512,
+          "preview": "0000ffff012c029100",
+          "stage": "interfaces"
+        },
+        {
+          "bytes": 101,
+          "lineNumber": 172541,
+          "preview": "080708a20008a30008e30008e20008e50008e30009240008e40008e50008a400",
+          "stage": "interfaces"
+        },
+        {
+          "bytes": 9,
+          "lineNumber": 173095,
+          "preview": "0900f354019b02cb00",
+          "stage": "interfaces"
+        }
+      ],
+      "senderAddress": "",
+      "senderAid": {
+        "artifacts": {
+          "callerStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-17\\callers.stderr.log",
+          "callerStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-17\\callers.stdout.log",
+          "decompileStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-17\\decompile.stderr.log",
+          "decompileStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-17\\decompile.stdout.log",
+          "perOpcodeDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-17",
+          "requestedCallerStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-17\\callers.requested.stderr.log",
+          "requestedCallerStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-17\\callers.requested.stdout.log",
+          "resolvedCallerStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-17\\callers.resolved.stderr.log",
+          "resolvedCallerStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-17\\callers.resolved.stdout.log"
+        },
+        "callerChain": [],
+        "callerLookupAddress": "",
+        "callerLookupFunction": "",
+        "callerLookupSource": "requested-address",
+        "callerRefs": [],
+        "cloneCleanupError": "",
+        "cloneCleanupStatus": "not-used",
+        "cloneStrategy": "disposable-project-clone",
+        "decompSnippet": [],
+        "decompiledBody": "",
+        "descriptorEvidence": {
+          "callerHighlights": [],
+          "namedTokens": [],
+          "symbols": {}
+        },
+        "errorKind": "missing-sender",
+        "errors": [],
+        "family": "",
+        "notes": [],
+        "opcode": 17,
+        "packetName": "",
+        "packetSizeEvidence": {
+          "observedCount": 4,
+          "observedStageCounts": {
+            "interfaces": 4
+          },
+          "samplePreviews": [
+            {
+              "bytes": 9,
+              "lineNumber": 1027477,
+              "preview": "0000ffff014302c100",
+              "stage": "interfaces"
+            },
+            {
+              "bytes": 83,
+              "lineNumber": 1027492,
+              "preview": "0706066b00066e0006ac00066e00066e0006320005f00006720006b200067000",
+              "stage": "interfaces"
+            },
+            {
+              "bytes": 12,
+              "lineNumber": 1027712,
+              "preview": "0d01e93a02cf020100055d00",
+              "stage": "interfaces"
+            }
+          ]
+        },
+        "requestedSenderAddress": "",
+        "requestedSenderFunction": "",
+        "resolvedFunctionEntry": "",
+        "resolvedFunctionName": "",
+        "senderAddress": "",
+        "senderFunction": "",
+        "side": "client",
+        "size": -1,
+        "status": "missing-sender",
+        "suggestedName": "",
+        "usedFallbackLogs": false,
+        "warnings": []
+      },
+      "senderFunction": "",
+      "side": "client",
+      "size": -1,
+      "suggestedName": "",
+      "suspectClass": "state-report"
+    },
+    {
+      "candidateStatus": "draft",
+      "coverageStatus": "unresolved",
+      "decompLog": {
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-48\\decompile.stdout.log",
+        "snippet": [],
+        "status": "missing-sender"
+      },
+      "family": "",
+      "firstSeenStage": "rebuild",
+      "hasManualRegistration": false,
+      "lastSeenStage": "interfaces",
+      "observedCount": 7,
+      "observedStageCounts": {
+        "interfaces": 6,
+        "rebuild": 1
+      },
+      "opcode": 48,
+      "packetName": "",
+      "parserFunction": "",
+      "parserTarget": "",
+      "recommendedNextAction": "Treat opcode 48 as a likely state-report until a caller proves it blocks the handoff.",
+      "runtimeMarkers": {
+        "ignored": 4
+      },
+      "samplePreviews": [
+        {
+          "bytes": 93,
+          "lineNumber": 172302,
+          "preview": "090cffff00ab04d68004ac804a9380209e805b8a00a80167805c8601e305e0e1",
+          "stage": "rebuild"
+        },
+        {
+          "bytes": 12,
+          "lineNumber": 172513,
+          "preview": "0701e439012c029108a208a3",
+          "stage": "interfaces"
+        },
+        {
+          "bytes": 46,
+          "lineNumber": 172542,
+          "preview": "0b0a09a509a8092409a9096808e6096a096b08a4092a08e70862086308620822",
+          "stage": "interfaces"
+        }
+      ],
+      "senderAddress": "",
+      "senderAid": {
+        "artifacts": {
+          "callerStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-48\\callers.stderr.log",
+          "callerStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-48\\callers.stdout.log",
+          "decompileStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-48\\decompile.stderr.log",
+          "decompileStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-48\\decompile.stdout.log",
+          "perOpcodeDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-48",
+          "requestedCallerStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-48\\callers.requested.stderr.log",
+          "requestedCallerStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-48\\callers.requested.stdout.log",
+          "resolvedCallerStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-48\\callers.resolved.stderr.log",
+          "resolvedCallerStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-48\\callers.resolved.stdout.log"
+        },
+        "callerChain": [],
+        "callerLookupAddress": "",
+        "callerLookupFunction": "",
+        "callerLookupSource": "requested-address",
+        "callerRefs": [],
+        "cloneCleanupError": "",
+        "cloneCleanupStatus": "not-used",
+        "cloneStrategy": "disposable-project-clone",
+        "decompSnippet": [],
+        "decompiledBody": "",
+        "descriptorEvidence": {
+          "callerHighlights": [],
+          "namedTokens": [],
+          "symbols": {}
+        },
+        "errorKind": "missing-sender",
+        "errors": [],
+        "family": "",
+        "notes": [],
+        "opcode": 48,
+        "packetName": "",
+        "packetSizeEvidence": {
+          "observedCount": 5,
+          "observedStageCounts": {
+            "interfaces": 4,
+            "rebuild": 1
+          },
+          "samplePreviews": [
+            {
+              "bytes": 23,
+              "lineNumber": 1027335,
+              "preview": "0505ffff028d034180533980613480673c807441807644",
+              "stage": "rebuild"
+            },
+            {
+              "bytes": 8,
+              "lineNumber": 1027476,
+              "preview": "0200e4d7014302c1",
+              "stage": "interfaces"
+            },
+            {
+              "bytes": 41,
+              "lineNumber": 1027491,
+              "preview": "0b0804b906ac04bc806fa206728073a28074a506328075a18076a106af073007",
+              "stage": "interfaces"
+            }
+          ]
+        },
+        "requestedSenderAddress": "",
+        "requestedSenderFunction": "",
+        "resolvedFunctionEntry": "",
+        "resolvedFunctionName": "",
+        "senderAddress": "",
+        "senderFunction": "",
+        "side": "client",
+        "size": -1,
+        "status": "missing-sender",
+        "suggestedName": "",
+        "usedFallbackLogs": false,
+        "warnings": []
+      },
+      "senderFunction": "",
+      "side": "client",
+      "size": -1,
+      "suggestedName": "",
+      "suspectClass": "state-report"
+    },
+    {
+      "candidateStatus": "draft",
+      "coverageStatus": "unresolved",
+      "decompLog": {
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-83\\decompile.stdout.log",
+        "snippet": [
+          "  }",
+          "  return;",
+          "}",
+          " (GhidraScript)",
+          "WARNING: A terminally deprecated method in sun.misc.Unsafe has been called",
+          "WARNING: sun.misc.Unsafe::staticFieldOffset has been called by org.apache.felix.framework.util.SecureAction (file:/C:/Users/Demon/Tools/ghidra/ghidra_12.0.4_PUBLIC/Ghidra/Features/Base/lib/org.apache.felix.framework-7.0.5.jar)",
+          "WARNING: Please consider reporting this to the maintainers of class org.apache.felix.framework.util.SecureAction",
+          "WARNING: sun.misc.Unsafe::staticFieldOffset will be removed in a future release"
+        ],
+        "status": "clean"
+      },
+      "family": "",
+      "firstSeenStage": "interfaces",
+      "hasManualRegistration": false,
+      "lastSeenStage": "interfaces",
+      "observedCount": 3,
+      "observedStageCounts": {
+        "interfaces": 3
+      },
+      "opcode": 83,
+      "packetName": "",
+      "parserFunction": "",
+      "parserTarget": "",
+      "recommendedNextAction": "Treat opcode 83 as a likely state-report until a caller proves it blocks the handoff.",
+      "runtimeMarkers": {
+        "ignored": 3
+      },
+      "samplePreviews": [
+        {
+          "bytes": 1,
+          "lineNumber": 173570,
+          "preview": "00",
+          "stage": "interfaces"
+        },
+        {
+          "bytes": 1,
+          "lineNumber": 174713,
+          "preview": "01",
+          "stage": "interfaces"
+        },
+        {
+          "bytes": 1,
+          "lineNumber": 174730,
+          "preview": "00",
+          "stage": "interfaces"
+        }
+      ],
+      "senderAddress": "1400cfcb0",
+      "senderAid": {
+        "artifacts": {
+          "callerStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-83\\callers.stderr.log",
+          "callerStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-83\\callers.stdout.log",
+          "decompileStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-83\\decompile.stderr.log",
+          "decompileStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-83\\decompile.stdout.log",
+          "perOpcodeDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-83",
+          "requestedCallerStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-83\\callers.requested.stderr.log",
+          "requestedCallerStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-83\\callers.requested.stdout.log",
+          "resolvedCallerStderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-83\\callers.resolved.stderr.log",
+          "resolvedCallerStdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-83\\callers.resolved.stdout.log"
+        },
+        "callerChain": [],
+        "callerLookupAddress": "1400cfcb0",
+        "callerLookupFunction": "FUN_1400cfcb0",
+        "callerLookupSource": "requested-address",
+        "callerRefs": [],
+        "cloneCleanupError": "",
+        "cloneCleanupStatus": "cleaned",
+        "cloneStrategy": "disposable-project-clone",
+        "decompSnippet": [
+          "  }",
+          "  return;",
+          "}",
+          " (GhidraScript)",
+          "WARNING: A terminally deprecated method in sun.misc.Unsafe has been called",
+          "WARNING: sun.misc.Unsafe::staticFieldOffset has been called by org.apache.felix.framework.util.SecureAction (file:/C:/Users/Demon/Tools/ghidra/ghidra_12.0.4_PUBLIC/Ghidra/Features/Base/lib/org.apache.felix.framework-7.0.5.jar)",
+          "WARNING: Please consider reporting this to the maintainers of class org.apache.felix.framework.util.SecureAction",
+          "WARNING: sun.misc.Unsafe::staticFieldOffset will be removed in a future release"
+        ],
+        "decompiledBody": "void FUN_1400cfbd0(longlong param_1)\n\n{\n  int iVar1;\n  longlong lVar2;\n  int *piVar3;\n  undefined1 *puVar4;\n  longlong *plVar5;\n  char cVar6;\n  int iVar7;\n  HWND pHVar8;\n  longlong lVar9;\n  ulonglong uVar10;\n  longlong *plVar11;\n  longlong lVar12;\n  longlong lVar13;\n  uint uVar14;\n  longlong *plVar15;\n  ulonglong uVar16;\n  undefined1 *puVar17;\n  int local_res8 [2];\n  undefined1 local_res10 [8];\n  undefined8 local_res18;\n  undefined *local_res20;\n  longlong *local_f8;\n  longlong local_f0;\n  longlong *local_e8;\n  longlong local_e0;\n  longlong *local_d8;\n  longlong local_d0;\n  longlong *local_c8;\n  longlong local_c0;\n  undefined8 local_b8;\n  undefined *local_b0;\n  undefined8 local_a8;\n  undefined *local_a0;\n  undefined8 local_98;\n  undefined *local_90;\n  undefined1 local_88 [8];\n  longlong local_80;\n  longlong local_78;\n  ulonglong local_70;\n  undefined8 local_68;\n  undefined8 uStack_60;\n  undefined4 local_58;\n  undefined4 uStack_54;\n  undefined4 uStack_50;\n  undefined4 uStack_4c;\n  \n  if (*(int *)(*(longlong *)(param_1 + 8) + 0x19f60) == 0x1e) {\n    lVar2 = *(longlong *)(*(longlong *)(param_1 + 8) + 0x19878);\n    if (((*(longlong *)(lVar2 + 0x18) != 0) &&\n        (piVar3 = *(int **)(*(longlong *)(lVar2 + 0x18) + 8), piVar3 != (int *)0x0)) &&\n       (*piVar3 == 2)) {\n      FUN_140144d10(param_1 + 0x10);\n      FUN_140144d10(param_1 + 0x38);\n      lVar9 = *(longlong *)(*(longlong *)(param_1 + 8) + 0x198c0);\n      lVar13 = *(longlong *)(lVar9 + 0xb0);\n      lVar12 = *(longlong *)(lVar9 + 0xa8);\n      if (((int)(lVar13 - lVar12 >> 5) != 0) && (iVar7 = 0, lVar12 != lVar13)) {\n        do {\n          iVar1 = iVar7 + 1;\n          if (*(char *)(lVar12 + 0xc) != '\\0') {\n            iVar1 = iVar7;\n          }\n          iVar7 = iVar1;\n          lVar12 = lVar12 + 0x20;\n        } while (lVar12 != lVar13);\n        if (iVar7 != 0) {\n          local_res18 = *(undefined8 *)(*(longlong *)(lVar2 + 0x18) + 0x40);\n          local_res20 = &DAT_140e571e0;\n          FUN_1400adab0(&local_e8,&local_res20,&DAT_140e571e4,&local_res18);\n          lVar13 = local_e0;\n          plVar15 = local_e8;\n          *(ushort *)(*(longlong *)(local_e0 + 0x18) + *(longlong *)(local_e0 + 0x20)) =\n               (short)iVar7 << 10 | (short)((short)iVar7 << 2) >> 8 & 0xffU;\n          *(longlong *)(local_e0 + 0x20) = *(longlong *)(local_e0 + 0x20) + 2;\n          puVar4 = *(undefined1 **)(lVar9 + 0xb0);\n          for (puVar17 = *(undefined1 **)(lVar9 + 0xa8); puVar17 != puVar4; puVar17 = puVar17 + 0x20\n              ) {\n            if (puVar17[0xc] == '\\0') {\n              uVar16 = *(longlong *)(puVar17 + 0x18) - *(longlong *)(param_1 + 0x2858);\n              *(longlong *)(param_1 + 0x2858) = *(longlong *)(puVar17 + 0x18);\n              if (0xffffff < uVar16) {\n                uVar16 = 0xffffff;\n              }\n              *(undefined1 *)(*(longlong *)(local_e0 + 0x18) + *(longlong *)(local_e0 + 0x20)) =\n                   *puVar17;\n              lVar9 = *(longlong *)(local_e0 + 0x20);\n              *(longlong *)(local_e0 + 0x20) = lVar9 + 2;\n              *(char *)(lVar9 + 1 + *(longlong *)(local_e0 + 0x18)) = (char)(uVar16 >> 0x10);\n              lVar9 = *(longlong *)(local_e0 + 0x20);\n              *(longlong *)(local_e0 + 0x20) = lVar9 + 1;\n              *(char *)(lVar9 + *(longlong *)(local_e0 + 0x18)) = (char)(uVar16 >> 8);\n              lVar9 = *(longlong *)(local_e0 + 0x20);\n              *(longlong *)(local_e0 + 0x20) = lVar9 + 1;\n              *(char *)(lVar9 + *(longlong *)(local_e0 + 0x18)) = (char)uVar16;\n            }\n          }\n          lVar9 = *(longlong *)(lVar2 + 0x18);\n          if (local_e8 != (longlong *)0x0) {\n            LOCK();\n            *(int *)(local_e8 + 1) = (int)local_e8[1] + 1;\n            UNLOCK();\n          }\n          plVar11 = *(longlong **)(lVar9 + 0x58);\n          if (plVar11 == (longlong *)0x0) {\n            plVar11 = *(longlong **)(lVar9 + 0x60);\n            if (plVar11 == *(longlong **)(lVar9 + 0x68)) {\n              plVar11 = (longlong *)FUN_140791660(*(longlong *)(lVar9 + 0x70),0x10);\n            }\n            else {\n              *(longlong *)(lVar9 + 0x60) = *(longlong *)(lVar9 + 0x70) + (longlong)plVar11;\n            }\n          }\n          else {\n            *(longlong *)(lVar9 + 0x58) = *plVar11;\n          }\n          plVar5 = local_e8;\n          plVar11[2] = (longlong)plVar15;\n          plVar11[3] = lVar13;\n          if (plVar15 != (longlong *)0x0) {\n            LOCK();\n            *(int *)(plVar15 + 1) = (int)plVar15[1] + 1;\n            UNLOCK();\n            lVar13 = local_e0;\n            plVar15 = local_e8;\n          }\n          *plVar11 = lVar9 + 0x48;\n          plVar11[1] = *(longlong *)(lVar9 + 0x50);\n          **(undefined8 **)(lVar9 + 0x50) = plVar11;\n          *(longlong *)(lVar9 + 0x88) = *(longlong *)(lVar9 + 0x88) + 1;\n          *(longlong **)(lVar9 + 0x50) = plVar11;\n          iVar7 = *(int *)(lVar13 + 0x20);\n          *(int *)(lVar13 + 0x28) = iVar7;\n          *(undefined8 *)(lVar13 + 0x20) = 0;\n          *(int *)(lVar9 + 0x2b0) = *(int *)(lVar9 + 0x2b0) + iVar7;\n          if (plVar15 != (longlong *)0x0) {\n            LOCK();\n            plVar11 = plVar15 + 1;\n            lVar9 = *plVar11;\n            *(int *)plVar11 = (int)*plVar11 + -1;\n            UNLOCK();\n            if ((int)lVar9 == 1) {\n              (**(code **)(*local_e8 + 8))(local_e8);\n              LOCK();\n              piVar3 = (int *)((longlong)plVar5 + 0xc);\n              iVar7 = *piVar3;\n              *piVar3 = *piVar3 + -1;\n              UNLOCK();\n              if (iVar7 == 1) {\n                (**(code **)(*local_e8 + 0x10))();\n              }\n            }\n            plVar11 = local_e8;\n            LOCK();\n            plVar15 = plVar15 + 1;\n            lVar9 = *plVar15;\n            *(int *)plVar15 = (int)*plVar15 + -1;\n            UNLOCK();\n            if ((int)lVar9 == 1) {\n              (**(code **)(*local_e8 + 8))(local_e8);\n              LOCK();\n              piVar3 = (int *)((longlong)plVar11 + 0xc);\n              iVar7 = *piVar3;\n              *piVar3 = *piVar3 + -1;\n              UNLOCK();\n              if (iVar7 == 1) {\n                (**(code **)(*local_e8 + 0x10))();\n              }\n            }\n          }\n        }\n      }\n      lVar9 = *(longlong *)(*(longlong *)(param_1 + 8) + 0x19858);\n      plVar15 = (longlong *)(lVar9 + 0x2a0);\n      iVar7 = (**(code **)(*plVar15 + 0x18))(plVar15);\n      if (iVar7 == 6) {\n        plVar15 = (longlong *)(lVar9 + 0x98);\n      }\n      iVar7 = *(int *)(param_1 + 0x2860);\n      iVar1 = *(int *)(plVar15[1] + 4);\n      if (0 < iVar7) {\n        iVar7 = iVar7 + -1;\n        *(int *)(param_1 + 0x2860) = iVar7;\n      }\n      if (((*(char *)(*(longlong *)(*(longlong *)(param_1 + 8) + 0x19858) + 0x5c8) != '\\0') &&\n          (iVar7 < 1)) &&\n         (cVar6 = (*(code *)**(undefined8 **)((longlong)plVar15 + (longlong)iVar1 + 8))\n                            ((longlong)plVar15 + (longlong)iVar1 + 8), cVar6 != '\\0')) {\n        *(undefined4 *)(param_1 + 0x2860) = 0x14;\n        *(undefined1 *)(*(longlong *)(*(longlong *)(param_1 + 8) + 0x19858) + 0x5c8) = 0;\n        local_68 = 0;\n        uStack_60 = 0;\n        local_58 = 0;\n        uStack_54 = 0;\n        uStack_50 = 0;\n        uStack_4c = 0x3ff00000;\n        (**(code **)(*(longlong *)((longlong)plVar15 + (longlong)iVar1 + 8) + 0xa8))\n                  ((longlong)plVar15 + (longlong)iVar1 + 8,&local_68);\n        FUN_1403d35b0(local_res10,local_res8,&local_68);\n        uVar14 = 0xc00U - local_res8[0] & 0x800007ff;\n        if ((int)uVar14 < 0) {\n          uVar14 = (uVar14 - 1 | 0xfffff800) + 1;\n        }\n        local_b8 = *(undefined8 *)(*(longlong *)(lVar2 + 0x18) + 0x40);\n        local_b0 = &DAT_140e57240;\n        FUN_1400adab0(&local_d8,&local_b0,&DAT_140e57244,&local_b8);\n        lVar13 = local_d0;\n        plVar15 = local_d8;\n        lVar9 = *(longlong *)(local_d0 + 0x20);\n        *(longlong *)(local_d0 + 0x20) = lVar9 + 1;\n        *(char *)(lVar9 + *(longlong *)(local_d0 + 0x18)) = (char)(uVar14 >> 8);\n        lVar9 = *(longlong *)(local_d0 + 0x20);\n        *(longlong *)(local_d0 + 0x20) = lVar9 + 1;\n        *(char *)(lVar9 + *(longlong *)(local_d0 + 0x18)) = (char)uVar14 + -0x80;\n        lVar9 = *(longlong *)(local_d0 + 0x20);\n        *(longlong *)(local_d0 + 0x20) = lVar9 + 1;\n        *(char *)(lVar9 + *(longlong *)(local_d0 + 0x18)) = (char)local_res10._0_2_;\n        lVar9 = *(longlong *)(local_d0 + 0x20);\n        *(longlong *)(local_d0 + 0x20) = lVar9 + 1;\n        *(char *)(lVar9 + *(longlong *)(local_d0 + 0x18)) = SUB21(local_res10._0_2_,1);\n        lVar9 = *(longlong *)(lVar2 + 0x18);\n        if (local_d8 != (longlong *)0x0) {\n          LOCK();\n          *(int *)(local_d8 + 1) = (int)local_d8[1] + 1;\n          UNLOCK();\n        }\n        plVar11 = *(longlong **)(lVar9 + 0x58);\n        if (plVar11 == (longlong *)0x0) {\n          plVar11 = *(longlong **)(lVar9 + 0x60);\n          if (plVar11 == *(longlong **)(lVar9 + 0x68)) {\n            plVar11 = (longlong *)FUN_140791660(*(longlong *)(lVar9 + 0x70),0x10);\n          }\n          else {\n            *(longlong *)(lVar9 + 0x60) = *(longlong *)(lVar9 + 0x70) + (longlong)plVar11;\n          }\n        }\n        else {\n          *(longlong *)(lVar9 + 0x58) = *plVar11;\n        }\n        plVar5 = local_d8;\n        plVar11[2] = (longlong)plVar15;\n        plVar11[3] = lVar13;\n        if (plVar15 != (longlong *)0x0) {\n          LOCK();\n          *(int *)(plVar15 + 1) = (int)plVar15[1] + 1;\n          UNLOCK();\n          plVar15 = local_d8;\n          lVar13 = local_d0;\n        }\n        *plVar11 = lVar9 + 0x48;\n        plVar11[1] = *(longlong *)(lVar9 + 0x50);\n        **(undefined8 **)(lVar9 + 0x50) = plVar11;\n        *(longlong *)(lVar9 + 0x88) = *(longlong *)(lVar9 + 0x88) + 1;\n        *(longlong **)(lVar9 + 0x50) = plVar11;\n        iVar7 = *(int *)(lVar13 + 0x20);\n        *(int *)(lVar13 + 0x28) = iVar7;\n        *(undefined8 *)(lVar13 + 0x20) = 0;\n        *(int *)(lVar9 + 0x2b0) = *(int *)(lVar9 + 0x2b0) + iVar7;\n        if (plVar15 != (longlong *)0x0) {\n          LOCK();\n          plVar11 = plVar15 + 1;\n          lVar9 = *plVar11;\n          *(int *)plVar11 = (int)*plVar11 + -1;\n          UNLOCK();\n          if ((int)lVar9 == 1) {\n            (**(code **)(*local_d8 + 8))(local_d8);\n            LOCK();\n            piVar3 = (int *)((longlong)plVar5 + 0xc);\n            iVar7 = *piVar3;\n            *piVar3 = *piVar3 + -1;\n            UNLOCK();\n            if (iVar7 == 1) {\n              (**(code **)(*local_d8 + 0x10))();\n            }\n          }\n          plVar11 = local_d8;\n          LOCK();\n          plVar15 = plVar15 + 1;\n          lVar9 = *plVar15;\n          *(int *)plVar15 = (int)*plVar15 + -1;\n          UNLOCK();\n          if ((int)lVar9 == 1) {\n            (**(code **)(*local_d8 + 8))(local_d8);\n            LOCK();\n            piVar3 = (int *)((longlong)plVar11 + 0xc);\n            iVar7 = *piVar3;\n            *piVar3 = *piVar3 + -1;\n            UNLOCK();\n            if (iVar7 == 1) {\n              (**(code **)(*local_d8 + 0x10))();\n            }\n          }\n        }\n      }\n      lVar9 = *(longlong *)(*(longlong *)(param_1 + 8) + 0x186a8);\n      if ((((lVar9 == 0) || (lVar9 = *(longlong *)(lVar9 + 0xe0), lVar9 == 0)) ||\n          (*(longlong *)(lVar9 + 0x20) == 0)) ||\n         (pHVar8 = GetFocus(), pHVar8 != *(HWND *)(lVar9 + 0x20))) {\n        cVar6 = '\\0';\n      }\n      else {\n        cVar6 = '\\x01';\n      }\n      if (cVar6 != *(char *)(param_1 + 0x2850)) {\n        *(char *)(param_1 + 0x2850) = cVar6;\n        local_a8 = *(undefined8 *)(*(longlong *)(lVar2 + 0x18) + 0x40);\n        local_a0 = &DAT_140e57440;\n        FUN_1400adab0(&local_c8,&local_a0,&DAT_140e57444,&local_a8);\n        lVar13 = local_c0;\n        plVar15 = local_c8;\n        *(bool *)(*(longlong *)(local_c0 + 0x18) + *(longlong *)(local_c0 + 0x20)) =\n             *(char *)(param_1 + 0x2850) != '\\0';\n        *(longlong *)(local_c0 + 0x20) = *(longlong *)(local_c0 + 0x20) + 1;\n        lVar9 = *(longlong *)(lVar2 + 0x18);\n        if (local_c8 != (longlong *)0x0) {\n          LOCK();\n          *(int *)(local_c8 + 1) = (int)local_c8[1] + 1;\n          UNLOCK();\n        }\n        plVar11 = *(longlong **)(lVar9 + 0x58);\n        if (plVar11 == (longlong *)0x0) {\n          plVar11 = *(longlong **)(lVar9 + 0x60);\n          if (plVar11 == *(longlong **)(lVar9 + 0x68)) {\n            plVar11 = (longlong *)FUN_140791660(*(longlong *)(lVar9 + 0x70),0x10);\n          }\n          else {\n            *(longlong *)(lVar9 + 0x60) = *(longlong *)(lVar9 + 0x70) + (longlong)plVar11;\n          }\n        }\n        else {\n          *(longlong *)(lVar9 + 0x58) = *plVar11;\n        }\n        plVar5 = local_c8;\n        plVar11[2] = (longlong)plVar15;\n        plVar11[3] = lVar13;\n        if (plVar15 != (longlong *)0x0) {\n          LOCK();\n          *(int *)(plVar15 + 1) = (int)plVar15[1] + 1;\n          UNLOCK();\n          plVar15 = local_c8;\n          lVar13 = local_c0;\n        }\n        *plVar11 = lVar9 + 0x48;\n        plVar11[1] = *(longlong *)(lVar9 + 0x50);\n        **(undefined8 **)(lVar9 + 0x50) = plVar11;\n        *(longlong *)(lVar9 + 0x88) = *(longlong *)(lVar9 + 0x88) + 1;\n        *(longlong **)(lVar9 + 0x50) = plVar11;\n        iVar7 = *(int *)(lVar13 + 0x20);\n        *(int *)(lVar13 + 0x28) = iVar7;\n        *(undefined8 *)(lVar13 + 0x20) = 0;\n        *(int *)(lVar9 + 0x2b0) = *(int *)(lVar9 + 0x2b0) + iVar7;\n        if (plVar15 != (longlong *)0x0) {\n          LOCK();\n          plVar11 = plVar15 + 1;\n          lVar9 = *plVar11;\n          *(int *)plVar11 = (int)*plVar11 + -1;\n          UNLOCK();\n          if ((int)lVar9 == 1) {\n            (**(code **)(*local_c8 + 8))(local_c8);\n            LOCK();\n            piVar3 = (int *)((longlong)plVar5 + 0xc);\n            iVar7 = *piVar3;\n            *piVar3 = *piVar3 + -1;\n            UNLOCK();\n            if (iVar7 == 1) {\n              (**(code **)(*local_c8 + 0x10))();\n            }\n          }\n          plVar11 = local_c8;\n          LOCK();\n          plVar15 = plVar15 + 1;\n          lVar9 = *plVar15;\n          *(int *)plVar15 = (int)*plVar15 + -1;\n          UNLOCK();\n          if ((int)lVar9 == 1) {\n            (**(code **)(*local_c8 + 8))(local_c8);\n            LOCK();\n            piVar3 = (int *)((longlong)plVar11 + 0xc);\n            iVar7 = *piVar3;\n            *piVar3 = *piVar3 + -1;\n            UNLOCK();\n            if (iVar7 == 1) {\n              (**(code **)(*local_c8 + 0x10))();\n            }\n          }\n        }\n      }\n      lVar9 = (**(code **)(**(longlong **)(param_1 + 8) + 0x58))();\n      if ((lVar9 != 0) &&\n         (lVar9 = (**(code **)(**(longlong **)(param_1 + 8) + 0x58))(),\n         (*(char *)(lVar9 + 0x108) != '\\0') + 2 != *(int *)(param_1 + 0x2864))) {\n        FUN_1400d0540(param_1);\n      }\n      if (*(char *)(param_1 + 0x2868) == '\\0') {\n        local_98 = *(undefined8 *)(*(longlong *)(lVar2 + 0x18) + 0x40);\n        local_90 = &DAT_140e570d0;\n        FUN_1400adab0(&local_f8,&local_90,&DAT_140e570d4,&local_98);\n        FUN_1403d8170(*(undefined8 *)(*(longlong *)(param_1 + 8) + 0x53590),local_88);\n        lVar9 = local_f0;\n        *(char *)(*(longlong *)(local_f0 + 0x18) + *(longlong *)(local_f0 + 0x20)) = (char)local_70;\n        lVar13 = *(longlong *)(local_f0 + 0x20) + 1;\n        *(longlong *)(local_f0 + 0x20) = lVar13;\n        if (local_70 != 0) {\n          uVar16 = local_70;\n          if (local_78 != 0) {\n            uVar10 = *(longlong *)(local_f0 + 0x10) - lVar13;\n            if (uVar10 < local_70) {\n              uVar16 = uVar10;\n            }\n            FUN_1407b77b0(lVar13 + *(longlong *)(local_f0 + 0x18),local_78,uVar16);\n          }\n          plVar15 = (longlong *)(lVar9 + 0x20);\n          *plVar15 = *plVar15 + uVar16;\n        }\n        plVar15 = local_f8;\n        lVar2 = *(longlong *)(lVar2 + 0x18);\n        if (local_f8 != (longlong *)0x0) {\n          LOCK();\n          *(int *)(local_f8 + 1) = (int)local_f8[1] + 1;\n          UNLOCK();\n          lVar9 = local_f0;\n        }\n        plVar11 = *(longlong **)(lVar2 + 0x58);\n        if (plVar11 == (longlong *)0x0) {\n          plVar11 = *(longlong **)(lVar2 + 0x60);\n          if (plVar11 == *(longlong **)(lVar2 + 0x68)) {\n            plVar11 = (longlong *)FUN_140791660(*(longlong *)(lVar2 + 0x70),0x10);\n          }\n          else {\n            *(longlong *)(lVar2 + 0x60) = *(longlong *)(lVar2 + 0x70) + (longlong)plVar11;\n          }\n        }\n        else {\n          *(longlong *)(lVar2 + 0x58) = *plVar11;\n        }\n        plVar5 = local_f8;\n        plVar11[2] = (longlong)plVar15;\n        plVar11[3] = lVar9;\n        if (plVar15 != (longlong *)0x0) {\n          LOCK();\n          *(int *)(plVar15 + 1) = (int)plVar15[1] + 1;\n          UNLOCK();\n          plVar15 = local_f8;\n          lVar9 = local_f0;\n        }\n        *plVar11 = lVar2 + 0x48;\n        plVar11[1] = *(longlong *)(lVar2 + 0x50);\n        **(undefined8 **)(lVar2 + 0x50) = plVar11;\n        *(longlong *)(lVar2 + 0x88) = *(longlong *)(lVar2 + 0x88) + 1;\n        *(longlong **)(lVar2 + 0x50) = plVar11;\n        iVar7 = *(int *)(lVar9 + 0x20);\n        *(int *)(lVar9 + 0x28) = iVar7;\n        *(undefined8 *)(lVar9 + 0x20) = 0;\n        *(int *)(lVar2 + 0x2b0) = *(int *)(lVar2 + 0x2b0) + iVar7;\n        plVar11 = (longlong *)0x0;\n        if (plVar15 != (longlong *)0x0) {\n          LOCK();\n          plVar15 = plVar15 + 1;\n          lVar2 = *plVar15;\n          *(int *)plVar15 = (int)*plVar15 + -1;\n          UNLOCK();\n          plVar11 = local_f8;\n          if ((int)lVar2 == 1) {\n            (**(code **)(*local_f8 + 8))(local_f8);\n            plVar11 = local_f8;\n            LOCK();\n            piVar3 = (int *)((longlong)plVar5 + 0xc);\n            iVar7 = *piVar3;\n            *piVar3 = *piVar3 + -1;\n            UNLOCK();\n            if (iVar7 == 1) {\n              (**(code **)(*local_f8 + 0x10))(local_f8);\n            }\n          }\n        }\n        *(undefined1 *)(param_1 + 0x2868) = 1;\n        if ((local_78 != 0) && (local_80 != 0)) {\n          FUN_1407a4820(local_78);\n        }\n        plVar15 = local_f8;\n        if (plVar11 != (longlong *)0x0) {\n          LOCK();\n          plVar11 = plVar11 + 1;\n          lVar2 = *plVar11;\n          *(int *)plVar11 = (int)*plVar11 + -1;\n          UNLOCK();\n          if ((int)lVar2 == 1) {\n            (**(code **)(*local_f8 + 8))(local_f8);\n            LOCK();\n            piVar3 = (int *)((longlong)plVar15 + 0xc);\n            iVar7 = *piVar3;\n            *piVar3 = *piVar3 + -1;\n            UNLOCK();\n            if (iVar7 == 1) {\n              (**(code **)(*local_f8 + 0x10))();\n            }\n          }\n        }\n      }\n    }\n  }\n  return;\n}",
+        "descriptorEvidence": {
+          "callerHighlights": [],
+          "namedTokens": [
+            "GetFocus"
+          ],
+          "symbols": {
+            "data": [
+              "DAT_140e570d0",
+              "DAT_140e570d4",
+              "DAT_140e571e0",
+              "DAT_140e571e4",
+              "DAT_140e57240",
+              "DAT_140e57244",
+              "DAT_140e57440",
+              "DAT_140e57444"
+            ],
+            "functions": [
+              "FUN_1400adab0",
+              "FUN_1400cfbd0",
+              "FUN_1400d0540",
+              "FUN_140144d10",
+              "FUN_1403d35b0",
+              "FUN_1403d8170",
+              "FUN_140791660",
+              "FUN_1407a4820",
+              "FUN_1407b77b0"
+            ]
+          }
+        },
+        "errorKind": "",
+        "errors": [],
+        "family": "",
+        "notes": [],
+        "opcode": 83,
+        "packetName": "",
+        "packetSizeEvidence": {
+          "observedCount": 3,
+          "observedStageCounts": {
+            "interfaces": 3
+          },
+          "samplePreviews": [
+            {
+              "bytes": 1,
+              "lineNumber": 1027484,
+              "preview": "00",
+              "stage": "interfaces"
+            },
+            {
+              "bytes": 1,
+              "lineNumber": 1027706,
+              "preview": "01",
+              "stage": "interfaces"
+            },
+            {
+              "bytes": 1,
+              "lineNumber": 1027717,
+              "preview": "00",
+              "stage": "interfaces"
+            }
+          ]
+        },
+        "requestedSenderAddress": "1400cfcb0",
+        "requestedSenderFunction": "FUN_1400cfcb0",
+        "resolvedFunctionEntry": "1400cfbd0",
+        "resolvedFunctionName": "FUN_1400cfbd0",
+        "senderAddress": "1400cfcb0",
+        "senderFunction": "FUN_1400cfcb0",
+        "side": "client",
+        "size": 1,
+        "status": "clean",
+        "suggestedName": "",
+        "usedFallbackLogs": false,
+        "warnings": [
+          "WARNING: A terminally deprecated method in sun.misc.Unsafe has been called",
+          "WARNING: sun.misc.Unsafe::staticFieldOffset has been called by org.apache.felix.framework.util.SecureAction (file:/C:/Users/Demon/Tools/ghidra/ghidra_12.0.4_PUBLIC/Ghidra/Features/Base/lib/org.apache.felix.framework-7.0.5.jar)",
+          "WARNING: Please consider reporting this to the maintainers of class org.apache.felix.framework.util.SecureAction",
+          "WARNING: sun.misc.Unsafe::staticFieldOffset will be removed in a future release"
+        ]
+      },
+      "senderFunction": "FUN_1400cfcb0",
+      "side": "client",
+      "size": 1,
+      "suggestedName": "",
+      "suspectClass": "state-report"
+    }
+  ],
+  "topTargets": [
+    {
+      "kind": "client-opcode",
+      "nextAction": "Treat opcode 0 as handled bootstrap traffic unless a later behavioral diff proves it still needs semantics.",
+      "opcode": 0,
+      "reason": "class=handled-report; stages=2; sender=FUN_14014dba0",
+      "score": 20,
+      "suspectClass": "handled-report"
+    },
+    {
+      "kind": "player-info",
+      "nextAction": "Verify why PLAYER_INFO collapses to repeated 3-byte frames after the initial appearance burst.",
+      "opcode": 42,
+      "reason": "initial appearance burst is followed by sustained 3-byte PLAYER_INFO frames",
+      "score": 8,
+      "suspectClass": "unknown"
+    },
+    {
+      "kind": "client-opcode",
+      "nextAction": "Treat opcode 83 as a likely state-report until a caller proves it blocks the handoff.",
+      "opcode": 83,
+      "reason": "class=state-report; stages=1; sender=FUN_1400cfcb0",
+      "score": 8,
+      "suspectClass": "state-report"
+    },
+    {
+      "kind": "client-opcode",
+      "nextAction": "Treat opcode 48 as a likely state-report until a caller proves it blocks the handoff.",
+      "opcode": 48,
+      "reason": "class=state-report; stages=2",
+      "score": 2,
+      "suspectClass": "state-report"
+    },
+    {
+      "kind": "client-opcode",
+      "nextAction": "Treat opcode 17 as a likely state-report until a caller proves it blocks the handoff.",
+      "opcode": 17,
+      "reason": "class=state-report; stages=1",
+      "score": -8,
+      "suspectClass": "state-report"
+    }
+  ],
+  "usedDecompLogs": [
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-0\\decompile.stdout.log",
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-17\\decompile.stdout.log",
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-48\\decompile.stdout.log",
+    "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-aid\\opcode-83\\decompile.stdout.log"
+  ]
+}

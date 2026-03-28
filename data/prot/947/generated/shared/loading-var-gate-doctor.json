@@ -1,0 +1,1266 @@
+{
+  "advisoryOnly": true,
+  "artifacts": {
+    "loadingVarGateDoctorJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\loading-var-gate-doctor.json",
+    "loadingVarGateDoctorMarkdown": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\loading-var-gate-doctor.md"
+  },
+  "build": 946,
+  "candidateVarbits": {
+    "direct": [],
+    "heuristic": [
+      {
+        "accesses": {
+          "get": 1
+        },
+        "extractions": {
+          "heuristic": 1
+        },
+        "id": 0,
+        "meaning": {
+          "baseVar": 0,
+          "id": 0,
+          "lsb": 2,
+          "msb": 4,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varbits\\0.json",
+          "present": true,
+          "refType": "varbit"
+        },
+        "refType": "varbit",
+        "sampleOffsets": [
+          140
+        ],
+        "scriptCount": 1,
+        "scriptIds": [
+          10903
+        ]
+      },
+      {
+        "accesses": {
+          "get": 1
+        },
+        "extractions": {
+          "heuristic": 1
+        },
+        "id": 5,
+        "meaning": {
+          "baseVar": 0,
+          "id": 5,
+          "lsb": 2,
+          "msb": 4,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varbits\\5.json",
+          "present": true,
+          "refType": "varbit"
+        },
+        "refType": "varbit",
+        "sampleOffsets": [
+          7689
+        ],
+        "scriptCount": 1,
+        "scriptIds": [
+          4704
+        ]
+      },
+      {
+        "accesses": {
+          "get": 1
+        },
+        "extractions": {
+          "heuristic": 1
+        },
+        "id": 9,
+        "meaning": {
+          "baseVar": 0,
+          "id": 9,
+          "lsb": 2,
+          "msb": 4,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varbits\\9.json",
+          "present": true,
+          "refType": "varbit"
+        },
+        "refType": "varbit",
+        "sampleOffsets": [
+          7615
+        ],
+        "scriptCount": 1,
+        "scriptIds": [
+          4704
+        ]
+      },
+      {
+        "accesses": {
+          "get": 1
+        },
+        "extractions": {
+          "heuristic": 1
+        },
+        "id": 82,
+        "meaning": {
+          "baseVar": 0,
+          "id": 82,
+          "lsb": 2,
+          "msb": 18,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varbits\\82.json",
+          "present": true,
+          "refType": "varbit"
+        },
+        "refType": "varbit",
+        "sampleOffsets": [
+          7225
+        ],
+        "scriptCount": 1,
+        "scriptIds": [
+          4704
+        ]
+      },
+      {
+        "accesses": {
+          "set": 1
+        },
+        "extractions": {
+          "heuristic": 1
+        },
+        "id": 88,
+        "meaning": {
+          "baseVar": 0,
+          "id": 88,
+          "lsb": 2,
+          "msb": 20,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varbits\\88.json",
+          "present": true,
+          "refType": "varbit"
+        },
+        "refType": "varbit",
+        "sampleOffsets": [
+          7241
+        ],
+        "scriptCount": 1,
+        "scriptIds": [
+          4704
+        ]
+      }
+    ]
+  },
+  "candidateVarps": {
+    "direct": [],
+    "heuristic": [
+      {
+        "accesses": {
+          "get": 9,
+          "set": 14
+        },
+        "extractions": {
+          "heuristic": 23
+        },
+        "id": 0,
+        "meaning": {
+          "backingVarbitCount": 1793,
+          "domain": "PLAYER",
+          "forceDefault": true,
+          "id": 0,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varps\\0.json",
+          "present": true,
+          "refType": "varp",
+          "type": "QUESTHELP"
+        },
+        "refType": "varp",
+        "sampleOffsets": [
+          1,
+          9,
+          24,
+          26,
+          32,
+          34,
+          39,
+          40
+        ],
+        "scriptCount": 13,
+        "scriptIds": [
+          139,
+          2651,
+          3529,
+          4308,
+          4704,
+          5559,
+          7486,
+          8310,
+          8420,
+          8778,
+          8862,
+          10623,
+          14150
+        ]
+      },
+      {
+        "accesses": {
+          "get": 7,
+          "set": 1
+        },
+        "extractions": {
+          "heuristic": 8
+        },
+        "id": 1,
+        "meaning": {
+          "backingVarbitCount": 1034,
+          "domain": "PLAYER",
+          "forceDefault": true,
+          "id": 1,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varps\\1.json",
+          "present": true,
+          "refType": "varp",
+          "type": "QUESTHELP"
+        },
+        "refType": "varp",
+        "sampleOffsets": [
+          526,
+          7029,
+          7551,
+          7673,
+          7713,
+          7735,
+          7739,
+          7761
+        ],
+        "scriptCount": 2,
+        "scriptIds": [
+          3529,
+          4704
+        ]
+      },
+      {
+        "accesses": {
+          "get": 4,
+          "set": 1
+        },
+        "extractions": {
+          "heuristic": 5
+        },
+        "id": 2,
+        "meaning": {
+          "backingVarbitCount": 267,
+          "domain": "PLAYER",
+          "forceDefault": true,
+          "id": 2,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varps\\2.json",
+          "present": true,
+          "refType": "varp",
+          "type": "QUESTHELP"
+        },
+        "refType": "varp",
+        "sampleOffsets": [
+          444,
+          7033,
+          7037,
+          7717,
+          7743
+        ],
+        "scriptCount": 2,
+        "scriptIds": [
+          3529,
+          4704
+        ]
+      },
+      {
+        "accesses": {
+          "get": 3,
+          "set": 1
+        },
+        "extractions": {
+          "heuristic": 4
+        },
+        "id": 6,
+        "meaning": {
+          "backingVarbitCount": 1312,
+          "domain": "PLAYER",
+          "forceDefault": true,
+          "id": 6,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varps\\6.json",
+          "present": true,
+          "refType": "varp",
+          "type": "LONG"
+        },
+        "refType": "varp",
+        "sampleOffsets": [
+          79,
+          448,
+          480,
+          530
+        ],
+        "scriptCount": 2,
+        "scriptIds": [
+          3529,
+          8420
+        ]
+      },
+      {
+        "accesses": {
+          "set": 1
+        },
+        "extractions": {
+          "heuristic": 1
+        },
+        "id": 3,
+        "meaning": {
+          "backingVarbitCount": 305,
+          "domain": "PLAYER",
+          "forceDefault": true,
+          "id": 3,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varps\\3.json",
+          "present": true,
+          "refType": "varp",
+          "type": "QUESTHELP"
+        },
+        "refType": "varp",
+        "sampleOffsets": [
+          7041
+        ],
+        "scriptCount": 1,
+        "scriptIds": [
+          4704
+        ]
+      },
+      {
+        "accesses": {
+          "get": 2,
+          "set": 2
+        },
+        "extractions": {
+          "heuristic": 4
+        },
+        "id": 4,
+        "meaning": {
+          "backingVarbitCount": 1215,
+          "domain": "PLAYER",
+          "forceDefault": true,
+          "id": 4,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varps\\4.json",
+          "present": true,
+          "refType": "varp",
+          "type": "QUESTHELP"
+        },
+        "refType": "varp",
+        "sampleOffsets": [
+          7555,
+          7721,
+          7747,
+          7765
+        ],
+        "scriptCount": 1,
+        "scriptIds": [
+          4704
+        ]
+      },
+      {
+        "accesses": {
+          "set": 1
+        },
+        "extractions": {
+          "heuristic": 1
+        },
+        "id": 7,
+        "meaning": {
+          "backingVarbitCount": 340,
+          "domain": "PLAYER",
+          "forceDefault": true,
+          "id": 7,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varps\\7.json",
+          "present": true,
+          "refType": "varp",
+          "type": "LONG"
+        },
+        "refType": "varp",
+        "sampleOffsets": [
+          7563
+        ],
+        "scriptCount": 1,
+        "scriptIds": [
+          4704
+        ]
+      },
+      {
+        "accesses": {
+          "get": 1
+        },
+        "extractions": {
+          "heuristic": 1
+        },
+        "id": 10,
+        "meaning": {
+          "backingVarbitCount": 1533,
+          "domain": "PLAYER",
+          "forceDefault": true,
+          "id": 10,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varps\\10.json",
+          "present": true,
+          "refType": "varp",
+          "type": "QUESTHELP"
+        },
+        "refType": "varp",
+        "sampleOffsets": [
+          7677
+        ],
+        "scriptCount": 1,
+        "scriptIds": [
+          4704
+        ]
+      },
+      {
+        "accesses": {
+          "set": 1
+        },
+        "extractions": {
+          "heuristic": 1
+        },
+        "id": 11,
+        "meaning": {
+          "backingVarbitCount": 1198,
+          "domain": "PLAYER",
+          "forceDefault": true,
+          "id": 11,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varps\\11.json",
+          "present": true,
+          "refType": "varp",
+          "type": "QUESTHELP"
+        },
+        "refType": "varp",
+        "sampleOffsets": [
+          538
+        ],
+        "scriptCount": 1,
+        "scriptIds": [
+          3529
+        ]
+      },
+      {
+        "accesses": {
+          "set": 1
+        },
+        "extractions": {
+          "heuristic": 1
+        },
+        "id": 3920,
+        "meaning": {
+          "backingVarbitCount": 0,
+          "domain": "PLAYER",
+          "forceDefault": true,
+          "id": 3920,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varps\\3920.json",
+          "present": true,
+          "refType": "varp",
+          "type": "QUESTHELP"
+        },
+        "refType": "varp",
+        "sampleOffsets": [
+          418
+        ],
+        "scriptCount": 1,
+        "scriptIds": [
+          3529
+        ]
+      },
+      {
+        "accesses": {
+          "get": 1
+        },
+        "extractions": {
+          "heuristic": 1
+        },
+        "id": 8256,
+        "meaning": {
+          "backingVarbitCount": 0,
+          "domain": "PLAYER",
+          "forceDefault": true,
+          "id": 8256,
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\varps\\8256.json",
+          "present": true,
+          "refType": "varp",
+          "type": "QUESTHELP"
+        },
+        "refType": "varp",
+        "sampleOffsets": [
+          426
+        ],
+        "scriptCount": 1,
+        "scriptIds": [
+          3529
+        ]
+      }
+    ]
+  },
+  "generatedAt": "2026-03-22T08:48:14.947488+00:00",
+  "inputs": {
+    "mapGateDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\client-map-gate",
+    "postSceneArtifact": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\post-scene-opcode-doctor.json",
+    "sceneStartArtifact": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-start-doctor.json",
+    "varMeaningRoot": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning",
+    "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log"
+  },
+  "mapGateSummary": {
+    "eventCount": 8,
+    "httpMsRequestCount": 0,
+    "httpNonReferenceRequestCount": 0,
+    "httpRequestCount": 0,
+    "httpResponseCount": 0,
+    "idxArchiveIdsByIndex": {},
+    "idxLookupCount": 0,
+    "idxLookupsByIndex": {},
+    "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\client-map-gate\\summary-20260322-current.json",
+    "topRequestLines": []
+  },
+  "markerCounts": {
+    "world-send-deferred-completion-announcement-scripts": 1,
+    "world-send-deferred-forced-fallback-completion-companions": 1,
+    "world-send-deferred-light-tail-scripts-after-scene-start": 1,
+    "world-send-forced-fallback-deferred-completion-scripts": 1
+  },
+  "schemaVersion": 1,
+  "scripts": [
+    {
+      "decodeMode": "unsupported",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\scripts\\139.json",
+      "evidencePresent": true,
+      "exactParse": false,
+      "heuristicVarbits": [],
+      "heuristicVarps": [
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 34,
+          "opcode": 1
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 40,
+          "opcode": 1
+        }
+      ],
+      "instructionCount": 6,
+      "scriptId": 139,
+      "sourceKinds": [
+        "world-send-deferred-forced-fallback-completion-companions"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:44:13.732170500Z world-send-deferred-forced-fallback-completion-companions name=demon ids=1484,1483,745,284,1213,1448,291,1488,1680,1847,635,1639 scripts=139,14150 reason=forced-map-build-fallback-post-ready"
+      ]
+    },
+    {
+      "decodeMode": "missing",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePresent": false,
+      "exactParse": false,
+      "heuristicVarbits": [],
+      "heuristicVarps": [],
+      "scriptId": 1264,
+      "sourceKinds": [
+        "world-send-deferred-completion-announcement-scripts"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:45:57.870324400Z world-send-deferred-completion-announcement-scripts name=demon scripts=1264,3529"
+      ]
+    },
+    {
+      "decodeMode": "unsupported",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\scripts\\2651.json",
+      "evidencePresent": true,
+      "exactParse": false,
+      "heuristicVarbits": [],
+      "heuristicVarps": [
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 88,
+          "opcode": 2
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 94,
+          "opcode": 2
+        }
+      ],
+      "instructionCount": 14,
+      "scriptId": 2651,
+      "sourceKinds": [
+        "world-send-forced-fallback-deferred-completion-scripts"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:44:13.732170500Z world-send-forced-fallback-deferred-completion-scripts name=demon scripts=8862,2651,7486,10903,8778,4704,4308,10623,5559,3957 reason=forced-map-build-fallback"
+      ]
+    },
+    {
+      "decodeMode": "unsupported",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\scripts\\3529.json",
+      "evidencePresent": true,
+      "exactParse": false,
+      "heuristicVarbits": [],
+      "heuristicVarps": [
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 411,
+          "opcode": 2
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 1,
+          "offset": 526,
+          "opcode": 1
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 2,
+          "offset": 444,
+          "opcode": 1
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 6,
+          "offset": 480,
+          "opcode": 1
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 6,
+          "offset": 530,
+          "opcode": 1
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 6,
+          "offset": 448,
+          "opcode": 2
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 11,
+          "offset": 538,
+          "opcode": 2
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 3920,
+          "offset": 418,
+          "opcode": 2
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 8256,
+          "offset": 426,
+          "opcode": 1
+        }
+      ],
+      "instructionCount": 109,
+      "scriptId": 3529,
+      "sourceKinds": [
+        "world-send-deferred-completion-announcement-scripts"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:45:57.870324400Z world-send-deferred-completion-announcement-scripts name=demon scripts=1264,3529"
+      ]
+    },
+    {
+      "decodeMode": "missing",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePresent": false,
+      "exactParse": false,
+      "heuristicVarbits": [],
+      "heuristicVarps": [],
+      "scriptId": 3957,
+      "sourceKinds": [
+        "world-send-forced-fallback-deferred-completion-scripts"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:44:13.732170500Z world-send-forced-fallback-deferred-completion-scripts name=demon scripts=8862,2651,7486,10903,8778,4704,4308,10623,5559,3957 reason=forced-map-build-fallback"
+      ]
+    },
+    {
+      "decodeMode": "unsupported",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\scripts\\4308.json",
+      "evidencePresent": true,
+      "exactParse": false,
+      "heuristicVarbits": [],
+      "heuristicVarps": [
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 26,
+          "opcode": 2
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 32,
+          "opcode": 2
+        }
+      ],
+      "instructionCount": 4,
+      "scriptId": 4308,
+      "sourceKinds": [
+        "world-send-forced-fallback-deferred-completion-scripts"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:44:13.732170500Z world-send-forced-fallback-deferred-completion-scripts name=demon scripts=8862,2651,7486,10903,8778,4704,4308,10623,5559,3957 reason=forced-map-build-fallback"
+      ]
+    },
+    {
+      "decodeMode": "unsupported",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\scripts\\4704.json",
+      "evidencePresent": true,
+      "exactParse": false,
+      "heuristicVarbits": [
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 5,
+          "offset": 7689,
+          "opcode": 25
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 9,
+          "offset": 7615,
+          "opcode": 25
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 82,
+          "offset": 7225,
+          "opcode": 25
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 88,
+          "offset": 7241,
+          "opcode": 27
+        }
+      ],
+      "heuristicVarps": [
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 7699,
+          "opcode": 1
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 7753,
+          "opcode": 2
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 1,
+          "offset": 7029,
+          "opcode": 1
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 1,
+          "offset": 7551,
+          "opcode": 1
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 1,
+          "offset": 7673,
+          "opcode": 1
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 1,
+          "offset": 7713,
+          "opcode": 1
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 1,
+          "offset": 7739,
+          "opcode": 1
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 1,
+          "offset": 7761,
+          "opcode": 1
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 1,
+          "offset": 7735,
+          "opcode": 2
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 2,
+          "offset": 7033,
+          "opcode": 1
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 2,
+          "offset": 7717,
+          "opcode": 1
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 2,
+          "offset": 7743,
+          "opcode": 1
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 2,
+          "offset": 7037,
+          "opcode": 2
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 3,
+          "offset": 7041,
+          "opcode": 2
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 4,
+          "offset": 7555,
+          "opcode": 1
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 4,
+          "offset": 7765,
+          "opcode": 1
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 4,
+          "offset": 7721,
+          "opcode": 2
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 4,
+          "offset": 7747,
+          "opcode": 2
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 7,
+          "offset": 7563,
+          "opcode": 2
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 10,
+          "offset": 7677,
+          "opcode": 1
+        }
+      ],
+      "instructionCount": 768,
+      "scriptId": 4704,
+      "sourceKinds": [
+        "world-send-forced-fallback-deferred-completion-scripts"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:44:13.732170500Z world-send-forced-fallback-deferred-completion-scripts name=demon scripts=8862,2651,7486,10903,8778,4704,4308,10623,5559,3957 reason=forced-map-build-fallback"
+      ]
+    },
+    {
+      "decodeMode": "unsupported",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\scripts\\5559.json",
+      "evidencePresent": true,
+      "exactParse": false,
+      "heuristicVarbits": [],
+      "heuristicVarps": [
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 24,
+          "opcode": 1
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 1,
+          "opcode": 2
+        }
+      ],
+      "instructionCount": 3,
+      "scriptId": 5559,
+      "sourceKinds": [
+        "world-send-forced-fallback-deferred-completion-scripts"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:44:13.732170500Z world-send-forced-fallback-deferred-completion-scripts name=demon scripts=8862,2651,7486,10903,8778,4704,4308,10623,5559,3957 reason=forced-map-build-fallback"
+      ]
+    },
+    {
+      "decodeMode": "unsupported",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\scripts\\7486.json",
+      "evidencePresent": true,
+      "exactParse": false,
+      "heuristicVarbits": [],
+      "heuristicVarps": [
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 46,
+          "opcode": 2
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 52,
+          "opcode": 2
+        }
+      ],
+      "instructionCount": 8,
+      "scriptId": 7486,
+      "sourceKinds": [
+        "world-send-forced-fallback-deferred-completion-scripts"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:44:13.732170500Z world-send-forced-fallback-deferred-completion-scripts name=demon scripts=8862,2651,7486,10903,8778,4704,4308,10623,5559,3957 reason=forced-map-build-fallback"
+      ]
+    },
+    {
+      "decodeMode": "unsupported",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\scripts\\8310.json",
+      "evidencePresent": true,
+      "exactParse": false,
+      "heuristicVarbits": [],
+      "heuristicVarps": [
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 34,
+          "opcode": 1
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 40,
+          "opcode": 1
+        }
+      ],
+      "instructionCount": 5,
+      "scriptId": 8310,
+      "sourceKinds": [
+        "world-send-deferred-light-tail-scripts-after-scene-start"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:44:20.778881100Z world-send-deferred-light-tail-scripts-after-scene-start name=demon scripts=11145,8420,8310 count=7 control50=141"
+      ]
+    },
+    {
+      "decodeMode": "unsupported",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\scripts\\8420.json",
+      "evidencePresent": true,
+      "exactParse": false,
+      "heuristicVarbits": [],
+      "heuristicVarps": [
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 85,
+          "opcode": 1
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 6,
+          "offset": 79,
+          "opcode": 1
+        }
+      ],
+      "instructionCount": 12,
+      "scriptId": 8420,
+      "sourceKinds": [
+        "world-send-deferred-light-tail-scripts-after-scene-start"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:44:20.778881100Z world-send-deferred-light-tail-scripts-after-scene-start name=demon scripts=11145,8420,8310 count=7 control50=141"
+      ]
+    },
+    {
+      "decodeMode": "unsupported",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\scripts\\8778.json",
+      "evidencePresent": true,
+      "exactParse": false,
+      "heuristicVarbits": [],
+      "heuristicVarps": [
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 9,
+          "opcode": 2
+        }
+      ],
+      "instructionCount": 2,
+      "scriptId": 8778,
+      "sourceKinds": [
+        "world-send-forced-fallback-deferred-completion-scripts"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:44:13.732170500Z world-send-forced-fallback-deferred-completion-scripts name=demon scripts=8862,2651,7486,10903,8778,4704,4308,10623,5559,3957 reason=forced-map-build-fallback"
+      ]
+    },
+    {
+      "decodeMode": "unsupported",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\scripts\\8862.json",
+      "evidencePresent": true,
+      "exactParse": false,
+      "heuristicVarbits": [],
+      "heuristicVarps": [
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 360,
+          "opcode": 2
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 366,
+          "opcode": 2
+        }
+      ],
+      "instructionCount": 109,
+      "scriptId": 8862,
+      "sourceKinds": [
+        "world-send-forced-fallback-deferred-completion-scripts"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:44:13.732170500Z world-send-forced-fallback-deferred-completion-scripts name=demon scripts=8862,2651,7486,10903,8778,4704,4308,10623,5559,3957 reason=forced-map-build-fallback"
+      ]
+    },
+    {
+      "decodeMode": "unsupported",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\scripts\\10623.json",
+      "evidencePresent": true,
+      "exactParse": false,
+      "heuristicVarbits": [],
+      "heuristicVarps": [
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 26,
+          "opcode": 2
+        },
+        {
+          "access": "set",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 32,
+          "opcode": 2
+        }
+      ],
+      "instructionCount": 4,
+      "scriptId": 10623,
+      "sourceKinds": [
+        "world-send-forced-fallback-deferred-completion-scripts"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:44:13.732170500Z world-send-forced-fallback-deferred-completion-scripts name=demon scripts=8862,2651,7486,10903,8778,4704,4308,10623,5559,3957 reason=forced-map-build-fallback"
+      ]
+    },
+    {
+      "decodeMode": "unsupported",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\scripts\\10903.json",
+      "evidencePresent": true,
+      "exactParse": false,
+      "heuristicVarbits": [
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 140,
+          "opcode": 25
+        }
+      ],
+      "heuristicVarps": [],
+      "instructionCount": 25,
+      "scriptId": 10903,
+      "sourceKinds": [
+        "world-send-forced-fallback-deferred-completion-scripts"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:44:13.732170500Z world-send-forced-fallback-deferred-completion-scripts name=demon scripts=8862,2651,7486,10903,8778,4704,4308,10623,5559,3957 reason=forced-map-build-fallback"
+      ]
+    },
+    {
+      "decodeMode": "missing",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePresent": false,
+      "exactParse": false,
+      "heuristicVarbits": [],
+      "heuristicVarps": [],
+      "scriptId": 11145,
+      "sourceKinds": [
+        "world-send-deferred-light-tail-scripts-after-scene-start"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:44:20.778881100Z world-send-deferred-light-tail-scripts-after-scene-start name=demon scripts=11145,8420,8310 count=7 control50=141"
+      ]
+    },
+    {
+      "decodeMode": "unsupported",
+      "directVarbits": [],
+      "directVarps": [],
+      "evidencePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\cache-analysis\\var-meaning\\scripts\\14150.json",
+      "evidencePresent": true,
+      "exactParse": false,
+      "heuristicVarbits": [],
+      "heuristicVarps": [
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 39,
+          "opcode": 1
+        },
+        {
+          "access": "get",
+          "extraction": "heuristic",
+          "id": 0,
+          "offset": 45,
+          "opcode": 1
+        }
+      ],
+      "instructionCount": 6,
+      "scriptId": 14150,
+      "sourceKinds": [
+        "world-send-deferred-forced-fallback-completion-companions"
+      ],
+      "sourceLines": [
+        "2026-03-22T07:44:13.732170500Z world-send-deferred-forced-fallback-completion-companions name=demon ids=1484,1483,745,284,1213,1448,291,1488,1680,1847,635,1639 scripts=139,14150 reason=forced-map-build-fallback-post-ready"
+      ]
+    }
+  ],
+  "status": "ok",
+  "summary": {
+    "candidateDirectVarbitCount": 0,
+    "candidateDirectVarpCount": 0,
+    "candidateHeuristicVarbitCount": 5,
+    "candidateHeuristicVarpCount": 11,
+    "deferredDefaultVarpsObserved": false,
+    "latestLikelyBlocker": "accepted-ready-no-scene-archives",
+    "mapGateHttpMsRequestCount": 0,
+    "mapGateHttpNonReferenceRequestCount": 0,
+    "mapGateIdxLookupCount": 0,
+    "resetClientVarcacheObserved": false,
+    "scriptCount": 17,
+    "scriptIds": [
+      139,
+      1264,
+      2651,
+      3529,
+      3957,
+      4308,
+      4704,
+      5559,
+      7486,
+      8310,
+      8420,
+      8778,
+      8862,
+      10623,
+      10903,
+      11145,
+      14150
+    ],
+    "scriptsMissingEvidence": [
+      1264,
+      3957,
+      11145
+    ]
+  },
+  "tool": "run_946_loading_var_gate_doctor",
+  "verdict": {
+    "likelyBlocker": "accepted-ready-no-scene-archives",
+    "needs": [
+      "client-side var gate before archive resolution; no cache idx lookups or /ms archive requests occurred",
+      "live read/write capture for candidate varps 0,1,2,6,3,4 before the first scene archive request",
+      "materialize or infer var evidence for loading-tail scripts 1264,3957,11145"
+    ],
+    "recommendation": "The client is still stalling before scene archive fetches begin. Focus on the candidate loading vars touched by the late bootstrap scripts, especially where the live map-gate capture shows no idx lookups and no non-reference /ms requests."
+  }
+}

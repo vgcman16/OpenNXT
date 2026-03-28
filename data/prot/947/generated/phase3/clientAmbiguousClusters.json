@@ -1,0 +1,56 @@
+[
+  {
+    "cluster": "resume-prompt-cluster",
+    "dispatcherFunction": "14003b9e0",
+    "dispatcherFunctionName": "FUN_14003b9e0",
+    "members": [
+      {
+        "opcode": 24,
+        "size": -1,
+        "familyLabel": "RESUME_STRING",
+        "exactCandidateNames": [
+          "RESUME_P_STRINGDIALOG",
+          "RESUME_P_NAMEDIALOG",
+          "RESUME_P_OBJDIALOG"
+        ],
+        "dispatchSelector": 1876,
+        "dispatchSelectorHex": "0x754",
+        "primarySender": "1401fe390",
+        "primarySenderName": "FUN_1401fe390"
+      },
+      {
+        "opcode": 67,
+        "size": -1,
+        "familyLabel": "RESUME_STRING",
+        "exactCandidateNames": [
+          "RESUME_P_STRINGDIALOG",
+          "RESUME_P_NAMEDIALOG",
+          "RESUME_P_OBJDIALOG"
+        ],
+        "dispatchSelector": 803,
+        "dispatchSelectorHex": "0x323",
+        "primarySender": "1401fd5b0",
+        "primarySenderName": "FUN_1401fd5b0"
+      },
+      {
+        "opcode": 93,
+        "size": -1,
+        "familyLabel": "RESUME_STRING",
+        "exactCandidateNames": [
+          "RESUME_P_STRINGDIALOG",
+          "RESUME_P_NAMEDIALOG",
+          "RESUME_P_OBJDIALOG"
+        ],
+        "dispatchSelector": 2007,
+        "dispatchSelectorHex": "0x7d7",
+        "primarySender": "1401fdf30",
+        "primarySenderName": "FUN_1401fdf30"
+      }
+    ],
+    "candidateNameUniverse": [
+      "RESUME_P_STRINGDIALOG",
+      "RESUME_P_NAMEDIALOG",
+      "RESUME_P_OBJDIALOG"
+    ]
+  }
+]

@@ -7,9 +7,12 @@ enum class LobbyBootstrapStage(val wireName: String) {
     RESET("reset"),
     DEFAULT_VARPS("default-varps"),
     VARCS("varcs"),
+    SECONDARY_VARCS("secondary-varcs"),
     RUNCLIENTSCRIPT("runclientscript"),
     ROOT_INTERFACE("root-interface"),
-    CHILD_INTERFACES("child-interfaces")
+    CHILD_INTERFACES("child-interfaces"),
+    NEWS_SCRIPTS("news-scripts"),
+    SOCIAL_STATE("social-state")
 }
 
 class LobbyBootstrapStageTracker(

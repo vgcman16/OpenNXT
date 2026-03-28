@@ -1,0 +1,193 @@
+{
+  "advisoryOnly": true,
+  "artifacts": {
+    "active_sub_analysis": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-analysis.md"
+  },
+  "build": 946,
+  "generatedAt": "2026-03-21T03:07:13.532703+00:00",
+  "inputs": {
+    "analyze": true,
+    "headlessTimeoutSeconds": 120,
+    "manualOpcodes": [],
+    "packetNames": [],
+    "phase3NameCandidates": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase3\\nameCandidates.json",
+    "phase5GeneratedPackets": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase5\\generatedPackets.json",
+    "sharedEvidenceIndex": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\evidence-index.json",
+    "sharedVerifiedPackets": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\verified-packets.json"
+  },
+  "schemaVersion": 1,
+  "status": "partial",
+  "summary": {
+    "failedCount": 3,
+    "okCount": 0,
+    "targetCount": 3
+  },
+  "targets": [
+    {
+      "analysisNotes": [],
+      "artifacts": {
+        "exportJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-exports\\parserFields\\opcode-7_IF_OPENSUB_ACTIVE_OBJ.json",
+        "stderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-exports\\parserFields\\logs\\opcode-7_IF_OPENSUB_ACTIVE_OBJ.stderr.log",
+        "stdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-exports\\parserFields\\logs\\opcode-7_IF_OPENSUB_ACTIVE_OBJ.stdout.log"
+      },
+      "cloneCleanupError": "",
+      "cloneCleanupStatus": "cleaned",
+      "cloneStrategy": "disposable-project-clone",
+      "comparison": {
+        "legacyFieldTypes": [],
+        "namedSiblings": {
+          "IF_OPENSUB_ACTIVE_LOC": [
+            "ubyte",
+            "intle",
+            "ubyte",
+            "ubyte",
+            "ubyte",
+            "ubyte",
+            "intv1",
+            "ubyte",
+            "intle",
+            "ushortle128"
+          ],
+          "IF_OPENSUB_ACTIVE_OBJ": [
+            "ushort",
+            "ushort",
+            "intv1",
+            "ubytec",
+            "intv1"
+          ]
+        }
+      },
+      "confidence": "low",
+      "decompileAttempted": false,
+      "decompileCompleted": false,
+      "draftFieldFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-drafts\\opcode-7_IF_OPENSUB_ACTIVE_OBJ.txt",
+      "errorKind": "headless-failure",
+      "exportedFieldTypes": [],
+      "notes": [
+        "ExportParserFields.java returned -1.",
+        "ExportParserFields.java exceeded the 120-second headless timeout.",
+        "No field candidates were recovered from ExportParserFields.java."
+      ],
+      "opcode": 7,
+      "packetNames": [
+        "IF_OPENSUB_ACTIVE_OBJ"
+      ],
+      "parserName": "FUN_1400fc390",
+      "parserTarget": "1400fc390",
+      "recommendedNextAction": "Recover a valid parser export before drafting server field declarations.",
+      "recoveryMode": "",
+      "status": "export-failed"
+    },
+    {
+      "analysisNotes": [],
+      "artifacts": {
+        "exportJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-exports\\parserFields\\opcode-21_IF_OPENSUB_ACTIVE_LOC.json",
+        "stderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-exports\\parserFields\\logs\\opcode-21_IF_OPENSUB_ACTIVE_LOC.stderr.log",
+        "stdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-exports\\parserFields\\logs\\opcode-21_IF_OPENSUB_ACTIVE_LOC.stdout.log"
+      },
+      "cloneCleanupError": "",
+      "cloneCleanupStatus": "cleaned",
+      "cloneStrategy": "disposable-project-clone",
+      "comparison": {
+        "legacyFieldTypes": [],
+        "namedSiblings": {
+          "IF_OPENSUB_ACTIVE_LOC": [
+            "ubyte",
+            "intle",
+            "ubyte",
+            "ubyte",
+            "ubyte",
+            "ubyte",
+            "intv1",
+            "ubyte",
+            "intle",
+            "ushortle128"
+          ],
+          "IF_OPENSUB_ACTIVE_OBJ": [
+            "ushort",
+            "ushort",
+            "intv1",
+            "ubytec",
+            "intv1"
+          ]
+        }
+      },
+      "confidence": "low",
+      "decompileAttempted": false,
+      "decompileCompleted": false,
+      "draftFieldFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-drafts\\opcode-21_IF_OPENSUB_ACTIVE_LOC.txt",
+      "errorKind": "headless-failure",
+      "exportedFieldTypes": [],
+      "notes": [
+        "ExportParserFields.java returned -1.",
+        "ExportParserFields.java exceeded the 120-second headless timeout.",
+        "No field candidates were recovered from ExportParserFields.java."
+      ],
+      "opcode": 21,
+      "packetNames": [
+        "IF_OPENSUB_ACTIVE_LOC"
+      ],
+      "parserName": "FUN_1400fbf80",
+      "parserTarget": "1400fbf80",
+      "recommendedNextAction": "Recover a valid parser export before drafting server field declarations.",
+      "recoveryMode": "",
+      "status": "export-failed"
+    },
+    {
+      "analysisNotes": [],
+      "artifacts": {
+        "exportJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-exports\\parserFields\\opcode-67_IF_OPENSUB_ACTIVE_NPC.json",
+        "stderrLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-exports\\parserFields\\logs\\opcode-67_IF_OPENSUB_ACTIVE_NPC.stderr.log",
+        "stdoutLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-exports\\parserFields\\logs\\opcode-67_IF_OPENSUB_ACTIVE_NPC.stdout.log"
+      },
+      "cloneCleanupError": "",
+      "cloneCleanupStatus": "cleaned",
+      "cloneStrategy": "disposable-project-clone",
+      "comparison": {
+        "legacyFieldTypes": [],
+        "namedSiblings": {
+          "IF_OPENSUB_ACTIVE_LOC": [
+            "ubyte",
+            "intle",
+            "ubyte",
+            "ubyte",
+            "ubyte",
+            "ubyte",
+            "intv1",
+            "ubyte",
+            "intle",
+            "ushortle128"
+          ],
+          "IF_OPENSUB_ACTIVE_OBJ": [
+            "ushort",
+            "ushort",
+            "intv1",
+            "ubytec",
+            "intv1"
+          ]
+        }
+      },
+      "confidence": "low",
+      "decompileAttempted": false,
+      "decompileCompleted": false,
+      "draftFieldFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-drafts\\opcode-67_IF_OPENSUB_ACTIVE_NPC.txt",
+      "errorKind": "headless-failure",
+      "exportedFieldTypes": [],
+      "notes": [
+        "ExportParserFields.java returned -1.",
+        "ExportParserFields.java exceeded the 120-second headless timeout.",
+        "No field candidates were recovered from ExportParserFields.java."
+      ],
+      "opcode": 67,
+      "packetNames": [
+        "IF_OPENSUB_ACTIVE_NPC"
+      ],
+      "parserName": "FUN_1400fbba0",
+      "parserTarget": "1400fbba0",
+      "recommendedNextAction": "Recover a valid parser export before drafting server field declarations.",
+      "recoveryMode": "",
+      "status": "export-failed"
+    }
+  ],
+  "tool": "run_946_active_sub_aid"
+}

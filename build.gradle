@@ -53,6 +53,14 @@ application {
     applicationDefaultJvmArgs = ['--enable-native-access=ALL-UNNAMED']
 }
 
+sourceSets {
+    main {
+        kotlin {
+            srcDirs += ['src/generated/kotlin']
+        }
+    }
+}
+
 tasks.withType(KotlinJvmCompile).configureEach {
     compilerOptions {
         jvmTarget = JvmTarget.fromTarget('25')
@@ -66,17 +74,22 @@ tasks.withType(JavaCompile).configureEach {
 
 tasks.named('test') {
     useJUnitPlatform()
+    def configuredTestHeap = System.getProperty('opennxt.test.maxHeapSize') ?: System.getenv('OPENNXT_TEST_MAX_HEAP')
+    if (configuredTestHeap != null && !configuredTestHeap.isBlank()) {
+        maxHeapSize = configuredTestHeap
+    }
 }
 
 tasks.named('startScripts') {
     doLast {
+        def appJarName = jar.archiveFileName.get()
         windowsScript.text = windowsScript.text.replaceFirst(
             /(?m)^set CLASSPATH=.*$/,
-            java.util.regex.Matcher.quoteReplacement('set CLASSPATH=%APP_HOME%\\lib\\*')
+            java.util.regex.Matcher.quoteReplacement("set CLASSPATH=%APP_HOME%\\lib\\${appJarName};%APP_HOME%\\lib\\*")
         )
         unixScript.text = unixScript.text.replaceFirst(
             /(?m)^CLASSPATH=.*$/,
-            java.util.regex.Matcher.quoteReplacement('CLASSPATH=$APP_HOME/lib/*')
+            java.util.regex.Matcher.quoteReplacement("CLASSPATH=\$APP_HOME/lib/${appJarName}:\$APP_HOME/lib/*")
         )
     }
 }

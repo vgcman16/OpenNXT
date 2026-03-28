@@ -28,10 +28,11 @@ data class ClientConfig(val entries: MutableMap<String, String> = Object2ObjectO
         }
 
         fun download(base: String, binaryType: BinaryType): ClientConfig {
-            val url = URL("$base?binaryType=${binaryType.id}")
+            val separator = if (base.contains("?")) "&" else "?"
+            val url = URL("$base${separator}binaryType=${binaryType.id}")
             val config = ClientConfig()
 
-            url.readText(Charsets.UTF_8).split("\n").forEach { line ->
+            url.readBytes().toString(Charsets.ISO_8859_1).split("\n").forEach { line ->
                 config.entries.readLine(line)
             }
 

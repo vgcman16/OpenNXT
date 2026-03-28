@@ -1,0 +1,444 @@
+{
+  "advisoryOnly": true,
+  "artifacts": {
+    "tool_doctor": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\tool-doctor.md"
+  },
+  "build": 946,
+  "generatedAt": "2026-03-23T01:58:09.927629+00:00",
+  "inputs": {
+    "decompLogDir": "C:\\Users\\Demon\\Documents\\New project\\ghidra-projects",
+    "ghidraDir": "C:\\Users\\Demon\\Tools\\ghidra\\ghidra_12.0.4_PUBLIC",
+    "labels": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\curated-session-labels.json",
+    "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log"
+  },
+  "requirements": [
+    {
+      "kind": "input",
+      "name": "world-log",
+      "note": "Primary historical session source.",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log",
+      "present": true,
+      "required": true,
+      "size": 97283392,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "phase-output",
+      "name": "phase3-name-candidates",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase3\\nameCandidates.json",
+      "present": true,
+      "required": true,
+      "size": 311014,
+      "status": "partial"
+    },
+    {
+      "freshness": "stale",
+      "kind": "phase-output",
+      "name": "phase5-generated-packets",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase5\\generatedPackets.json",
+      "present": true,
+      "required": true,
+      "size": 44582,
+      "status": "partial"
+    },
+    {
+      "freshness": "stale",
+      "kind": "shared-output",
+      "name": "shared-verified-packets",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\verified-packets.json",
+      "present": true,
+      "required": true,
+      "size": 40009,
+      "status": "partial"
+    },
+    {
+      "freshness": "stale",
+      "kind": "shared-output",
+      "name": "shared-evidence-index",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\evidence-index.json",
+      "present": true,
+      "required": true,
+      "size": 751604,
+      "status": "partial"
+    },
+    {
+      "kind": "labels",
+      "name": "curated-labels",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\curated-session-labels.json",
+      "present": true,
+      "required": false,
+      "size": 957,
+      "status": "ok"
+    },
+    {
+      "kind": "ghidra",
+      "name": "decomp-log-dir",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\ghidra-projects",
+      "present": true,
+      "required": false,
+      "size": 262144,
+      "status": "ok"
+    },
+    {
+      "kind": "ghidra",
+      "name": "ghidra-headless",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Tools\\ghidra\\ghidra_12.0.4_PUBLIC\\support\\analyzeHeadless.bat",
+      "present": true,
+      "required": false,
+      "size": 2181,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "curated-compare",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\curated-compare.json",
+      "present": true,
+      "required": false,
+      "size": 49288,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "sender-aid",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-analysis.json",
+      "present": true,
+      "required": false,
+      "size": 58579,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "active-sub-aid",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-analysis.json",
+      "present": true,
+      "required": false,
+      "size": 7804,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "interface-diff",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\interface-diff.json",
+      "present": true,
+      "required": false,
+      "size": 3539,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "scene-delivery-aid",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-delivery-analysis.json",
+      "present": true,
+      "required": false,
+      "size": 22529,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "js5-archive-resolver",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\js5-archive-resolution.json",
+      "present": true,
+      "required": false,
+      "size": 2138,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "plateau-diff",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\plateau-diff.json",
+      "present": true,
+      "required": false,
+      "size": 58194,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "black-screen-capture",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\black-screen-capture.json",
+      "present": true,
+      "required": false,
+      "size": 35898,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "loopback-doctor",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\loopback-doctor.json",
+      "present": true,
+      "required": false,
+      "size": 8922,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "attempt-diff",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\attempt-diff.json",
+      "present": true,
+      "required": false,
+      "size": 182531,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "ready-signal-doctor",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\ready-signal-doctor.json",
+      "present": true,
+      "required": false,
+      "size": 39909,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "disconnect-pivot-doctor",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\disconnect-pivot-doctor.json",
+      "present": true,
+      "required": false,
+      "size": 89137,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "script-burst-doctor",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\script-burst-doctor.json",
+      "present": true,
+      "required": false,
+      "size": 3818,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "scene-start-doctor",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-start-doctor.json",
+      "present": true,
+      "required": false,
+      "size": 91504,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "post-scene-opcode-doctor",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\post-scene-opcode-doctor.json",
+      "present": true,
+      "required": false,
+      "size": 66100,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "live-var-packet-doctor",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\live-var-packet-doctor.json",
+      "present": true,
+      "required": false,
+      "size": 12574780,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "advisory",
+      "name": "forced-fallback-parity-doctor",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\forced-fallback-parity-doctor.json",
+      "present": true,
+      "required": false,
+      "size": 14515,
+      "status": "ok"
+    },
+    {
+      "freshness": "fresh",
+      "kind": "advisory",
+      "name": "client-live-watch",
+      "note": "Deep client-side live watch summary.",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\client-live-watch\\latest-summary.json",
+      "present": true,
+      "required": false,
+      "size": 8565,
+      "status": "ok"
+    },
+    {
+      "freshness": "stale",
+      "kind": "verification",
+      "name": "runtime-verifier",
+      "note": "",
+      "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\runtime-verification-results.json",
+      "present": true,
+      "required": false,
+      "size": 8864,
+      "status": "ok"
+    }
+  ],
+  "schemaVersion": 1,
+  "status": "partial",
+  "summary": {
+    "blockedCount": 0,
+    "okCount": 23,
+    "partialCount": 4
+  },
+  "tool": "run_946_tool_doctor",
+  "toolReadiness": [
+    {
+      "level": "production-ready",
+      "reason": "Pipeline manifest present.",
+      "tool": "run_946_pipeline"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Needs stronger advisory coverage or labels.",
+      "tool": "run_946_curated_compare"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Artifact missing or not fully green.",
+      "tool": "run_946_runtime_verifier"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Standard artifact present.",
+      "tool": "run_946_sender_aid"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Standard artifact present.",
+      "tool": "run_946_active_sub_aid"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Standard artifact present.",
+      "tool": "run_946_interface_diff"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Standard artifact present.",
+      "tool": "run_946_scene_delivery_aid"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Structured JS5 archive labeling present.",
+      "tool": "run_946_js5_archive_resolver"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Post-interfaces plateau comparison present.",
+      "tool": "run_946_plateau_diff"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Capture bundle present.",
+      "tool": "run_946_black_screen_capture"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Attempt-level loopback diagnosis is present.",
+      "tool": "run_946_loopback_doctor"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Exact attempt-tail diffing is present.",
+      "tool": "run_946_attempt_diff"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Ready-signal latch/skip analysis is present.",
+      "tool": "run_946_ready_signal_doctor"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Accepted-ready post-bootstrap cadence analysis is present.",
+      "tool": "run_946_post_ready_cadence_doctor"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Disconnect-window dominant packet-family analysis is present.",
+      "tool": "run_946_disconnect_pivot_doctor"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "RUNCLIENTSCRIPT-family burst analysis is present.",
+      "tool": "run_946_script_burst_doctor"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Accepted-ready plateau analysis is present with rebuild/ready/control ordering.",
+      "tool": "run_946_scene_start_doctor"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Late accepted-ready unresolved client opcode analysis is present.",
+      "tool": "run_946_post_scene_opcode_doctor"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Latest plateau session is correlated against golden VARP traffic and candidate loading vars.",
+      "tool": "run_946_live_var_packet_doctor"
+    },
+    {
+      "freshness": "stale",
+      "level": "near-ready",
+      "reason": "Forced fallback is compared against the stable/full WorldPlayer bootstrap families.",
+      "tool": "run_946_forced_fallback_parity_doctor"
+    },
+    {
+      "freshness": "fresh",
+      "level": "near-ready",
+      "reason": "Live watcher summary present with deep client-side evidence.",
+      "tool": "watch_rs2client_live"
+    }
+  ]
+}

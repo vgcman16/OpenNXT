@@ -1,0 +1,141 @@
+{
+  "programName": "rs2client.exe",
+  "functionName": "FUN_140109290",
+  "functionEntryPoint": "140109290",
+  "targetAddress": "140109290",
+  "packetName": "IF_SETEVENTS",
+  "bufferParam": "param_2",
+  "legacyShape": [
+    "intv1",
+    "int",
+    "ushortle",
+    "ushort"
+  ],
+  "recoveryMode": "decompiler-c",
+  "decompileAttempted": true,
+  "decompileCompleted": true,
+  "status": "ok",
+  "fieldCount": 4,
+  "analysisNotes": [
+    "Decompiler recovery produced ambiguous endian-heavy field types; comparing against the instruction fallback.",
+    "Decompiler recovery produced ambiguous endian-heavy field types; comparing against the instruction fallback."
+  ],
+  "statements": [
+    "undefined * FUN_140109290(longlong param_1,longlong param_2)\r\n\r\n{\r\n  int *piVar1;",
+    "byte bVar2;",
+    "byte bVar3;",
+    "byte bVar4;",
+    "byte bVar5;",
+    "byte bVar6;",
+    "byte bVar7;",
+    "byte bVar8;",
+    "byte bVar9;",
+    "longlong lVar10;",
+    "longlong lVar11;",
+    "longlong lVar12;",
+    "int iVar13;",
+    "int iVar14;",
+    "lVar10 = *(longlong *)(param_2 + 0x18);",
+    "lVar12 = lVar10 + 4;",
+    "*(longlong *)(param_2 + 0x18) = lVar12;",
+    "lVar11 = *(longlong *)(param_2 + 0x10);",
+    "bVar2 = *(byte *)(lVar11 + -2 + lVar12);",
+    "bVar3 = *(byte *)(lVar11 + -1 + lVar12);",
+    "bVar4 = *(byte *)(lVar11 + -3 + lVar12);",
+    "bVar5 = *(byte *)(lVar11 + -4 + lVar12);",
+    "*(longlong *)(param_2 + 0x18) = lVar10 + 6;",
+    "bVar6 = *(byte *)(lVar10 + 4 + lVar11);",
+    "bVar7 = *(byte *)(lVar10 + 5 + lVar11);",
+    "*(longlong *)(param_2 + 0x18) = lVar10 + 10;",
+    "iVar14 = (uint)bVar7 * 0x100 + (uint)bVar6;",
+    "bVar6 = *(byte *)(lVar10 + 6 + lVar11);",
+    "bVar7 = *(byte *)(lVar10 + 7 + lVar11);",
+    "bVar8 = *(byte *)(lVar10 + 9 + lVar11);",
+    "bVar9 = *(byte *)(lVar10 + 8 + lVar11);",
+    "*(longlong *)(param_2 + 0x18) = lVar10 + 0xc;",
+    "iVar13 = (uint)(byte)(*(char *)(lVar10 + 10 + lVar11) + 0x80) +\r\n           (uint)*(byte *)(lVar10 + 0xc + lVar11 + -1) * 0x100;",
+    "if (iVar14 == 0xffff) {\r\n    iVar14 = -1;",
+    "}\r\n  lVar10 = *(longlong *)(*(longlong *)(param_1 + 8) + 0x19888);",
+    "if (iVar13 == 0xffff) {\r\n    iVar13 = -1;",
+    "}\r\n  piVar1 = (int *)(lVar10 + 0x10);",
+    "*piVar1 = *piVar1 + 1;",
+    "*(undefined1 *)(lVar10 + 0x14) = 1;",
+    "FUN_14019b3f0(*(undefined8 *)(*(longlong *)(param_1 + 8) + 0x198c0),\r\n                (((uint)bVar7 * 0x100 + (uint)bVar6) * 0x100 + (uint)bVar8) * 0x100 + (uint)bVar9,\r\n                iVar14,iVar13,\r\n                (((uint)bVar3 * 0x100 + (uint)bVar2) * 0x100 + (uint)bVar4) * 0x100 + (uint)bVar5,\r\n                0xffffffff,0);",
+    "return &DAT_140c9c250;",
+    "}"
+  ],
+  "decompiledC": "\r\nundefined * FUN_140109290(longlong param_1,longlong param_2)\r\n\r\n{\r\n  int *piVar1;\r\n  byte bVar2;\r\n  byte bVar3;\r\n  byte bVar4;\r\n  byte bVar5;\r\n  byte bVar6;\r\n  byte bVar7;\r\n  byte bVar8;\r\n  byte bVar9;\r\n  longlong lVar10;\r\n  longlong lVar11;\r\n  longlong lVar12;\r\n  int iVar13;\r\n  int iVar14;\r\n  \r\n  lVar10 = *(longlong *)(param_2 + 0x18);\r\n  lVar12 = lVar10 + 4;\r\n  *(longlong *)(param_2 + 0x18) = lVar12;\r\n  lVar11 = *(longlong *)(param_2 + 0x10);\r\n  bVar2 = *(byte *)(lVar11 + -2 + lVar12);\r\n  bVar3 = *(byte *)(lVar11 + -1 + lVar12);\r\n  bVar4 = *(byte *)(lVar11 + -3 + lVar12);\r\n  bVar5 = *(byte *)(lVar11 + -4 + lVar12);\r\n  *(longlong *)(param_2 + 0x18) = lVar10 + 6;\r\n  bVar6 = *(byte *)(lVar10 + 4 + lVar11);\r\n  bVar7 = *(byte *)(lVar10 + 5 + lVar11);\r\n  *(longlong *)(param_2 + 0x18) = lVar10 + 10;\r\n  iVar14 = (uint)bVar7 * 0x100 + (uint)bVar6;\r\n  bVar6 = *(byte *)(lVar10 + 6 + lVar11);\r\n  bVar7 = *(byte *)(lVar10 + 7 + lVar11);\r\n  bVar8 = *(byte *)(lVar10 + 9 + lVar11);\r\n  bVar9 = *(byte *)(lVar10 + 8 + lVar11);\r\n  *(longlong *)(param_2 + 0x18) = lVar10 + 0xc;\r\n  iVar13 = (uint)(byte)(*(char *)(lVar10 + 10 + lVar11) + 0x80) +\r\n           (uint)*(byte *)(lVar10 + 0xc + lVar11 + -1) * 0x100;\r\n  if (iVar14 == 0xffff) {\r\n    iVar14 = -1;\r\n  }\r\n  lVar10 = *(longlong *)(*(longlong *)(param_1 + 8) + 0x19888);\r\n  if (iVar13 == 0xffff) {\r\n    iVar13 = -1;\r\n  }\r\n  piVar1 = (int *)(lVar10 + 0x10);\r\n  *piVar1 = *piVar1 + 1;\r\n  *(undefined1 *)(lVar10 + 0x14) = 1;\r\n  FUN_14019b3f0(*(undefined8 *)(*(longlong *)(param_1 + 8) + 0x198c0),\r\n                (((uint)bVar7 * 0x100 + (uint)bVar6) * 0x100 + (uint)bVar8) * 0x100 + (uint)bVar9,\r\n                iVar14,iVar13,\r\n                (((uint)bVar3 * 0x100 + (uint)bVar2) * 0x100 + (uint)bVar4) * 0x100 + (uint)bVar5,\r\n                0xffffffff,0);\r\n  return &DAT_140c9c250;\r\n}\r\n\r\n",
+  "fields": [
+    {
+      "index": 0,
+      "statementIndex": 18,
+      "accessKind": "read",
+      "width": 4,
+      "rawType": "int",
+      "candidateType": "intle",
+      "confidence": "strong",
+      "source": "decompiler-four-byte-expression",
+      "legacyType": "intv1",
+      "legacyAligned": false,
+      "evidence": [
+        "offset-order=[3, 2, 1, 0]",
+        "vars=[bVar3, bVar2, bVar4, bVar5]",
+        "(((uint)bVar3 * 0x100 + (uint)bVar2) * 0x100 + (uint)bVar4) * 0x100 + (uint)bVar5"
+      ]
+    },
+    {
+      "index": 1,
+      "statementIndex": 23,
+      "accessKind": "read",
+      "width": 2,
+      "rawType": "ushort",
+      "candidateType": "ushortle",
+      "confidence": "strong",
+      "source": "decompiler-byte-expression",
+      "legacyType": "int",
+      "legacyAligned": false,
+      "evidence": [
+        "offset-order=[5, 4]",
+        "iVar14 = (uint)bVar7 * 0x100 + (uint)bVar6;"
+      ]
+    },
+    {
+      "index": 2,
+      "statementIndex": 27,
+      "accessKind": "read",
+      "width": 4,
+      "rawType": "int",
+      "candidateType": "intv2",
+      "confidence": "strong",
+      "source": "decompiler-four-byte-expression",
+      "legacyType": "ushortle",
+      "legacyAligned": false,
+      "evidence": [
+        "offset-order=[7, 6, 9, 8]",
+        "vars=[bVar7, bVar6, bVar8, bVar9]",
+        "(((uint)bVar7 * 0x100 + (uint)bVar6) * 0x100 + (uint)bVar8) * 0x100 + (uint)bVar9"
+      ]
+    },
+    {
+      "index": 3,
+      "statementIndex": 32,
+      "accessKind": "read",
+      "width": 2,
+      "rawType": "ushort",
+      "candidateType": "ushortle128",
+      "confidence": "strong",
+      "source": "decompiler-byte-expression",
+      "legacyType": "ushort",
+      "legacyAligned": false,
+      "evidence": [
+        "offset-order=[10, 11]",
+        "iVar13 = (uint)(byte)(*(char *)(lVar10 + 10 + lVar11) + 0x80) + (uint)*(byte *)(lVar10 + 0xc + lVar11 + -1) * 0x100;",
+        "transform=add"
+      ]
+    }
+  ],
+  "phase4TargetKind": "parser",
+  "phase4QueuePriority": 106,
+  "phase4QueueOpcode": 59,
+  "phase4Side": "server"
+}

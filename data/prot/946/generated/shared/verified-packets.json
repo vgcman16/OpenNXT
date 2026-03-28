@@ -1,0 +1,1397 @@
+{
+  "entries": [
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "primary_sender": 0.08,
+          "sender_strength": 0.0636
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "632b8da07f49fac49087c789b30a284c8a6b6349fe49f46081352d1ff1902545"
+      },
+      "family": "WORLDLIST_FETCH",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "checksum",
+            "raw": "checksum int",
+            "type": "int"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\clientProt\\WORLDLIST_FETCH.txt",
+        "totalWidth": 4
+      },
+      "hasManualRegistration": true,
+      "opcode": 110,
+      "packetName": "WORLDLIST_FETCH",
+      "reviewSource": "manual",
+      "runtimePriority": false,
+      "side": "client",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "primary_sender": 0.08,
+          "sender_strength": 0.0636
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "95edb4a1780ad47b6bc39abce7bde478fc4f3a18d8d7a59235947453225da0cc"
+      },
+      "family": "RESUME",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "count",
+            "raw": "count long",
+            "type": "long"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\clientProt\\RESUME_P_COUNTDIALOG.txt",
+        "totalWidth": 8
+      },
+      "hasManualRegistration": false,
+      "opcode": 129,
+      "packetName": "RESUME_P_COUNTDIALOG",
+      "reviewSource": "heuristic",
+      "runtimePriority": true,
+      "side": "client",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "dd6a9f8f40c5d51e418b7fa2aa4d2b43cee29e1acf8ae9fcc28ec8299b6aa7eb"
+      },
+      "family": "WORLD",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "count",
+            "raw": "count ushortle",
+            "type": "ushortle"
+          },
+          {
+            "name": "id",
+            "raw": "id ushortle",
+            "type": "ushortle"
+          },
+          {
+            "name": "packedCoord",
+            "raw": "packedCoord ubyte",
+            "type": "ubyte"
+          },
+          {
+            "name": "playerIndex",
+            "raw": "playerIndex ushortle",
+            "type": "ushortle"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\OBJ_REVEAL.txt",
+        "totalWidth": 7
+      },
+      "hasManualRegistration": false,
+      "opcode": 3,
+      "packetName": "OBJ_REVEAL",
+      "reviewSource": "heuristic",
+      "runtimePriority": true,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "cb529451a45ae72e87d398533d633bb4ea4aad89b247dad4d703acb9af2d5017"
+      },
+      "family": "IF",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "component",
+            "raw": "component intv1",
+            "type": "intv1"
+          },
+          {
+            "name": "colour",
+            "raw": "colour ushort128",
+            "type": "ushort128"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\IF_SETCOLOUR.txt",
+        "totalWidth": 6
+      },
+      "hasManualRegistration": false,
+      "opcode": 8,
+      "packetName": "IF_SETCOLOUR",
+      "reviewSource": "heuristic",
+      "runtimePriority": true,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "f579482bf45ff98c2995e117a902b582161d390a42d112832c3658d084697ee8"
+      },
+      "family": "IF",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "xtea0",
+            "raw": "xtea0 int",
+            "type": "int"
+          },
+          {
+            "name": "parent",
+            "raw": "parent intle",
+            "type": "intle"
+          },
+          {
+            "name": "xtea1",
+            "raw": "xtea1 int",
+            "type": "int"
+          },
+          {
+            "name": "xtea2",
+            "raw": "xtea2 int",
+            "type": "int"
+          },
+          {
+            "name": "flag",
+            "raw": "flag u128byte",
+            "type": "u128byte"
+          },
+          {
+            "name": "id",
+            "raw": "id ushortle128",
+            "type": "ushortle128"
+          },
+          {
+            "name": "xtea3",
+            "raw": "xtea3 int",
+            "type": "int"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\IF_OPENSUB.txt",
+        "totalWidth": 23
+      },
+      "hasManualRegistration": true,
+      "opcode": 38,
+      "packetName": "IF_OPENSUB",
+      "reviewSource": "manual",
+      "runtimePriority": false,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "35633b7ad9896241bc7adc9e090e68c3c746562a41c42436d9a1da1e1fa7fba2"
+      },
+      "family": "IF",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "parent",
+            "raw": "parent int",
+            "type": "int"
+          },
+          {
+            "name": "hidden",
+            "raw": "hidden u128byte",
+            "type": "u128byte"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\IF_SETHIDE.txt",
+        "totalWidth": 5
+      },
+      "hasManualRegistration": true,
+      "opcode": 45,
+      "packetName": "IF_SETHIDE",
+      "reviewSource": "manual",
+      "runtimePriority": false,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "f9231a85fffecdcad51e780f19e9eba0aaa400f7cf7651cf5250c081d972e15d"
+      },
+      "family": "IF",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "parent",
+            "raw": "parent int",
+            "type": "int"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\IF_CLOSESUB.txt",
+        "totalWidth": 4
+      },
+      "hasManualRegistration": true,
+      "opcode": 50,
+      "packetName": "IF_CLOSESUB",
+      "reviewSource": "manual",
+      "runtimePriority": false,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "139e30698ec55e262af43edc374677fbaf23460d9f91ae2f7cdbf68d9f9dd2ca"
+      },
+      "family": "VAR",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "value",
+            "raw": "value int",
+            "type": "int"
+          },
+          {
+            "name": "id",
+            "raw": "id ushort",
+            "type": "ushort"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\VARP_LARGE.txt",
+        "totalWidth": 6
+      },
+      "hasManualRegistration": true,
+      "opcode": 51,
+      "packetName": "VARP_LARGE",
+      "reviewSource": "manual",
+      "runtimePriority": false,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "9607411eb4f6ab5b0599f5b3ea7a6e21a0d7b2ca0d0f4404e2a72b995156b2cb"
+      },
+      "family": "IF",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "text",
+            "raw": "text string",
+            "type": "string"
+          },
+          {
+            "name": "parent",
+            "raw": "parent intle",
+            "type": "intle"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\IF_SETTEXT.txt",
+        "totalWidth": null
+      },
+      "hasManualRegistration": true,
+      "opcode": 57,
+      "packetName": "IF_SETTEXT",
+      "reviewSource": "heuristic",
+      "runtimePriority": true,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "7480130d895549090aa96f7b8e266f8260daa08a5718fbc8657bf712b400bbda"
+      },
+      "family": "IF",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "mask",
+            "raw": "mask intle",
+            "type": "intle"
+          },
+          {
+            "name": "fromSlot",
+            "raw": "fromSlot ushortle",
+            "type": "ushortle"
+          },
+          {
+            "name": "parent",
+            "raw": "parent intv2",
+            "type": "intv2"
+          },
+          {
+            "name": "toSlot",
+            "raw": "toSlot ushortle128",
+            "type": "ushortle128"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\IF_SETEVENTS.txt",
+        "totalWidth": 12
+      },
+      "hasManualRegistration": true,
+      "opcode": 59,
+      "packetName": "IF_SETEVENTS",
+      "reviewSource": "heuristic",
+      "runtimePriority": true,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "372c25529f642f62b52c082f764706381dc6fe7586d2e5ededb03a7f28c0ae7a"
+      },
+      "family": "VAR",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "id",
+            "raw": "id ushort",
+            "type": "ushort"
+          },
+          {
+            "name": "value",
+            "raw": "value ubyte",
+            "type": "ubyte"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\VARP_SMALL.txt",
+        "totalWidth": 3
+      },
+      "hasManualRegistration": true,
+      "opcode": 72,
+      "packetName": "VARP_SMALL",
+      "reviewSource": "manual",
+      "runtimePriority": false,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "f66b4947e603f868fcaac1221be3ab95fc49affb3f4158650b60ba225d5adeba"
+      },
+      "family": "IF",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "component",
+            "raw": "component intv1",
+            "type": "intv1"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\IF_SETPLAYERHEAD.txt",
+        "totalWidth": 4
+      },
+      "hasManualRegistration": true,
+      "opcode": 77,
+      "packetName": "IF_SETPLAYERHEAD",
+      "reviewSource": "heuristic",
+      "runtimePriority": false,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "b957be69ba6d4e41f92227828efeae8a1a6a9abb40e807e2a8c920d73709b25f"
+      },
+      "family": "WORLD",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "count",
+            "raw": "count ushortle128",
+            "type": "ushortle128"
+          },
+          {
+            "name": "packedCoord",
+            "raw": "packedCoord ubytec",
+            "type": "ubytec"
+          },
+          {
+            "name": "id",
+            "raw": "id ushort128",
+            "type": "ushort128"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\OBJ_ADD.txt",
+        "totalWidth": 5
+      },
+      "hasManualRegistration": false,
+      "opcode": 87,
+      "packetName": "OBJ_ADD",
+      "reviewSource": "reviewed-override",
+      "runtimePriority": true,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "178e0ce7da645de3f4bbf97382b754b821000aaa16541c9c7da2459011f0e12e"
+      },
+      "family": "WORLD",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "packedCoord",
+            "raw": "packedCoord u128byte",
+            "type": "u128byte"
+          },
+          {
+            "name": "id",
+            "raw": "id ushort",
+            "type": "ushort"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\OBJ_DEL.txt",
+        "totalWidth": 3
+      },
+      "hasManualRegistration": false,
+      "opcode": 98,
+      "packetName": "OBJ_DEL",
+      "reviewSource": "reviewed-override",
+      "runtimePriority": true,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "103c183f127c2fba4ab46b426f804065ea7964cacb5e1cefa3ad673392b6ccb3"
+      },
+      "family": "IF",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "component",
+            "raw": "component intv2",
+            "type": "intv2"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\IF_SETPLAYERMODEL_SELF.txt",
+        "totalWidth": 4
+      },
+      "hasManualRegistration": true,
+      "opcode": 106,
+      "packetName": "IF_SETPLAYERMODEL_SELF",
+      "reviewSource": "heuristic",
+      "runtimePriority": false,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "bda92b632635bc9b66852684aec3da70d0d8ebd20bdd0b67bbd18c204a68dac8"
+      },
+      "family": "IF",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "component",
+            "raw": "component intle",
+            "type": "intle"
+          },
+          {
+            "name": "scrollPosition",
+            "raw": "scrollPosition ushort",
+            "type": "ushort"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\IF_SETSCROLLPOS.txt",
+        "totalWidth": 6
+      },
+      "hasManualRegistration": false,
+      "opcode": 108,
+      "packetName": "IF_SETSCROLLPOS",
+      "reviewSource": "heuristic",
+      "runtimePriority": true,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "0e8431f58fc263735bbdc2b1d8a98de9e197f64137f047123b6600713c50bf90"
+      },
+      "family": "IF",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "subInterfaceId",
+            "raw": "subInterfaceId ushort",
+            "type": "ushort"
+          },
+          {
+            "name": "playerIndex",
+            "raw": "playerIndex ushort128",
+            "type": "ushort128"
+          },
+          {
+            "name": "reserved0",
+            "raw": "reserved0 int",
+            "type": "int"
+          },
+          {
+            "name": "targetComponent",
+            "raw": "targetComponent intv1",
+            "type": "intv1"
+          },
+          {
+            "name": "reserved1",
+            "raw": "reserved1 long",
+            "type": "long"
+          },
+          {
+            "name": "mode",
+            "raw": "mode ubytec",
+            "type": "ubytec"
+          },
+          {
+            "name": "reserved2",
+            "raw": "reserved2 int",
+            "type": "int"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\IF_OPENSUB_ACTIVE_PLAYER.txt",
+        "totalWidth": 25
+      },
+      "hasManualRegistration": true,
+      "opcode": 116,
+      "packetName": "IF_OPENSUB_ACTIVE_PLAYER",
+      "reviewSource": "manual",
+      "runtimePriority": false,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "974366cb86b77ff729287665fbcc2717f15136d15454453b825a782aa655022e"
+      },
+      "family": "VAR",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "id",
+            "raw": "id ushortle",
+            "type": "ushortle"
+          },
+          {
+            "name": "value",
+            "raw": "value intv1",
+            "type": "intv1"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\CLIENT_SETVARC_LARGE.txt",
+        "totalWidth": 6
+      },
+      "hasManualRegistration": true,
+      "opcode": 124,
+      "packetName": "CLIENT_SETVARC_LARGE",
+      "reviewSource": "manual",
+      "runtimePriority": false,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "79c7d0406da21e78c17e36298b900baeef399fe54918b4be4a5f492b523533c7"
+      },
+      "family": "IF",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "xtea0",
+            "raw": "xtea0 int",
+            "type": "int"
+          },
+          {
+            "name": "xtea1",
+            "raw": "xtea1 int",
+            "type": "int"
+          },
+          {
+            "name": "xtea2",
+            "raw": "xtea2 int",
+            "type": "int"
+          },
+          {
+            "name": "id",
+            "raw": "id ushortle",
+            "type": "ushortle"
+          },
+          {
+            "name": "xtea3",
+            "raw": "xtea3 int",
+            "type": "int"
+          },
+          {
+            "name": "bool",
+            "raw": "bool ubyte",
+            "type": "ubyte"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\IF_OPENTOP.txt",
+        "totalWidth": 19
+      },
+      "hasManualRegistration": true,
+      "opcode": 126,
+      "packetName": "IF_OPENTOP",
+      "reviewSource": "manual",
+      "runtimePriority": false,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "7b2bc6a625667a5d479fd8a51c0845e9b4890bf781b36cb9ff3dd179c1ae0ffe"
+      },
+      "family": "WORLD",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "packedCoord",
+            "raw": "packedCoord ubyte",
+            "type": "ubyte"
+          },
+          {
+            "name": "id",
+            "raw": "id ushort",
+            "type": "ushort"
+          },
+          {
+            "name": "oldCount",
+            "raw": "oldCount ushort",
+            "type": "ushort"
+          },
+          {
+            "name": "newCount",
+            "raw": "newCount ushort",
+            "type": "ushort"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\OBJ_COUNT.txt",
+        "totalWidth": 7
+      },
+      "hasManualRegistration": false,
+      "opcode": 127,
+      "packetName": "OBJ_COUNT",
+      "reviewSource": "reviewed-override",
+      "runtimePriority": true,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "47ef10ac874c808b828e64630e3ba1d266017e92fb245fe9cdc2699d8cf6287b"
+      },
+      "family": "VAR",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "id",
+            "raw": "id ushortle",
+            "type": "ushortle"
+          },
+          {
+            "name": "value",
+            "raw": "value ubyte",
+            "type": "ubyte"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\CLIENT_SETVARC_SMALL.txt",
+        "totalWidth": 3
+      },
+      "hasManualRegistration": true,
+      "opcode": 128,
+      "packetName": "CLIENT_SETVARC_SMALL",
+      "reviewSource": "manual",
+      "runtimePriority": false,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "c673f3404e9e2288bfff68094825c7ed7e65b433e0707077c5bd45bb258e34e4"
+      },
+      "family": "VAR",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "stat",
+            "raw": "stat ubyte",
+            "type": "ubyte"
+          },
+          {
+            "name": "level",
+            "raw": "level u128byte",
+            "type": "u128byte"
+          },
+          {
+            "name": "experience",
+            "raw": "experience int",
+            "type": "int"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\UPDATE_STAT.txt",
+        "totalWidth": 6
+      },
+      "hasManualRegistration": true,
+      "opcode": 129,
+      "packetName": "UPDATE_STAT",
+      "reviewSource": "manual",
+      "runtimePriority": false,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "f004b8f154861b3a2fc6939964fffe14516534f1666ef03a78ff79e831fb06a0"
+      },
+      "family": "VAR",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "value",
+            "raw": "value string",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "raw": "id ushort",
+            "type": "ushort"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\CLIENT_SETVARCSTR_SMALL.txt",
+        "totalWidth": null
+      },
+      "hasManualRegistration": true,
+      "opcode": 130,
+      "packetName": "CLIENT_SETVARCSTR_SMALL",
+      "reviewSource": "manual",
+      "runtimePriority": false,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    },
+    {
+      "build": 946,
+      "confidence": {
+        "breakdown": {
+          "confirmed_name": 0.75,
+          "family_hint": 0.12,
+          "parser_target": 0.08
+        },
+        "label": "confirmed",
+        "score": 1.0
+      },
+      "crossBuild": {
+        "confidence": 0.0,
+        "matchedFromBuild": null,
+        "matchedOpcode": null,
+        "matchedPacketName": "",
+        "matchingBasis": "",
+        "signatureHash": "7578f40cd48f37430aa9a187e849624cdcba1cda4c3b6cad63dbfdb871fd3b37"
+      },
+      "family": "IF",
+      "fieldDeclaration": {
+        "exists": true,
+        "fields": [
+          {
+            "name": "value0",
+            "raw": "value0 ushortle",
+            "type": "ushortle"
+          },
+          {
+            "name": "value1",
+            "raw": "value1 ushortle",
+            "type": "ushortle"
+          },
+          {
+            "name": "value2",
+            "raw": "value2 ubytec",
+            "type": "ubytec"
+          },
+          {
+            "name": "value3",
+            "raw": "value3 intle",
+            "type": "intle"
+          }
+        ],
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\serverProt\\IF_SETRECOL.txt",
+        "totalWidth": 9
+      },
+      "hasManualRegistration": false,
+      "opcode": 202,
+      "packetName": "IF_SETRECOL",
+      "reviewSource": "heuristic",
+      "runtimePriority": false,
+      "side": "server",
+      "status": "verified",
+      "verification": {
+        "draftMatchesDeclaration": true,
+        "fieldDeclarationExists": true,
+        "legacyCompatible": true,
+        "noUnknownFields": true,
+        "proxyStructured": false,
+        "runtimeVerified": false,
+        "widthMatches": true
+      }
+    }
+  ]
+}

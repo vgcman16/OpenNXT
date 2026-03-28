@@ -15,6 +15,32 @@ class ProtocolInformation(val path: Path) {
     lateinit var clientProtNames: Name2OpcodeConfig
     lateinit var serverProtNames: Name2OpcodeConfig
 
+    private fun loadNameConfig(primary: Path, generatedFallback: Path): Name2OpcodeConfig {
+        val primaryConfig =
+            if (Files.exists(primary) && Files.size(primary) > 0L) {
+                TomlConfig.load<Name2OpcodeConfig>(primary, mustExist = true)
+            } else {
+                null
+            }
+
+        if (primaryConfig != null && !primaryConfig.values.isEmpty()) {
+            return primaryConfig
+        }
+
+        if (!Files.exists(generatedFallback) || Files.size(generatedFallback) == 0L) {
+            return TomlConfig.load(primary, mustExist = true)
+        }
+
+        logger.warn {
+            "Active protocol name mapping at $primary is missing or empty; " +
+                "falling back to $generatedFallback and repairing the primary file"
+        }
+        val generatedConfig =
+            TomlConfig.load<Name2OpcodeConfig>(generatedFallback, saveAfterLoad = false, mustExist = true)
+        TomlConfig.save(primary, generatedConfig)
+        return generatedConfig
+    }
+
     fun load() {
         logger.info { "Loading protocol information from $path" }
 
@@ -39,7 +65,11 @@ class ProtocolInformation(val path: Path) {
         }
 
         try {
-            clientProtNames = TomlConfig.load(path.resolve("clientProtNames.toml"), mustExist = true)
+            clientProtNames =
+                loadNameConfig(
+                    primary = path.resolve("clientProtNames.toml"),
+                    generatedFallback = path.resolve("generated").resolve("phase3").resolve("clientProtNames.generated.toml")
+                )
         } catch (e: Exception) {
             e.printStackTrace()
             logger.error { "Protocol information not found for build ${OpenNXT.config.build}." }
@@ -49,7 +79,11 @@ class ProtocolInformation(val path: Path) {
         }
 
         try {
-            serverProtNames = TomlConfig.load(path.resolve("serverProtNames.toml"), mustExist = true)
+            serverProtNames =
+                loadNameConfig(
+                    primary = path.resolve("serverProtNames.toml"),
+                    generatedFallback = path.resolve("generated").resolve("phase3").resolve("serverProtNames.generated.toml")
+                )
         } catch (e: Exception) {
             e.printStackTrace()
             logger.error { "Protocol information not found for build ${OpenNXT.config.build}." }

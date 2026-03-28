@@ -1,0 +1,6 @@
+# opcode=116
+# candidates=IF_OPENSUB_ACTIVE_NPC,IF_OPENSUB_ACTIVE_PLAYER
+value0 ushort
+value1 ushort128
+value2 intv1
+value3 ubytec

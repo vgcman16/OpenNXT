@@ -1,0 +1,2 @@
+# opcode=67
+# candidates=IF_OPENSUB_ACTIVE_NPC

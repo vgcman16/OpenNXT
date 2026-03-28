@@ -1,0 +1,244 @@
+{
+  "baselineDriftCount": 29,
+  "generatedAt": "2026-03-16T22:39:23.035612+00:00",
+  "phaseRuns": [
+    {
+      "inputFingerprint": "bd96036bf69ff8150170cabf770d94838bd5a5db1445f59c399ee83dafec2dbb",
+      "outputs": [
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase1\\registrars.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase1\\serverProtSizes.generated.toml",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase1\\clientProtSizes.generated.toml"
+      ],
+      "phase": 1,
+      "script": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_extraction.py",
+      "status": "cached"
+    },
+    {
+      "inputFingerprint": "42833bd63af7fd305da3d66c7b4ef81e4552503f37400764ce58b0809fed3c7c",
+      "outputs": [
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase2\\serverParsers.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase2\\clientParsers.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase2\\handlerFamilies.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase2\\handlerGraph.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase2\\helperSignatures.json"
+      ],
+      "phase": 2,
+      "script": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_phase2.py",
+      "status": "cached"
+    },
+    {
+      "inputFingerprint": "5789ff53a36aa6911d6ebbdae5d8a212d5053b5d5eb68aaf8718f32a4182ebe3",
+      "outputs": [
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase3\\nameCandidates.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase3\\clientAmbiguousClusters.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase3\\serverProtNames.generated.toml",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase3\\clientProtNames.generated.toml"
+      ],
+      "phase": 3,
+      "script": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_phase3.py",
+      "status": "cached"
+    },
+    {
+      "inputFingerprint": "66bc5ea366cc55c92c3257f61f5de4f8be58520c2cb150e9481b818722746b32",
+      "outputs": [
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\fieldGapAnalysis.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\fieldRecoveryQueue.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\runtimeVerificationQueue.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\runtimeFocus.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFieldIndex.json"
+      ],
+      "phase": 4,
+      "script": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_phase4.py",
+      "status": "cached"
+    },
+    {
+      "inputFingerprint": "873cf8a73af37adb27852158fe909a1f6f50e540b634012d73921041922510a8",
+      "outputs": [
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase5\\generatedPackets.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase5\\phase5-summary.md"
+      ],
+      "phase": 5,
+      "script": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_phase5.py",
+      "status": "cached"
+    },
+    {
+      "command": [
+        "C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_handoff_aid.py"
+      ],
+      "durationMs": 5365,
+      "inputFingerprint": "dd0f2cbe62b620a770dea1b894c7b3260244dd25a6ad1ef0414930b18c269549",
+      "outputs": [
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\handoff-analysis.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\handoff-analysis.md"
+      ],
+      "phase": "handoff",
+      "returnCode": 0,
+      "script": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_handoff_aid.py",
+      "status": "ok",
+      "stderr": "",
+      "stdout": "{\n  \"artifacts\": {\n    \"json\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\handoff-analysis.json\",\n    \"markdown\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\handoff-analysis.md\"\n  },\n  \"status\": \"partial\"\n}\n"
+    },
+    {
+      "command": [
+        "C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_sender_aid.py"
+      ],
+      "durationMs": 53980,
+      "outputs": [
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-analysis.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-analysis.md"
+      ],
+      "phase": "sender-aid",
+      "returnCode": 0,
+      "script": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_sender_aid.py",
+      "status": "partial",
+      "stderr": "",
+      "stdout": "{\n  \"artifacts\": {\n    \"json\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\sender-analysis.json\",\n    \"markdown\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\sender-analysis.md\"\n  },\n  \"status\": \"partial\"\n}\n"
+    },
+    {
+      "command": [
+        "C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_curated_compare.py"
+      ],
+      "durationMs": 4718,
+      "inputFingerprint": "f0be34813f3141e67cd6be76b29cb7e54c0c84307611269c2581ab5f17f9110c",
+      "outputs": [
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\curated-compare.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\curated-compare.md"
+      ],
+      "phase": "curated-compare",
+      "returnCode": 0,
+      "script": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_curated_compare.py",
+      "status": "ok",
+      "stderr": "",
+      "stdout": "{\n  \"artifacts\": {\n    \"json\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\curated-compare.json\",\n    \"markdown\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\curated-compare.md\"\n  },\n  \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": [
+        "C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_active_sub_aid.py"
+      ],
+      "durationMs": 145,
+      "outputs": [
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-analysis.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-analysis.md"
+      ],
+      "phase": "active-sub-aid",
+      "returnCode": 0,
+      "script": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_active_sub_aid.py",
+      "status": "cached",
+      "stderr": "",
+      "stdout": "{\n  \"artifacts\": {\n    \"active_sub_analysis\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\active-sub-analysis.md\"\n  },\n  \"status\": \"cached\"\n}\n"
+    },
+    {
+      "command": [
+        "C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_interface_diff.py",
+        "--world-log",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log",
+        "--good-window",
+        "959546:965703",
+        "--bad-window",
+        "121859:121874"
+      ],
+      "durationMs": 7752,
+      "outputs": [
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\interface-diff.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\interface-diff.md"
+      ],
+      "phase": "interface-diff",
+      "returnCode": 0,
+      "script": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_interface_diff.py",
+      "status": "ok",
+      "stderr": "",
+      "stdout": "{\n  \"artifacts\": {\n    \"interface_diff\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\interface-diff.md\"\n  },\n  \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": [
+        "C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_scene_delivery_aid.py"
+      ],
+      "durationMs": 4605,
+      "outputs": [
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-delivery-analysis.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-delivery-analysis.md"
+      ],
+      "phase": "scene-delivery-aid",
+      "returnCode": 0,
+      "script": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_scene_delivery_aid.py",
+      "status": "partial",
+      "stderr": "",
+      "stdout": "{\n  \"artifacts\": {\n    \"sceneDeliveryAnalysisJson\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\scene-delivery-analysis.json\",\n    \"sceneDeliveryAnalysisMarkdown\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\scene-delivery-analysis.md\"\n  },\n  \"status\": \"partial\"\n}\n"
+    },
+    {
+      "command": [
+        "C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_js5_archive_resolver.py"
+      ],
+      "durationMs": 104,
+      "outputs": [
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\js5-archive-resolution.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\js5-archive-resolution.md"
+      ],
+      "phase": "js5-archive-resolver",
+      "returnCode": 0,
+      "script": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_js5_archive_resolver.py",
+      "status": "cached",
+      "stderr": "",
+      "stdout": "{\n  \"artifacts\": {\n    \"js5_archive_resolution\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\js5-archive-resolution.md\"\n  },\n  \"status\": \"cached\"\n}\n"
+    },
+    {
+      "command": [
+        "C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_plateau_diff.py"
+      ],
+      "durationMs": 21300,
+      "outputs": [
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\plateau-diff.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\plateau-diff.md"
+      ],
+      "phase": "plateau-diff",
+      "returnCode": 0,
+      "script": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_plateau_diff.py",
+      "status": "ok",
+      "stderr": "",
+      "stdout": "{\n  \"artifacts\": {\n    \"plateau_diff\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\plateau-diff.md\"\n  },\n  \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": [
+        "C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_opcode_113_verdict.py"
+      ],
+      "durationMs": 4446,
+      "inputFingerprint": "6a433ac8fba80bff1d1f38f56623ce88b79c9f08a79447ccb1896a1c8c4dae25",
+      "outputs": [
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\opcode-113-verdict.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\opcode-113-verdict.md"
+      ],
+      "phase": "opcode-113-verdict",
+      "returnCode": 0,
+      "script": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_opcode_113_verdict.py",
+      "status": "ok",
+      "stderr": "",
+      "stdout": "{\n  \"artifacts\": {\n    \"json\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\opcode-113-verdict.json\",\n    \"markdown\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\opcode-113-verdict.md\"\n  },\n  \"status\": \"ok\"\n}\n"
+    },
+    {
+      "command": [
+        "C:\\Users\\Demon\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_tool_doctor.py"
+      ],
+      "durationMs": 222,
+      "outputs": [
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\tool-doctor.json",
+        "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\tool-doctor.md"
+      ],
+      "phase": "tool-doctor",
+      "returnCode": 0,
+      "script": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\tools\\run_946_tool_doctor.py",
+      "status": "partial",
+      "stderr": "",
+      "stdout": "{\n  \"artifacts\": {\n    \"tool_doctor\": \"C:\\\\Users\\\\Demon\\\\Documents\\\\New project\\\\OpenNXT\\\\data\\\\prot\\\\946\\\\generated\\\\shared\\\\tool-doctor.md\"\n  },\n  \"status\": \"partial\"\n}\n"
+    }
+  ]
+}

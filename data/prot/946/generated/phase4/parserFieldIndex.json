@@ -1,0 +1,400 @@
+[
+  {
+    "packetName": "IF_SETEVENTS",
+    "side": "server",
+    "opcode": 59,
+    "priority": 106,
+    "targetAddress": "140109290",
+    "targetKind": "parser",
+    "functionName": "FUN_140109290",
+    "status": "ok",
+    "fieldCount": 4,
+    "bufferParam": "param_2",
+    "legacyShape": [
+      "intv1",
+      "int",
+      "ushortle",
+      "ushort"
+    ],
+    "candidateTypes": [
+      "intle",
+      "ushortle",
+      "intv2",
+      "ushortle128"
+    ],
+    "reviewSource": "heuristic",
+    "manualOverride": false,
+    "semanticFieldNames": [],
+    "helperSemanticHints": {},
+    "notes": [],
+    "outputFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFields\\IF_SETEVENTS.json"
+  },
+  {
+    "packetName": "RESUME_P_COUNTDIALOG",
+    "side": "client",
+    "opcode": 129,
+    "priority": 104,
+    "targetAddress": "1401fda40",
+    "targetKind": "sender",
+    "functionName": "FUN_1401fda40",
+    "status": "ok",
+    "fieldCount": 1,
+    "bufferParam": "",
+    "legacyShape": [],
+    "candidateTypes": [
+      "long"
+    ],
+    "reviewSource": "heuristic",
+    "manualOverride": false,
+    "semanticFieldNames": [],
+    "helperSemanticHints": {},
+    "notes": [],
+    "outputFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFields\\RESUME_P_COUNTDIALOG.json"
+  },
+  {
+    "packetName": "IF_SETTEXT",
+    "side": "server",
+    "opcode": 57,
+    "priority": 102,
+    "targetAddress": "140108fd0",
+    "targetKind": "parser",
+    "functionName": "FUN_140108fd0",
+    "status": "ok",
+    "fieldCount": 2,
+    "bufferParam": "param_2",
+    "legacyShape": [
+      "intv1",
+      "string"
+    ],
+    "candidateTypes": [
+      "string",
+      "intle"
+    ],
+    "reviewSource": "heuristic",
+    "manualOverride": false,
+    "semanticFieldNames": [],
+    "helperSemanticHints": {},
+    "notes": [],
+    "outputFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFields\\IF_SETTEXT.json"
+  },
+  {
+    "packetName": "IF_OPENSUB_ACTIVE_OBJ",
+    "side": "server",
+    "opcode": 7,
+    "priority": 100,
+    "targetAddress": "1400fc390",
+    "targetKind": "parser",
+    "functionName": "FUN_1400fc390",
+    "status": "ok",
+    "fieldCount": 5,
+    "bufferParam": "param_2",
+    "legacyShape": [],
+    "candidateTypes": [
+      "ushort",
+      "ushort",
+      "intv1",
+      "ubytec",
+      "intv1"
+    ],
+    "reviewSource": "heuristic",
+    "manualOverride": false,
+    "semanticFieldNames": [],
+    "helperSemanticHints": {},
+    "notes": [],
+    "outputFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFields\\IF_OPENSUB_ACTIVE_OBJ.json"
+  },
+  {
+    "packetName": "IF_SETCOLOUR",
+    "side": "server",
+    "opcode": 8,
+    "priority": 100,
+    "targetAddress": "140107d70",
+    "targetKind": "parser",
+    "functionName": "FUN_140107d70",
+    "status": "ok",
+    "fieldCount": 2,
+    "bufferParam": "param_2",
+    "legacyShape": [],
+    "candidateTypes": [
+      "intv1",
+      "ushort128"
+    ],
+    "reviewSource": "heuristic",
+    "manualOverride": false,
+    "semanticFieldNames": [],
+    "helperSemanticHints": {},
+    "notes": [],
+    "outputFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFields\\IF_SETCOLOUR.json"
+  },
+  {
+    "packetName": "IF_OPENSUB_ACTIVE_LOC",
+    "side": "server",
+    "opcode": 21,
+    "priority": 100,
+    "targetAddress": "1400fbf80",
+    "targetKind": "parser",
+    "functionName": "FUN_1400fbf80",
+    "status": "ok",
+    "fieldCount": 10,
+    "bufferParam": "param_2",
+    "legacyShape": [],
+    "candidateTypes": [
+      "ubyte",
+      "intle",
+      "ubyte",
+      "ubyte",
+      "ubyte",
+      "ubyte",
+      "intv1",
+      "ubyte",
+      "intle",
+      "ushortle128"
+    ],
+    "reviewSource": "heuristic",
+    "manualOverride": false,
+    "semanticFieldNames": [],
+    "helperSemanticHints": {},
+    "notes": [],
+    "outputFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFields\\IF_OPENSUB_ACTIVE_LOC.json"
+  },
+  {
+    "packetName": "IF_SETPLAYERHEAD",
+    "side": "server",
+    "opcode": 77,
+    "priority": 100,
+    "targetAddress": "140108360",
+    "targetKind": "parser",
+    "functionName": "FUN_140108360",
+    "status": "ok",
+    "fieldCount": 1,
+    "bufferParam": "param_2",
+    "legacyShape": [],
+    "candidateTypes": [
+      "intv1"
+    ],
+    "reviewSource": "heuristic",
+    "manualOverride": false,
+    "semanticFieldNames": [],
+    "helperSemanticHints": {},
+    "notes": [],
+    "outputFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFields\\IF_SETPLAYERHEAD.json"
+  },
+  {
+    "packetName": "IF_SETPLAYERMODEL_SELF",
+    "side": "server",
+    "opcode": 106,
+    "priority": 100,
+    "targetAddress": "1401089c0",
+    "targetKind": "parser",
+    "functionName": "FUN_1401089c0",
+    "status": "ok",
+    "fieldCount": 1,
+    "bufferParam": "param_2",
+    "legacyShape": [],
+    "candidateTypes": [
+      "intv2"
+    ],
+    "reviewSource": "heuristic",
+    "manualOverride": false,
+    "semanticFieldNames": [],
+    "helperSemanticHints": {},
+    "notes": [],
+    "outputFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFields\\IF_SETPLAYERMODEL_SELF.json"
+  },
+  {
+    "packetName": "IF_SETSCROLLPOS",
+    "side": "server",
+    "opcode": 108,
+    "priority": 100,
+    "targetAddress": "140109650",
+    "targetKind": "parser",
+    "functionName": "FUN_140109650",
+    "status": "ok",
+    "fieldCount": 2,
+    "bufferParam": "param_2",
+    "legacyShape": [],
+    "candidateTypes": [
+      "intle",
+      "ushort"
+    ],
+    "reviewSource": "heuristic",
+    "manualOverride": false,
+    "semanticFieldNames": [],
+    "helperSemanticHints": {},
+    "notes": [],
+    "outputFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFields\\IF_SETSCROLLPOS.json"
+  },
+  {
+    "packetName": "IF_SETRETEX",
+    "side": "server",
+    "opcode": 137,
+    "priority": 100,
+    "targetAddress": "140107c40",
+    "targetKind": "parser",
+    "functionName": "FUN_140107c40",
+    "status": "ok",
+    "fieldCount": 1,
+    "bufferParam": "instruction-parser-state",
+    "legacyShape": [],
+    "candidateTypes": [
+      "ushort"
+    ],
+    "reviewSource": "heuristic",
+    "manualOverride": false,
+    "semanticFieldNames": [],
+    "helperSemanticHints": {},
+    "notes": [],
+    "outputFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFields\\IF_SETRETEX.json"
+  },
+  {
+    "packetName": "IF_SETRECOL",
+    "side": "server",
+    "opcode": 202,
+    "priority": 100,
+    "targetAddress": "140107b20",
+    "targetKind": "parser",
+    "functionName": "FUN_140107b20",
+    "status": "ok",
+    "fieldCount": 4,
+    "bufferParam": "param_2",
+    "legacyShape": [],
+    "candidateTypes": [
+      "ushortle",
+      "ushortle",
+      "ubytec",
+      "intle"
+    ],
+    "reviewSource": "heuristic",
+    "manualOverride": false,
+    "semanticFieldNames": [],
+    "helperSemanticHints": {},
+    "notes": [],
+    "outputFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFields\\IF_SETRECOL.json"
+  },
+  {
+    "packetName": "OBJ_REVEAL",
+    "side": "server",
+    "opcode": 3,
+    "priority": 92,
+    "targetAddress": "14013f5f0",
+    "targetKind": "parser",
+    "functionName": "FUN_14013f5f0",
+    "status": "ok",
+    "fieldCount": 4,
+    "bufferParam": "param_2",
+    "legacyShape": [],
+    "candidateTypes": [
+      "ushortle",
+      "ushortle",
+      "ubyte",
+      "ushortle"
+    ],
+    "reviewSource": "heuristic",
+    "manualOverride": false,
+    "semanticFieldNames": [],
+    "helperSemanticHints": {},
+    "notes": [],
+    "outputFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFields\\OBJ_REVEAL.json"
+  },
+  {
+    "packetName": "OBJ_ADD",
+    "side": "server",
+    "opcode": 87,
+    "priority": 92,
+    "targetAddress": "14013f820",
+    "targetKind": "parser",
+    "functionName": "FUN_14013f820",
+    "status": "reviewed-override",
+    "fieldCount": 3,
+    "bufferParam": "param_2",
+    "legacyShape": [],
+    "candidateTypes": [
+      "ushortle128",
+      "ubytec",
+      "ushort128"
+    ],
+    "reviewSource": "reviewed-override",
+    "outputFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFields\\OBJ_ADD.json",
+    "manualOverride": true,
+    "semanticFieldNames": [
+      "count",
+      "packedCoord",
+      "id"
+    ],
+    "helperSemanticHints": {
+      "helperFunction": "FUN_1403526d0",
+      "helperFieldOrder": [
+        "id",
+        "count"
+      ],
+      "semanticFieldNames": [
+        "count",
+        "packedCoord",
+        "id"
+      ],
+      "proofRule": "Use raw read order as packet order, then map the last FUN_1403526d0 short argument to count and the first helper short argument to id based on the verified OBJ_REVEAL sibling."
+    },
+    "notes": [
+      "Reviewed against decompiled FUN_14013f820 and sibling helper usage in OBJ_REVEAL.",
+      "Raw read order is short, byte, short, which preserves packet order as count, packedCoord, id.",
+      "FUN_1403526d0 receives helper arguments in semantic order id then count for the ground-item family.",
+      "The last helper short argument is count, and the first helper short argument is id."
+    ]
+  },
+  {
+    "packetName": "OBJ_DEL",
+    "side": "server",
+    "opcode": 98,
+    "priority": 92,
+    "targetAddress": "14013f760",
+    "targetKind": "parser",
+    "functionName": "FUN_14013f760",
+    "status": "reviewed-override",
+    "fieldCount": 2,
+    "bufferParam": "param_2",
+    "legacyShape": [],
+    "candidateTypes": [
+      "u128byte",
+      "ushort"
+    ],
+    "reviewSource": "reviewed-override",
+    "outputFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFields\\OBJ_DEL.json",
+    "manualOverride": true,
+    "semanticFieldNames": [],
+    "helperSemanticHints": {},
+    "notes": [
+      "Reviewed against decompiled FUN_14013f760.",
+      "Offset 0 is packed coord via 0x80 - byte transform.",
+      "Offset 1..2 is item id, byte-swapped before semantic use, matching ushort."
+    ]
+  },
+  {
+    "packetName": "OBJ_COUNT",
+    "side": "server",
+    "opcode": 127,
+    "priority": 92,
+    "targetAddress": "1401143f0",
+    "targetKind": "parser",
+    "functionName": "FUN_1401143f0",
+    "status": "reviewed-override",
+    "fieldCount": 4,
+    "bufferParam": "param_2",
+    "legacyShape": [],
+    "candidateTypes": [
+      "ubyte",
+      "ushort",
+      "ushort",
+      "ushort"
+    ],
+    "reviewSource": "reviewed-override",
+    "outputFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFields\\OBJ_COUNT.json",
+    "manualOverride": true,
+    "semanticFieldNames": [],
+    "helperSemanticHints": {},
+    "notes": [
+      "Reviewed against decompiled FUN_1401143f0.",
+      "Offset 0 is packed coord byte used directly for local tile coordinates.",
+      "Offsets 1..2, 3..4, and 5..6 are byte-swapped before semantic use, matching ushort item/count fields."
+    ]
+  }
+]

@@ -39,6 +39,11 @@ class IndexCompletionChecker(
 
                 val existing = filesystem.read(index, id)
                 if (existing == null) {
+                    if (archive.compressedSize == 0) {
+                        logger.info { "Skipping placeholder archive [$index,$id] because it has zero compressed size and no local body" }
+                        return@forEach
+                    }
+
                     requests.add(
                         Js5RequestHandler.ArchiveRequest(
                             index,

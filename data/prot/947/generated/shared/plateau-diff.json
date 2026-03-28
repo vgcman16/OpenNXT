@@ -1,0 +1,1497 @@
+{
+  "advisoryOnly": true,
+  "artifacts": {
+    "plateau_diff": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\plateau-diff.md"
+  },
+  "build": 946,
+  "deltas": {
+    "clientOpcodes": {
+      "extraInRight": {},
+      "missingInRight": {
+        "113": 3,
+        "17": 1,
+        "28": 1,
+        "48": 1
+      }
+    },
+    "markers": {
+      "extraInRight": {
+        "world-client-bootstrap-blob": 1
+      },
+      "missingInRight": {
+        "world-added": 1,
+        "world-ignore-client-compat": 2,
+        "world-ignore-client-timed": 3,
+        "world-recv-serverperm-varcs": 1,
+        "world-send-npc-info": 37,
+        "world-send-player-info": 37,
+        "world-send-serverperm-ack-candidate": 1,
+        "world-sync-frame": 37,
+        "world-unhandled-client-compat": 1
+      }
+    },
+    "serverOpcodes": {
+      "extraInRight": {},
+      "missingInRight": {
+        "131": 218,
+        "42": 1848
+      }
+    }
+  },
+  "generatedAt": "2026-03-20T02:13:18.543744+00:00",
+  "hypotheses": [
+    {
+      "kind": "asset-delivery stall",
+      "reason": "Right plateau remained in `reference-tables-only`, which still points at asset-delivery or capture timing.",
+      "score": 75
+    },
+    {
+      "kind": "post-bootstrap state divergence",
+      "reason": "The plateau event counts diverge materially even though both sessions reached interfaces.",
+      "score": 55
+    },
+    {
+      "kind": "scene settle stall",
+      "reason": "Runtime traces do not show a strong post-asset settle difference yet.",
+      "score": 25
+    }
+  ],
+  "inputs": {
+    "inputFingerprint": "a0144e631e620e17d306cfef11e35378ae7872cff26fb168e8ed6e66bd0a93bd",
+    "js5SessionDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\js5-proxy-recorder-live",
+    "labels": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\curated-session-labels.json",
+    "leftWindow": "959546:965703",
+    "rightWindow": "1081680:1082691",
+    "runtimeTraceDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\runtime-trace",
+    "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log"
+  },
+  "left": {
+    "plateauSummary": {
+      "clientOpcodeCounts": {
+        "0": 1,
+        "17": 2,
+        "28": 1,
+        "48": 2,
+        "83": 1,
+        "113": 3
+      },
+      "durationSeconds": 1641.308,
+      "endLine": 965703,
+      "endTimestamp": "2026-03-16T15:35:41.682763Z",
+      "eventCount": 4846,
+      "exists": true,
+      "markerCounts": {
+        "world-added": 1,
+        "world-awaiting-ready-signal": 1,
+        "world-bind-local-player-model": 1,
+        "world-client-bootstrap-control": 3,
+        "world-client-display-config": 4,
+        "world-force-local-appearance": 4,
+        "world-hold-post-initial-sync": 3,
+        "world-ignore-client-compat": 5,
+        "world-ignore-client-timed": 3,
+        "world-open-minimal-child": 1,
+        "world-post-initial-sync-hold": 1,
+        "world-ready-signal": 1,
+        "world-ready-signal-deferred": 1,
+        "world-recv-serverperm-varcs": 1,
+        "world-send-minimal-varcs": 1,
+        "world-send-npc-info": 48,
+        "world-send-player-info": 48,
+        "world-send-serverperm-ack-candidate": 1,
+        "world-skip-active-player": 1,
+        "world-stage": 1,
+        "world-sync-frame": 48,
+        "world-unhandled-client-compat": 1
+      },
+      "playerName": "demon",
+      "serverOpcodeCounts": {
+        "28": 2180,
+        "38": 1,
+        "42": 2180,
+        "106": 1,
+        "126": 2,
+        "128": 4,
+        "129": 29,
+        "131": 258,
+        "134": 1,
+        "206": 1
+      },
+      "stageCounts": {
+        "interfaces": 1
+      },
+      "stageSequence": [
+        "interfaces"
+      ],
+      "startLine": 959566,
+      "startTimestamp": "2026-03-16T15:08:20.374468700Z",
+      "trackedClientOpcodes": {
+        "106": 0,
+        "113": 3,
+        "17": 2,
+        "28": 1,
+        "48": 2,
+        "50": 0,
+        "82": 0,
+        "83": 1,
+        "95": 0
+      },
+      "trackedServerOpcodes": {
+        "106": 1,
+        "116": 0,
+        "131": 258,
+        "39": 0,
+        "42": 2180,
+        "45": 0,
+        "50": 0,
+        "67": 0
+      }
+    },
+    "sceneDelivery": {
+      "advisoryOnly": true,
+      "artifacts": {
+        "sceneDeliveryAnalysisJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-delivery-analysis.json",
+        "sceneDeliveryAnalysisMarkdown": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-delivery-analysis.md"
+      },
+      "build": 946,
+      "cacheSignals": {
+        "checksum": {
+          "kind": "checksum",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\checksum-table-compare\\compare-report.json",
+          "present": true,
+          "status": "partial",
+          "summary": {
+            "containerBytesMatch": false,
+            "entriesBytesMatch": true,
+            "entryMismatchCount": 0,
+            "liveEntries": 67,
+            "liveEntriesSha256": "f269d38ca52ff42606af90c99036ca4f6bc2069d1c555ff6a5082785720a802d",
+            "liveSignatureSha256": "1e9c567f3097cefbaf4c8377f29b2346e3ed770bc343ddf243fe77cc22134d29",
+            "liveVersion": 946,
+            "localEntries": 67,
+            "localEntriesSha256": "f269d38ca52ff42606af90c99036ca4f6bc2069d1c555ff6a5082785720a802d",
+            "localSignatureSha256": "9ef577ff5fa012ecad1aae7eae2e6531277effbaaca13f7145dee619a12ccc13",
+            "mismatchRows": [],
+            "recommendation": "Local cache diverges from live JS5. Refresh the cache with `run-tool cache-downloader`, then rerun `run-tool checksum-table-compare`.",
+            "severity": "medium",
+            "signatureBytesMatch": false,
+            "status": "partial"
+          },
+          "tool": "checksum-table-compare"
+        },
+        "prefetch": {
+          "kind": "prefetch",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\prefetch-table-compare\\compare-report.json",
+          "present": true,
+          "status": "partial",
+          "summary": {
+            "comparisonState": "inconclusive-no-remote-table",
+            "countMismatch": true,
+            "localCount": 31,
+            "mismatchCount": 0,
+            "mismatches": [],
+            "recommendation": "Live JS5 did not provide a prefetch table. Treat this result as advisory-only and verify with wire captures if prefetch behavior matters.",
+            "remoteCount": 0,
+            "status": "partial"
+          },
+          "tool": "prefetch-table-compare"
+        }
+      },
+      "captureBundle": {
+        "canonicalMitmLaunch": false,
+        "contentRouteMode": "disabled",
+        "contentRouteRewrite": "",
+        "contentSessionLog": "",
+        "directExternal443ConnectionCount": 0,
+        "freshLocalTlsSessionCount": 0,
+        "hostRewrite": "0",
+        "js5Summary": "",
+        "lobbyHostRewrite": "",
+        "localMitm443ConnectionCount": 0,
+        "localMsRequestsObserved": false,
+        "nonCanonicalHostRewrite": false,
+        "overlapAchieved": false,
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\black-screen-capture.json",
+        "present": true,
+        "runtimeTracePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\runtime-trace\\black-screen-runtime-20260316-224544.jsonl",
+        "sessionRouteCounts": {},
+        "status": "partial",
+        "statusReason": "overlap-missing",
+        "worldWindowSelected": "1027327:1049489"
+      },
+      "clientErrors": {
+        "fileCount": 0,
+        "files": [],
+        "present": true
+      },
+      "correlation": {
+        "afterRebuildTailSeconds": {
+          "firstArchiveRequest": null,
+          "firstArchiveResponse": null,
+          "firstJs5Request": null,
+          "firstJs5Response": null
+        },
+        "firstArchiveRequestSeconds": null,
+        "firstArchiveResponseSeconds": null,
+        "firstJs5RequestSeconds": 298460.251,
+        "firstJs5ResponseSeconds": 298460.251,
+        "overlapConfidence": "exact",
+        "responseBytes": 3798,
+        "responseHeaderCount": 1
+      },
+      "generatedAt": "2026-03-20T02:13:08.328109+00:00",
+      "inputs": {
+        "checksumReportJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\checksum-table-compare\\compare-report.json",
+        "clienterrorDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\clienterror",
+        "contentCaptureDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\lobby-tls-terminator",
+        "inputFingerprint": "7b8c387cc7785c87ad80099850c8090c8f59c27c748041ef36bca4fcc99482ac",
+        "js5SessionDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\js5-proxy-recorder-live",
+        "prefetchReportJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\prefetch-table-compare\\compare-report.json",
+        "runtimeTraceDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\runtime-trace",
+        "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log",
+        "worldWindow": "959546:965703"
+      },
+      "js5": {
+        "availableContentSessionCount": 7,
+        "availableLegacySessionCount": 6,
+        "availableStructuredSummaryCount": 0,
+        "captureFormat": "live-watch",
+        "fallbackSessions": [
+          {
+            "archiveRequests": 0,
+            "captureFormat": "content-proxy",
+            "durationSeconds": 31.587,
+            "endTimestamp": "2026-03-20T02:09:42.312072+00:00",
+            "expectedResponseBytes": 4191,
+            "file": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\lobby-tls-terminator\\session-02-20260320-020858.log",
+            "firstArchiveRequestAtMillis": null,
+            "firstArchiveResponseAtMillis": null,
+            "firstRequestAtMillis": 0,
+            "firstResponseHeaderAtMillis": 0,
+            "httpRequests": [
+              {
+                "archive": 255,
+                "index": 0,
+                "label": "reference-table[0]",
+                "method": "GET",
+                "path": "/ms",
+                "query": {
+                  "a": "255",
+                  "c": "0",
+                  "g": "255",
+                  "k": "946",
+                  "m": "0",
+                  "v": "0"
+                },
+                "target": "/ms?m=0&a=255&k=946&g=255&c=0&v=0"
+              }
+            ],
+            "masterReferenceRequests": 0,
+            "referenceTableRequests": 1,
+            "remoteTarget": "content.runescape.com:443",
+            "requestCount": 1,
+            "responseBodyBytes": 3798,
+            "responseBytes": 4191,
+            "responseContentLength": 3798,
+            "responseHeaderBytes": 393,
+            "responseHeaderCount": 2,
+            "responseStatus": 200,
+            "sampleRequests": [
+              "GET /ms?m=0&a=255&k=946&g=255&c=0&v=0"
+            ],
+            "sceneDeliveryState": "reference-tables-only",
+            "sessionId": 2,
+            "sessionLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\lobby-tls-terminator\\session-02-20260320-020858.log",
+            "sessionRoute": "tls-http-content",
+            "startTimestamp": "2026-03-20T02:09:10.724725+00:00",
+            "status": "ok",
+            "statusMarkers": {},
+            "tlsClientSni": "localhost",
+            "truncatedResponse": false,
+            "uniqueArchivePairs": [],
+            "uniqueReferenceTables": [
+              0
+            ]
+          },
+          {
+            "archiveRequests": 0,
+            "captureFormat": "content-proxy",
+            "durationSeconds": 31.821,
+            "endTimestamp": "2026-03-20T02:09:57.621734+00:00",
+            "expectedResponseBytes": 4191,
+            "file": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\lobby-tls-terminator\\session-05-20260320-020858.log",
+            "firstArchiveRequestAtMillis": null,
+            "firstArchiveResponseAtMillis": null,
+            "firstRequestAtMillis": 0,
+            "firstResponseHeaderAtMillis": 0,
+            "httpRequests": [
+              {
+                "archive": 255,
+                "index": 0,
+                "label": "reference-table[0]",
+                "method": "GET",
+                "path": "/ms",
+                "query": {
+                  "a": "255",
+                  "c": "0",
+                  "g": "255",
+                  "k": "946",
+                  "m": "0",
+                  "v": "0"
+                },
+                "target": "/ms?m=0&a=255&k=946&g=255&c=0&v=0"
+              }
+            ],
+            "masterReferenceRequests": 0,
+            "referenceTableRequests": 1,
+            "remoteTarget": "content.runescape.com:443",
+            "requestCount": 1,
+            "responseBodyBytes": 3798,
+            "responseBytes": 4191,
+            "responseContentLength": 3798,
+            "responseHeaderBytes": 393,
+            "responseHeaderCount": 2,
+            "responseStatus": 200,
+            "sampleRequests": [
+              "GET /ms?m=0&a=255&k=946&g=255&c=0&v=0"
+            ],
+            "sceneDeliveryState": "reference-tables-only",
+            "sessionId": 5,
+            "sessionLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\lobby-tls-terminator\\session-05-20260320-020858.log",
+            "sessionRoute": "tls-http-content",
+            "startTimestamp": "2026-03-20T02:09:25.801174+00:00",
+            "status": "ok",
+            "statusMarkers": {},
+            "tlsClientSni": "localhost",
+            "truncatedResponse": false,
+            "uniqueArchivePairs": [],
+            "uniqueReferenceTables": [
+              0
+            ]
+          }
+        ],
+        "relevantSessions": [
+          {
+            "archiveRequests": 0,
+            "captureFormat": "live-watch",
+            "durationSeconds": 151.448,
+            "endTimestamp": "2026-03-20T02:04:27.401420+00:00",
+            "file": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\client-live-watch\\latest-summary.json",
+            "firstArchiveRequestAtMillis": null,
+            "firstArchiveResponseAtMillis": null,
+            "firstRequestAtMillis": 44000,
+            "firstResponseHeaderAtMillis": 44000,
+            "masterReferenceRequests": 0,
+            "referenceTableRequests": 1,
+            "requestCount": 1,
+            "responseBytes": 3798,
+            "responseHeaderCount": 1,
+            "sceneDeliveryState": "reference-tables-only",
+            "sessionId": 1,
+            "startTimestamp": "2026-03-20T02:01:55.953567+00:00",
+            "status": "ok"
+          }
+        ],
+        "selectionStrategy": "live-watch",
+        "summary": {
+          "archiveRequests": 0,
+          "count": 1,
+          "masterReferenceRequests": 0,
+          "overlapConfidence": "exact",
+          "referenceTableRequests": 1,
+          "requestCount": 1,
+          "responseBytes": 3798,
+          "responseHeaderCount": 1,
+          "sceneDeliveryState": "reference-tables-only",
+          "truncatedCount": 0
+        }
+      },
+      "liveWatch": {
+        "captureFormat": "live-watch",
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\client-live-watch\\latest-summary.json",
+        "present": true,
+        "pseudoSession": {
+          "archiveRequests": 0,
+          "captureFormat": "live-watch",
+          "durationSeconds": 151.448,
+          "endTimestamp": "2026-03-20T02:04:27.401420+00:00",
+          "file": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\client-live-watch\\latest-summary.json",
+          "firstArchiveRequestAtMillis": null,
+          "firstArchiveResponseAtMillis": null,
+          "firstRequestAtMillis": 44000,
+          "firstResponseHeaderAtMillis": 44000,
+          "masterReferenceRequests": 0,
+          "referenceTableRequests": 1,
+          "requestCount": 1,
+          "responseBytes": 3798,
+          "responseHeaderCount": 1,
+          "sceneDeliveryState": "reference-tables-only",
+          "sessionId": 1,
+          "startTimestamp": "2026-03-20T02:01:55.953567+00:00",
+          "status": "ok"
+        },
+        "summary": {
+          "archiveRequestCount": 0,
+          "autoAttachedExisting": false,
+          "canonicalRouteStatus": "canonical",
+          "cefObserved": false,
+          "clientPid": 148772,
+          "contentRouteSources": {
+            "client-http": 1
+          },
+          "contentSessionRoutes": {
+            "raw-game": 1,
+            "tls-http-content": 2
+          },
+          "crashDetected": false,
+          "cryptoModuleObserved": true,
+          "deepHooksEnabled": true,
+          "directExternal443Connections": 0,
+          "directExternal443Targets": [],
+          "exceptionCount": 0,
+          "familyPids": [
+            148772,
+            157732,
+            192396,
+            280268,
+            287960
+          ],
+          "fatalExceptionCount": 0,
+          "fileBytesRead": {
+            "unknown": 10949089323
+          },
+          "fileOpenCounts": {},
+          "firstArchiveRequestSeconds": null,
+          "firstArchiveResponseSeconds": null,
+          "firstJs5RequestSeconds": 44.0,
+          "firstJs5ResponseSeconds": 44.0,
+          "firstTlsDecryptSeconds": 20.94,
+          "firstTlsEncryptSeconds": 20.94,
+          "launchMode": "launch",
+          "loadedModuleNames": [
+            "audioses.dll",
+            "crypt32.dll",
+            "mmdevapi.dll",
+            "msctf.dll",
+            "ncryptsslp.dll",
+            "psapi.dll",
+            "rs2client.exe",
+            "schannel.dll",
+            "secur32.dll",
+            "sspicli.dll",
+            "user32.dll"
+          ],
+          "localContentMitmObserved": true,
+          "localMitm443Connections": 0,
+          "localMsRequestsObserved": true,
+          "nonFatalGraphicsExceptionCount": 0,
+          "proxyHttpContentTlsObserved": true,
+          "proxyMitmHandshakeFailedObserved": false,
+          "proxyMitmHandshakeOkObserved": true,
+          "proxyMitmWrapStatuses": {
+            "ok": 1,
+            "start": 1
+          },
+          "proxyRawGameObserved": true,
+          "proxyRouteModes": {
+            "inspect-after-handshake": 1
+          },
+          "proxySecureGameBackendFirstObserved": false,
+          "proxySecureGamePassthroughObserved": false,
+          "proxySecureGameTlsObserved": false,
+          "resolvedHosts": [
+            "<unreadable-utf16>"
+          ],
+          "responseBytes": 3798,
+          "responseHeaderCount": 1,
+          "sessionDurationSeconds": 151.448,
+          "sessionEndedAt": "2026-03-20T02:04:27.401420+00:00",
+          "sessionStartedAt": "2026-03-20T02:01:55.953567+00:00",
+          "terminalState": "prelogin-http-content",
+          "tlsAnomalyCount": 0,
+          "tlsAppDataObserved": true,
+          "tlsAttributeCounts": {
+            "SECPKG_ATTR_STREAM_SIZES": 1
+          },
+          "tlsCertIssuers": {
+            "CN=OpenNXT Local Root": 1
+          },
+          "tlsCertSubjects": {
+            "CN=localhost": 1
+          },
+          "tlsCertThumbprints": {
+            "7D31BDFA40248EE8526BD263282EBAB6892D193F": 1
+          },
+          "tlsClienthelloSnis": {
+            "localhost": 1
+          },
+          "tlsConnectionInfoObserved": false,
+          "tlsContextEstablished": true,
+          "tlsDecryptCount": 2,
+          "tlsEncryptCount": 1,
+          "tlsRemoteCertObserved": false,
+          "worldBootstrapObserved": false,
+          "worldStages": [],
+          "worldWindowSelected": "",
+          "worldWindowSelectionSkipReason": "world-log-too-large:133748593",
+          "worldWindowSelectionSkipped": true
+        },
+        "usableForSceneDelivery": true
+      },
+      "runtimeTrace": {
+        "selectionStrategy": "latest-no-overlap",
+        "summary": {
+          "endTimestamp": "2026-03-12T17:45:41.953270+00:00",
+          "file": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\runtime-trace\\rs2client-stuck-20260312-1235.jsonl",
+          "latestConnectionPorts": [
+            443
+          ],
+          "latestCpuPercent": 10.4,
+          "latestRss": 393564160,
+          "latestThreadCount": 166,
+          "openCacheFiles": [
+            "C:\\Users\\Demon\\AppData\\Local\\Jagex\\RuneScape\\Settings.jcache",
+            "C:\\ProgramData\\Jagex\\RuneScape\\ObjCache.jcache",
+            "C:\\ProgramData\\Jagex\\RuneScape\\ShaderManager.jcache",
+            "C:\\ProgramData\\Jagex\\RuneScape\\GlobalSettings.jcache"
+          ],
+          "sampleCount": 3,
+          "startTimestamp": "2026-03-12T17:45:08.234223+00:00",
+          "timeoutCount": 1
+        }
+      },
+      "schemaVersion": 1,
+      "status": "ok",
+      "summary": {
+        "archiveRequestsObserved": 0,
+        "captureBundlePresent": true,
+        "checksumStatus": "partial",
+        "clientErrorFileCount": 0,
+        "liveWatchPresent": true,
+        "overlapConfidence": "exact",
+        "prefetchState": "inconclusive-no-remote-table",
+        "referenceTableRequests": 1,
+        "relevantJs5SessionCount": 1,
+        "responseBytes": 3798,
+        "responseHeaderCount": 1,
+        "runtimeTracePresent": true,
+        "sceneDeliveryState": "reference-tables-only",
+        "selectedCaptureFormat": "live-watch",
+        "truncatedJs5SessionCount": 0,
+        "worldSessionExists": true
+      },
+      "timeline": [
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:appearance",
+          "relativeSeconds": 0.0,
+          "timestamp": "2026-03-16T15:08:19.702328900Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:login-response",
+          "relativeSeconds": 0.106,
+          "timestamp": "2026-03-16T15:08:19.808088700Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:pipeline-switch",
+          "relativeSeconds": 0.108,
+          "timestamp": "2026-03-16T15:08:19.810145Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:rebuild",
+          "relativeSeconds": 0.109,
+          "timestamp": "2026-03-16T15:08:19.811148500Z"
+        },
+        {
+          "detail": "{\n  \"name\": \"demon\"\n}",
+          "kind": "world-waiting-map-build-complete",
+          "label": "world-waiting-map-build-complete",
+          "relativeSeconds": 0.121,
+          "timestamp": "2026-03-16T15:08:19.823038800Z"
+        },
+        {
+          "detail": "{\n  \"awaitingMapBuildComplete\": \"true\",\n  \"awaitingWorldReadySignal\": \"false\",\n  \"count\": \"1\",\n  \"height\": \"720\",\n  \"mode\": \"2\",\n  \"name\": \"demon\",\n  \"opcode\": \"106\",\n  \"trailingFlag\": \"0\",\n  \"width\": \"1280\"\n}",
+          "kind": "world-client-display-config",
+          "label": "world-client-display-config",
+          "relativeSeconds": 0.605,
+          "timestamp": "2026-03-16T15:08:20.307735500Z"
+        },
+        {
+          "detail": "{\n  \"bytes\": \"200\",\n  \"name\": \"demon\",\n  \"opcode\": \"48\",\n  \"preview\": \"0a02ffff02af0370805b56805d53805f5680463480685b03\"\n}",
+          "kind": "world-ready-signal-latched",
+          "label": "world-ready-signal-latched",
+          "relativeSeconds": 0.655,
+          "timestamp": "2026-03-16T15:08:20.357364800Z"
+        },
+        {
+          "detail": "{\n  \"bytes\": \"4\",\n  \"name\": \"demon\",\n  \"opcode\": \"113\",\n  \"preview\": \"000000e4\"\n}",
+          "kind": "world-map-build-complete-compat",
+          "label": "world-map-build-complete-compat",
+          "relativeSeconds": 0.666,
+          "timestamp": "2026-03-16T15:08:20.367848200Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:stats",
+          "relativeSeconds": 0.667,
+          "timestamp": "2026-03-16T15:08:20.368860200Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:default-state",
+          "relativeSeconds": 0.67,
+          "timestamp": "2026-03-16T15:08:20.371927500Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:interfaces",
+          "relativeSeconds": 0.672,
+          "timestamp": "2026-03-16T15:08:20.374468700Z"
+        },
+        {
+          "detail": "{\n  \"ids\": \"181,1027,1034,3497\",\n  \"name\": \"demon\"\n}",
+          "kind": "world-send-minimal-varcs",
+          "label": "world-send-minimal-varcs",
+          "relativeSeconds": 0.695,
+          "timestamp": "2026-03-16T15:08:20.397416100Z"
+        },
+        {
+          "detail": "{\n  \"name\": \"demon\"\n}",
+          "kind": "world-awaiting-ready-signal",
+          "label": "world-awaiting-ready-signal",
+          "relativeSeconds": 0.7,
+          "timestamp": "2026-03-16T15:08:20.402340300Z"
+        },
+        {
+          "detail": "{\n  \"bytes\": \"200\",\n  \"name\": \"demon\",\n  \"opcode\": \"48\",\n  \"preview\": \"0a02ffff02af0370805b56805d53805f5680463480685b03\",\n  \"source\": \"latched\"\n}",
+          "kind": "world-ready-signal",
+          "label": "world-ready-signal",
+          "relativeSeconds": 0.706,
+          "timestamp": "2026-03-16T15:08:20.408593700Z"
+        },
+        {
+          "detail": "bytes=64",
+          "kind": "send-raw",
+          "label": "send-raw:PLAYER_INFO",
+          "relativeSeconds": 0.726,
+          "timestamp": "2026-03-16T15:08:20.428582300Z"
+        },
+        {
+          "detail": "{\n  \"awaitingMapBuildComplete\": \"false\",\n  \"awaitingWorldReadySignal\": \"false\",\n  \"count\": \"2\",\n  \"height\": \"720\",\n  \"mode\": \"2\",\n  \"name\": \"demon\",\n  \"opcode\": \"106\",\n  \"trailingFlag\": \"0\",\n  \"width\": \"1280\"\n}",
+          "kind": "world-client-display-config",
+          "label": "world-client-display-config",
+          "relativeSeconds": 1.201,
+          "timestamp": "2026-03-16T15:08:20.902883700Z"
+        },
+        {
+          "detail": "{\n  \"awaitingMapBuildComplete\": \"false\",\n  \"awaitingWorldReadySignal\": \"false\",\n  \"count\": \"3\",\n  \"height\": \"720\",\n  \"mode\": \"2\",\n  \"name\": \"demon\",\n  \"opcode\": \"106\",\n  \"trailingFlag\": \"0\",\n  \"width\": \"1280\"\n}",
+          "kind": "world-client-display-config",
+          "label": "world-client-display-config",
+          "relativeSeconds": 1.202,
+          "timestamp": "2026-03-16T15:08:20.903891300Z"
+        },
+        {
+          "detail": "{\n  \"awaitingMapBuildComplete\": \"false\",\n  \"awaitingWorldReadySignal\": \"false\",\n  \"count\": \"4\",\n  \"height\": \"720\",\n  \"mode\": \"2\",\n  \"name\": \"demon\",\n  \"opcode\": \"106\",\n  \"trailingFlag\": \"0\",\n  \"width\": \"1280\"\n}",
+          "kind": "world-client-display-config",
+          "label": "world-client-display-config",
+          "relativeSeconds": 1.204,
+          "timestamp": "2026-03-16T15:08:20.905890700Z"
+        }
+      ],
+      "tool": "run_946_scene_delivery_aid",
+      "verdict": {
+        "likelyBlocker": "reference-tables-only",
+        "recommendation": "The client reached JS5 bootstrap but never progressed beyond reference tables. Focus on scene/prefetch gating and the first asset-delivery transition after rebuild."
+      },
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 2,
+          "17": 2,
+          "28": 1,
+          "48": 3,
+          "83": 1,
+          "113": 4
+        },
+        "durationSeconds": 1641.98,
+        "endLine": 965703,
+        "endTimestamp": "2026-03-16T15:35:41.682763Z",
+        "eventCount": 4865,
+        "exists": true,
+        "markerCounts": {
+          "world-added": 1,
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-client-bootstrap-control": 3,
+          "world-client-display-config": 5,
+          "world-force-local-appearance": 4,
+          "world-hold-post-initial-sync": 3,
+          "world-ignore-client-compat": 5,
+          "world-ignore-client-timed": 3,
+          "world-map-build-complete-compat": 1,
+          "world-open-minimal-child": 1,
+          "world-post-initial-sync-hold": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latched": 1,
+          "world-recv-serverperm-varcs": 2,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 48,
+          "world-send-player-info": 48,
+          "world-send-serverperm-ack-candidate": 2,
+          "world-skip-active-player": 1,
+          "world-skip-init-state": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 48,
+          "world-unhandled-client-compat": 1,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 2180,
+          "38": 1,
+          "39": 1,
+          "42": 2180,
+          "106": 1,
+          "126": 2,
+          "128": 4,
+          "129": 29,
+          "131": 258,
+          "134": 1,
+          "206": 2
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 959546,
+        "startTimestamp": "2026-03-16T15:08:19.702328900Z"
+      }
+    }
+  },
+  "right": {
+    "plateauSummary": {
+      "clientOpcodeCounts": {
+        "17": 1,
+        "48": 1,
+        "83": 1
+      },
+      "durationSeconds": 199.805,
+      "endLine": 1082691,
+      "endTimestamp": "2026-03-20T02:13:02.162583100Z",
+      "eventCount": 774,
+      "exists": true,
+      "markerCounts": {
+        "world-awaiting-ready-signal": 1,
+        "world-bind-local-player-model": 1,
+        "world-client-bootstrap-blob": 1,
+        "world-client-bootstrap-control": 3,
+        "world-client-display-config": 4,
+        "world-force-local-appearance": 4,
+        "world-hold-post-initial-sync": 3,
+        "world-ignore-client-compat": 3,
+        "world-open-minimal-child": 1,
+        "world-post-initial-sync-hold": 1,
+        "world-ready-signal": 1,
+        "world-ready-signal-deferred": 1,
+        "world-send-minimal-varcs": 1,
+        "world-send-npc-info": 11,
+        "world-send-player-info": 11,
+        "world-skip-active-player": 1,
+        "world-stage": 1,
+        "world-sync-frame": 11
+      },
+      "playerName": "demon",
+      "serverOpcodeCounts": {
+        "28": 332,
+        "38": 1,
+        "42": 332,
+        "106": 1,
+        "126": 1,
+        "128": 4,
+        "131": 40
+      },
+      "stageCounts": {
+        "interfaces": 1
+      },
+      "stageSequence": [
+        "interfaces"
+      ],
+      "startLine": 1081714,
+      "startTimestamp": "2026-03-20T02:09:42.357915200Z",
+      "trackedClientOpcodes": {
+        "106": 0,
+        "113": 0,
+        "17": 1,
+        "28": 0,
+        "48": 1,
+        "50": 0,
+        "82": 0,
+        "83": 1,
+        "95": 0
+      },
+      "trackedServerOpcodes": {
+        "106": 1,
+        "116": 0,
+        "131": 40,
+        "39": 0,
+        "42": 332,
+        "45": 0,
+        "50": 0,
+        "67": 0
+      }
+    },
+    "sceneDelivery": {
+      "advisoryOnly": true,
+      "artifacts": {
+        "sceneDeliveryAnalysisJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-delivery-analysis.json",
+        "sceneDeliveryAnalysisMarkdown": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-delivery-analysis.md"
+      },
+      "build": 946,
+      "cacheSignals": {
+        "checksum": {
+          "kind": "checksum",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\checksum-table-compare\\compare-report.json",
+          "present": true,
+          "status": "partial",
+          "summary": {
+            "containerBytesMatch": false,
+            "entriesBytesMatch": true,
+            "entryMismatchCount": 0,
+            "liveEntries": 67,
+            "liveEntriesSha256": "f269d38ca52ff42606af90c99036ca4f6bc2069d1c555ff6a5082785720a802d",
+            "liveSignatureSha256": "1e9c567f3097cefbaf4c8377f29b2346e3ed770bc343ddf243fe77cc22134d29",
+            "liveVersion": 946,
+            "localEntries": 67,
+            "localEntriesSha256": "f269d38ca52ff42606af90c99036ca4f6bc2069d1c555ff6a5082785720a802d",
+            "localSignatureSha256": "9ef577ff5fa012ecad1aae7eae2e6531277effbaaca13f7145dee619a12ccc13",
+            "mismatchRows": [],
+            "recommendation": "Local cache diverges from live JS5. Refresh the cache with `run-tool cache-downloader`, then rerun `run-tool checksum-table-compare`.",
+            "severity": "medium",
+            "signatureBytesMatch": false,
+            "status": "partial"
+          },
+          "tool": "checksum-table-compare"
+        },
+        "prefetch": {
+          "kind": "prefetch",
+          "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\prefetch-table-compare\\compare-report.json",
+          "present": true,
+          "status": "partial",
+          "summary": {
+            "comparisonState": "inconclusive-no-remote-table",
+            "countMismatch": true,
+            "localCount": 31,
+            "mismatchCount": 0,
+            "mismatches": [],
+            "recommendation": "Live JS5 did not provide a prefetch table. Treat this result as advisory-only and verify with wire captures if prefetch behavior matters.",
+            "remoteCount": 0,
+            "status": "partial"
+          },
+          "tool": "prefetch-table-compare"
+        }
+      },
+      "captureBundle": {
+        "canonicalMitmLaunch": false,
+        "contentRouteMode": "disabled",
+        "contentRouteRewrite": "",
+        "contentSessionLog": "",
+        "directExternal443ConnectionCount": 0,
+        "freshLocalTlsSessionCount": 0,
+        "hostRewrite": "0",
+        "js5Summary": "",
+        "lobbyHostRewrite": "",
+        "localMitm443ConnectionCount": 0,
+        "localMsRequestsObserved": false,
+        "nonCanonicalHostRewrite": false,
+        "overlapAchieved": false,
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\black-screen-capture.json",
+        "present": true,
+        "runtimeTracePath": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\runtime-trace\\black-screen-runtime-20260316-224544.jsonl",
+        "sessionRouteCounts": {},
+        "status": "partial",
+        "statusReason": "overlap-missing",
+        "worldWindowSelected": "1027327:1049489"
+      },
+      "clientErrors": {
+        "fileCount": 0,
+        "files": [],
+        "present": true
+      },
+      "correlation": {
+        "afterRebuildTailSeconds": {
+          "firstArchiveRequest": null,
+          "firstArchiveResponse": null,
+          "firstJs5Request": -20.591,
+          "firstJs5Response": -20.591
+        },
+        "firstArchiveRequestSeconds": null,
+        "firstArchiveResponseSeconds": null,
+        "firstJs5RequestSeconds": -20.232,
+        "firstJs5ResponseSeconds": -20.232,
+        "overlapConfidence": "fallback",
+        "responseBytes": 8382,
+        "responseHeaderCount": 4
+      },
+      "generatedAt": "2026-03-20T02:13:13.557872+00:00",
+      "inputs": {
+        "checksumReportJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\checksum-table-compare\\compare-report.json",
+        "clienterrorDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\clienterror",
+        "contentCaptureDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\lobby-tls-terminator",
+        "inputFingerprint": "e406817e778e0f71ab6e2bfc463577ebca8b4fc7140dfc815b519ade4daa4238",
+        "js5SessionDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\js5-proxy-recorder-live",
+        "prefetchReportJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\prefetch-table-compare\\compare-report.json",
+        "runtimeTraceDir": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\runtime-trace",
+        "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log",
+        "worldWindow": "1081680:1082691"
+      },
+      "js5": {
+        "availableContentSessionCount": 7,
+        "availableLegacySessionCount": 6,
+        "availableStructuredSummaryCount": 0,
+        "captureFormat": "content-proxy",
+        "fallbackSessions": [],
+        "relevantSessions": [
+          {
+            "archiveRequests": 0,
+            "captureFormat": "content-proxy",
+            "durationSeconds": 31.587,
+            "endTimestamp": "2026-03-20T02:09:42.312072+00:00",
+            "expectedResponseBytes": 4191,
+            "file": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\lobby-tls-terminator\\session-02-20260320-020858.log",
+            "firstArchiveRequestAtMillis": null,
+            "firstArchiveResponseAtMillis": null,
+            "firstRequestAtMillis": 0,
+            "firstResponseHeaderAtMillis": 0,
+            "httpRequests": [
+              {
+                "archive": 255,
+                "index": 0,
+                "label": "reference-table[0]",
+                "method": "GET",
+                "path": "/ms",
+                "query": {
+                  "a": "255",
+                  "c": "0",
+                  "g": "255",
+                  "k": "946",
+                  "m": "0",
+                  "v": "0"
+                },
+                "target": "/ms?m=0&a=255&k=946&g=255&c=0&v=0"
+              }
+            ],
+            "masterReferenceRequests": 0,
+            "referenceTableRequests": 1,
+            "remoteTarget": "content.runescape.com:443",
+            "requestCount": 1,
+            "responseBodyBytes": 3798,
+            "responseBytes": 4191,
+            "responseContentLength": 3798,
+            "responseHeaderBytes": 393,
+            "responseHeaderCount": 2,
+            "responseStatus": 200,
+            "sampleRequests": [
+              "GET /ms?m=0&a=255&k=946&g=255&c=0&v=0"
+            ],
+            "sceneDeliveryState": "reference-tables-only",
+            "sessionId": 2,
+            "sessionLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\lobby-tls-terminator\\session-02-20260320-020858.log",
+            "sessionRoute": "tls-http-content",
+            "startTimestamp": "2026-03-20T02:09:10.724725+00:00",
+            "status": "ok",
+            "statusMarkers": {},
+            "tlsClientSni": "localhost",
+            "truncatedResponse": false,
+            "uniqueArchivePairs": [],
+            "uniqueReferenceTables": [
+              0
+            ]
+          },
+          {
+            "archiveRequests": 0,
+            "captureFormat": "content-proxy",
+            "durationSeconds": 31.821,
+            "endTimestamp": "2026-03-20T02:09:57.621734+00:00",
+            "expectedResponseBytes": 4191,
+            "file": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\lobby-tls-terminator\\session-05-20260320-020858.log",
+            "firstArchiveRequestAtMillis": null,
+            "firstArchiveResponseAtMillis": null,
+            "firstRequestAtMillis": 0,
+            "firstResponseHeaderAtMillis": 0,
+            "httpRequests": [
+              {
+                "archive": 255,
+                "index": 0,
+                "label": "reference-table[0]",
+                "method": "GET",
+                "path": "/ms",
+                "query": {
+                  "a": "255",
+                  "c": "0",
+                  "g": "255",
+                  "k": "946",
+                  "m": "0",
+                  "v": "0"
+                },
+                "target": "/ms?m=0&a=255&k=946&g=255&c=0&v=0"
+              }
+            ],
+            "masterReferenceRequests": 0,
+            "referenceTableRequests": 1,
+            "remoteTarget": "content.runescape.com:443",
+            "requestCount": 1,
+            "responseBodyBytes": 3798,
+            "responseBytes": 4191,
+            "responseContentLength": 3798,
+            "responseHeaderBytes": 393,
+            "responseHeaderCount": 2,
+            "responseStatus": 200,
+            "sampleRequests": [
+              "GET /ms?m=0&a=255&k=946&g=255&c=0&v=0"
+            ],
+            "sceneDeliveryState": "reference-tables-only",
+            "sessionId": 5,
+            "sessionLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\lobby-tls-terminator\\session-05-20260320-020858.log",
+            "sessionRoute": "tls-http-content",
+            "startTimestamp": "2026-03-20T02:09:25.801174+00:00",
+            "status": "ok",
+            "statusMarkers": {},
+            "tlsClientSni": "localhost",
+            "truncatedResponse": false,
+            "uniqueArchivePairs": [],
+            "uniqueReferenceTables": [
+              0
+            ]
+          }
+        ],
+        "selectionStrategy": "content-proxy-overlap",
+        "summary": {
+          "archiveRequests": 0,
+          "count": 2,
+          "masterReferenceRequests": 0,
+          "overlapConfidence": "fallback",
+          "referenceTableRequests": 2,
+          "requestCount": 2,
+          "responseBytes": 8382,
+          "responseHeaderCount": 4,
+          "sceneDeliveryState": "reference-tables-only",
+          "truncatedCount": 0
+        }
+      },
+      "liveWatch": {
+        "captureFormat": "live-watch",
+        "path": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\client-live-watch\\latest-summary.json",
+        "present": true,
+        "pseudoSession": {
+          "archiveRequests": 0,
+          "captureFormat": "live-watch",
+          "durationSeconds": 151.448,
+          "endTimestamp": "2026-03-20T02:04:27.401420+00:00",
+          "file": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\client-live-watch\\latest-summary.json",
+          "firstArchiveRequestAtMillis": null,
+          "firstArchiveResponseAtMillis": null,
+          "firstRequestAtMillis": 44000,
+          "firstResponseHeaderAtMillis": 44000,
+          "masterReferenceRequests": 0,
+          "referenceTableRequests": 1,
+          "requestCount": 1,
+          "responseBytes": 3798,
+          "responseHeaderCount": 1,
+          "sceneDeliveryState": "reference-tables-only",
+          "sessionId": 1,
+          "startTimestamp": "2026-03-20T02:01:55.953567+00:00",
+          "status": "ok"
+        },
+        "summary": {
+          "archiveRequestCount": 0,
+          "autoAttachedExisting": false,
+          "canonicalRouteStatus": "canonical",
+          "cefObserved": false,
+          "clientPid": 148772,
+          "contentRouteSources": {
+            "client-http": 1
+          },
+          "contentSessionRoutes": {
+            "raw-game": 1,
+            "tls-http-content": 2
+          },
+          "crashDetected": false,
+          "cryptoModuleObserved": true,
+          "deepHooksEnabled": true,
+          "directExternal443Connections": 0,
+          "directExternal443Targets": [],
+          "exceptionCount": 0,
+          "familyPids": [
+            148772,
+            157732,
+            192396,
+            280268,
+            287960
+          ],
+          "fatalExceptionCount": 0,
+          "fileBytesRead": {
+            "unknown": 10949089323
+          },
+          "fileOpenCounts": {},
+          "firstArchiveRequestSeconds": null,
+          "firstArchiveResponseSeconds": null,
+          "firstJs5RequestSeconds": 44.0,
+          "firstJs5ResponseSeconds": 44.0,
+          "firstTlsDecryptSeconds": 20.94,
+          "firstTlsEncryptSeconds": 20.94,
+          "launchMode": "launch",
+          "loadedModuleNames": [
+            "audioses.dll",
+            "crypt32.dll",
+            "mmdevapi.dll",
+            "msctf.dll",
+            "ncryptsslp.dll",
+            "psapi.dll",
+            "rs2client.exe",
+            "schannel.dll",
+            "secur32.dll",
+            "sspicli.dll",
+            "user32.dll"
+          ],
+          "localContentMitmObserved": true,
+          "localMitm443Connections": 0,
+          "localMsRequestsObserved": true,
+          "nonFatalGraphicsExceptionCount": 0,
+          "proxyHttpContentTlsObserved": true,
+          "proxyMitmHandshakeFailedObserved": false,
+          "proxyMitmHandshakeOkObserved": true,
+          "proxyMitmWrapStatuses": {
+            "ok": 1,
+            "start": 1
+          },
+          "proxyRawGameObserved": true,
+          "proxyRouteModes": {
+            "inspect-after-handshake": 1
+          },
+          "proxySecureGameBackendFirstObserved": false,
+          "proxySecureGamePassthroughObserved": false,
+          "proxySecureGameTlsObserved": false,
+          "resolvedHosts": [
+            "<unreadable-utf16>"
+          ],
+          "responseBytes": 3798,
+          "responseHeaderCount": 1,
+          "sessionDurationSeconds": 151.448,
+          "sessionEndedAt": "2026-03-20T02:04:27.401420+00:00",
+          "sessionStartedAt": "2026-03-20T02:01:55.953567+00:00",
+          "terminalState": "prelogin-http-content",
+          "tlsAnomalyCount": 0,
+          "tlsAppDataObserved": true,
+          "tlsAttributeCounts": {
+            "SECPKG_ATTR_STREAM_SIZES": 1
+          },
+          "tlsCertIssuers": {
+            "CN=OpenNXT Local Root": 1
+          },
+          "tlsCertSubjects": {
+            "CN=localhost": 1
+          },
+          "tlsCertThumbprints": {
+            "7D31BDFA40248EE8526BD263282EBAB6892D193F": 1
+          },
+          "tlsClienthelloSnis": {
+            "localhost": 1
+          },
+          "tlsConnectionInfoObserved": false,
+          "tlsContextEstablished": true,
+          "tlsDecryptCount": 2,
+          "tlsEncryptCount": 1,
+          "tlsRemoteCertObserved": false,
+          "worldBootstrapObserved": false,
+          "worldStages": [],
+          "worldWindowSelected": "",
+          "worldWindowSelectionSkipReason": "world-log-too-large:133748593",
+          "worldWindowSelectionSkipped": true
+        },
+        "usableForSceneDelivery": true
+      },
+      "runtimeTrace": {
+        "selectionStrategy": "latest-no-overlap",
+        "summary": {
+          "endTimestamp": "2026-03-12T17:45:41.953270+00:00",
+          "file": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\runtime-trace\\rs2client-stuck-20260312-1235.jsonl",
+          "latestConnectionPorts": [
+            443
+          ],
+          "latestCpuPercent": 10.4,
+          "latestRss": 393564160,
+          "latestThreadCount": 166,
+          "openCacheFiles": [
+            "C:\\Users\\Demon\\AppData\\Local\\Jagex\\RuneScape\\Settings.jcache",
+            "C:\\ProgramData\\Jagex\\RuneScape\\ObjCache.jcache",
+            "C:\\ProgramData\\Jagex\\RuneScape\\ShaderManager.jcache",
+            "C:\\ProgramData\\Jagex\\RuneScape\\GlobalSettings.jcache"
+          ],
+          "sampleCount": 3,
+          "startTimestamp": "2026-03-12T17:45:08.234223+00:00",
+          "timeoutCount": 1
+        }
+      },
+      "schemaVersion": 1,
+      "status": "ok",
+      "summary": {
+        "archiveRequestsObserved": 0,
+        "captureBundlePresent": true,
+        "checksumStatus": "partial",
+        "clientErrorFileCount": 0,
+        "liveWatchPresent": true,
+        "overlapConfidence": "fallback",
+        "prefetchState": "inconclusive-no-remote-table",
+        "referenceTableRequests": 2,
+        "relevantJs5SessionCount": 2,
+        "responseBytes": 8382,
+        "responseHeaderCount": 4,
+        "runtimeTracePresent": true,
+        "sceneDeliveryState": "reference-tables-only",
+        "selectedCaptureFormat": "content-proxy",
+        "truncatedJs5SessionCount": 0,
+        "worldSessionExists": true
+      },
+      "timeline": [
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:appearance",
+          "relativeSeconds": 0.0,
+          "timestamp": "2026-03-20T02:09:30.956276300Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:login-response",
+          "relativeSeconds": 0.353,
+          "timestamp": "2026-03-20T02:09:31.309045800Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:pipeline-switch",
+          "relativeSeconds": 0.354,
+          "timestamp": "2026-03-20T02:09:31.310059Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:rebuild",
+          "relativeSeconds": 0.356,
+          "timestamp": "2026-03-20T02:09:31.312139800Z"
+        },
+        {
+          "detail": "{\n  \"areaType\": \"474\",\n  \"chunkX\": \"402\",\n  \"chunkY\": \"402\",\n  \"hash1\": \"-2147483648\",\n  \"hash2\": \"2147483647\",\n  \"mapSize\": \"5\",\n  \"name\": \"demon\",\n  \"npcBits\": \"7\"\n}",
+          "kind": "world-send-rebuild-tail",
+          "label": "world-send-rebuild-tail",
+          "relativeSeconds": 0.36,
+          "timestamp": "2026-03-20T02:09:31.316045700Z"
+        },
+        {
+          "detail": "{\n  \"name\": \"demon\"\n}",
+          "kind": "world-waiting-map-build-complete",
+          "label": "world-waiting-map-build-complete",
+          "relativeSeconds": 0.368,
+          "timestamp": "2026-03-20T02:09:31.324383200Z"
+        },
+        {
+          "detail": "{\n  \"awaitingMapBuildComplete\": \"true\",\n  \"awaitingWorldReadySignal\": \"false\",\n  \"count\": \"1\",\n  \"height\": \"720\",\n  \"mode\": \"2\",\n  \"name\": \"demon\",\n  \"opcode\": \"106\",\n  \"trailingFlag\": \"0\",\n  \"width\": \"1280\"\n}",
+          "kind": "world-client-display-config",
+          "label": "world-client-display-config",
+          "relativeSeconds": 0.596,
+          "timestamp": "2026-03-20T02:09:31.552612400Z"
+        },
+        {
+          "detail": "{\n  \"bytes\": \"61\",\n  \"name\": \"demon\",\n  \"opcode\": \"48\",\n  \"preview\": \"0804ffff00a804f0c0013e0327c001380253e10e00fb0259\"\n}",
+          "kind": "world-ready-signal-latched",
+          "label": "world-ready-signal-latched",
+          "relativeSeconds": 0.605,
+          "timestamp": "2026-03-20T02:09:31.561619800Z"
+        },
+        {
+          "detail": "{\n  \"bytes\": \"8\",\n  \"name\": \"demon\",\n  \"opcode\": \"48\",\n  \"preview\": \"0a00e32101a60283\"\n}",
+          "kind": "world-ready-signal-latched",
+          "label": "world-ready-signal-latched",
+          "relativeSeconds": 10.794,
+          "timestamp": "2026-03-20T02:09:41.750717Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:stats",
+          "relativeSeconds": 11.398,
+          "timestamp": "2026-03-20T02:09:42.354403500Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:default-state",
+          "relativeSeconds": 11.4,
+          "timestamp": "2026-03-20T02:09:42.356411100Z"
+        },
+        {
+          "detail": "",
+          "kind": "world-stage",
+          "label": "stage:interfaces",
+          "relativeSeconds": 11.402,
+          "timestamp": "2026-03-20T02:09:42.357915200Z"
+        },
+        {
+          "detail": "{\n  \"ids\": \"181,1027,1034,3497\",\n  \"name\": \"demon\"\n}",
+          "kind": "world-send-minimal-varcs",
+          "label": "world-send-minimal-varcs",
+          "relativeSeconds": 11.428,
+          "timestamp": "2026-03-20T02:09:42.384627200Z"
+        },
+        {
+          "detail": "{\n  \"name\": \"demon\"\n}",
+          "kind": "world-awaiting-ready-signal",
+          "label": "world-awaiting-ready-signal",
+          "relativeSeconds": 11.429,
+          "timestamp": "2026-03-20T02:09:42.385634800Z"
+        },
+        {
+          "detail": "{\n  \"bytes\": \"8\",\n  \"name\": \"demon\",\n  \"opcode\": \"48\",\n  \"preview\": \"0a00e32101a60283\",\n  \"source\": \"latched\"\n}",
+          "kind": "world-ready-signal",
+          "label": "world-ready-signal",
+          "relativeSeconds": 11.435,
+          "timestamp": "2026-03-20T02:09:42.391139Z"
+        },
+        {
+          "detail": "bytes=64",
+          "kind": "send-raw",
+          "label": "send-raw:PLAYER_INFO",
+          "relativeSeconds": 11.458,
+          "timestamp": "2026-03-20T02:09:42.414203700Z"
+        },
+        {
+          "detail": "{\n  \"awaitingMapBuildComplete\": \"false\",\n  \"awaitingWorldReadySignal\": \"false\",\n  \"count\": \"2\",\n  \"height\": \"720\",\n  \"mode\": \"2\",\n  \"name\": \"demon\",\n  \"opcode\": \"106\",\n  \"trailingFlag\": \"0\",\n  \"width\": \"1280\"\n}",
+          "kind": "world-client-display-config",
+          "label": "world-client-display-config",
+          "relativeSeconds": 12.0,
+          "timestamp": "2026-03-20T02:09:42.956218600Z"
+        },
+        {
+          "detail": "{\n  \"awaitingMapBuildComplete\": \"false\",\n  \"awaitingWorldReadySignal\": \"false\",\n  \"count\": \"3\",\n  \"height\": \"720\",\n  \"mode\": \"2\",\n  \"name\": \"demon\",\n  \"opcode\": \"106\",\n  \"trailingFlag\": \"0\",\n  \"width\": \"1280\"\n}",
+          "kind": "world-client-display-config",
+          "label": "world-client-display-config",
+          "relativeSeconds": 12.0,
+          "timestamp": "2026-03-20T02:09:42.956218600Z"
+        }
+      ],
+      "tool": "run_946_scene_delivery_aid",
+      "verdict": {
+        "likelyBlocker": "reference-tables-only",
+        "recommendation": "The client reached JS5 bootstrap but never progressed beyond reference tables. Focus on scene/prefetch gating and the first asset-delivery transition after rebuild."
+      },
+      "worldSession": {
+        "clientOpcodeCounts": {
+          "0": 1,
+          "17": 2,
+          "48": 3,
+          "83": 1
+        },
+        "durationSeconds": 211.206,
+        "endLine": 1082691,
+        "endTimestamp": "2026-03-20T02:13:02.162583100Z",
+        "eventCount": 797,
+        "exists": true,
+        "markerCounts": {
+          "world-awaiting-ready-signal": 1,
+          "world-bind-local-player-model": 1,
+          "world-client-bootstrap-blob": 1,
+          "world-client-bootstrap-control": 3,
+          "world-client-display-config": 5,
+          "world-force-local-appearance": 4,
+          "world-force-map-build-fallback": 1,
+          "world-hold-post-initial-sync": 3,
+          "world-ignore-client-compat": 3,
+          "world-open-minimal-child": 1,
+          "world-post-initial-sync-hold": 1,
+          "world-ready-signal": 1,
+          "world-ready-signal-deferred": 1,
+          "world-ready-signal-latch-skipped": 1,
+          "world-ready-signal-latched": 2,
+          "world-recv-serverperm-varcs": 1,
+          "world-send-minimal-varcs": 1,
+          "world-send-npc-info": 11,
+          "world-send-player-info": 11,
+          "world-send-rebuild-tail": 1,
+          "world-skip-active-player": 1,
+          "world-skip-init-state": 1,
+          "world-skip-stats": 1,
+          "world-sync-frame": 11,
+          "world-waiting-map-build-complete": 1
+        },
+        "playerName": "demon",
+        "serverOpcodeCounts": {
+          "28": 332,
+          "38": 1,
+          "39": 1,
+          "42": 332,
+          "106": 1,
+          "126": 1,
+          "128": 4,
+          "131": 42
+        },
+        "stageCounts": {
+          "appearance": 1,
+          "default-state": 1,
+          "interfaces": 1,
+          "login-response": 1,
+          "pipeline-switch": 1,
+          "rebuild": 1,
+          "stats": 1
+        },
+        "stageSequence": [
+          "appearance",
+          "login-response",
+          "pipeline-switch",
+          "rebuild",
+          "stats",
+          "default-state",
+          "interfaces"
+        ],
+        "startLine": 1081680,
+        "startTimestamp": "2026-03-20T02:09:30.956276300Z"
+      }
+    }
+  },
+  "schemaVersion": 1,
+  "status": "ok",
+  "summary": {
+    "leftEventCount": 4846,
+    "leftSceneState": "reference-tables-only",
+    "leftWindow": "959546:965703",
+    "rightEventCount": 774,
+    "rightSceneState": "reference-tables-only",
+    "rightWindow": "1081680:1082691",
+    "topHypothesis": "asset-delivery stall"
+  },
+  "tool": "run_946_plateau_diff"
+}

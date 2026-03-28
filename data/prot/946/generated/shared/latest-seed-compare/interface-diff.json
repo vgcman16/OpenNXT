@@ -1,0 +1,381 @@
+{
+  "activePlayerComparison": {
+    "badSession": {
+      "activePlayer116Sent": false,
+      "bootstrapMarkerPresent": false,
+      "configEnabled": false,
+      "markerSamples": [],
+      "packetRegistered": true,
+      "sendSamples": [],
+      "skipReasons": [
+        "experimental-opensub-disabled"
+      ]
+    },
+    "detectedDisabledSession": "unknown",
+    "detectedEnabledSession": "unknown",
+    "goodSession": {
+      "activePlayer116Sent": false,
+      "bootstrapMarkerPresent": false,
+      "configEnabled": false,
+      "markerSamples": [],
+      "packetRegistered": true,
+      "sendSamples": [],
+      "skipReasons": [
+        "experimental-opensub-disabled"
+      ]
+    }
+  },
+  "advisoryOnly": true,
+  "artifacts": {
+    "interface_diff": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\latest-seed-compare\\interface-diff.md"
+  },
+  "badSession": {
+    "categories": {
+      "activeSubBindings": {},
+      "childInterfaces": {
+        "IF_OPENSUB": 1
+      },
+      "headModelBindings": {
+        "IF_SETPLAYERMODEL_SELF": 1
+      },
+      "rootInterfaces": {
+        "IF_OPENTOP": 1
+      },
+      "uiState": {
+        "CLIENT_SETVARC_SMALL": 4,
+        "opcode-206": 2
+      }
+    },
+    "samples": {
+      "activeSubBindings": [],
+      "childInterfaces": [
+        {
+          "bytes": 23,
+          "lineNumber": 971365,
+          "preview": "000000001b00c50500000000000000007f4a0500000000",
+          "stage": "interfaces"
+        }
+      ],
+      "headModelBindings": [
+        {
+          "bytes": 4,
+          "lineNumber": 971368,
+          "preview": "ca050100",
+          "stage": "interfaces"
+        }
+      ],
+      "rootInterfaces": [
+        {
+          "bytes": 19,
+          "lineNumber": 971364,
+          "preview": "000000000000000000000000c5050000000000",
+          "stage": "interfaces"
+        }
+      ],
+      "uiState": [
+        {
+          "bytes": 0,
+          "lineNumber": 971356,
+          "preview": "<empty>",
+          "stage": "rebuild"
+        },
+        {
+          "bytes": 0,
+          "lineNumber": 971416,
+          "preview": "<empty>",
+          "stage": "interfaces"
+        }
+      ]
+    },
+    "summary": {
+      "clientOpcodeCounts": {
+        "0": 2,
+        "17": 2,
+        "28": 1,
+        "48": 3,
+        "83": 1,
+        "113": 3
+      },
+      "durationSeconds": 5702.344,
+      "endLine": 997717,
+      "endTimestamp": "2026-03-16T17:36:03.521423200Z",
+      "eventCount": 20779,
+      "exists": true,
+      "markerCounts": {
+        "world-awaiting-ready-signal": 1,
+        "world-bind-local-player-model": 1,
+        "world-client-bootstrap-control": 3,
+        "world-client-display-config": 5,
+        "world-force-local-appearance": 4,
+        "world-hold-post-initial-sync": 3,
+        "world-ignore-client-compat": 5,
+        "world-ignore-client-timed": 2,
+        "world-map-build-complete-compat": 1,
+        "world-open-minimal-child": 1,
+        "world-post-initial-sync-hold": 1,
+        "world-ready-signal": 1,
+        "world-ready-signal-deferred": 1,
+        "world-ready-signal-latched": 1,
+        "world-recv-serverperm-varcs": 2,
+        "world-send-minimal-varcs": 1,
+        "world-send-npc-info": 195,
+        "world-send-player-info": 195,
+        "world-send-rebuild-tail": 1,
+        "world-send-serverperm-ack-candidate": 2,
+        "world-skip-active-player": 1,
+        "world-skip-init-state": 1,
+        "world-skip-stats": 1,
+        "world-sync-frame": 195,
+        "world-unhandled-client-compat": 1,
+        "world-waiting-map-build-complete": 1
+      },
+      "playerName": "demon",
+      "serverOpcodeCounts": {
+        "28": 9503,
+        "38": 1,
+        "39": 1,
+        "42": 9503,
+        "106": 1,
+        "126": 1,
+        "128": 4,
+        "131": 1118,
+        "206": 2
+      },
+      "stageCounts": {
+        "appearance": 1,
+        "default-state": 1,
+        "interfaces": 1,
+        "login-response": 1,
+        "pipeline-switch": 1,
+        "rebuild": 1,
+        "stats": 1
+      },
+      "stageSequence": [
+        "appearance",
+        "login-response",
+        "pipeline-switch",
+        "rebuild",
+        "stats",
+        "default-state",
+        "interfaces"
+      ],
+      "startLine": 971342,
+      "startTimestamp": "2026-03-16T16:01:01.176979600Z"
+    }
+  },
+  "build": 946,
+  "diff": {
+    "activeSubBindings": {
+      "extraInBad": {},
+      "missingInBad": {}
+    },
+    "childInterfaces": {
+      "extraInBad": {},
+      "missingInBad": {}
+    },
+    "headModelBindings": {
+      "extraInBad": {},
+      "missingInBad": {}
+    },
+    "rootInterfaces": {
+      "extraInBad": {},
+      "missingInBad": {
+        "IF_OPENTOP": 1
+      }
+    },
+    "uiState": {
+      "extraInBad": {},
+      "missingInBad": {
+        "RESET_CLIENT_VARCACHE": 1,
+        "UPDATE_STAT": 29
+      }
+    }
+  },
+  "generatedAt": "2026-03-16T17:45:57.531107+00:00",
+  "goodSession": {
+    "categories": {
+      "activeSubBindings": {},
+      "childInterfaces": {
+        "IF_OPENSUB": 1
+      },
+      "headModelBindings": {
+        "IF_SETPLAYERMODEL_SELF": 1
+      },
+      "rootInterfaces": {
+        "IF_OPENTOP": 2
+      },
+      "uiState": {
+        "CLIENT_SETVARC_SMALL": 4,
+        "RESET_CLIENT_VARCACHE": 1,
+        "UPDATE_STAT": 29,
+        "opcode-206": 2
+      }
+    },
+    "samples": {
+      "activeSubBindings": [],
+      "childInterfaces": [
+        {
+          "bytes": 23,
+          "lineNumber": 959568,
+          "preview": "000000001b00c50500000000000000007f4a0500000000",
+          "stage": "interfaces"
+        }
+      ],
+      "headModelBindings": [
+        {
+          "bytes": 4,
+          "lineNumber": 959570,
+          "preview": "ca050100",
+          "stage": "interfaces"
+        }
+      ],
+      "rootInterfaces": [
+        {
+          "bytes": 19,
+          "lineNumber": 959567,
+          "preview": "000000000000000000000000c5050000000000",
+          "stage": "interfaces"
+        },
+        {
+          "bytes": 19,
+          "lineNumber": 965700,
+          "preview": "0000000000000000000000008a030000000000",
+          "stage": "root-interface"
+        }
+      ],
+      "uiState": [
+        {
+          "bytes": 0,
+          "lineNumber": 959559,
+          "preview": "<empty>",
+          "stage": "rebuild"
+        },
+        {
+          "bytes": 0,
+          "lineNumber": 959610,
+          "preview": "<empty>",
+          "stage": "interfaces"
+        }
+      ]
+    },
+    "summary": {
+      "clientOpcodeCounts": {
+        "0": 2,
+        "17": 2,
+        "28": 1,
+        "48": 3,
+        "83": 1,
+        "113": 4
+      },
+      "durationSeconds": 1641.98,
+      "endLine": 965703,
+      "endTimestamp": "2026-03-16T15:35:41.682763Z",
+      "eventCount": 4865,
+      "exists": true,
+      "markerCounts": {
+        "world-added": 1,
+        "world-awaiting-ready-signal": 1,
+        "world-bind-local-player-model": 1,
+        "world-client-bootstrap-control": 3,
+        "world-client-display-config": 5,
+        "world-force-local-appearance": 4,
+        "world-hold-post-initial-sync": 3,
+        "world-ignore-client-compat": 5,
+        "world-ignore-client-timed": 3,
+        "world-map-build-complete-compat": 1,
+        "world-open-minimal-child": 1,
+        "world-post-initial-sync-hold": 1,
+        "world-ready-signal": 1,
+        "world-ready-signal-deferred": 1,
+        "world-ready-signal-latched": 1,
+        "world-recv-serverperm-varcs": 2,
+        "world-send-minimal-varcs": 1,
+        "world-send-npc-info": 48,
+        "world-send-player-info": 48,
+        "world-send-serverperm-ack-candidate": 2,
+        "world-skip-active-player": 1,
+        "world-skip-init-state": 1,
+        "world-skip-stats": 1,
+        "world-sync-frame": 48,
+        "world-unhandled-client-compat": 1,
+        "world-waiting-map-build-complete": 1
+      },
+      "playerName": "demon",
+      "serverOpcodeCounts": {
+        "28": 2180,
+        "38": 1,
+        "39": 1,
+        "42": 2180,
+        "106": 1,
+        "126": 2,
+        "128": 4,
+        "129": 29,
+        "131": 258,
+        "134": 1,
+        "206": 2
+      },
+      "stageCounts": {
+        "appearance": 1,
+        "default-state": 1,
+        "interfaces": 1,
+        "login-response": 1,
+        "pipeline-switch": 1,
+        "rebuild": 1,
+        "stats": 1
+      },
+      "stageSequence": [
+        "appearance",
+        "login-response",
+        "pipeline-switch",
+        "rebuild",
+        "stats",
+        "default-state",
+        "interfaces"
+      ],
+      "startLine": 959546,
+      "startTimestamp": "2026-03-16T15:08:19.702328900Z"
+    }
+  },
+  "inputs": {
+    "badWindow": "971342:997717",
+    "goodWindow": "959546:965703",
+    "mode": "world-log-windows",
+    "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log"
+  },
+  "schemaVersion": 1,
+  "status": "ok",
+  "summary": {
+    "badSessionExists": true,
+    "goodSessionExists": true,
+    "handoffOutcomeChanged": "unknown",
+    "interfaceStageDelta": "material",
+    "topFindingCount": 3
+  },
+  "tool": "run_946_interface_diff",
+  "topFindings": [
+    {
+      "category": "uiState",
+      "label": "UPDATE_STAT",
+      "reason": "present in good session but missing in bad (29 event(s))",
+      "score": 54
+    },
+    {
+      "category": "rootInterfaces",
+      "label": "IF_OPENTOP",
+      "reason": "present in good session but missing in bad (1 event(s))",
+      "score": 51
+    },
+    {
+      "category": "uiState",
+      "label": "RESET_CLIENT_VARCACHE",
+      "reason": "present in good session but missing in bad (1 event(s))",
+      "score": 26
+    }
+  ],
+  "verdict": {
+    "activePlayer116Sent": "no",
+    "bootstrapMarkerPresent": "no",
+    "handoffOutcomeChanged": "unknown",
+    "interfaceStageDelta": "material"
+  }
+}

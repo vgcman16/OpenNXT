@@ -17,7 +17,7 @@ import java.nio.file.Path
 class ClientDownloader : Tool("client-downloader", "Downloads clients from RS3") {
 
     val configURL by option(help = "The base URL where RuneScape serves game configs from. Must include jav_config.ws")
-        .default("https://world5.runescape.com/jav_config.ws")
+        .default("https://rs.config.runescape.com/k=5/l=0/jav_config.ws")
 
     override fun runTool() {
         logger.info { "Downloading all binary type clients..." }

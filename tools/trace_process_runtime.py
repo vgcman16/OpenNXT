@@ -3,6 +3,7 @@ import json
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 import psutil
 
@@ -11,7 +12,7 @@ def iso_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def serialize_connection(connection: psutil._common.sconn) -> dict:
+def serialize_connection(connection: Any) -> dict:
     local = None
     remote = None
 

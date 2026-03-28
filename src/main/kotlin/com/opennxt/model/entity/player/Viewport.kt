@@ -7,7 +7,6 @@ import com.opennxt.model.world.MapSize
 import com.opennxt.model.world.TileLocation
 import com.opennxt.model.world.WorldPlayer
 import com.opennxt.net.buf.GamePacketBuilder
-import com.opennxt.net.game.GamePacket
 import com.opennxt.net.game.serverprot.RebuildNormal
 
 class Viewport(val player: WorldPlayer) {
@@ -27,7 +26,8 @@ class Viewport(val player: WorldPlayer) {
     var sceneRadius = 7
     var baseTile = player.entity.location
     var playerViewingDistance = 14
-    var mapSize = MapSize.SIZE_256
+    // The scene math is standard 104, but 946 expects the historical compat wire id.
+    var mapSize = MapSize.SIZE_104
 
     fun init(buf: GamePacketBuilder) {
         val entity = player.entity
@@ -112,17 +112,18 @@ class Viewport(val player: WorldPlayer) {
         }
     }
 
-    fun createPacket(): GamePacket {
+    fun createPacket(): RebuildNormal {
+        val bootstrap = OpenNXT.config.lobbyBootstrap
         return RebuildNormal(
             unused1 = 0,
-            chunkX = 402,
+            chunkX = baseTile.chunkX,
             unused2 = 0,
-            chunkY = 402,
+            chunkY = baseTile.chunkY,
             npcBits = sceneRadius,
-            mapSize = mapSize.id,
-            areaType = 474,
-            hash1 = Int.MIN_VALUE,
-            hash2 = Int.MAX_VALUE,
+            mapSize = mapSize.rebuildWireId(OpenNXT.config.build),
+            areaType = bootstrap.rebuildNormalAreaType,
+            hash1 = bootstrap.rebuildNormalHash1,
+            hash2 = bootstrap.rebuildNormalHash2,
         )
     }
 

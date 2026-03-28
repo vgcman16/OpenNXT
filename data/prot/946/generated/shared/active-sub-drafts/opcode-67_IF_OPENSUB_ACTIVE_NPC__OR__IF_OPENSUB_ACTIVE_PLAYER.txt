@@ -1,0 +1,6 @@
+# opcode=67
+# candidates=IF_OPENSUB_ACTIVE_NPC,IF_OPENSUB_ACTIVE_PLAYER
+value0 intv1
+value1 ushort128
+value2 ubytec
+value3 ushort128

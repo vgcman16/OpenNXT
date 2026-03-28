@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "scripts": [
+    {
+      "scriptId": 59,
+      "category": "layout-mismatch",
+      "expectedMode": "unsupported",
+      "expectedBlocker": "layout-semantic-mismatch",
+      "priority": 100,
+      "notes": [
+        "Primary witness for layout and semantic-proof improvement.",
+        "Carries one aligned legacy varp hit that still fails strict exact promotion."
+      ],
+      "tags": [
+        "imported-layout-hint-case",
+        "primary-witness"
+      ]
+    },
+    {
+      "scriptId": 83,
+      "category": "false-heuristic",
+      "expectedMode": "unsupported",
+      "expectedBlocker": "false-heuristic-hit",
+      "priority": 95,
+      "notes": [
+        "Canonical false-positive regression for a small structural script."
+      ],
+      "tags": [
+        "imported-layout-hint-case"
+      ]
+    },
+    {
+      "scriptId": 1018,
+      "category": "false-heuristic",
+      "expectedMode": "unsupported",
+      "expectedBlocker": "false-heuristic-hit",
+      "priority": 94,
+      "notes": [
+        "Canonical false-positive regression for the newer handoff-era heuristic pattern."
+      ],
+      "tags": [
+        "imported-layout-hint-case"
+      ]
+    },
+    {
+      "scriptId": 11770,
+      "category": "exact-success",
+      "expectedMode": "exact",
+      "expectedBlocker": null,
+      "priority": 90,
+      "notes": [
+        "Current exact evidence-bearing success case."
+      ],
+      "tags": []
+    },
+    {
+      "scriptId": 7775,
+      "category": "exact-success",
+      "expectedMode": "exact",
+      "expectedBlocker": null,
+      "priority": 89,
+      "notes": [
+        "Current larger exact success case."
+      ],
+      "tags": []
+    },
+    {
+      "scriptId": 1893,
+      "category": "exact-heuristic-contradiction",
+      "expectedMode": "unsupported",
+      "expectedBlocker": "exact-heuristic-contradiction",
+      "priority": 80,
+      "notes": [
+        "First contradiction case by script id."
+      ],
+      "tags": []
+    },
+    {
+      "scriptId": 6398,
+      "category": "exact-heuristic-contradiction",
+      "expectedMode": "unsupported",
+      "expectedBlocker": "exact-heuristic-contradiction",
+      "priority": 79,
+      "notes": [
+        "Second contradiction case by script id."
+      ],
+      "tags": []
+    },
+    {
+      "scriptId": 1,
+      "category": "false-heuristic",
+      "expectedMode": "unsupported",
+      "expectedBlocker": "false-heuristic-hit",
+      "priority": 70,
+      "notes": [
+        "Low-id false heuristic regression."
+      ],
+      "tags": []
+    },
+    {
+      "scriptId": 2,
+      "category": "false-heuristic",
+      "expectedMode": "unsupported",
+      "expectedBlocker": "false-heuristic-hit",
+      "priority": 69,
+      "notes": [
+        "Second low-id false heuristic regression."
+      ],
+      "tags": []
+    },
+    {
+      "scriptId": 454,
+      "category": "layout-mismatch",
+      "expectedMode": "unsupported",
+      "expectedBlocker": "layout-semantic-mismatch",
+      "priority": 68,
+      "notes": [
+        "Secondary layout mismatch witness."
+      ],
+      "tags": []
+    },
+    {
+      "scriptId": 4,
+      "category": "large-budget",
+      "expectedMode": "unsupported",
+      "expectedBlocker": "false-heuristic-hit",
+      "priority": 60,
+      "notes": [
+        "Originally seeded as the larger-script budget witness.",
+        "Current strict reconciliation classifies it as a false heuristic hit rather than an opaque stream."
+      ],
+      "tags": [
+        "large-budget-case"
+      ]
+    },
+    {
+      "scriptId": 71,
+      "category": "opaque-stream",
+      "expectedMode": "unsupported",
+      "expectedBlocker": "false-heuristic-hit",
+      "priority": 59,
+      "notes": [
+        "Originally seeded as a secondary opaque-stream witness.",
+        "Current strict reconciliation classifies it as a false heuristic hit."
+      ],
+      "tags": []
+    }
+  ],
+  "notes": [
+    "Initial witness corpus seeded from the current generated outputs on 2026-03-15.",
+    "No script-scoped-evidence witness exists yet because the imported evidence file currently contains no script-scoped semantic proof.",
+    "The former opaque/budget seed scripts now reconcile as false-heuristic witnesses under the stricter structural classifier."
+  ]
+}

@@ -10,6 +10,39 @@ import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.atomic.AtomicBoolean
 
+internal fun writeCompletedRequest(
+    filesystem: Filesystem,
+    request: Js5RequestHandler.ArchiveRequest
+) {
+    if (!request.isCompleted())
+        throw IllegalArgumentException("Attempted to write uncompleted request: $request")
+
+    val table = filesystem.getReferenceTable(request.index)
+        ?: throw NullPointerException("Reference table for write request not found: ${request.index}")
+    val entry = table.archives[request.archive]
+        ?: throw NullPointerException("Reference table entry for write request not found: [${request.index}, ${request.archive}]")
+
+    val buffer = request.buffer
+        ?: throw NullPointerException("Request buffer is missing")
+
+    val crc = buffer.getCrc32()
+    if (crc != entry.crc)
+        throw IllegalArgumentException("CRC mismatch in [${request.index}, ${request.archive}]. Got $crc, expected ${entry.crc}")
+
+    if (entry.whirlpool != null) {
+        val whirlpool = Whirlpool.getHash(buffer.array(), 0, buffer.limit())
+        if (!Arrays.equals(whirlpool, entry.whirlpool))
+            throw IllegalArgumentException("Whirlpool mismatch in [${request.index}, ${request.archive}]")
+    }
+
+    val version = entry.version
+    buffer.position(buffer.limit()).limit(buffer.capacity())
+    buffer.put((version shr 8).toByte())
+    buffer.put(version.toByte())
+
+    filesystem.write(request.index, request.archive, buffer.array(), version, crc)
+}
+
 class AsyncFilesystemAccessor(val filesystem: Filesystem) : Runnable, Closeable {
 
     private val running = AtomicBoolean(true)
@@ -75,34 +108,7 @@ class AsyncFilesystemAccessor(val filesystem: Filesystem) : Runnable, Closeable 
                             operation.future.complete(Unit)
                         }
                         is IOOperation.WriteRequestOperation -> {
-                            if (!operation.request.isCompleted())
-                                throw IllegalArgumentException("Attempted to write uncompleted request: ${operation.request}")
-
-                            val table = filesystem.getReferenceTable(operation.index)
-                                ?: throw NullPointerException("Reference table for write request not found: ${operation.index}")
-                            val entry = table.archives[operation.archive]
-                                ?: throw NullPointerException("Reference table entry for write request not found: [${operation.index}, ${operation.archive}]")
-
-                            val buffer = operation.request.buffer
-                                ?: throw NullPointerException("Request buffer is missing")
-
-                            val crc = buffer.getCrc32()
-                            if (crc != entry.crc)
-                                throw IllegalArgumentException("CRC mismatch in [${operation.index}, ${operation.archive}]. Got $crc, expected ${entry.crc}")
-
-                            if (entry.whirlpool != null) {
-                                val whirlpool = Whirlpool.getHash(buffer.array(), 0, buffer.limit())
-                                if (!Arrays.equals(whirlpool, entry.whirlpool))
-                                    throw IllegalArgumentException("Whirlpool mismatch in [${operation.index}, ${operation.archive}]")
-                            }
-
-                            val version = entry.version
-                            buffer.position(buffer.limit()).limit(buffer.capacity())
-                            buffer.put((version shr 8).toByte())
-                            buffer.put(version.toByte())
-
-                            filesystem.write(operation.index, operation.archive, buffer.array(), version, crc)
-
+                            writeCompletedRequest(filesystem, operation.request)
                             operation.future.complete(Unit)
                         }
                     }

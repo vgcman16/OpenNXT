@@ -10,6 +10,7 @@ import java.sql.DriverManager
  */
 class SqliteIndexFile(val path: Path) : Closeable, AutoCloseable {
     val table: ReferenceTable? = null
+    private val dbLock = Any()
 
     val connection = DriverManager.getConnection("jdbc:sqlite:$path")
 
@@ -61,83 +62,98 @@ class SqliteIndexFile(val path: Path) : Closeable, AutoCloseable {
     )
 
     fun putRawTable(data: ByteArray, version: Int, crc: Int): Int {
-        val stmt = putReferenceDataStmt
-        stmt.clearParameters()
-        stmt.setBytes(1, data)
-        stmt.setInt(2, version)
-        stmt.setInt(3, crc)
-        stmt.setBytes(4, data)
-        stmt.setInt(5, version)
-        stmt.setInt(6, crc)
-        return stmt.executeUpdate()
-    }
-
-    fun putRaw(archive: Int, data: ByteArray, version: Int, crc: Int): Int {
-//        val stmt = putArchiveDataStmt
-        connection.prepareStatement(
-            """
-            INSERT INTO `cache`(`KEY`, `DATA`, `VERSION`, `CRC`)
-              VALUES(?, ?, ?, ?)
-              ON CONFLICT(`KEY`) DO UPDATE SET
-                `DATA` = ?, `VERSION` = ?, `CRC` = ?
-              WHERE `KEY` = ?;
-            """
-        ).use { stmt ->
+        synchronized(dbLock) {
+            val stmt = putReferenceDataStmt
             stmt.clearParameters()
-            stmt.setInt(1, archive)
-            stmt.setBytes(2, data)
-            stmt.setInt(3, version)
-            stmt.setInt(4, crc)
-            stmt.setBytes(5, data)
-            stmt.setInt(6, version)
-            stmt.setInt(7, crc)
-            stmt.setInt(8, archive)
+            stmt.setBytes(1, data)
+            stmt.setInt(2, version)
+            stmt.setInt(3, crc)
+            stmt.setBytes(4, data)
+            stmt.setInt(5, version)
+            stmt.setInt(6, crc)
             return stmt.executeUpdate()
         }
     }
 
+    fun putRaw(archive: Int, data: ByteArray, version: Int, crc: Int): Int {
+        synchronized(dbLock) {
+            connection.prepareStatement(
+                """
+                INSERT INTO `cache`(`KEY`, `DATA`, `VERSION`, `CRC`)
+                  VALUES(?, ?, ?, ?)
+                  ON CONFLICT(`KEY`) DO UPDATE SET
+                    `DATA` = ?, `VERSION` = ?, `CRC` = ?
+                  WHERE `KEY` = ?;
+                """
+            ).use { stmt ->
+                stmt.clearParameters()
+                stmt.setInt(1, archive)
+                stmt.setBytes(2, data)
+                stmt.setInt(3, version)
+                stmt.setInt(4, crc)
+                stmt.setBytes(5, data)
+                stmt.setInt(6, version)
+                stmt.setInt(7, crc)
+                stmt.setInt(8, archive)
+                return stmt.executeUpdate()
+            }
+        }
+    }
+
     fun hasReferenceTable(): Boolean {
-        getReferenceDataStmt.executeQuery().use { return it.next() }
+        synchronized(dbLock) {
+            getReferenceDataStmt.executeQuery().use { return it.next() }
+        }
     }
 
     override fun close() {
-        getMaxArchiveStmt.close()
-        getArchiveDataStmt.close()
-        getReferenceDataStmt.close()
-        putArchiveDataStmt.close()
-        putReferenceDataStmt.close()
+        synchronized(dbLock) {
+            getMaxArchiveStmt.close()
+            getArchiveDataStmt.close()
+            getReferenceDataStmt.close()
+            putArchiveDataStmt.close()
+            putReferenceDataStmt.close()
+            connection.close()
+        }
     }
 
     fun getMaxArchive(): Int {
-        getMaxArchiveStmt.executeQuery().use {
-            if (!it.next()) return 0
-            return it.getInt(1)
+        synchronized(dbLock) {
+            getMaxArchiveStmt.executeQuery().use {
+                if (!it.next()) return 0
+                return it.getInt(1)
+            }
         }
     }
 
     fun exists(id: Int): Boolean {
-        val stmt = archiveExistsStmt
-        stmt.clearParameters()
-        stmt.setInt(1, id)
-        stmt.executeQuery().use { return it.next() }
+        synchronized(dbLock) {
+            val stmt = archiveExistsStmt
+            stmt.clearParameters()
+            stmt.setInt(1, id)
+            stmt.executeQuery().use { return it.next() }
+        }
     }
 
     fun getRaw(id: Int): ByteArray? {
-//        val stmt = getArchiveDataStmt
-        connection.prepareStatement("SELECT `DATA` FROM `cache` WHERE `KEY` = ?;").use { stmt ->
-            stmt.clearParameters()
-            stmt.setInt(1, id)
-            stmt.executeQuery().use {
-                if (!it.next()) return null
-                return it.getBytes("DATA")
+        synchronized(dbLock) {
+            connection.prepareStatement("SELECT `DATA` FROM `cache` WHERE `KEY` = ?;").use { stmt ->
+                stmt.clearParameters()
+                stmt.setInt(1, id)
+                stmt.executeQuery().use {
+                    if (!it.next()) return null
+                    return it.getBytes("DATA")
+                }
             }
         }
     }
 
     fun getRawTable(): ByteArray? {
-        getReferenceDataStmt.executeQuery().use {
-            if (!it.next()) return null
-            return it.getBytes("DATA")
+        synchronized(dbLock) {
+            getReferenceDataStmt.executeQuery().use {
+                if (!it.next()) return null
+                return it.getBytes("DATA")
+            }
         }
     }
 }

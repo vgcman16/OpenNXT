@@ -1,0 +1,144 @@
+{
+  "addressValidation": {
+    "callerLookupAddress": "1400ced60",
+    "callerLookupFunction": "FUN_1400ced60",
+    "callerLookupSource": "requested-address",
+    "matchesRequestedAddress": false,
+    "requestedSenderAddress": "1400ced60",
+    "requestedSenderFunction": "FUN_1400ced60",
+    "resolvedFunctionEntry": "1400cec80",
+    "resolvedFunctionName": "FUN_1400cec80"
+  },
+  "build": 946,
+  "confidence": "medium",
+  "handoffContext": {
+    "coverageStatus": "unresolved",
+    "firstSeenStage": "rebuild",
+    "lastSeenStage": "interfaces",
+    "observedStageCounts": {
+      "interfaces": 2,
+      "rebuild": 1
+    },
+    "suspectClass": "state-report"
+  },
+  "liveValueCorrelation": {
+    "allParsedSamplesUseZeroPrefix": true,
+    "matchesPayloadHypothesis": true,
+    "observedCount": 3,
+    "observedStageCounts": {
+      "interfaces": 2,
+      "rebuild": 1
+    },
+    "samplePreviews": [
+      {
+        "bytes": 4,
+        "lineNumber": 1027337,
+        "preview": "000000e7",
+        "stage": "rebuild"
+      },
+      {
+        "bytes": 4,
+        "lineNumber": 1027447,
+        "preview": "000000db",
+        "stage": "interfaces"
+      },
+      {
+        "bytes": 4,
+        "lineNumber": 1027505,
+        "preview": "00000043",
+        "stage": "interfaces"
+      }
+    ],
+    "uniquePreviews": [
+      "00000043",
+      "000000db",
+      "000000e7"
+    ],
+    "uniqueTailBytes": [
+      "0x43",
+      "0xdb",
+      "0xe7"
+    ],
+    "zeroPrefixedSampleCount": 3
+  },
+  "nextLead": {
+    "opcode": 116,
+    "reason": "Opcode 116 already exports a usable active-sub shape and becomes the next missing UI-path lead once 113 is ruled out.",
+    "side": "server"
+  },
+  "notes": [
+    "Requested sender address 1400ced60 resolves inside FUN_1400cec80 @ 1400cec80.",
+    "Caller proof remains thin; the verdict relies primarily on the containing-function body plus live packet values.",
+    "Opcode 67 remains out of scope here; it is still a separate parser/export recovery task."
+  ],
+  "opcode": 113,
+  "payloadSummary": {
+    "fields": [
+      {
+        "index": 0,
+        "kind": "little-endian ushort",
+        "notes": "The function writes the low byte first and the high byte second.",
+        "source": "FUN_1400bbb90()",
+        "width": 2
+      },
+      {
+        "index": 1,
+        "kind": "transformed state byte",
+        "notes": "The byte is clamped and then written with a -0x80 transform.",
+        "source": "*(session + 0x55c)",
+        "width": 1
+      }
+    ],
+    "notes": [
+      "The packet writer zeroes the leading byte before writing the two-byte value and trailing state byte.",
+      "Observed previews stay zero-prefixed and only the last byte varies in sampled live traffic."
+    ],
+    "observedPacketSize": 4,
+    "writerPattern": "zero-prefix + little-endian ushort + transformed state byte"
+  },
+  "rationale": [
+    "Containing function sets a +10000 timer threshold before enabling the send flag.",
+    "Function toggles a dedicated pending flag/state pair at +0x77c0/+0x77b8.",
+    "Timer gating points to periodic state transmission rather than a single world-ready transition.",
+    "The live burst is dominated by interfaces-stage repeats after rebuild.",
+    "The live burst looks periodic and state-bearing rather than like a single handshake gate."
+  ],
+  "senderContext": {
+    "callerLookupAddress": "1400ced60",
+    "callerLookupFunction": "FUN_1400ced60",
+    "callerLookupSource": "requested-address",
+    "callerRefs": [],
+    "resolvedFunctionEntry": "1400cec80",
+    "resolvedFunctionName": "FUN_1400cec80",
+    "senderAddress": "1400ced60",
+    "senderFunction": "FUN_1400ced60"
+  },
+  "sources": {
+    "activeSubAnalysisJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-analysis.json",
+    "handoffAnalysisJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\handoff-analysis.json",
+    "senderAnalysisJson": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-analysis.json",
+    "worldLog": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\debug\\world-bootstrap-raw.log"
+  },
+  "status": "ok",
+  "triggerAssessment": {
+    "focusWindowStateDriven": {
+      "evidence": [],
+      "value": "unknown"
+    },
+    "timerDriven": {
+      "evidence": [
+        "Containing function sets a +10000 timer threshold before enabling the send flag.",
+        "Function toggles a dedicated pending flag/state pair at +0x77c0/+0x77b8."
+      ],
+      "value": "yes"
+    },
+    "worldHandshakeDriven": {
+      "evidence": [
+        "Timer gating points to periodic state transmission rather than a single world-ready transition.",
+        "The live burst is dominated by interfaces-stage repeats after rebuild."
+      ],
+      "value": "unlikely"
+    }
+  },
+  "verdict": "state-report"
+}

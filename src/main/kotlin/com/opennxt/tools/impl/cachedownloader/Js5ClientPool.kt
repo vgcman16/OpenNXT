@@ -11,11 +11,31 @@ import java.lang.Thread.sleep
 import java.net.URL
 import java.util.concurrent.Executors
 
+internal fun drainBatchFromIterator(
+    iterator: MutableIterator<Js5RequestHandler.ArchiveRequest>,
+    firstRequest: Js5RequestHandler.ArchiveRequest,
+    maxCount: Int
+): LinkedHashSet<Js5RequestHandler.ArchiveRequest> {
+    require(maxCount > 0) { "maxCount must be greater than 0" }
+
+    val batch = LinkedHashSet<Js5RequestHandler.ArchiveRequest>(maxCount)
+    batch += firstRequest
+    iterator.remove()
+
+    while (batch.size < maxCount && iterator.hasNext()) {
+        batch += iterator.next()
+        iterator.remove()
+    }
+
+    return batch
+}
+
 class Js5ClientPool(
     private val numJs5Clients: Int = 3,
     private val numHttpClients: Int = 4,
     val ip: String,
-    val port: Int
+    val port: Int,
+    private val bootstrapLoggedIn: Boolean = false
 ) : Closeable {
     private val logger = KotlinLogging.logger { }
 
@@ -34,7 +54,7 @@ class Js5ClientPool(
     init {
         bootstrap.group(workerGroup)
         bootstrap.channel(NioSocketChannel::class.java)
-        bootstrap.handler(Js5ClientPipeline.Js5ClientChannelInitializer())
+        bootstrap.handler(Js5ClientPipeline.Js5ClientChannelInitializer(bootstrapLoggedIn))
     }
 
     fun addRequest(priority: Boolean, index: Int, archive: Int): Js5RequestHandler.ArchiveRequest? {
@@ -72,6 +92,7 @@ class Js5ClientPool(
 //                continue
 //            }
 
+            var assigned = false
             for (client in clients) {
                 if (client == null)
                     continue
@@ -79,21 +100,15 @@ class Js5ClientPool(
                 synchronized(client.lock) {
                     val able = client.countAllowedRequests()
                     if (able > 0) {
-                        val set = HashSet<Js5RequestHandler.ArchiveRequest>()
-                        set += request
-                        it.remove()
-
-                        inner@
-                        for (i in 1 until able) {
-                            if (!it.hasNext())
-                                break@inner
-                            set += it.next()
-                            it.remove()
-                        }
-
-                        outJs5.addAll(set)
-                        client.addAllUnchecked(set)
+                        val batch = drainBatchFromIterator(it, request, able)
+                        outJs5.addAll(batch)
+                        client.addAllUnchecked(batch)
+                        assigned = true
                     }
+                }
+
+                if (assigned) {
+                    break
                 }
             }
         }

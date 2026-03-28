@@ -3,6 +3,7 @@ package com.opennxt.net.http
 import com.opennxt.net.http.endpoints.JavConfigWsEndpoint
 import com.opennxt.net.http.endpoints.ClientFileEndpoint
 import com.opennxt.net.http.endpoints.Js5MsEndpoint
+import com.opennxt.net.http.endpoints.RevocationListEndpoint
 import io.netty.channel.ChannelHandler
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
@@ -16,29 +17,52 @@ import mu.KotlinLogging
 class HttpRequestHandler : SimpleChannelInboundHandler<FullHttpRequest>() {
     private val logger = KotlinLogging.logger { }
 
+    internal fun canonicalizePath(path: String): String {
+        var normalized = path
+        while (true) {
+            val next = when {
+                normalized.matches(Regex("^/(k|l)=[^/]+/.*$")) -> normalized.replaceFirst(Regex("^/(k|l)=[^/]+"), "")
+                normalized.matches(Regex("^/(k|l)=[^/]+$")) -> "/"
+                else -> null
+            }
+            normalized = next ?: break
+        }
+        return normalized
+    }
+
     override fun channelRead0(ctx: ChannelHandlerContext, msg: FullHttpRequest) {
         if (!msg.decoderResult().isSuccess) {
+            logger.warn { "HTTP bad request from ${ctx.channel().remoteAddress()}: uri=${msg.uri()}" }
             ctx.sendHttpError(HttpResponseStatus.BAD_REQUEST)
             return
         }
 
         if (msg.method() != HttpMethod.GET) {
+            logger.warn {
+                "HTTP unsupported method from ${ctx.channel().remoteAddress()}: method=${msg.method()} uri=${msg.uri()}"
+            }
             ctx.sendHttpError(HttpResponseStatus.METHOD_NOT_ALLOWED)
             return
         }
         val uri = msg.uri()
         val query = QueryStringDecoder(uri)
+        val path = canonicalizePath(query.path())
+        logger.info { "HTTP GET $path from ${ctx.channel().remoteAddress()}: uri=$uri" }
 
         when {
-            query.path() == "/jav_config.ws" -> JavConfigWsEndpoint.handle(ctx, msg, query)
-            query.path() == "/client" -> ClientFileEndpoint.handle(ctx, msg, query)
-            query.path() == "/ms" -> Js5MsEndpoint.handle(ctx, msg, query)
-            else -> ctx.sendHttpError(HttpResponseStatus.NOT_FOUND)
+            path == "/jav_config.ws" -> JavConfigWsEndpoint.handle(ctx, msg, query)
+            path == "/client" -> ClientFileEndpoint.handle(ctx, msg, query)
+            path == "/ms" -> Js5MsEndpoint.handle(ctx, msg, query)
+            path == "/opennxt-local-root.crl" -> RevocationListEndpoint.handle(ctx, msg, query)
+            else -> {
+                logger.warn { "HTTP 404 for ${ctx.channel().remoteAddress()}: uri=$uri" }
+                ctx.sendHttpError(HttpResponseStatus.NOT_FOUND)
+            }
         }
     }
 
     override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) {
-        cause.printStackTrace()
+        logger.error(cause) { "HTTP handler exception from ${ctx.channel().remoteAddress()}" }
         if (ctx.channel().isActive) {
             ctx.sendHttpError(HttpResponseStatus.INTERNAL_SERVER_ERROR)
         }

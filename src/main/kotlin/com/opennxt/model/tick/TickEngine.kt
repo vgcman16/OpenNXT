@@ -23,7 +23,18 @@ class TickEngine {
      * execution will start 400 millis late.
      */
     fun submitTickable(tickable: Tickable) {
-        executor.scheduleAtFixedRate(tickable::tick, 0, 600, TimeUnit.MILLISECONDS)
+        executor.scheduleAtFixedRate(
+            {
+                try {
+                    tickable.tick()
+                } catch (e: Exception) {
+                    logger.error(e) { "Tickable ${tickable::class.qualifiedName} failed" }
+                }
+            },
+            0,
+            600,
+            TimeUnit.MILLISECONDS
+        )
     }
 
     /**

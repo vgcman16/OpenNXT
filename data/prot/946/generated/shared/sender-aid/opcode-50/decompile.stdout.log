@@ -1,0 +1,466 @@
+INFO  Using log config file: jar:file:/C:/Users/Demon/Tools/ghidra/ghidra_12.0.4_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml (LoggingInitialization)  
+INFO  Using log file: C:\Users\Demon\AppData\Roaming\ghidra\ghidra_12.0.4_PUBLIC\application.log (LoggingInitialization)  
+INFO  Loading user preferences: C:\Users\Demon\AppData\Roaming\ghidra\ghidra_12.0.4_PUBLIC\preferences (Preferences)  
+INFO  Searching for classes... (ClassSearcher)  
+INFO  Class search complete (684 ms) (ClassSearcher)  
+INFO  Initializing SSL Context (DefaultSSLContextInitializer)  
+INFO  Initializing Random Number Generator... (SecureRandomFactory)  
+INFO  Random Number Generator initialization complete: SHA1PRNG (SecureRandomFactory)  
+INFO  Trust manager disabled, cacerts have not been set (DefaultTrustManagerFactory)  
+INFO  Headless startup complete (2018 ms) (AnalyzeHeadless)  
+INFO  Class searcher loaded 58 extension points (18 false positives) (ClassSearcher)  
+INFO  HEADLESS Script Paths:
+    C:\Users\Demon\Documents\New project\ghidra-scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Processors\JVM\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\Base\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\SystemEmulation\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\BSim\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\SwiftDemangler\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\VersionTracking\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Processors\PIC\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\GnuDemangler\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\FileFormats\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\FunctionID\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Processors\8051\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\PyGhidra\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\WildcardAssembler\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Debug\Debugger-rmi-trace\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\BytePatterns\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Processors\DATA\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\Decompiler\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\MicrosoftCodeAnalyzer\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\DecompilerDependent\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\Jython\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Debug\Debugger\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Features\PDB\ghidra_scripts
+    C:\Users\Demon\Tools\ghidra\ghidra_12.0.4_PUBLIC\Ghidra\Processors\Atmel\ghidra_scripts (HeadlessAnalyzer)  
+INFO  HEADLESS: execution starts (HeadlessAnalyzer)  
+INFO  Opening existing project: C:\Users\Demon\AppData\Local\Temp\opennxt-ghidra-clones\rs2client-headless-unlocked-sender-opcode-50-a5qm9005\rs2client-headless-unlocked (HeadlessAnalyzer)  
+INFO  Opening project: C:\Users\Demon\AppData\Local\Temp\opennxt-ghidra-clones\rs2client-headless-unlocked-sender-opcode-50-a5qm9005\rs2client-headless-unlocked (HeadlessProject)  
+INFO  Removed old presave file: C:\Users\Demon\AppData\Local\Temp\opennxt-ghidra-clones\rs2client-headless-unlocked-sender-opcode-50-a5qm9005\rs2client-headless-unlocked.rep\idata\00\~00000000.db\tmp2391663023144005692.ps (LocalBufferFile)  
+INFO  REPORT: Processing project file: /rs2client.exe (HeadlessAnalyzer)  
+INFO  REPORT: Execute script: DecompileFunction.java '1400ca430'  (HeadlessAnalyzer)  
+INFO  SCRIPT: C:\Users\Demon\Documents\New project\ghidra-scripts\DecompileFunction.java (HeadlessAnalyzer)  
+INFO  Function: FUN_1400ca350 @ 1400ca350 (GhidraScript)  
+INFO  
+/* WARNING: Function: __chkstk replaced with injection: alloca_probe */
+
+void FUN_1400ca350(longlong param_1)
+
+{
+  int *piVar1;
+  undefined4 uVar2;
+  undefined4 uVar3;
+  uint uVar4;
+  int iVar5;
+  ulonglong uVar6;
+  undefined4 *puVar7;
+  undefined1 *puVar8;
+  undefined1 *puVar9;
+  char cVar10;
+  undefined8 *puVar11;
+  undefined8 *puVar12;
+  longlong *plVar13;
+  longlong lVar14;
+  longlong *plVar15;
+  longlong lVar16;
+  undefined8 *puVar17;
+  longlong *plVar18;
+  longlong *plVar19;
+  longlong local_res8;
+  undefined *local_res10;
+  longlong *local_2508;
+  longlong local_2500;
+  undefined1 *local_24f8;
+  undefined1 *local_24f0;
+  longlong **local_24e8;
+  undefined1 *local_24d8;
+  undefined1 local_24d0 [512];
+  longlong *local_22d0;
+  undefined1 *local_22c8;
+  undefined1 *local_22c0;
+  longlong **local_22b8;
+  undefined1 *local_22a8;
+  undefined1 local_22a0 [512];
+  longlong *local_20a0;
+  undefined8 *local_2098;
+  undefined8 *local_2090;
+  undefined8 *local_2088;
+  undefined8 *local_2078;
+  undefined8 local_2070 [512];
+  undefined8 local_1070;
+  undefined8 *local_1068;
+  undefined8 *local_1060;
+  undefined8 *local_1058;
+  undefined8 *local_1048;
+  undefined8 local_1040 [512];
+  undefined8 local_40;
+  
+  local_1048 = local_1040;
+  local_2078 = local_2070;
+  local_1060 = local_1040;
+  uVar6 = *(ulonglong *)(param_1 + 0x40);
+  local_2090 = local_2070;
+  local_1068 = local_1040;
+  local_1058 = &local_40;
+  local_2098 = local_2070;
+  local_2088 = &local_1070;
+  local_res8 = param_1;
+  if (0x200 < uVar6) {
+    puVar11 = (undefined8 *)FUN_140791660(uVar6 * 8,0x10);
+    puVar12 = puVar11;
+    for (puVar17 = local_1068; puVar17 != local_1060; puVar17 = puVar17 + 1) {
+      *puVar12 = *puVar17;
+      puVar12 = puVar12 + 1;
+    }
+    if ((local_1068 != (undefined8 *)0x0) && (local_1068 != local_1048)) {
+      if (*(longlong *)(DAT_140e55a70 + 0x100) == *(longlong *)(DAT_140e55a70 + 0x108)) {
+        plVar18 = *(longlong **)(DAT_140e55a70 + 0x198);
+      }
+      else {
+        plVar18 = *(longlong **)(*(longlong *)(DAT_140e55a70 + 0x108) + -8);
+      }
+      if (*(longlong *)(DAT_140e55a70 + 0x1a0) == *(longlong *)(DAT_140e55a70 + 0x1a8)) {
+        uVar2 = *(undefined4 *)(DAT_140e55a70 + 0x1f8);
+      }
+      else {
+        uVar2 = *(undefined4 *)(*(longlong *)(DAT_140e55a70 + 0x1a8) + -4);
+      }
+      (**(code **)(*plVar18 + 0x20))(plVar18,local_1068,uVar2);
+    }
+    local_1058 = puVar11 + uVar6;
+    local_1068 = puVar11;
+    local_1060 = puVar12;
+  }
+  uVar6 = *(ulonglong *)(param_1 + 0xf0c0);
+  if ((ulonglong)((longlong)local_2088 - (longlong)local_2098 >> 3) < uVar6) {
+    if (uVar6 == 0) {
+      puVar12 = (undefined8 *)0x0;
+      puVar17 = local_2098;
+      puVar11 = puVar12;
+    }
+    else {
+      puVar12 = (undefined8 *)FUN_140791660(uVar6 * 8,0x10);
+      puVar17 = local_2098;
+      puVar11 = puVar12;
+    }
+    for (; puVar17 != local_2090; puVar17 = puVar17 + 1) {
+      *puVar12 = *puVar17;
+      puVar12 = puVar12 + 1;
+    }
+    if ((local_2098 != (undefined8 *)0x0) && (local_2098 != local_2078)) {
+      if (*(longlong *)(DAT_140e55a70 + 0x100) == *(longlong *)(DAT_140e55a70 + 0x108)) {
+        plVar18 = *(longlong **)(DAT_140e55a70 + 0x198);
+      }
+      else {
+        plVar18 = *(longlong **)(*(longlong *)(DAT_140e55a70 + 0x108) + -8);
+      }
+      if (*(longlong *)(DAT_140e55a70 + 0x1a0) == *(longlong *)(DAT_140e55a70 + 0x1a8)) {
+        uVar2 = *(undefined4 *)(DAT_140e55a70 + 0x1f8);
+      }
+      else {
+        uVar2 = *(undefined4 *)(*(longlong *)(DAT_140e55a70 + 0x1a8) + -4);
+      }
+      (**(code **)(*plVar18 + 0x20))(plVar18,local_2098,uVar2);
+    }
+    local_2088 = puVar11 + uVar6;
+    local_2098 = puVar11;
+    local_2090 = puVar12;
+  }
+  lVar16 = local_res8;
+  plVar18 = (longlong *)(param_1 + 0x20);
+  local_24d8 = local_24d0;
+  local_24e8 = &local_22d0;
+  local_24f8 = local_24d0;
+  plVar19 = *(longlong **)(param_1 + 0x28);
+  local_22d0 = plVar18;
+  puVar9 = local_24d0;
+  while (local_24f0 = puVar9, puVar8 = local_24f8, plVar19 != plVar18) {
+    puVar7 = (undefined4 *)plVar19[4];
+    uVar2 = *puVar7;
+    uVar3 = puVar7[1];
+    cVar10 = FUN_1400cac80(lVar16,puVar7,&local_24f8);
+    if (cVar10 != '\0') {
+      if (local_1060 < local_1058) {
+        *(undefined4 *)local_1060 = uVar2;
+        *(undefined4 *)((longlong)local_1060 + 4) = uVar3;
+        local_1060 = local_1060 + 1;
+      }
+      else {
+        lVar14 = (longlong)local_1060 - (longlong)local_1068 >> 3;
+        if (lVar14 == 0) {
+          lVar14 = 1;
+LAB_1400ca66c:
+          puVar12 = (undefined8 *)FUN_140791660(lVar14 * 8,0x10);
+          puVar17 = local_1068;
+          puVar11 = puVar12;
+        }
+        else {
+          lVar14 = lVar14 * 2;
+          if (lVar14 != 0) goto LAB_1400ca66c;
+          puVar12 = (undefined8 *)0x0;
+          puVar17 = local_1068;
+          puVar11 = puVar12;
+        }
+        for (; puVar17 != local_1060; puVar17 = puVar17 + 1) {
+          *puVar12 = *puVar17;
+          puVar12 = puVar12 + 1;
+        }
+        *(undefined4 *)puVar12 = uVar2;
+        *(undefined4 *)((longlong)puVar12 + 4) = uVar3;
+        if ((local_1068 != (undefined8 *)0x0) && (local_1068 != local_1048)) {
+          if (*(longlong *)(DAT_140e55a70 + 0x100) == *(longlong *)(DAT_140e55a70 + 0x108)) {
+            plVar13 = *(longlong **)(DAT_140e55a70 + 0x198);
+          }
+          else {
+            plVar13 = *(longlong **)(*(longlong *)(DAT_140e55a70 + 0x108) + -8);
+          }
+          if (*(longlong *)(DAT_140e55a70 + 0x1a0) == *(longlong *)(DAT_140e55a70 + 0x1a8)) {
+            uVar2 = *(undefined4 *)(DAT_140e55a70 + 0x1f8);
+          }
+          else {
+            uVar2 = *(undefined4 *)(*(longlong *)(DAT_140e55a70 + 0x1a8) + -4);
+          }
+          (**(code **)(*plVar13 + 0x20))(plVar13,local_1068,uVar2);
+        }
+        local_1058 = puVar11 + lVar14;
+        local_1068 = puVar11;
+        local_1060 = puVar12 + 1;
+      }
+    }
+    plVar13 = (longlong *)*plVar19;
+    puVar9 = local_24f0;
+    param_1 = local_res8;
+    if (plVar13 == (longlong *)0x0) {
+      plVar13 = (longlong *)plVar19[2];
+      plVar15 = (longlong *)0x0;
+      if (plVar19 == (longlong *)*plVar13) {
+        do {
+          plVar19 = plVar13;
+          plVar13 = (longlong *)plVar19[2];
+        } while (plVar19 == (longlong *)*plVar13);
+        plVar15 = (longlong *)*plVar19;
+      }
+      if (plVar15 != plVar13) {
+        plVar19 = plVar13;
+      }
+    }
+    else {
+      for (plVar15 = (longlong *)plVar13[1]; plVar19 = plVar13, plVar15 != (longlong *)0x0;
+          plVar15 = (longlong *)plVar15[1]) {
+        plVar13 = plVar15;
+      }
+    }
+  }
+  for (; puVar8 != puVar9; puVar8 = puVar8 + 8) {
+    FUN_1400d5380(local_22d0,puVar8);
+  }
+  FUN_14002de20();
+  uVar6 = DAT_140e55a90;
+  plVar18 = (longlong *)(param_1 + 0xf0a0);
+  local_22a8 = local_22a0;
+  local_22b8 = &local_20a0;
+  local_22c8 = local_22a0;
+  local_20a0 = plVar18;
+  plVar19 = *(longlong **)(param_1 + 0xf0a8);
+  puVar9 = local_22a0;
+  while (puVar8 = local_22c8, local_22c0 = puVar9, plVar19 != plVar18) {
+    puVar7 = (undefined4 *)plVar19[4];
+    if (*(ulonglong *)(puVar7 + 4) <= uVar6) {
+      uVar2 = *puVar7;
+      uVar3 = puVar7[1];
+      cVar10 = FUN_1400cac80(local_res8,puVar7,&local_22c8);
+      if (cVar10 != '\0') {
+        if (local_2090 < local_2088) {
+          *(undefined4 *)local_2090 = uVar2;
+          *(undefined4 *)((longlong)local_2090 + 4) = uVar3;
+          local_2090 = local_2090 + 1;
+        }
+        else {
+          lVar16 = (longlong)local_2090 - (longlong)local_2098 >> 3;
+          if (lVar16 == 0) {
+            lVar16 = 1;
+LAB_1400ca8ac:
+            puVar12 = (undefined8 *)FUN_140791660(lVar16 * 8,0x10);
+            puVar17 = local_2098;
+            puVar11 = puVar12;
+          }
+          else {
+            lVar16 = lVar16 * 2;
+            if (lVar16 != 0) goto LAB_1400ca8ac;
+            puVar12 = (undefined8 *)0x0;
+            puVar17 = local_2098;
+            puVar11 = puVar12;
+          }
+          for (; puVar17 != local_2090; puVar17 = puVar17 + 1) {
+            *puVar12 = *puVar17;
+            puVar12 = puVar12 + 1;
+          }
+          *(undefined4 *)puVar12 = uVar2;
+          *(undefined4 *)((longlong)puVar12 + 4) = uVar3;
+          if ((local_2098 != (undefined8 *)0x0) && (local_2098 != local_2078)) {
+            if (*(longlong *)(DAT_140e55a70 + 0x100) == *(longlong *)(DAT_140e55a70 + 0x108)) {
+              plVar13 = *(longlong **)(DAT_140e55a70 + 0x198);
+            }
+            else {
+              plVar13 = *(longlong **)(*(longlong *)(DAT_140e55a70 + 0x108) + -8);
+            }
+            if (*(longlong *)(DAT_140e55a70 + 0x1a0) == *(longlong *)(DAT_140e55a70 + 0x1a8)) {
+              uVar2 = *(undefined4 *)(DAT_140e55a70 + 0x1f8);
+            }
+            else {
+              uVar2 = *(undefined4 *)(*(longlong *)(DAT_140e55a70 + 0x1a8) + -4);
+            }
+            (**(code **)(*plVar13 + 0x20))(plVar13,local_2098,uVar2);
+          }
+          local_2088 = puVar11 + lVar16;
+          local_2098 = puVar11;
+          local_2090 = puVar12 + 1;
+        }
+      }
+    }
+    plVar13 = (longlong *)*plVar19;
+    param_1 = local_res8;
+    puVar9 = local_22c0;
+    if (plVar13 == (longlong *)0x0) {
+      plVar13 = (longlong *)plVar19[2];
+      plVar15 = (longlong *)0x0;
+      if (plVar19 == (longlong *)*plVar13) {
+        do {
+          plVar19 = plVar13;
+          plVar13 = (longlong *)plVar19[2];
+        } while (plVar19 == (longlong *)*plVar13);
+        plVar15 = (longlong *)*plVar19;
+      }
+      if (plVar15 != plVar13) {
+        plVar19 = plVar13;
+      }
+    }
+    else {
+      for (plVar15 = (longlong *)plVar13[1]; plVar19 = plVar13, plVar15 != (longlong *)0x0;
+          plVar15 = (longlong *)plVar15[1]) {
+        plVar13 = plVar15;
+      }
+    }
+  }
+  for (; puVar8 != puVar9; puVar8 = puVar8 + 8) {
+    FUN_1400d5380(local_20a0,puVar8);
+  }
+  FUN_14002de20(&local_22c8);
+  FUN_1400cbc90(param_1,&local_2098);
+  FUN_1400cbc90(param_1,&local_1068);
+  uVar4 = *(uint *)(*(longlong *)(param_1 + 8) + 0x19f60);
+  if (((0x1e < uVar4) || ((0x40900000U >> (uVar4 & 0x1f) & 1) == 0)) ||
+     (*(char *)(param_1 + 0x14) == '\0')) goto LAB_1400cac52;
+  lVar16 = *(longlong *)(*(longlong *)(param_1 + 8) + 0x19878);
+  iVar5 = *(int *)(*(longlong *)(lVar16 + 8) + 0x19f60);
+  if ((iVar5 == 0x14) || (iVar5 == 0x17)) {
+    lVar14 = *(longlong *)(lVar16 + 0x28);
+    plVar18 = (longlong *)(lVar16 + 0x28);
+    if ((lVar14 == 0) || ((*(int **)(lVar14 + 8) == (int *)0x0 || (**(int **)(lVar14 + 8) != 2))))
+    goto LAB_1400caaa4;
+  }
+  else {
+LAB_1400caaa4:
+    lVar14 = *(longlong *)(lVar16 + 0x18);
+    plVar18 = (longlong *)(lVar16 + 0x18);
+    if (((lVar14 == 0) || ((*(int **)(lVar14 + 8) == (int *)0x0 || (**(int **)(lVar14 + 8) != 2))))
+       && (plVar18 = &DAT_140e56f08, lVar14 = DAT_140e56f08, DAT_140e56f08 == 0))
+    goto LAB_1400cac52;
+  }
+  local_res8 = *(longlong *)(lVar14 + 0x40);
+  local_res10 = &DAT_140e57230;
+  FUN_1400adab0(&local_2508,&local_res10,&DAT_140e57234,&local_res8);
+  lVar14 = local_2500;
+  plVar19 = local_2508;
+  uVar4 = *(uint *)(param_1 + 0x10);
+  *(uint *)(*(longlong *)(local_2500 + 0x18) + *(longlong *)(local_2500 + 0x20)) =
+       uVar4 >> 0x18 | (uVar4 & 0xff0000) >> 8 | (uVar4 & 0xff00) << 8 | uVar4 << 0x18;
+  *(longlong *)(local_2500 + 0x20) = *(longlong *)(local_2500 + 0x20) + 4;
+  lVar16 = *plVar18;
+  if (local_2508 != (longlong *)0x0) {
+    LOCK();
+    *(int *)(local_2508 + 1) = (int)local_2508[1] + 1;
+    UNLOCK();
+  }
+  plVar18 = *(longlong **)(lVar16 + 0x58);
+  if (plVar18 == (longlong *)0x0) {
+    plVar18 = *(longlong **)(lVar16 + 0x60);
+    if (plVar18 == *(longlong **)(lVar16 + 0x68)) {
+      plVar18 = (longlong *)FUN_140791660(*(longlong *)(lVar16 + 0x70),0x10);
+    }
+    else {
+      *(longlong *)(lVar16 + 0x60) = *(longlong *)(lVar16 + 0x70) + (longlong)plVar18;
+    }
+  }
+  else {
+    *(longlong *)(lVar16 + 0x58) = *plVar18;
+  }
+  plVar13 = local_2508;
+  plVar18[2] = (longlong)plVar19;
+  plVar18[3] = lVar14;
+  if (plVar19 != (longlong *)0x0) {
+    LOCK();
+    *(int *)(plVar19 + 1) = (int)plVar19[1] + 1;
+    UNLOCK();
+    plVar19 = local_2508;
+    lVar14 = local_2500;
+  }
+  *plVar18 = lVar16 + 0x48;
+  plVar18[1] = *(longlong *)(lVar16 + 0x50);
+  **(undefined8 **)(lVar16 + 0x50) = plVar18;
+  *(longlong *)(lVar16 + 0x88) = *(longlong *)(lVar16 + 0x88) + 1;
+  *(longlong **)(lVar16 + 0x50) = plVar18;
+  iVar5 = *(int *)(lVar14 + 0x20);
+  *(int *)(lVar14 + 0x28) = iVar5;
+  *(undefined8 *)(lVar14 + 0x20) = 0;
+  *(int *)(lVar16 + 0x2b0) = *(int *)(lVar16 + 0x2b0) + iVar5;
+  plVar18 = (longlong *)0x0;
+  if (plVar19 != (longlong *)0x0) {
+    LOCK();
+    plVar19 = plVar19 + 1;
+    lVar16 = *plVar19;
+    *(int *)plVar19 = (int)*plVar19 + -1;
+    UNLOCK();
+    plVar18 = local_2508;
+    if ((int)lVar16 == 1) {
+      (**(code **)(*local_2508 + 8))(local_2508);
+      plVar18 = local_2508;
+      LOCK();
+      piVar1 = (int *)((longlong)plVar13 + 0xc);
+      iVar5 = *piVar1;
+      *piVar1 = *piVar1 + -1;
+      UNLOCK();
+      if (iVar5 == 1) {
+        (**(code **)(*local_2508 + 0x10))(local_2508);
+      }
+    }
+  }
+  plVar19 = local_2508;
+  *(undefined1 *)(param_1 + 0x14) = 0;
+  if (plVar18 != (longlong *)0x0) {
+    LOCK();
+    plVar18 = plVar18 + 1;
+    lVar16 = *plVar18;
+    *(int *)plVar18 = (int)*plVar18 + -1;
+    UNLOCK();
+    if ((int)lVar16 == 1) {
+      (**(code **)(*local_2508 + 8))(local_2508);
+      LOCK();
+      piVar1 = (int *)((longlong)plVar19 + 0xc);
+      iVar5 = *piVar1;
+      *piVar1 = *piVar1 + -1;
+      UNLOCK();
+      if (iVar5 == 1) {
+        (**(code **)(*local_2508 + 0x10))();
+      }
+    }
+  }
+LAB_1400cac52:
+  FUN_14002de20(&local_1068);
+  FUN_14002de20(&local_2098);
+  return;
+}
+
+ (GhidraScript)  
+INFO  REPORT: Save succeeded for processed file: /rs2client.exe (HeadlessAnalyzer)  

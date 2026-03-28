@@ -122,11 +122,6 @@ class Js5RequestHandler(
                     return@forEach
                 }
 
-                if (request.index == 14 && request.archive == 0) {
-                    logger.info { "Skipping $request to avoid crash loop" }
-                    return@forEach
-                }
-
                 pending.getOrPut(request.index) { ObjectOpenHashSet() }.add(request)
             }
         }
@@ -172,7 +167,7 @@ class Js5RequestHandler(
                         }
 
                         if (request.crashed) {
-                            it.remove()
+                            it2.remove()
                             crashed.add(request)
                         }
                     }

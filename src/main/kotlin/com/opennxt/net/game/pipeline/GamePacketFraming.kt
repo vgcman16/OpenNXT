@@ -5,8 +5,10 @@ import com.opennxt.ext.isBigOpcode
 import com.opennxt.ext.readOpcode
 import com.opennxt.net.RSChannelAttributes
 import com.opennxt.net.Side
+import com.opennxt.net.game.PacketRegistry
 import com.opennxt.util.ISAACCipher
 import io.netty.buffer.ByteBuf
+import io.netty.buffer.ByteBufUtil
 import io.netty.channel.Channel
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
@@ -27,6 +29,19 @@ class GamePacketFraming : ByteToMessageDecoder() {
     private var state = State.READ_OPCODE
     private var opcode = -1
     private var size = -1
+
+    private fun bootstrapStage(channel: Channel): String {
+        val client = channel.attr(RSChannelAttributes.CONNECTED_CLIENT).get()
+        return client?.currentBootstrapStage ?: client?.lastCompletedBootstrapStage ?: "none"
+    }
+
+    private fun preview(buf: ByteBuf, limit: Int = 32): String {
+        val length = minOf(limit, buf.readableBytes())
+        if (length <= 0) {
+            return "<empty>"
+        }
+        return ByteBufUtil.hexDump(buf, buf.readerIndex(), length)
+    }
 
     private fun init(channel: Channel) {
         inited = true
@@ -51,7 +66,16 @@ class GamePacketFraming : ByteToMessageDecoder() {
 
                     opcode = buf.readOpcode(isaac)
                     if (!mapping.containsKey(opcode)) {
-                        logger.error { "No opcode->size mapping for opcode $opcode (side=$side)" }
+                        logger.error {
+                            "No opcode->size mapping for opcode $opcode (side=$side, remote=${ctx.channel().remoteAddress()}, " +
+                                "bootstrapStage=${bootstrapStage(ctx.channel())}, readable=${buf.readableBytes()}, " +
+                                "preview=${preview(buf)})"
+                        }
+                        ctx.channel().attr(RSChannelAttributes.CONNECTED_CLIENT).get()?.traceBootstrap(
+                            "world-framing-close remote=${ctx.channel().remoteAddress()} " +
+                                "stage=${bootstrapStage(ctx.channel())} reason=missing-opcode-mapping " +
+                                "opcode=$opcode side=$side readable=${buf.readableBytes()} preview=${preview(buf)}"
+                        )
                         buf.skipBytes(buf.readableBytes())
                         ctx.channel().close()
                         return
@@ -73,8 +97,13 @@ class GamePacketFraming : ByteToMessageDecoder() {
                     if (buf.readableBytes() < size) return
 
                     val payload = buf.readBytes(size)
-                    // TODO if proxy and side is client -> dump ?
-//                    logger.info { "Received side=$side opcode=$opcode size=$size name=${if (side == Side.SERVER) OpenNXT.protocol.serverProtNames.reversedValues()[opcode] ?: "null" else "null"}" }
+                    if (side == Side.CLIENT) {
+                        val registration = PacketRegistry.getRegistration(side, opcode)
+                        logger.info {
+                            "Framed client packet opcode=$opcode size=$size name=${registration?.name ?: "unregistered"} " +
+                                "from ${ctx.channel().remoteAddress()} [bootstrapStage=${bootstrapStage(ctx.channel())}]"
+                        }
+                    }
 
                     out.add(OpcodeWithBuffer(opcode, payload))
 
@@ -83,6 +112,12 @@ class GamePacketFraming : ByteToMessageDecoder() {
             }
         } catch (e: Exception) {
             e.printStackTrace()
+            ctx.channel().attr(RSChannelAttributes.CONNECTED_CLIENT).get()?.traceBootstrap(
+                "world-framing-close remote=${ctx.channel().remoteAddress()} " +
+                    "stage=${bootstrapStage(ctx.channel())} reason=decode-exception side=$side " +
+                    "type=${e::class.qualifiedName ?: e::class.simpleName ?: "unknown"} " +
+                    "message=${e.message ?: "<none>"}"
+            )
         }
     }
 

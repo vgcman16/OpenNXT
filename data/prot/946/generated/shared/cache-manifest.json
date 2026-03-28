@@ -1,0 +1,179 @@
+{
+  "1": {
+    "inputFingerprint": "bd96036bf69ff8150170cabf770d94838bd5a5db1445f59c399ee83dafec2dbb",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase1\\registrars.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase1\\serverProtSizes.generated.toml",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase1\\clientProtSizes.generated.toml"
+    ]
+  },
+  "2": {
+    "inputFingerprint": "42833bd63af7fd305da3d66c7b4ef81e4552503f37400764ce58b0809fed3c7c",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase2\\serverParsers.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase2\\clientParsers.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase2\\handlerFamilies.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase2\\handlerGraph.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase2\\helperSignatures.json"
+    ]
+  },
+  "3": {
+    "inputFingerprint": "5789ff53a36aa6911d6ebbdae5d8a212d5053b5d5eb68aaf8718f32a4182ebe3",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase3\\nameCandidates.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase3\\clientAmbiguousClusters.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase3\\serverProtNames.generated.toml",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase3\\clientProtNames.generated.toml"
+    ]
+  },
+  "4": {
+    "inputFingerprint": "66bc5ea366cc55c92c3257f61f5de4f8be58520c2cb150e9481b818722746b32",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\fieldGapAnalysis.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\fieldRecoveryQueue.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\runtimeVerificationQueue.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\runtimeFocus.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase4\\parserFieldIndex.json"
+    ]
+  },
+  "5": {
+    "inputFingerprint": "873cf8a73af37adb27852158fe909a1f6f50e540b634012d73921041922510a8",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase5\\generatedPackets.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\phase5\\phase5-summary.md"
+    ]
+  },
+  "active-sub-aid": {
+    "inputFingerprint": "c4affaaf52e42d7df63ddc79e1c3419c42a0788f96416d4a8295971c75125a40",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-analysis.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\active-sub-analysis.md"
+    ]
+  },
+  "attempt-diff": {
+    "inputFingerprint": "6db1ed34f00a34c29a41f1a67ac6456d120d1a8ffb1caf94bf43379b24f465e4",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\attempt-diff.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\attempt-diff.md"
+    ]
+  },
+  "curated-compare": {
+    "inputFingerprint": "f0be34813f3141e67cd6be76b29cb7e54c0c84307611269c2581ab5f17f9110c",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\curated-compare.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\curated-compare.md"
+    ]
+  },
+  "disconnect-pivot-doctor": {
+    "inputFingerprint": "f700c632d07c9e9008d63f8b09a5a46c4b9b3d5bea11a4b6b9afaeafe133739b",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\disconnect-pivot-doctor.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\disconnect-pivot-doctor.md"
+    ]
+  },
+  "forced-fallback-parity-doctor": {
+    "inputFingerprint": "9e4c70af97ce7b68004a03115fd74e003a147c36de62b8b8fa30e153961a7499",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\forced-fallback-parity-doctor.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\forced-fallback-parity-doctor.md"
+    ]
+  },
+  "handoff": {
+    "inputFingerprint": "dd0f2cbe62b620a770dea1b894c7b3260244dd25a6ad1ef0414930b18c269549",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\handoff-analysis.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\handoff-analysis.md"
+    ]
+  },
+  "interface-diff": {
+    "inputFingerprint": "77d1636a849e3ceea4b8988db677bb25d9f6904ea6ef6683e6fa878e4df958f0",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\interface-diff.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\interface-diff.md"
+    ]
+  },
+  "js5-archive-resolver": {
+    "inputFingerprint": "92aaf13d69be90c05a62632c8751ef6d2da8f8ed95eddc40bfb67373c281f261",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\js5-archive-resolution.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\js5-archive-resolution.md"
+    ]
+  },
+  "loopback-doctor": {
+    "inputFingerprint": "f854b5bad3d43dd31925c71f3f8e4570060dc81778d7c6354636bd767bd4b84a",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\loopback-doctor.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\loopback-doctor.md"
+    ]
+  },
+  "opcode-113-verdict": {
+    "inputFingerprint": "6a433ac8fba80bff1d1f38f56623ce88b79c9f08a79447ccb1896a1c8c4dae25",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\opcode-113-verdict.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\opcode-113-verdict.md"
+    ]
+  },
+  "plateau-diff": {
+    "inputFingerprint": "86d51117e908fd3ff92fd827c6a61b37562489d8a3ed17517ee7b0c0c87a195e",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\plateau-diff.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\plateau-diff.md"
+    ]
+  },
+  "post-ready-cadence-doctor": {
+    "inputFingerprint": "4be6abfb02a1e0af75ad5e8c5e1617e212308560460c62a540879f9d1419ad5e",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\post-ready-cadence-doctor.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\post-ready-cadence-doctor.md"
+    ]
+  },
+  "post-scene-opcode-doctor": {
+    "inputFingerprint": "8659ece8e597e4a37be02003e754fae91bd1e3d819de15df6bafaeddc314e14e",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\post-scene-opcode-doctor.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\post-scene-opcode-doctor.md"
+    ]
+  },
+  "ready-signal-doctor": {
+    "inputFingerprint": "047755b1cbffdca197f3b55a24541a7af7f9fd8e3ed9b08e91fbaedeacfc18f9",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\ready-signal-doctor.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\ready-signal-doctor.md"
+    ]
+  },
+  "scene-delivery-aid": {
+    "inputFingerprint": "ed3b8eafe7c2a5b2d94098d499b5bb64ffe8a8593773c38bbb8eb1c7de94d0a0",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-delivery-analysis.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-delivery-analysis.md"
+    ]
+  },
+  "scene-start-doctor": {
+    "inputFingerprint": "aecbd8af7782d0dcd5e2de639473d1aebdd87065e53551933ae8d4911916d9a3",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-start-doctor.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\scene-start-doctor.md"
+    ]
+  },
+  "script-burst-doctor": {
+    "inputFingerprint": "536478390ad27ffa5c9cc7348b9db538113059fa7f7d3e6b59f278101df6557c",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\script-burst-doctor.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\script-burst-doctor.md"
+    ]
+  },
+  "sender-aid": {
+    "inputFingerprint": "dea8f47b6a589506cf3d917a802f7d864adff06e66a0a8db877da468e1e0ae65",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-analysis.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\sender-analysis.md"
+    ]
+  },
+  "tool-doctor": {
+    "inputFingerprint": "3e0e586cc078118949f32966f0af89b09914f9238ecca4c6672308d5abe41e04",
+    "outputs": [
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\tool-doctor.json",
+      "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\data\\prot\\946\\generated\\shared\\tool-doctor.md"
+    ]
+  }
+}

@@ -10,10 +10,31 @@ import mu.KotlinLogging
 import java.io.ByteArrayInputStream
 import java.io.FileNotFoundException
 import java.nio.file.Files
+import java.nio.file.Path
 import java.util.zip.CRC32
 
 object FileChecker {
     private val logger = KotlinLogging.logger { }
+
+    internal fun readFileIfCrcMatches(path: Path, expectedCrc: Long): ByteArray? {
+        if (!Files.exists(path)) {
+            logger.error { "$path not found (it should exist though)" }
+            return null
+        }
+
+        val bytes = Files.readAllBytes(path)
+        val crc = CRC32()
+        crc.update(bytes)
+        if (crc.value != expectedCrc) {
+            logger.error {
+                "CRC mismatch for $path: expected=$expectedCrc actual=${crc.value}. " +
+                    "Refusing to serve stale launcher payload."
+            }
+            return null
+        }
+
+        return bytes
+    }
 
     fun latestBuild(): Int {
         var build = -1
@@ -41,12 +62,7 @@ object FileChecker {
         val info = config.getFiles().firstOrNull { it.name == file } ?: return null
         if (info.crc != crc) return null
 
-        if (!Files.exists(path)) {
-            logger.error { "$file not found in $path (it should exist though)" }
-            return null
-        }
-
-        return Files.readAllBytes(path)
+        return readFileIfCrcMatches(path, crc)
     }
 
     fun getConfig(

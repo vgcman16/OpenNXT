@@ -19,7 +19,7 @@ class HttpServer(val config: ServerConfig) : AutoCloseable {
 
     private val handler = HttpRequestHandler()
     private val eventLoopGroup = NioEventLoopGroup()
-    private var channel: Channel? = null
+    private val channels = ArrayList<Channel>()
     private val httpBootstrap = ServerBootstrap()
         .group(eventLoopGroup)
         .channel(NioServerSocketChannel::class.java)
@@ -42,18 +42,26 @@ class HttpServer(val config: ServerConfig) : AutoCloseable {
     fun bind(httpPort: Int = config.ports.http) {
         check(initialized) { "Attempted to bind http server before initializing" }
 
-        logger.info { "Binding http server to 0.0.0.0:$httpPort" }
+        val ports = LinkedHashSet<Int>().apply {
+            add(httpPort)
+            addAll(config.ports.httpAliases)
+        }
+        ports.forEach { port ->
+            logger.info { "Binding http server to 0.0.0.0:$port" }
 
-        val result = httpBootstrap.bind("0.0.0.0", httpPort).sync()
-        channel = result.channel()
-        check(result.isSuccess) { "Failed to bind to 0.0.0.0:$httpPort" }
+            val result = httpBootstrap.bind("0.0.0.0", port).sync()
+            check(result.isSuccess) { "Failed to bind to 0.0.0.0:$port" }
 
-        logger.info { "Http server bound to 0.0.0.0:$httpPort" }
+            channels += result.channel()
+            logger.info { "Http server bound to 0.0.0.0:$port" }
+        }
     }
 
     override fun close() {
-        channel?.close()?.syncUninterruptibly()
-        channel = null
+        channels.forEach { channel ->
+            channel.close()?.syncUninterruptibly()
+        }
+        channels.clear()
         eventLoopGroup.shutdownGracefully().syncUninterruptibly()
     }
 
