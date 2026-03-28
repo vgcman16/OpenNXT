@@ -129,6 +129,72 @@ def _write_trace(handle, action: str, **payload: Any) -> None:
     handle.flush()
 
 
+def build_summary(
+    *,
+    client_exe: Path,
+    working_dir: Path,
+    argv_list: list[str],
+    launch_mode: str,
+    monitor_seconds: float,
+    patch_delay_seconds: float,
+    inline_patch_offsets: list[int],
+    inline_patch_results: list[dict[str, Any]],
+    null_patch_offsets: list[int],
+    null_patch_results: list[dict[str, Any]],
+    jump_bypass_specs: list[tuple[int, int]],
+    jump_patch_results: list[dict[str, Any]],
+    rsa_config_path: Path | None,
+    rsa_patch_results: Any,
+    resolve_redirects: dict[str, str],
+    connect_redirects: dict[str, dict[str, Any]],
+    startup_hook_output: Path | None,
+    startup_hook_verbose: bool,
+    trace_output: Path | None,
+    process_pid: int,
+    exit_code: int | None,
+    summary_stage: str,
+) -> dict[str, Any]:
+    live_process_path = query_process_path(process_pid)
+    live_command_line = query_process_command_line(process_pid)
+    alive = exit_code is None and (live_process_path is not None or live_command_line is not None)
+    return {
+        "pid": process_pid,
+        "clientExe": str(client_exe),
+        "workingDir": str(working_dir),
+        "argv": argv_list,
+        "launchMode": launch_mode,
+        "monitorSeconds": monitor_seconds,
+        "patchDelaySeconds": patch_delay_seconds,
+        "inlinePatchOffsets": [f"0x{offset:x}" for offset in inline_patch_offsets],
+        "inlinePatchResults": inline_patch_results,
+        "nullReadPatchOffsets": [f"0x{offset:x}" for offset in null_patch_offsets],
+        "nullReadPatchResults": null_patch_results,
+        "jumpBypassSpecs": [
+            {"sourceOffset": f"0x{source:x}", "targetOffset": f"0x{target:x}"}
+            for source, target in jump_bypass_specs
+        ],
+        "jumpBypassResults": jump_patch_results,
+        "rsaConfigPath": str(rsa_config_path) if rsa_config_path is not None else None,
+        "rsaPatchResults": rsa_patch_results,
+        "resolveRedirects": resolve_redirects,
+        "connectRedirects": connect_redirects,
+        "startupHookOutput": str(startup_hook_output) if startup_hook_output is not None else None,
+        "startupHookVerbose": startup_hook_verbose,
+        "summaryStage": summary_stage,
+        "processAlive": alive,
+        "exitCode": exit_code,
+        "liveProcessPath": live_process_path,
+        "liveCommandLine": live_command_line,
+        "traceOutput": str(trace_output) if trace_output is not None else None,
+    }
+
+
+def write_summary_output(summary_output: Path, summary: dict[str, Any]) -> None:
+    temp_output = summary_output.with_name(summary_output.name + ".tmp")
+    temp_output.write_text(json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8")
+    temp_output.replace(summary_output)
+
+
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     client_exe = Path(args.client_exe)
@@ -275,6 +341,33 @@ def main(argv: list[str] | None = None) -> int:
             device.resume(process_pid)
             _write_trace(trace_handle, "resumed", pid=process_pid, launchMode=launch_mode)
 
+        ready_summary = build_summary(
+            client_exe=client_exe,
+            working_dir=working_dir,
+            argv_list=argv_list,
+            launch_mode=launch_mode,
+            monitor_seconds=args.monitor_seconds,
+            patch_delay_seconds=args.patch_delay_seconds,
+            inline_patch_offsets=inline_patch_offsets,
+            inline_patch_results=inline_patch_results,
+            null_patch_offsets=null_patch_offsets,
+            null_patch_results=null_patch_results,
+            jump_bypass_specs=jump_bypass_specs,
+            jump_patch_results=jump_patch_results,
+            rsa_config_path=rsa_config_path,
+            rsa_patch_results=rsa_patch_results,
+            resolve_redirects=resolve_redirects,
+            connect_redirects=connect_redirects,
+            startup_hook_output=startup_hook_output,
+            startup_hook_verbose=bool(args.startup_hook_verbose),
+            trace_output=trace_output,
+            process_pid=process_pid,
+            exit_code=None,
+            summary_stage="ready",
+        )
+        _write_trace(trace_handle, "summary-ready", summary=ready_summary)
+        write_summary_output(summary_output, ready_summary)
+
         deadline = time.time() + max(0.0, args.monitor_seconds)
         exit_code = None
         while time.time() < deadline:
@@ -290,38 +383,32 @@ def main(argv: list[str] | None = None) -> int:
         if process is not None and exit_code is None:
             exit_code = process.poll()
 
-        alive = exit_code is None and query_process_path(process_pid) is not None
-        summary = {
-            "pid": process_pid,
-            "clientExe": str(client_exe),
-            "workingDir": str(working_dir),
-            "argv": argv_list,
-            "launchMode": launch_mode,
-            "monitorSeconds": args.monitor_seconds,
-            "patchDelaySeconds": args.patch_delay_seconds,
-            "inlinePatchOffsets": [f"0x{offset:x}" for offset in inline_patch_offsets],
-            "inlinePatchResults": inline_patch_results,
-            "nullReadPatchOffsets": [f"0x{offset:x}" for offset in null_patch_offsets],
-            "nullReadPatchResults": null_patch_results,
-            "jumpBypassSpecs": [
-                {"sourceOffset": f"0x{source:x}", "targetOffset": f"0x{target:x}"}
-                for source, target in jump_bypass_specs
-            ],
-            "jumpBypassResults": jump_patch_results,
-            "rsaConfigPath": str(rsa_config_path) if rsa_config_path is not None else None,
-            "rsaPatchResults": rsa_patch_results,
-            "resolveRedirects": resolve_redirects,
-            "connectRedirects": connect_redirects,
-            "startupHookOutput": str(startup_hook_output) if startup_hook_output is not None else None,
-            "startupHookVerbose": bool(args.startup_hook_verbose),
-            "processAlive": alive,
-            "exitCode": exit_code,
-            "liveProcessPath": query_process_path(process_pid),
-            "liveCommandLine": query_process_command_line(process_pid),
-            "traceOutput": str(trace_output) if trace_output is not None else None,
-        }
+        summary = build_summary(
+            client_exe=client_exe,
+            working_dir=working_dir,
+            argv_list=argv_list,
+            launch_mode=launch_mode,
+            monitor_seconds=args.monitor_seconds,
+            patch_delay_seconds=args.patch_delay_seconds,
+            inline_patch_offsets=inline_patch_offsets,
+            inline_patch_results=inline_patch_results,
+            null_patch_offsets=null_patch_offsets,
+            null_patch_results=null_patch_results,
+            jump_bypass_specs=jump_bypass_specs,
+            jump_patch_results=jump_patch_results,
+            rsa_config_path=rsa_config_path,
+            rsa_patch_results=rsa_patch_results,
+            resolve_redirects=resolve_redirects,
+            connect_redirects=connect_redirects,
+            startup_hook_output=startup_hook_output,
+            startup_hook_verbose=bool(args.startup_hook_verbose),
+            trace_output=trace_output,
+            process_pid=process_pid,
+            exit_code=exit_code,
+            summary_stage="final",
+        )
         _write_trace(trace_handle, "summary", summary=summary)
-        summary_output.write_text(json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8")
+        write_summary_output(summary_output, summary)
 
         if startup_script is not None:
             try:

@@ -180,7 +180,18 @@ class LaunchRuneScapeWrapperRewriteTest(unittest.TestCase):
             result,
         )
 
-    def test_resolve_fetch_config_uri_rewrites_public_config_host_to_local_endpoint(self) -> None:
+    def test_resolve_fetch_config_uri_keeps_secure_retail_config_uri(self) -> None:
+        original = (
+            "https://rs.config.runescape.com/k=5/l=0/jav_config.ws?"
+            "binaryType=6&hostRewrite=0&lobbyHostRewrite=0&contentRouteRewrite=0"
+            "&worldUrlRewrite=0&codebaseRewrite=0&gameHostRewrite=0"
+        )
+
+        rewritten = resolve_fetch_config_uri(original)
+
+        self.assertEqual(original, rewritten)
+
+    def test_resolve_fetch_config_uri_rewrites_public_config_host_to_local_endpoint_when_local_rewrite_requested(self) -> None:
         original = (
             "https://rs.config.runescape.com/k=5/l=0/jav_config.ws?"
             "binaryType=6&hostRewrite=0&contentRouteRewrite=0&worldUrlRewrite=0"
@@ -211,6 +222,14 @@ class LaunchRuneScapeWrapperRewriteTest(unittest.TestCase):
             "http://localhost:8080/jav_config.ws?"
             "binaryType=6&hostRewrite=0&lobbyHostRewrite=0&contentRouteRewrite=1"
             "&worldUrlRewrite=1&codebaseRewrite=1"
+        )
+        self.assertTrue(should_auto_redirect_route_hosts(config_uri))
+
+    def test_should_auto_redirect_route_hosts_true_for_retail_host_when_local_rewrite_requested(self) -> None:
+        config_uri = (
+            "https://rs.config.runescape.com/k=5/l=0/jav_config.ws?"
+            "binaryType=6&hostRewrite=0&lobbyHostRewrite=0&contentRouteRewrite=0"
+            "&worldUrlRewrite=0&codebaseRewrite=1&gameHostRewrite=0"
         )
         self.assertTrue(should_auto_redirect_route_hosts(config_uri))
 

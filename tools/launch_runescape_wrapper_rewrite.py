@@ -113,6 +113,15 @@ KNOWN_JUMP_BYPASS_BLOCKS = {
     0x72AD28: bytes.fromhex("80 7B 08 00 74 18 48 8B 0D DB 1B 52 00 48 85 C9 74 0C 48 8B D3 E8 7E 13 00 00 C6 43 08 00"),
     0x72B3A8: bytes.fromhex("80 7B 08 00 74 18 48 8B 0D 2B 45 58 00 48 85 C9 74 0C 48 8B D3 E8 3E 14 00 00 C6 43 08 00"),
 }
+LOCAL_REWRITE_QUERY_FLAGS = (
+    "contentRouteRewrite",
+    "worldUrlRewrite",
+    "codebaseRewrite",
+    "hostRewrite",
+    "lobbyHostRewrite",
+    "gameHostRewrite",
+)
+TRUE_QUERY_VALUES = {"1", "true", "yes", "on"}
 
 
 class PROCESS_BASIC_INFORMATION(ctypes.Structure):
@@ -297,12 +306,23 @@ def fetch_jav_config(config_uri: str) -> str:
     return raw.decode("utf-8", "replace")
 
 
+def requests_local_rewrite_contract(config_uri: str) -> bool:
+    parsed = urllib.parse.urlsplit(config_uri)
+    query = dict(urllib.parse.parse_qsl(parsed.query, keep_blank_values=True))
+    for flag_name in LOCAL_REWRITE_QUERY_FLAGS:
+        value = str(query.get(flag_name) or "").strip().lower()
+        if value in TRUE_QUERY_VALUES:
+            return True
+    return False
+
+
 def resolve_fetch_config_uri(config_uri: str) -> str:
     parsed = urllib.parse.urlsplit(config_uri)
     hostname = (parsed.hostname or "").lower()
-    if hostname == "rs.config.runescape.com":
-        # Preserve the caller's chosen 947 wrapper contract while only swapping
-        # the fetch host to the local jav_config endpoint.
+    if hostname == "rs.config.runescape.com" and requests_local_rewrite_contract(config_uri):
+        # Only explicit loopback/local-rewrite contracts fetch the startup
+        # payload from the local HTTP bridge. The default secure 947 wrapper
+        # path must fetch the retail config directly.
         return urllib.parse.urlunsplit(
             (
                 "http",
@@ -318,7 +338,7 @@ def resolve_fetch_config_uri(config_uri: str) -> str:
 def should_auto_redirect_route_hosts(config_uri: str) -> bool:
     parsed = urllib.parse.urlsplit(config_uri)
     hostname = (parsed.hostname or "").lower()
-    if hostname == "rs.config.runescape.com":
+    if hostname == "rs.config.runescape.com" and not requests_local_rewrite_contract(config_uri):
         # Keep the secure retail-shaped startup contract intact through the
         # application-resource splash phase. The caller can still provide
         # explicit world/lobby resolve redirects when localhost fallback is
@@ -326,16 +346,9 @@ def should_auto_redirect_route_hosts(config_uri: str) -> bool:
         # recreates the 255/* reference-table loop before login.
         return False
     query = dict(urllib.parse.parse_qsl(parsed.query, keep_blank_values=True))
-    for flag_name in (
-        "contentRouteRewrite",
-        "worldUrlRewrite",
-        "codebaseRewrite",
-        "hostRewrite",
-        "lobbyHostRewrite",
-        "gameHostRewrite",
-    ):
+    for flag_name in LOCAL_REWRITE_QUERY_FLAGS:
         value = str(query.get(flag_name) or "").strip().lower()
-        if value in {"1", "true", "yes", "on"}:
+        if value in TRUE_QUERY_VALUES:
             return True
     return False
 

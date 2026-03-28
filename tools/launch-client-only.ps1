@@ -36,6 +36,8 @@ $runtimeHotCacheRepairScript = Join-Path $PSScriptRoot "repair_runescape_runtime
 $installedRuntimeSyncTool = Join-Path $PSScriptRoot "sync_runescape_installed_runtime.py"
 $directPatchTrace = Join-Path $root "data\\debug\\direct-rs2client-patch\\latest-client-only.jsonl"
 $directPatchSummary = Join-Path $root "data\\debug\\direct-rs2client-patch\\latest-client-only.json"
+$directPatchStdout = Join-Path $root "data\\debug\\direct-rs2client-patch\\latest-client-only.stdout.log"
+$directPatchStderr = Join-Path $root "data\\debug\\direct-rs2client-patch\\latest-client-only.stderr.log"
 $wrapperRewriteTrace = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-client-only.jsonl"
 $wrapperRewriteSummary = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-client-only.json"
 $wrapperRewriteChildHookOutput = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-client-only-child-hook.jsonl"
@@ -909,8 +911,69 @@ function Invoke-DirectPatchedClientLaunch {
         return ,$argsList
     }
 
+    function Read-DirectPatchSummary {
+        param([string]$Path)
+
+        $lastError = $null
+        for ($attempt = 0; $attempt -lt 20; $attempt++) {
+            try {
+                $rawSummary = Get-Content -Path $Path -Raw -ErrorAction Stop
+                if (-not [string]::IsNullOrWhiteSpace($rawSummary)) {
+                    return $rawSummary | ConvertFrom-Json -ErrorAction Stop
+                }
+            } catch {
+                $lastError = $_
+            }
+
+            Start-Sleep -Milliseconds 250
+        }
+
+        if ($lastError) {
+            throw "Direct rs2client patch launch summary could not be parsed: $Path. $($lastError.Exception.Message)"
+        }
+
+        throw "Direct rs2client patch launch summary was empty: $Path"
+    }
+
+    function Stop-DirectPatchAttemptArtifacts {
+        param(
+            [System.Diagnostics.Process]$HelperProcess,
+            [string]$LaunchedClientPath
+        )
+
+        $targetPids = @()
+        if ($HelperProcess) {
+            $targetPids += $HelperProcess.Id
+        }
+
+        if (-not [string]::IsNullOrWhiteSpace($LaunchedClientPath) -and (Test-Path $LaunchedClientPath)) {
+            $resolvedClientPath = [System.IO.Path]::GetFullPath($LaunchedClientPath)
+            $targetPids += @(
+                Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+                    Where-Object {
+                        $_.ProcessId -ne $PID -and
+                        $null -ne $_.ExecutablePath -and
+                        [string]::Equals([System.IO.Path]::GetFullPath($_.ExecutablePath), $resolvedClientPath, [System.StringComparison]::OrdinalIgnoreCase)
+                    } |
+                    Select-Object -ExpandProperty ProcessId -Unique
+            )
+        }
+
+        $targetPids = @(
+            $targetPids |
+                Where-Object { $_ -and $_ -ne $PID } |
+                Sort-Object -Unique
+        )
+        foreach ($processId in $targetPids) {
+            try {
+                taskkill /PID $processId /T /F | Out-Null
+            } catch {}
+        }
+
+        return $targetPids
+    }
+
     $pythonExe = (Get-Command python -ErrorAction Stop).Source
-    $directPatchExitCode = $null
     $usedReducedDirectPatchMode = $false
 
     function Invoke-DirectPatchAttempt {
@@ -925,48 +988,113 @@ function Invoke-DirectPatchedClientLaunch {
         if (-not [string]::IsNullOrWhiteSpace($StartupHookOutputPath) -and (Test-Path $StartupHookOutputPath)) {
             Remove-Item $StartupHookOutputPath -Force -ErrorAction SilentlyContinue
         }
+        Remove-Item $directPatchStdout, $directPatchStderr -Force -ErrorAction SilentlyContinue
 
         $pythonArgs = New-DirectPatchPythonArgs -EnableStartupHook:$EnableStartupHook -EnableRedirects:$EnableRedirects
-        Push-Location $WorkspaceRoot
+        $quotedPythonArgs = @($pythonArgs | ForEach-Object { Quote-ProcessArgument $_ })
+        $helperProcess = Start-Process `
+            -FilePath $pythonExe `
+            -ArgumentList $quotedPythonArgs `
+            -WorkingDirectory $WorkspaceRoot `
+            -RedirectStandardOutput $directPatchStdout `
+            -RedirectStandardError $directPatchStderr `
+            -PassThru
+        $summaryDeadline = (Get-Date).AddSeconds([Math]::Max(15, $MonitorSeconds))
+        while ((Get-Date) -lt $summaryDeadline -and -not (Test-Path $SummaryPath)) {
+            $helperStillRunning = Get-Process -Id $helperProcess.Id -ErrorAction SilentlyContinue
+            if ($null -eq $helperStillRunning) {
+                break
+            }
+
+            Start-Sleep -Milliseconds 500
+        }
+
+        $helperExitCode = $null
         try {
-            & $pythonExe @pythonArgs
-            return $LASTEXITCODE
-        } finally {
-            Pop-Location
+            $helperProcess.Refresh()
+            if ($helperProcess.HasExited) {
+                $helperExitCode = $helperProcess.ExitCode
+            }
+        } catch {}
+        $stderrTail = $null
+        if (Test-Path $directPatchStderr) {
+            $stderrTail = (Get-Content -Path $directPatchStderr -ErrorAction SilentlyContinue | Select-Object -Last 20) -join " | "
+        }
+
+        if (-not (Test-Path $SummaryPath)) {
+            $terminatedPids = @(Stop-DirectPatchAttemptArtifacts -HelperProcess $helperProcess -LaunchedClientPath $ClientExePath)
+            return [pscustomobject]@{
+                Success = $false
+                FailureMessage = "Direct rs2client patch launch completed without a summary output: $SummaryPath"
+                HelperExitCode = $helperExitCode
+                StderrTail = $stderrTail
+                TerminatedPids = $terminatedPids
+            }
+        }
+
+        $directPatchLaunchSummary = Read-DirectPatchSummary -Path $SummaryPath
+        $bootstrapClientPid = [int]$directPatchLaunchSummary.pid
+        $resolvedClientPid = [int]$directPatchLaunchSummary.pid
+        $process = $null
+        $resolveDeadline = (Get-Date).AddSeconds(10)
+        while ((Get-Date) -lt $resolveDeadline -and $null -eq $process) {
+            $process = Get-Process -Id $resolvedClientPid -ErrorAction SilentlyContinue
+            if ($null -eq $process -and [bool]$directPatchLaunchSummary.processAlive) {
+                $process = Resolve-MainClientProcess -BootstrapPid $bootstrapClientPid -TimeoutSeconds 2
+            }
+            if ($null -eq $process) {
+                Start-Sleep -Milliseconds 250
+            }
+        }
+        if ($null -eq $process) {
+            $terminatedPids = @(Stop-DirectPatchAttemptArtifacts -HelperProcess $helperProcess -LaunchedClientPath $ClientExePath)
+            return [pscustomobject]@{
+                Success = $false
+                FailureMessage = "Direct rs2client patch launch completed but no live client process could be resolved."
+                HelperExitCode = $helperExitCode
+                StderrTail = $stderrTail
+                TerminatedPids = $terminatedPids
+            }
+        }
+
+        return [pscustomobject]@{
+            Success = $true
+            Summary = $directPatchLaunchSummary
+            BootstrapClientPid = $bootstrapClientPid
+            ResolvedClientPid = $resolvedClientPid
+            Process = $process
+            HelperProcess = $helperProcess
         }
     }
 
-    $directPatchExitCode = Invoke-DirectPatchAttempt -EnableStartupHook:(-not [string]::IsNullOrWhiteSpace($StartupHookOutputPath)) -EnableRedirects:($RedirectSpecs.Count -gt 0)
-    if ($directPatchExitCode -ne 0 -and ((-not [string]::IsNullOrWhiteSpace($StartupHookOutputPath)) -or $RedirectSpecs.Count -gt 0)) {
+    $useInitialStartupHook = -not [string]::IsNullOrWhiteSpace($StartupHookOutputPath)
+    $useInitialRedirects = $RedirectSpecs.Count -gt 0
+    $attempt = Invoke-DirectPatchAttempt -EnableStartupHook:$useInitialStartupHook -EnableRedirects:$useInitialRedirects
+    if (-not $attempt.Success -and ($useInitialStartupHook -or $useInitialRedirects)) {
         Write-Host "Direct patch launch retrying without pre-resume Frida startup hook or startup redirects"
         $usedReducedDirectPatchMode = $true
-        $directPatchExitCode = Invoke-DirectPatchAttempt -EnableStartupHook:$false -EnableRedirects:$false
+        $attempt = Invoke-DirectPatchAttempt -EnableStartupHook:$false -EnableRedirects:$false
     }
-    if ($directPatchExitCode -ne 0) {
-        throw "Direct rs2client patch launch failed with exit code $directPatchExitCode."
-    }
-
-    if (-not (Test-Path $SummaryPath)) {
-        throw "Direct rs2client patch launch completed without a summary output: $SummaryPath"
-    }
-
-    $directPatchLaunchSummary = Get-Content -Path $SummaryPath -Raw | ConvertFrom-Json
-    $bootstrapClientPid = [int]$directPatchLaunchSummary.pid
-    $resolvedClientPid = [int]$directPatchLaunchSummary.pid
-    $process = Get-Process -Id $resolvedClientPid -ErrorAction SilentlyContinue
-    if ($null -eq $process -and [bool]$directPatchLaunchSummary.processAlive) {
-        $process = Resolve-MainClientProcess -BootstrapPid $bootstrapClientPid -TimeoutSeconds 5
-    }
-    if ($null -eq $process) {
-        throw "Direct rs2client patch launch completed but no live client process could be resolved."
+    if (-not $attempt.Success) {
+        if (-not [string]::IsNullOrWhiteSpace([string]$attempt.StderrTail)) {
+            Write-Host ("Direct patch launch stderr tail: {0}" -f $attempt.StderrTail)
+        }
+        if ($attempt.TerminatedPids -and $attempt.TerminatedPids.Count -gt 0) {
+            Write-Host ("Direct patch launch cleanup terminated pids: {0}" -f ($attempt.TerminatedPids -join ", "))
+        }
+        if ($null -ne $attempt.HelperExitCode) {
+            throw "Direct rs2client patch launch failed with exit code $($attempt.HelperExitCode)."
+        }
+        throw $attempt.FailureMessage
     }
 
     return [pscustomobject]@{
-        Summary = $directPatchLaunchSummary
-        BootstrapClientPid = $bootstrapClientPid
-        ResolvedClientPid = $resolvedClientPid
-        Process = $process
+        Summary = $attempt.Summary
+        BootstrapClientPid = $attempt.BootstrapClientPid
+        ResolvedClientPid = $attempt.ResolvedClientPid
+        Process = $attempt.Process
         UsedReducedMode = $usedReducedDirectPatchMode
+        HelperProcess = $attempt.HelperProcess
     }
 }
 
@@ -1255,11 +1383,15 @@ if ($launchViaRuneScapeWrapper) {
         $launchArg = Set-QueryParameter -Url $launchArg -Name "worldUrlRewrite" -Value "1"
         $launchArg = Set-QueryParameter -Url $launchArg -Name "baseConfigSource" -Value "compressed"
     } elseif ($use947RetailConfigRoute -and -not $configUrlExplicit) {
-        # Match the full live launcher: keep the 947 wrapper's visible
-        # world/content startup contract retail-shaped, but serve the codebase
-        # through the local stack so splash bootstrap can progress into the
-        # real pre-login path.
-        $launchArg = Set-QueryParameter -Url $launchArg -Name "codebaseRewrite" -Value "1"
+        # Match the full live launcher: keep the 947 wrapper startup contract
+        # fully retail-shaped so the child stays on the secure splash bootstrap
+        # path unless the caller explicitly opts into a local rewrite contract.
+        $launchArg = Set-QueryParameter -Url $launchArg -Name "contentRouteRewrite" -Value "0"
+        $launchArg = Set-QueryParameter -Url $launchArg -Name "worldUrlRewrite" -Value "0"
+        $launchArg = Set-QueryParameter -Url $launchArg -Name "codebaseRewrite" -Value "0"
+        $launchArg = Remove-QueryParameter -Url $launchArg -Name "baseConfigSource"
+        $launchArg = Remove-QueryParameter -Url $launchArg -Name "liveCache"
+        $launchArg = Remove-QueryParameter -Url $launchArg -Name "baseConfigSnapshotPath"
     }
 } elseif ($use947RetailConfigRoute -and -not $configUrlExplicit -and -not $prefer947PatchedDirectClient) {
     $launchArg = Convert-To947DirectClientLaunchArg -Url $launchArg -GamePort $gamePort
@@ -1364,7 +1496,10 @@ if ([string]::IsNullOrWhiteSpace($configuredLobbyHost)) {
 $trustSetup = Ensure-CanonicalMitmTrust -LobbyHost $configuredLobbyHost
 $trustState = $trustSetup.TrustState
 $script:CanWriteHostsFile = Test-HostsFileWriteAccess -Path $hostsFile
-Sync-RetailHostsOverride -EnableOverride:$use947RetailConfigRoute
+$shouldApplyRetailHostsOverride = $use947RetailConfigRoute -and $configuredClientBuild -lt 947
+# Build 947's secure retail route must not rewrite rs.config/content hosts
+# back to localhost; clear any stale overrides instead.
+Sync-RetailHostsOverride -EnableOverride:$shouldApplyRetailHostsOverride
 $startupRouteHosts = @()
 if ($configuredClientBuild -ge 947 -and -not [string]::IsNullOrWhiteSpace($startupConfigContent)) {
     $startupRouteHosts = @(Get-947StartupRouteHostsFromConfigContent -ConfigContent $startupConfigContent)
