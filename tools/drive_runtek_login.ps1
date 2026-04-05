@@ -3,6 +3,8 @@ param(
     [string]$Password = "demon",
     [string]$WindowTitle = "RuneTekApp",
     [long]$Handle = 0,
+    [Alias('Pid')]
+    [int]$TargetPid = 0,
     [string]$CaptureDir = "",
     [int]$PreClickDelayMs = 600,
     [int]$PostLoginWaitSeconds = 12,
@@ -13,14 +15,53 @@ $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
 $root = Split-Path -Parent $PSScriptRoot
-$screenshotScript = "C:\Users\Demon\.codex\skills\screenshot\scripts\take_screenshot.ps1"
-
 if ([string]::IsNullOrWhiteSpace($CaptureDir)) {
     $CaptureDir = Join-Path $root "data\debug\runtek-automation"
 }
 New-Item -ItemType Directory -Path $CaptureDir -Force | Out-Null
 
+if (-not $CaptureOnly) {
+    $pythonExe = $null
+    foreach ($candidate in @(
+        "C:\Users\skull\AppData\Local\Programs\Python\Python312\python.exe",
+        "C:\Users\skull\AppData\Local\Programs\Python\Python311\python.exe"
+    )) {
+        if (Test-Path $candidate) {
+            $pythonExe = $candidate
+            break
+        }
+    }
+    if ([string]::IsNullOrWhiteSpace($pythonExe)) {
+        throw "Could not resolve a Python interpreter for the guarded login driver."
+    }
+
+    $pythonScript = Join-Path $PSScriptRoot "run_runtek_login_loop.py"
+    $summaryOutput = Join-Path $CaptureDir "latest-drive-runtek-login.json"
+    $arguments = @(
+        $pythonScript,
+        "--username", $Username,
+        "--password", $Password,
+        "--window-title", $WindowTitle,
+        "--max-attempts", "1",
+        "--attempt-wait-seconds", [string]$PostLoginWaitSeconds,
+        "--settle-delay-seconds", "2",
+        "--pre-click-delay-ms", [string]$PreClickDelayMs,
+        "--capture-dir", $CaptureDir,
+        "--summary-output", $summaryOutput
+    )
+    if ($Handle -ne 0) {
+        $arguments += @("--handle", ("0x{0:x}" -f $Handle))
+    }
+    if ($TargetPid -gt 0) {
+        $arguments += @("--pid", [string]$TargetPid)
+    }
+
+    & $pythonExe @arguments
+    exit $LASTEXITCODE
+}
+
 Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
 Add-Type @"
 using System;
 using System.Runtime.InteropServices;
@@ -146,12 +187,27 @@ function Capture-Window {
         [string]$Label
     )
 
+    $rect = Get-WindowRect -Handle $Handle
+    $width = $rect.Right - $rect.Left
+    $height = $rect.Bottom - $rect.Top
+    if ($width -le 0 -or $height -le 0) {
+        throw "Window handle $Handle reported invalid bounds ${width}x${height}"
+    }
+
     $path = Join-Path $CaptureDir ("{0}-{1}.png" -f (Get-Date -Format "yyyyMMdd-HHmmss"), $Label)
-    & "$env:WINDIR\System32\WindowsPowerShell\v1.0\powershell.exe" `
-        -ExecutionPolicy Bypass `
-        -File $screenshotScript `
-        -Path $path `
-        -WindowHandle ([int64]$Handle) | Out-Null
+    $bitmap = New-Object System.Drawing.Bitmap $width, $height
+    $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
+    try {
+        $graphics.CopyFromScreen(
+            (New-Object System.Drawing.Point $rect.Left, $rect.Top),
+            [System.Drawing.Point]::Empty,
+            (New-Object System.Drawing.Size $width, $height)
+        )
+        $bitmap.Save($path, [System.Drawing.Imaging.ImageFormat]::Png)
+    } finally {
+        $graphics.Dispose()
+        $bitmap.Dispose()
+    }
     return $path
 }
 

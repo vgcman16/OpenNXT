@@ -11,8 +11,9 @@ import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.http.*
 import mu.KotlinLogging
+import java.net.HttpURLConnection
+import java.net.URL
 import java.nio.ByteBuffer
-import java.security.SecureRandom
 import java.time.Instant
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -22,17 +23,31 @@ object Js5MsEndpoint {
     private val logger = KotlinLogging.logger { }
     private const val CACHE_MAX_AGE_SECONDS = 25_920_000L
     private const val LAST_MODIFIED_OFFSET_SECONDS = 7L * 24L * 60L * 60L
-    private const val JXADDINFO_PREFIX = "DBXPZaBPotHnzeZldoHBT"
-    private const val JXADDINFO_SUFFIX_LENGTH = 18
+    private const val UPSTREAM_MS_CONNECT_TIMEOUT_MILLIS = 5_000
+    private const val UPSTREAM_MS_READ_TIMEOUT_MILLIS = 5_000
     private val HTTP_DATE_FORMATTER: DateTimeFormatter =
         DateTimeFormatter.ofPattern("EEE, dd-MMM-yyyy HH:mm:ss 'GMT'", Locale.US).withZone(ZoneOffset.UTC)
-    private val cookieRandom = SecureRandom()
-    private val sessionCookie = buildSessionCookie()
 
     internal data class ResolvedPayload(
         val data: ByteBuffer,
         val kind: String
     )
+
+    internal data class UpstreamMsResponse(
+        val bytes: ByteArray,
+        val cookie: String? = null,
+    )
+
+    @Volatile
+    internal var payloadResolver: (Int, Int) -> ResolvedPayload? = ::resolvePayload
+
+    @Volatile
+    internal var upstreamPayloadFetcher: (String, String?) -> UpstreamMsResponse? = ::fetchUpstreamPayload
+
+    internal fun resetForTests() {
+        payloadResolver = ::resolvePayload
+        upstreamPayloadFetcher = ::fetchUpstreamPayload
+    }
 
     fun handle(ctx: ChannelHandlerContext, msg: FullHttpRequest, query: QueryStringDecoder) {
         if (!query.parameters().containsKey("a") || !query.parameters().containsKey("g")) {
@@ -55,7 +70,9 @@ object Js5MsEndpoint {
             return
         }
 
-        val payload = resolvePayload(index, archive)
+        val payload =
+            payloadResolver(index, archive)
+                ?: resolveRetailFallbackPayload(msg, index, archive)
         if (payload == null) {
             logger.warn {
                 "Missing /ms payload for ${ctx.channel().remoteAddress()}: index=$index archive=$archive"
@@ -85,11 +102,99 @@ object Js5MsEndpoint {
         return ResolvedPayload(data, "archive")
     }
 
+    private fun resolveRetailFallbackPayload(
+        request: FullHttpRequest,
+        index: Int,
+        archive: Int,
+    ): ResolvedPayload? {
+        val upstreamUrl = buildRetailMsUrl(request.uri())
+        val cookie = RetailUpstreamCookie.resolveMsCookie()
+        val requestCookie = cookie.substringBefore(';').trim().takeIf { it.startsWith("JXADDINFO=") }
+        val response = upstreamPayloadFetcher(upstreamUrl, requestCookie)
+        if (response == null) {
+            logger.warn {
+                "Retail /ms fallback unavailable for index=$index archive=$archive url=$upstreamUrl"
+            }
+            return null
+        }
+        response.cookie?.let(RetailSessionCookie::noteCurrent)
+        logger.info {
+            "Using retail /ms fallback for index=$index archive=$archive bytes=${response.bytes.size} url=$upstreamUrl"
+        }
+        return ResolvedPayload(ByteBuffer.wrap(response.bytes), "retail-upstream")
+    }
+
+    internal fun buildRetailMsUrl(requestUri: String): String {
+        val rawPath = requestUri.substringBefore('?')
+        val canonicalPath = canonicalizePath(rawPath)
+        val querySuffix = requestUri.substringAfter('?', "")
+        return buildString {
+            append("https://content.runescape.com")
+            append(canonicalPath)
+            if (querySuffix.isNotEmpty()) {
+                append('?')
+                append(querySuffix)
+            }
+        }
+    }
+
+    private fun canonicalizePath(path: String): String {
+        var normalized = path
+        while (true) {
+            val next =
+                when {
+                    normalized.matches(Regex("^/(k|l)=[^/]+/.*$")) -> normalized.replaceFirst(Regex("^/(k|l)=[^/]+"), "")
+                    normalized.matches(Regex("^/(k|l)=[^/]+$")) -> "/"
+                    else -> null
+                }
+            normalized = next ?: break
+        }
+        return normalized
+    }
+
+    private fun fetchUpstreamPayload(url: String, cookie: String?): UpstreamMsResponse? {
+        val connection = (URL(url).openConnection() as? HttpURLConnection) ?: return null
+        connection.requestMethod = "GET"
+        connection.connectTimeout = UPSTREAM_MS_CONNECT_TIMEOUT_MILLIS
+        connection.readTimeout = UPSTREAM_MS_READ_TIMEOUT_MILLIS
+        connection.setRequestProperty("Accept", "*/*")
+        connection.setRequestProperty("Connection", "close")
+        connection.setRequestProperty("User-Agent", "OpenNXT/1.0")
+        if (!cookie.isNullOrBlank()) {
+            connection.setRequestProperty("Cookie", cookie)
+        }
+        return try {
+            val status = connection.responseCode
+            if (status != HttpURLConnection.HTTP_OK) {
+                logger.warn { "Retail /ms fetch returned status=$status for $url" }
+                null
+            } else {
+                val body = connection.inputStream.use { input -> input.readBytes() }
+                val responseCookie = connection.headerFields["Set-Cookie"]
+                    .orEmpty()
+                    .firstOrNull { it.startsWith("JXADDINFO=", ignoreCase = true) }
+                UpstreamMsResponse(body, responseCookie)
+            }
+        } catch (e: Exception) {
+            logger.warn(e) { "Failed to fetch retail /ms payload from $url" }
+            null
+        } finally {
+            connection.disconnect()
+        }
+    }
+
     private fun sendFile(request: FullHttpRequest, ctx: ChannelHandlerContext, buf: ByteBuf) {
         val size = buf.readableBytes()
         val response = DefaultFullHttpResponse(request.protocolVersion(), HttpResponseStatus.OK, buf)
         val keepAlive = HttpUtil.isKeepAlive(request)
-        applyRetailMsHeaders(response.headers(), size, keepAlive = keepAlive)
+        val cookie = RetailUpstreamCookie.resolveMsCookie()
+        applyRetailMsHeaders(
+            response.headers(),
+            size,
+            keepAlive = keepAlive,
+            cookie = cookie,
+            requestHost = request.headers().get(HttpHeaderNames.HOST),
+        )
 
         val future = ctx.channel().writeAndFlush(response)
         if (!keepAlive) {
@@ -102,28 +207,21 @@ object Js5MsEndpoint {
         size: Int,
         now: Instant = Instant.now(),
         keepAlive: Boolean = true,
+        cookie: String = RetailSessionCookie.current(),
+        requestHost: String? = null,
     ) {
         val expiresAt = now.plusSeconds(CACHE_MAX_AGE_SECONDS)
         val lastModifiedAt = now.minusSeconds(LAST_MODIFIED_OFFSET_SECONDS)
         val formattedNow = HTTP_DATE_FORMATTER.format(now)
+        val headerCookie = RetailSessionCookie.headerValueForRequest(cookie, requestHost)
         headers.set("Date", formattedNow)
         headers.set("Server", "JAGeX/3.1")
         headers.set("Content-type", "application/octet-stream")
         headers.set("Cache-control", "public, max-age=$CACHE_MAX_AGE_SECONDS")
         headers.set("Expires", HTTP_DATE_FORMATTER.format(expiresAt))
         headers.set("Last-modified", HTTP_DATE_FORMATTER.format(lastModifiedAt))
-        headers.set("Set-Cookie", sessionCookie)
+        headers.set("Set-Cookie", headerCookie)
         headers.set("Connection", if (keepAlive) "Keep-alive" else "close")
         headers.set("Content-length", size)
-    }
-
-    private fun buildSessionCookie(): String {
-        val alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
-        val suffix = buildString(JXADDINFO_SUFFIX_LENGTH) {
-            repeat(JXADDINFO_SUFFIX_LENGTH) {
-                append(alphabet[cookieRandom.nextInt(alphabet.length)])
-            }
-        }
-        return "JXADDINFO=$JXADDINFO_PREFIX$suffix; version=1; path=/; domain=.runescape.com"
     }
 }

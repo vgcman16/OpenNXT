@@ -33,7 +33,7 @@
       "totalWidth": 4
     },
     "generatedClassName": "WorldlistFetchGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\clientprot\\WorldlistFetchGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\clientprot\\WorldlistFetchGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.clientprot",
     "hasManualRegistration": true,
     "opcode": 110,
@@ -86,7 +86,7 @@
       "totalWidth": 8
     },
     "generatedClassName": "ResumePCountdialogGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\clientprot\\ResumePCountdialogGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\clientprot\\ResumePCountdialogGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.clientprot",
     "hasManualRegistration": false,
     "opcode": 129,
@@ -153,7 +153,7 @@
       "totalWidth": 7
     },
     "generatedClassName": "ObjRevealGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\ObjRevealGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\ObjRevealGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": false,
     "opcode": 3,
@@ -210,7 +210,7 @@
       "totalWidth": 6
     },
     "generatedClassName": "IfSetcolourGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSetcolourGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSetcolourGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": false,
     "opcode": 8,
@@ -292,7 +292,7 @@
       "totalWidth": 23
     },
     "generatedClassName": "IfOpensubGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfOpensubGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfOpensubGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": true,
     "opcode": 38,
@@ -349,7 +349,7 @@
       "totalWidth": 5
     },
     "generatedClassName": "IfSethideGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSethideGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSethideGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": true,
     "opcode": 45,
@@ -401,7 +401,7 @@
       "totalWidth": 4
     },
     "generatedClassName": "IfClosesubGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfClosesubGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfClosesubGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": true,
     "opcode": 50,
@@ -458,7 +458,7 @@
       "totalWidth": 6
     },
     "generatedClassName": "VarpLargeGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\VarpLargeGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\VarpLargeGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": true,
     "opcode": 51,
@@ -515,7 +515,7 @@
       "totalWidth": null
     },
     "generatedClassName": "IfSettextGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSettextGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSettextGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": true,
     "opcode": 57,
@@ -582,7 +582,7 @@
       "totalWidth": 12
     },
     "generatedClassName": "IfSeteventsGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSeteventsGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSeteventsGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": true,
     "opcode": 59,
@@ -639,7 +639,7 @@
       "totalWidth": 3
     },
     "generatedClassName": "VarpSmallGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\VarpSmallGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\VarpSmallGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": true,
     "opcode": 72,
@@ -691,7 +691,7 @@
       "totalWidth": 4
     },
     "generatedClassName": "IfSetplayerheadGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSetplayerheadGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSetplayerheadGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": true,
     "opcode": 77,
@@ -753,7 +753,7 @@
       "totalWidth": 5
     },
     "generatedClassName": "ObjAddGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\ObjAddGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\ObjAddGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": false,
     "opcode": 87,
@@ -810,7 +810,7 @@
       "totalWidth": 3
     },
     "generatedClassName": "ObjDelGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\ObjDelGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\ObjDelGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": false,
     "opcode": 98,
@@ -862,7 +862,7 @@
       "totalWidth": 4
     },
     "generatedClassName": "IfSetplayermodelSelfGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSetplayermodelSelfGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSetplayermodelSelfGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": true,
     "opcode": 106,
@@ -919,7 +919,7 @@
       "totalWidth": 6
     },
     "generatedClassName": "IfSetscrollposGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSetscrollposGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSetscrollposGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": false,
     "opcode": 108,
@@ -1001,7 +1001,7 @@
       "totalWidth": 25
     },
     "generatedClassName": "IfOpensubActivePlayerGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfOpensubActivePlayerGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfOpensubActivePlayerGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": true,
     "opcode": 116,
@@ -1058,7 +1058,7 @@
       "totalWidth": 6
     },
     "generatedClassName": "ClientSetvarcLargeGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\ClientSetvarcLargeGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\ClientSetvarcLargeGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": true,
     "opcode": 124,
@@ -1135,7 +1135,7 @@
       "totalWidth": 19
     },
     "generatedClassName": "IfOpentopGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfOpentopGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfOpentopGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": true,
     "opcode": 126,
@@ -1202,7 +1202,7 @@
       "totalWidth": 7
     },
     "generatedClassName": "ObjCountGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\ObjCountGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\ObjCountGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": false,
     "opcode": 127,
@@ -1259,7 +1259,7 @@
       "totalWidth": 3
     },
     "generatedClassName": "ClientSetvarcSmallGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\ClientSetvarcSmallGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\ClientSetvarcSmallGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": true,
     "opcode": 128,
@@ -1321,7 +1321,7 @@
       "totalWidth": 6
     },
     "generatedClassName": "UpdateStatGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\UpdateStatGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\UpdateStatGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": true,
     "opcode": 129,
@@ -1378,7 +1378,7 @@
       "totalWidth": null
     },
     "generatedClassName": "ClientSetvarcstrSmallGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\ClientSetvarcstrSmallGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\ClientSetvarcstrSmallGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": true,
     "opcode": 130,
@@ -1445,7 +1445,7 @@
       "totalWidth": 9
     },
     "generatedClassName": "IfSetrecolGeneratedPacket",
-    "generatedFile": "C:\\Users\\Demon\\Documents\\New project\\OpenNXT\\src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSetrecolGeneratedPacket.kt",
+    "generatedFile": "src\\generated\\kotlin\\com\\opennxt\\net\\game\\generated\\serverprot\\IfSetrecolGeneratedPacket.kt",
     "generatedPackage": "com.opennxt.net.game.generated.serverprot",
     "hasManualRegistration": false,
     "opcode": 202,

@@ -30,6 +30,23 @@ class InspectRuneScapeScreenshotTest(unittest.TestCase):
         )
         self.assertEqual(state, "error")
 
+    def test_classify_bad_session_id_as_error(self) -> None:
+        state = classify_state(
+            [DetectedText(text="Unable to connect: bad session id.", confidence=0.97)],
+            0.0,
+        )
+        self.assertEqual(state, "error")
+
+    def test_classify_restart_required_as_error(self) -> None:
+        state = classify_state(
+            [
+                DetectedText(text="RuneScape has been updated.", confidence=0.97),
+                DetectedText(text="Please restart the game to retry.", confidence=0.96),
+            ],
+            0.2,
+        )
+        self.assertEqual(state, "error")
+
     def test_classify_loading_from_progress_without_text(self) -> None:
         state = classify_state(
             [

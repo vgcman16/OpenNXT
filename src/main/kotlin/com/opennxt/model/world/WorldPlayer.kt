@@ -55,7 +55,12 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import mu.KotlinLogging
 import kotlin.reflect.KClass
 
-class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntity) : BasePlayer(client, name) {
+class WorldPlayer(
+    client: ConnectedClient,
+    name: String,
+    val entity: PlayerEntity,
+    private val entryMode: EntryMode = EntryMode.FULL_LOGIN
+) : BasePlayer(client, name) {
     private val handlers =
         Object2ObjectOpenHashMap<KClass<out GamePacket>, GamePacketHandler<in BasePlayer, out GamePacket>>()
     private val logger = KotlinLogging.logger { }
@@ -194,6 +199,11 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
         private val INTERFACE_BOOTSTRAP_PANEL_SCRIPTS = setOf(11145, 8420)
         private val INTERFACE_BOOTSTRAP_COMPLETION_SCRIPTS = setOf(139, 14150)
         private val INTERFACE_BOOTSTRAP_WIDGET_STATE_SCRIPTS = setOf(8310)
+    }
+
+    enum class EntryMode {
+        FULL_LOGIN,
+        POST_LOBBY_AUTH,
     }
 
     private data class PendingWorldReadySignal(
@@ -2758,63 +2768,68 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
             entity.model.refresh()
         }
 
-        stage = "login-response"
-        runBootstrapStage(stage) {
-            client.channel.write(Unpooled.buffer(1).writeByte(GenericResponse.SUCCESSFUL.id))
-            client.channel.writeAndFlush(
-                LoginPacket.GameLoginResponse(
-                    byte0 = 0,
-                    rights = 0,
-                    byte2 = 0,
-                    byte3 = 0,
-                    byte4 = 0,
-                    byte5 = 0,
-                    byte6 = 0,
-                    playerIndex = entity.index,
-                    byte8 = 1,
-                    medium9 = 0,
-                    isMember = 1,
-                    username = name,
-                    short12 = 0,
-                    int13 = 0
+        if (entryMode == EntryMode.FULL_LOGIN) {
+            stage = "login-response"
+            runBootstrapStage(stage) {
+                client.channel.write(Unpooled.buffer(1).writeByte(GenericResponse.SUCCESSFUL.id))
+                client.channel.writeAndFlush(
+                    LoginPacket.GameLoginResponse(
+                        byte0 = 0,
+                        rights = 0,
+                        byte2 = 0,
+                        byte3 = 0,
+                        byte4 = 0,
+                        byte5 = 0,
+                        byte6 = 0,
+                        playerIndex = entity.index,
+                        byte8 = 1,
+                        medium9 = 0,
+                        isMember = 1,
+                        username = name,
+                        short12 = 0,
+                        int13 = 0
+                    )
                 )
-            )
-        }
+            }
 
-        stage = "pipeline-switch"
-        runBootstrapStage(stage) {
-            val pipeline = client.channel.pipeline()
+            stage = "pipeline-switch"
+            runBootstrapStage(stage) {
+                val pipeline = client.channel.pipeline()
 
-            if (pipeline.context("game-decoder") == null) {
-                if (pipeline.context("login-decoder") != null) {
-                    pipeline.replace("login-decoder", "game-decoder", GamePacketFraming())
-                } else {
-                    logger.warn { "Game decoder missing during world pipeline switch for $name; adding it directly" }
-                    if (pipeline.context("transport-sniffer") != null) {
-                        pipeline.addAfter("transport-sniffer", "game-decoder", GamePacketFraming())
+                if (pipeline.context("game-decoder") == null) {
+                    if (pipeline.context("login-decoder") != null) {
+                        pipeline.replace("login-decoder", "game-decoder", GamePacketFraming())
                     } else {
-                        pipeline.addLast("game-decoder", GamePacketFraming())
+                        logger.warn { "Game decoder missing during world pipeline switch for $name; adding it directly" }
+                        if (pipeline.context("transport-sniffer") != null) {
+                            pipeline.addAfter("transport-sniffer", "game-decoder", GamePacketFraming())
+                        } else {
+                            pipeline.addLast("game-decoder", GamePacketFraming())
+                        }
+                    }
+                }
+
+                if (pipeline.context("game-encoder") == null) {
+                    if (pipeline.context("login-encoder") != null) {
+                        pipeline.replace("login-encoder", "game-encoder", GamePacketEncoder())
+                    } else {
+                        logger.warn { "Game encoder missing during world pipeline switch for $name; adding it directly" }
+                        pipeline.addLast("game-encoder", GamePacketEncoder())
+                    }
+                }
+
+                if (pipeline.context("game-handler") == null) {
+                    if (pipeline.context("login-handler") != null) {
+                        pipeline.replace("login-handler", "game-handler", DynamicPacketHandler())
+                    } else {
+                        logger.warn { "Game handler missing during world pipeline switch for $name; adding it directly" }
+                        pipeline.addLast("game-handler", DynamicPacketHandler())
                     }
                 }
             }
-
-            if (pipeline.context("game-encoder") == null) {
-                if (pipeline.context("login-encoder") != null) {
-                    pipeline.replace("login-encoder", "game-encoder", GamePacketEncoder())
-                } else {
-                    logger.warn { "Game encoder missing during world pipeline switch for $name; adding it directly" }
-                    pipeline.addLast("game-encoder", GamePacketEncoder())
-                }
-            }
-
-            if (pipeline.context("game-handler") == null) {
-                if (pipeline.context("login-handler") != null) {
-                    pipeline.replace("login-handler", "game-handler", DynamicPacketHandler())
-                } else {
-                    logger.warn { "Game handler missing during world pipeline switch for $name; adding it directly" }
-                    pipeline.addLast("game-handler", DynamicPacketHandler())
-                }
-            }
+        } else {
+            client.traceBootstrap("world-skip-login-response name=$name reason=post-lobby-auth")
+            client.traceBootstrap("world-skip-pipeline-switch name=$name reason=post-lobby-auth")
         }
 
         stage = "rebuild"

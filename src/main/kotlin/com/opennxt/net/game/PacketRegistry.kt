@@ -30,6 +30,10 @@ import kotlin.reflect.jvm.javaType
 object PacketRegistry {
     private const val FIELD_DECLARATION_FALLBACK_BUILD = 919
     private val logger = KotlinLogging.logger { }
+    private val build947ServerOpcodeFallbacks = mapOf(
+        "CHAT_FILTER_SETTINGS_PRIVATECHAT" to 4,
+        "FRIENDLIST_LOADED" to 41,
+    )
 
     private val serverProtByOpcode = Int2ObjectOpenHashMap<Registration>()
     private val clientProtByOpcode = Int2ObjectOpenHashMap<Registration>()
@@ -49,6 +53,16 @@ object PacketRegistry {
     private fun opcodeFor(side: Side, name: String): Int? {
         val mappings = if (side == Side.CLIENT) OpenNXT.protocol.clientProtNames else OpenNXT.protocol.serverProtNames
         if (!mappings.values.containsKey(name)) {
+            if (OpenNXT.config.build == 947 && side == Side.SERVER) {
+                val compatOpcode = build947ServerOpcodeFallbacks[name]
+                if (compatOpcode != null) {
+                    logger.warn {
+                        "Missing build 947 packet name -> opcode mapping for '$name' on side $side; " +
+                            "using build $FIELD_DECLARATION_FALLBACK_BUILD compatibility opcode $compatOpcode"
+                    }
+                    return compatOpcode
+                }
+            }
             return null
         }
         return mappings.values.getInt(name)
@@ -265,7 +279,7 @@ object PacketRegistry {
             Side.SERVER,
             "IF_OPENSUB_ACTIVE_PLAYER",
             IfOpensubActivePlayer::class,
-            IfOpensubActivePlayer.Codec
+            IfOpensubActivePlayer.Codec::class
         )
         register(Side.SERVER, "IF_CLOSESUB", IfCloseSub::class, IfCloseSub.Codec::class)
         register(Side.SERVER, "IF_SETEVENTS", IfSetevents::class, IfSetevents.Codec::class)

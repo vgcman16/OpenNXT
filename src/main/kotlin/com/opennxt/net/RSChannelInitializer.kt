@@ -11,7 +11,13 @@ class RSChannelInitializer: ChannelInitializer<SocketChannel>() {
     private val tlsContext = ServerTls.context
 
     override fun initChannel(ch: SocketChannel) {
-        logger.info { "TODO : Accept inbound connection from ${ch.remoteAddress()} to port ${ch.localAddress().port}" }
+        val localPort = ch.localAddress().port
+        logger.info { "TODO : Accept inbound connection from ${ch.remoteAddress()} to port $localPort" }
+        PreLoginForensics.recordTransportEvent(
+            localPort = localPort,
+            remoteAddress = ch.remoteAddress().toString(),
+            event = "channel-accepted",
+        )
 
         ch.pipeline()
             .addLast("transport-sniffer", TransportSniffer(tlsContext))

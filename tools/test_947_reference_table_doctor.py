@@ -13,6 +13,7 @@ try:
         compare_bytes,
         decode_checksum_table_payload,
         derive_hot_archives,
+        parse_args,
         parse_archives,
         parse_js5_reply,
         parse_send_chunks,
@@ -29,6 +30,7 @@ except ImportError:
         compare_bytes,
         decode_checksum_table_payload,
         derive_hot_archives,
+        parse_args,
         parse_archives,
         parse_js5_reply,
         parse_send_chunks,
@@ -68,6 +70,11 @@ class ReferenceTableDoctorTest(unittest.TestCase):
 
     def test_parse_archives_accepts_csv(self) -> None:
         self.assertEqual([2, 3, 12], parse_archives("2,3,12"))
+
+    def test_parse_args_accepts_token_url_override(self) -> None:
+        args = parse_args(["--token-url", "http://[::1]:8080/jav_config.ws"])
+
+        self.assertEqual("http://[::1]:8080/jav_config.ws", args.token_url)
 
     def test_compare_bytes_reports_mismatch(self) -> None:
         diff = compare_bytes(b"\x01\x02", b"\x01\x03")

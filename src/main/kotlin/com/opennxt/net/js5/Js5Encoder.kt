@@ -10,6 +10,23 @@ import kotlin.math.min
 class Js5Encoder(val session: Js5Session) : MessageToByteEncoder<Js5Packet>() {
     private val logger = KotlinLogging.logger { }
 
+    private companion object {
+        private const val INLINE_TRACE_INDEX = 255
+        private const val INLINE_TRACE_ARCHIVE = 255
+        private const val INLINE_TRACE_PREVIEW_BYTES = 16
+    }
+
+    private fun ByteBuf.previewHex(limit: Int = INLINE_TRACE_PREVIEW_BYTES): String {
+        val length = min(readableBytes(), limit)
+        if (length <= 0) {
+            return "<empty>"
+        }
+
+        val bytes = ByteArray(length)
+        getBytes(readerIndex(), bytes)
+        return bytes.joinToString(" ") { "%02x".format(it.toInt() and 0xff) }
+    }
+
     override fun encode(ctx: ChannelHandlerContext, msg: Js5Packet, out: ByteBuf) {
         when (msg) {
             is Js5Packet.HandshakeResponse -> out.writeByte(msg.code)
@@ -36,6 +53,14 @@ class Js5Encoder(val session: Js5Session) : MessageToByteEncoder<Js5Packet>() {
                     for (i in 0 until min(102400 - 5, remaining)) { // - 5 due to header written above
                         out.writeByte(data.readByte().toInt() xor xor)
                         remaining--
+                    }
+                }
+
+                if (msg.index == INLINE_TRACE_INDEX && msg.archive == INLINE_TRACE_ARCHIVE) {
+                    logger.info {
+                        "JS5 inline wire trace session#${session.id}: index=${msg.index}, archive=${msg.archive}, " +
+                            "priority=${msg.priority}, totalLength=$length, encodedBytes=${out.readableBytes()}, " +
+                            "preview=${out.previewHex()}"
                     }
                 }
 

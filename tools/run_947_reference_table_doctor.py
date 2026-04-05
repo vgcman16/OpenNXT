@@ -21,7 +21,7 @@ DEFAULT_OUTPUT_DIR = WORKSPACE / "data" / "debug" / "reference-table-doctor-947"
 DEFAULT_TLS_LOG_DIR = WORKSPACE / "data" / "debug" / "lobby-tls-terminator"
 DEFAULT_SERVER_LOG = WORKSPACE / "tmp-manual-js5.err.log"
 DEFAULT_CACHE_DIR = WORKSPACE / "data" / "cache"
-DEFAULT_TOKEN_URL = "http://127.0.0.1:8080/jav_config.ws"
+DEFAULT_TOKEN_URL = "http://localhost:8080/jav_config.ws"
 DEFAULT_ARCHIVES = [2, 3, 12, 16, 17, 18, 19, 21, 22, 24, 26, 28, 29, 49, 57, 58, 60, 61, 62, 65, 66]
 JS5_BLOCK_BYTES = 102400
 REQUEST_LOG_RE = re.compile(
@@ -900,6 +900,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--local-port", type=int, default=43596)
     parser.add_argument("--live-host", default="content.runescape.com")
     parser.add_argument("--live-port", type=int, default=43594)
+    parser.add_argument("--token-url", default=DEFAULT_TOKEN_URL, help="Source jav_config.ws URL for server_version and js5 token")
     parser.add_argument("--recv-timeout-seconds", type=float, default=1.5)
     parser.add_argument("--inter-chunk-delay-seconds", type=float, default=0.02)
     parser.add_argument("--diff-window-bytes", type=int, default=32)
@@ -911,7 +912,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     session_log = args.session_log or latest_raw_game_session_log(DEFAULT_TLS_LOG_DIR)
-    build, token = fetch_token(DEFAULT_TOKEN_URL)
+    build, token = fetch_token(args.token_url)
 
     server_log = args.server_log
     server_log_text = server_log.read_text(encoding="utf-8", errors="replace")
@@ -1041,7 +1042,7 @@ def main(argv: list[str] | None = None) -> int:
         "sessionLog": str(session_log),
         "serverLog": str(server_log),
         "build": build,
-        "tokenSourceUrl": DEFAULT_TOKEN_URL,
+        "tokenSourceUrl": args.token_url,
         "archives": archives,
         "templateHex": None,
         "containedMsEvidence": asdict(ms_evidence) if ms_evidence is not None else None,

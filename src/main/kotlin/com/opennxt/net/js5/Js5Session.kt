@@ -3,6 +3,7 @@ package com.opennxt.net.js5
 import com.opennxt.Js5Thread
 import com.opennxt.OpenNXT
 import com.opennxt.filesystem.Container
+import com.opennxt.net.PreLoginForensics
 import com.opennxt.net.js5.packet.Js5Packet
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
@@ -10,6 +11,7 @@ import io.netty.channel.Channel
 import io.netty.util.AttributeKey
 import mu.KotlinLogging
 import java.nio.ByteBuffer
+import java.net.InetSocketAddress
 import java.util.ArrayDeque
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -26,6 +28,14 @@ class Js5Session(val channel: Channel) : AutoCloseable {
         val archive: Int,
         val data: ByteBuf,
         var remaining: Int,
+        val totalLength: Int,
+        var blocksSent: Int = 0,
+    )
+    private data class ClientHandshake(
+        val major: Int,
+        val minor: Int,
+        val token: String,
+        val language: Int,
     )
 
     companion object {
@@ -34,6 +44,9 @@ class Js5Session(val channel: Channel) : AutoCloseable {
         val LOGGED_IN = AttributeKey.valueOf<Boolean>("js5-logged-in")
         private val NEXT_ID = AtomicInteger(0)
         private const val MAX_RESPONSE_BLOCK_PAYLOAD_BYTES = 102400 - 5
+        private const val QUEUED_TRACE_INDEX = 255
+        private const val QUEUED_TRACE_ARCHIVE = 2
+        private const val QUEUED_TRACE_PREVIEW_BYTES = 16
     }
 
     val id = NEXT_ID.incrementAndGet()
@@ -50,6 +63,10 @@ class Js5Session(val channel: Channel) : AutoCloseable {
     private var inboundTraceSequence = 0
     private val requestOccurrences = ConcurrentHashMap<ArchiveKey, AtomicInteger>()
     private val responseOccurrences = ConcurrentHashMap<ArchiveKey, AtomicInteger>()
+    @Volatile
+    private var clientHandshake: ClientHandshake? = null
+    @Volatile
+    private var retailLoggedOutProxy: RetailLoggedOutJs5Proxy? = null
 
     init {
         channel.attr(ATTR_KEY).set(this)
@@ -57,27 +74,115 @@ class Js5Session(val channel: Channel) : AutoCloseable {
         channel.attr(LOGGED_IN).set(false)
     }
 
+    private fun record(event: String, details: Map<String, Any?> = emptyMap()) {
+        val localPort = (channel.localAddress() as? InetSocketAddress)?.port ?: -1
+        PreLoginForensics.recordTransportEvent(
+            localPort = localPort,
+            remoteAddress = channel.remoteAddress().toString(),
+            event = event,
+            details = details + mapOf("sessionId" to id),
+        )
+    }
+
     private fun loadChecksumTableData(): ByteBuf {
         return Unpooled.wrappedBuffer(OpenNXT.checksumTable)
     }
 
-    private fun Js5Packet.RequestFile.loadFileData(): ByteBuf? {
-        try {
-            return when {
-                index == 255 && archive == 255 -> loadChecksumTableData()
-                index == 255 -> {
-                    val raw = OpenNXT.filesystem.readReferenceTable(archive) ?: return null
-                    Unpooled.wrappedBuffer(stripVersionTrailer(raw))
-                }
-                else -> {
-                    val raw = OpenNXT.filesystem.read(index, archive) ?: return null
-                    Unpooled.wrappedBuffer(stripVersionTrailer(raw))
-                }
-            }
-        } catch (e: Exception) {
-            return null
+    internal fun formatArchivePayload(index: Int, raw: ByteBuffer): ByteArray {
+        return if (index == 255) {
+            val bytes = ByteArray(raw.remaining())
+            raw.duplicate().get(bytes)
+            bytes
+        } else {
+            stripVersionTrailer(raw)
         }
     }
+
+    internal fun loadFileData(
+        request: Js5Packet.RequestFile,
+        fetchRetailLoggedOutArchive: (build: Int, index: Int, archive: Int, priority: Boolean) -> ByteArray? =
+            OpenNXT::fetchRetailLoggedOutJs5Archive,
+        preferRetailLoggedOutArchives: (build: Int) -> Boolean =
+            OpenNXT::retailLoggedOutJs5PassthroughEnabled,
+    ): ByteBuf? {
+        val retailFirstLoggedOutRequest = !isLoggedIn() &&
+            preferRetailLoggedOutArchives(request.build) &&
+            !(request.index == 255 && request.archive == 255)
+
+        if (retailFirstLoggedOutRequest) {
+            try {
+                val retailBytes = fetchRetailLoggedOutArchive(
+                    OpenNXT.config.build,
+                    request.index,
+                    request.archive,
+                    request.priority,
+                )
+                if (retailBytes != null) {
+                    logger.info {
+                        "Using retail logged-out JS5 passthrough for ${describeRequest(request)} " +
+                            "from ${channel.remoteAddress()}"
+                    }
+                    return Unpooled.wrappedBuffer(retailBytes)
+                }
+            } catch (e: Exception) {
+            }
+        }
+
+        try {
+            val localData = when {
+                request.index == 255 && request.archive == 255 -> loadChecksumTableData()
+                request.index == 255 -> {
+                    OpenNXT.filesystem.readReferenceTable(request.archive)?.let { raw ->
+                        Unpooled.wrappedBuffer(formatArchivePayload(request.index, raw))
+                    }
+                }
+                else -> {
+                    OpenNXT.filesystem.read(request.index, request.archive)?.let { raw ->
+                        Unpooled.wrappedBuffer(formatArchivePayload(request.index, raw))
+                    }
+                }
+            }
+            if (localData != null) {
+                if (retailFirstLoggedOutRequest) {
+                    logger.info {
+                        "Using local logged-out JS5 fallback for ${describeRequest(request)} " +
+                            "after retail passthrough miss from ${channel.remoteAddress()}"
+                    }
+                }
+                return localData
+            }
+        } catch (e: Exception) {
+            if (isLoggedIn()) {
+                return null
+            }
+        }
+
+        if (isLoggedIn()) {
+            return null
+        }
+
+        if (retailFirstLoggedOutRequest) {
+            return null
+        }
+
+        return try {
+            val retailBytes = fetchRetailLoggedOutArchive(
+                OpenNXT.config.build,
+                request.index,
+                request.archive,
+                request.priority,
+            ) ?: return null
+            logger.info {
+                "Using retail logged-out JS5 fallback for ${describeRequest(request)} " +
+                    "from ${channel.remoteAddress()}"
+            }
+            Unpooled.wrappedBuffer(retailBytes)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun Js5Packet.RequestFile.loadFileData(): ByteBuf? = loadFileData(this)
 
     private fun stripVersionTrailer(raw: ByteBuffer): ByteArray {
         val bytes = ByteArray(raw.remaining())
@@ -103,17 +208,21 @@ class Js5Session(val channel: Channel) : AutoCloseable {
     }
 
     private fun shouldTraceRequest(request: Js5Packet.RequestFile, occurrence: Int): Boolean {
-        return requestSequence <= 64 || request.index == 255 || request.archive == 255 || shouldTraceOccurrence(occurrence)
+        return requestSequence <= 64 || request.archive == 255 || shouldTraceOccurrence(occurrence)
     }
 
     private fun shouldTraceResponse(request: Js5Packet.RequestFile, occurrence: Int): Boolean {
-        return responseSequence <= 64 || request.index == 255 || request.archive == 255 || shouldTraceOccurrence(occurrence)
+        return responseSequence <= 64 || request.archive == 255 || shouldTraceOccurrence(occurrence)
     }
 
     private fun Js5Packet.RequestFile.archiveKey(): ArchiveKey = ArchiveKey(index, archive)
 
     private fun Js5Packet.RequestFile.isInlineCriticalRequest(): Boolean {
         return priority && index == 255 && archive == 255
+    }
+
+    private fun Js5Packet.RequestFile.shouldAllowDuplicateWhileLoggedOut(): Boolean {
+        return !isLoggedIn() && index == 255 && archive != 255
     }
 
     private fun ByteBuf.js5ResponseLength(): Int {
@@ -125,6 +234,17 @@ class Js5Session(val channel: Channel) : AutoCloseable {
             length += 4
         }
         return length
+    }
+
+    private fun ByteBuf.previewHex(limit: Int = QUEUED_TRACE_PREVIEW_BYTES): String {
+        val length = minOf(readableBytes(), limit)
+        if (length <= 0) {
+            return "<empty>"
+        }
+
+        val bytes = ByteArray(length)
+        getBytes(readerIndex(), bytes)
+        return bytes.joinToString(" ") { "%02x".format(it.toInt() and 0xff) }
     }
 
     private fun describeAvailability(request: Js5Packet.RequestFile): String = when {
@@ -145,19 +265,43 @@ class Js5Session(val channel: Channel) : AutoCloseable {
         return if (priority) highPriorityInFlight else lowPriorityInFlight
     }
 
-    private fun shouldPreferQueuedRequest(priority: Boolean, request: Js5Packet.RequestFile?): Boolean {
-        if (!priority || request == null) {
+    private fun isLoggedIn(): Boolean = channel.attr(LOGGED_IN).get() ?: false
+
+    fun recordClientHandshake(packet: Js5Packet.Handshake) {
+        clientHandshake = ClientHandshake(
+            major = packet.major,
+            minor = packet.minor,
+            token = packet.token,
+            language = packet.language,
+        )
+    }
+
+    fun hasRetailLoggedOutProxy(): Boolean = retailLoggedOutProxy != null
+
+    fun activateRetailLoggedOutProxyIfEligible(build: Int): Boolean {
+        if (!OpenNXT.retailLoggedOutJs5PassthroughEnabled(build)) {
             return false
         }
 
-        val loggedIn = isLoggedIn()
-        return !loggedIn && request.index == 255 && request.archive != 255
+        if (retailLoggedOutProxy != null) {
+            return true
+        }
+
+        val handshake = clientHandshake ?: return false
+        val proxy = RetailLoggedOutJs5Proxy(
+            localChannel = channel,
+            major = handshake.major,
+            minor = handshake.minor,
+            token = handshake.token,
+            language = handshake.language,
+        )
+        retailLoggedOutProxy = proxy
+        proxy.connect()
+        return true
     }
 
-    private fun isLoggedIn(): Boolean = channel.attr(LOGGED_IN).get() ?: false
-
-    private fun Js5Packet.RequestFile.isLoggedOutReferenceTableRequest(): Boolean {
-        return !isLoggedIn() && index == 255 && archive != 255
+    fun forwardRetailLoggedOutProxyBytes(data: ByteBuf) {
+        retailLoggedOutProxy?.forwardClientBytes(data) ?: data.release()
     }
 
     private fun loadPendingResponse(request: Js5Packet.RequestFile): PendingResponse? {
@@ -181,27 +325,19 @@ class Js5Session(val channel: Channel) : AutoCloseable {
             }
         }
 
+        val totalLength = data.js5ResponseLength()
         return PendingResponse(
             priority = request.priority,
             index = request.index,
             archive = request.archive,
             data = data,
-            remaining = data.js5ResponseLength(),
+            remaining = totalLength,
+            totalLength = totalLength,
         )
     }
 
     private fun nextPendingResponse(priority: Boolean): PendingResponse? {
         val requests = queueFor(priority)
-        if (shouldPreferQueuedRequest(priority, requests.peek())) {
-            while (true) {
-                val request = requests.poll() ?: break
-                val pending = loadPendingResponse(request)
-                if (pending != null) {
-                    return pending
-                }
-            }
-        }
-
         while (true) {
             val request = requests.poll()
             if (request == null) {
@@ -248,7 +384,19 @@ class Js5Session(val channel: Channel) : AutoCloseable {
         repeat(payloadBytes) {
             out.writeByte(response.data.readByte().toInt() xor xor)
         }
+
+        val isQueuedTraceTarget = response.index == QUEUED_TRACE_INDEX && response.archive == QUEUED_TRACE_ARCHIVE
+        val firstBlock = response.blocksSent == 0
+        if (isQueuedTraceTarget && shouldTraceOccurrence(responseOccurrences[ArchiveKey(response.index, response.archive)]?.get() ?: 1)) {
+            logger.info {
+                "JS5 queued wire trace session#$id: index=${response.index}, archive=${response.archive}, " +
+                    "priority=${response.priority}, firstBlock=$firstBlock, remainingBefore=${response.remaining}, " +
+                    "payloadBytes=$payloadBytes, totalLength=${response.totalLength}, preview=${out.previewHex()}"
+            }
+        }
+
         response.remaining -= payloadBytes
+        response.blocksSent++
         channel.write(out)
         return payloadBytes + 5
     }
@@ -290,21 +438,32 @@ class Js5Session(val channel: Channel) : AutoCloseable {
         val archiveKey = request.archiveKey()
         val inflight = inflightSetFor(request.priority)
         if (!inflight.add(archiveKey)) {
-            if (request.isLoggedOutReferenceTableRequest()) {
+            if (request.shouldAllowDuplicateWhileLoggedOut()) {
                 logger.info {
-                    "Allowing duplicate logged-out js5 bootstrap request from ${channel.remoteAddress()}: " +
+                    "Allowing duplicate logged-out js5 request from ${channel.remoteAddress()}: " +
                         "opcode=$opcode, priority=${request.priority}, nxt=${request.nxt}, " +
                         "build=${request.build}, ${describeRequest(request)}"
                 }
             } else {
-            if (request.index == 255 || request.archive == 255) {
-                logger.info {
-                    "Suppressing duplicate js5 request from ${channel.remoteAddress()}: " +
-                        "opcode=$opcode, priority=${request.priority}, nxt=${request.nxt}, " +
-                        "build=${request.build}, ${describeRequest(request)}"
+                if (request.index == 255 || request.archive == 255) {
+                    logger.info {
+                        "Suppressing duplicate js5 request from ${channel.remoteAddress()}: " +
+                            "opcode=$opcode, priority=${request.priority}, nxt=${request.nxt}, " +
+                            "build=${request.build}, ${describeRequest(request)}"
+                    }
                 }
+                return
             }
-            return
+        }
+
+        if (request.shouldAllowDuplicateWhileLoggedOut()) {
+            val occurrence = requestOccurrences[archiveKey]?.get() ?: 0
+            if (occurrence > 0 && shouldTraceOccurrence(occurrence + 1)) {
+                logger.info {
+                    "Queued duplicate logged-out reference-table request from ${channel.remoteAddress()}: " +
+                        "opcode=$opcode, priority=${request.priority}, nxt=${request.nxt}, " +
+                        "build=${request.build}, ${describeRequest(request)}, priorOccurrences=$occurrence"
+                }
             }
         }
 
@@ -330,6 +489,15 @@ class Js5Session(val channel: Channel) : AutoCloseable {
                         "${describeRequest(request)}, priority=true, occurrence=$responseOccurrence, " +
                         "bytes=${data.readableBytes()}"
                 }
+                record(
+                    event = "js5-inline-response",
+                    details = mapOf(
+                        "index" to request.index,
+                        "archive" to request.archive,
+                        "bytes" to data.readableBytes(),
+                        "occurrence" to responseOccurrence,
+                    ),
+                )
                 channel.write(Js5Packet.RequestFileResponse(true, request.index, request.archive, data))
                 channel.flush()
                 inflight.remove(archiveKey)
@@ -399,12 +567,21 @@ class Js5Session(val channel: Channel) : AutoCloseable {
             "Sending js5 prefetch table to ${channel.remoteAddress()} on session#$id " +
                 "(reason=$reason, entries=${prefetchTable.size})"
         }
+        record(
+            event = "js5-prefetch-table",
+            details = mapOf(
+                "reason" to reason,
+                "entries" to prefetchTable.size,
+            ),
+        )
         channel.writeAndFlush(Js5Packet.Prefetches(prefetchTable))
         prefetchTableSent = true
     }
 
     override fun close() {
         initialized = false
+        retailLoggedOutProxy?.close()
+        retailLoggedOutProxy = null
 
         logger.info {
             "Closing js5 session#$id from ${channel.remoteAddress()}: " +
@@ -413,6 +590,18 @@ class Js5Session(val channel: Channel) : AutoCloseable {
                 "topRequests=[${topRequestSummary(requestOccurrences)}], " +
                 "topResponses=[${topRequestSummary(responseOccurrences)}]"
         }
+        record(
+            event = "js5-session-close",
+            details = mapOf(
+                "initialized" to initialized,
+                "requests" to requestSequence,
+                "responses" to responseSequence,
+                "rawReads" to inboundTraceSequence,
+                "loggedIn" to isLoggedIn(),
+                "channelActive" to channel.isActive,
+                "channelOpen" to channel.isOpen,
+            ),
+        )
 
         Js5Thread.removeSession(this)
 
