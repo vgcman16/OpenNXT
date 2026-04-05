@@ -1339,6 +1339,8 @@ class WorldPlayer(
         deferredDefaultVarpsPending = false
         runBootstrapStage("late-default-varps") {
             client.traceBootstrap("world-send-deferred-default-varps name=$name")
+            val skipFullDefaultVarpReplayForContainedPostLobby =
+                forcedMapBuildFallbackActive && entryMode == EntryMode.POST_LOBBY_AUTH
             val forcedFallbackReplaySkipIds =
                 if (forcedMapBuildFallbackActive) TODORefactorThisClass.FORCED_FALLBACK_CANDIDATE_DEFAULT_VARP_IDS
                 else emptyList()
@@ -1355,7 +1357,14 @@ class WorldPlayer(
                     )
                     TODORefactorThisClass.sendForcedFallbackCandidateDefaultVarps(client)
                 }
-                TODORefactorThisClass.sendDefaultVarps(client)
+                if (skipFullDefaultVarpReplayForContainedPostLobby) {
+                    client.traceBootstrap(
+                        "world-skip-full-default-varp-replay name=$name " +
+                            "reason=contained-post-lobby-auth-forced-fallback"
+                    )
+                } else {
+                    TODORefactorThisClass.sendDefaultVarps(client)
+                }
             }
             client.traceBootstrap(
                 "world-queued-deferred-default-varps name=$name packets=${client.pendingDeferredBootstrapVarpCount()}"

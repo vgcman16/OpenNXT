@@ -113,6 +113,34 @@ class GamePacketFraming : ByteToMessageDecoder() {
         }
     }
 
+    private fun lateWorldCompatClientSizeOverride(channel: Channel, opcode: Int): Int? {
+        if (side != Side.CLIENT || bootstrapStage(channel) != "late-default-varps") {
+            return null
+        }
+
+        return when (opcode) {
+            // On the contained post-lobby 947 path we repeatedly see client opcode 30 arrive as
+            // seven wire bytes: the first three are framed cleanly, then the remaining 00 00 00 02
+            // tail gets misread as a bogus giant opcode (31305) after network fragmentation.
+            // Keep this scoped to the late-default-varps bootstrap phase so we don't globally
+            // rewrite the extracted 947 interaction packet size.
+            30 -> 7
+            else -> null
+        }
+    }
+
+    private fun lateWorldCompatUnmappedSizeOverride(channel: Channel, opcode: Int): Int? {
+        if (side != Side.CLIENT || bootstrapStage(channel) != "late-default-varps") {
+            return null
+        }
+
+        // Once the contained 947 client survives into late-default-varps it starts surfacing big
+        // bootstrap/control opcodes that the extracted map does not know about yet. Treat these as
+        // variable-byte packets so we can keep the stream aligned long enough to observe their
+        // payloads instead of immediately closing the world socket on first contact.
+        return if (opcode >= 128) -1 else null
+    }
+
     private fun lobbyCompatUnmappedSizeOverride(channel: Channel, opcode: Int): Int? {
         if (side != Side.CLIENT || bootstrapStage(channel) != "social-state") {
             return null
@@ -251,10 +279,13 @@ class GamePacketFraming : ByteToMessageDecoder() {
                             "readableAfter" to buf.readableBytes(),
                         )
                     )
-                    val compatSizeOverride = lobbyCompatClientSizeOverride(ctx.channel(), opcode)
+                    val compatSizeOverride =
+                        lobbyCompatClientSizeOverride(ctx.channel(), opcode)
+                            ?: lateWorldCompatClientSizeOverride(ctx.channel(), opcode)
                     val compatUnmappedSizeOverride =
                         if (compatSizeOverride == null && !mapping.containsKey(opcode))
                             lobbyCompatUnmappedSizeOverride(ctx.channel(), opcode)
+                                ?: lateWorldCompatUnmappedSizeOverride(ctx.channel(), opcode)
                         else null
 
                     if (compatSizeOverride == null && compatUnmappedSizeOverride == null && !mapping.containsKey(opcode)) {
@@ -324,8 +355,9 @@ class GamePacketFraming : ByteToMessageDecoder() {
                             )
                         )
                         logger.info {
-                            "Using lobby social-state compatibility size override for opcode $opcode " +
-                                "(size=$size, remote=${ctx.channel().remoteAddress()})"
+                            "Using compatibility size override for opcode $opcode " +
+                                "(size=$size, remote=${ctx.channel().remoteAddress()}, " +
+                                "bootstrapStage=${bootstrapStage(ctx.channel())})"
                         }
                     }
                     traceLobbyDoctor(
