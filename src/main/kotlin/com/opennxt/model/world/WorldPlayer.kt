@@ -443,6 +443,14 @@ class WorldPlayer(
         return null
     }
 
+    private fun isLateSceneStartReadyCompatOpcode(opcode: Int): Boolean =
+        // On the contained 947 path the client no longer emits only the older 17/48-style
+        // post-scene-start nudges. Once we enter the forced fallback late-world tail we now
+        // consistently see a smaller readiness family (27, 66, 72, 84, 106, 114) instead.
+        // Keep this scoped to the active late-scene-ready wait so we do not globally reinterpret
+        // normal gameplay traffic as bootstrap progress.
+        opcode in setOf(17, 27, 48, 66, 72, 83, 84, 106, 114)
+
     private fun acceptLateSceneStartReadySignal(opcode: Int, payloadLength: Int, preview: String, source: String) {
         lateSceneStartReadySignalsAccepted++
         awaitingLateSceneStartReadySignal =
@@ -704,6 +712,15 @@ class WorldPlayer(
             awaitingMapBuildComplete = false
             completeDeferredBootstrap()
         }
+        if (awaitingLateSceneStartReadySignal) {
+            acceptLateSceneStartReadySignal(
+                opcode = 106,
+                payloadLength = 6,
+                preview =
+                    "mode=${packet.mode},width=${packet.width},height=${packet.height},flag=${packet.trailingFlag}",
+                source = "decoded-post-scene-start"
+            )
+        }
     }
 
     private fun handleUnidentifiedPacket(packet: UnidentifiedPacket): Boolean {
@@ -872,7 +889,7 @@ class WorldPlayer(
             return true
         }
 
-        if (awaitingLateSceneStartReadySignal && opcode in setOf(17, 48)) {
+        if (awaitingLateSceneStartReadySignal && isLateSceneStartReadyCompatOpcode(opcode)) {
             acceptLateSceneStartReadySignal(
                 opcode = opcode,
                 payloadLength = payloadLength,
