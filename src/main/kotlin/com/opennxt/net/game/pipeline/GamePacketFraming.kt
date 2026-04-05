@@ -70,7 +70,15 @@ class GamePacketFraming : ByteToMessageDecoder() {
     }
 
     private fun shouldTraceLobbyDoctor(channel: Channel): Boolean {
-        return side == Side.CLIENT && bootstrapStage(channel) == "social-state"
+        if (side != Side.CLIENT) {
+            return false
+        }
+
+        return when (bootstrapStage(channel)) {
+            "social-state",
+            "late-default-varps" -> true
+            else -> false
+        }
     }
 
     private fun shouldUseLobbyCompatVarByteFallback(
