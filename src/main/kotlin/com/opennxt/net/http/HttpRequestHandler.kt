@@ -1,7 +1,8 @@
 package com.opennxt.net.http
 
-import com.opennxt.net.http.endpoints.JavConfigWsEndpoint
 import com.opennxt.net.http.endpoints.ClientFileEndpoint
+import com.opennxt.net.http.endpoints.ClientErrorWsEndpoint
+import com.opennxt.net.http.endpoints.JavConfigWsEndpoint
 import com.opennxt.net.http.endpoints.Js5MsEndpoint
 import com.opennxt.net.http.endpoints.RevocationListEndpoint
 import io.netty.channel.ChannelHandler
@@ -37,6 +38,16 @@ class HttpRequestHandler : SimpleChannelInboundHandler<FullHttpRequest>() {
             return
         }
 
+        val uri = msg.uri()
+        val query = QueryStringDecoder(uri)
+        val path = canonicalizePath(query.path())
+
+        if (msg.method() == HttpMethod.POST && path == "/nxtclienterror.ws") {
+            logger.info { "HTTP POST $path from ${ctx.channel().remoteAddress()}: uri=$uri" }
+            ClientErrorWsEndpoint.handle(ctx, msg, query)
+            return
+        }
+
         if (msg.method() != HttpMethod.GET) {
             logger.warn {
                 "HTTP unsupported method from ${ctx.channel().remoteAddress()}: method=${msg.method()} uri=${msg.uri()}"
@@ -44,9 +55,7 @@ class HttpRequestHandler : SimpleChannelInboundHandler<FullHttpRequest>() {
             ctx.sendHttpError(HttpResponseStatus.METHOD_NOT_ALLOWED)
             return
         }
-        val uri = msg.uri()
-        val query = QueryStringDecoder(uri)
-        val path = canonicalizePath(query.path())
+
         logger.info { "HTTP GET $path from ${ctx.channel().remoteAddress()}: uri=$uri" }
 
         when {

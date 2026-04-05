@@ -89,10 +89,73 @@ class SyncRuneScapeRuntimeCacheTest(unittest.TestCase):
 
             self.assertEqual(2, summary["SourceFileCount"])
             self.assertEqual(1, summary["CopiedCount"])
+            self.assertEqual(0, summary["FailedCount"])
+            self.assertEqual(0, summary["FailedTargetCount"])
+            self.assertEqual([], summary["FailedArchives"])
+            self.assertEqual([], summary["CopyErrors"])
             self.assertEqual(1, summary["UnchangedCount"])
             self.assertEqual([2], summary["CopiedArchives"])
             self.assertEqual(b"source-archive-two-v2", runtime_two.read_bytes())
             self.assertEqual(b"source-archive-three-v1", runtime_three.read_bytes())
+
+    def test_core_prefixed_aliases_use_hardlinks_instead_of_duplicate_copies(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            source_dir = temp_path / "source"
+            runtime_dir = temp_path / "runtime"
+            source_dir.mkdir()
+            runtime_dir.mkdir()
+
+            payload = b"source-archive-twelve" * 128
+            source_path = source_dir / "js5-12.jcache"
+            runtime_primary = runtime_dir / "js5-12.jcache"
+            runtime_alias = runtime_dir / "core-js5-12.jcache"
+            source_path.write_bytes(payload)
+
+            summary = self.run_script(
+                source_dir,
+                runtime_dir,
+                "-SeedCorePrefixedAliases",
+            )
+
+            self.assertEqual([12], summary["CopiedArchives"])
+            self.assertEqual(1, summary["CopiedCount"])
+            self.assertEqual(2, summary["CopiedTargetCount"])
+            self.assertTrue(runtime_primary.exists())
+            self.assertTrue(runtime_alias.exists())
+            self.assertEqual(payload, runtime_primary.read_bytes())
+            self.assertEqual(payload, runtime_alias.read_bytes())
+            self.assertTrue(os.path.samefile(runtime_primary, runtime_alias))
+            alias_entry = next(entry for entry in summary["Entries"] if entry["RuntimeTargetName"] == "core-js5-12.jcache")
+            self.assertEqual("hardlinked-alias", alias_entry["Action"])
+
+    def test_existing_core_prefixed_aliases_are_repaired_before_copy_phase(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            source_dir = temp_path / "source"
+            runtime_dir = temp_path / "runtime"
+            source_dir.mkdir()
+            runtime_dir.mkdir()
+
+            payload = b"source-archive-fifty-four" * 512
+            source_path = source_dir / "js5-54.jcache"
+            runtime_primary = runtime_dir / "js5-54.jcache"
+            runtime_alias = runtime_dir / "core-js5-54.jcache"
+            source_path.write_bytes(payload)
+            runtime_primary.write_bytes(payload)
+            runtime_alias.write_bytes(payload)
+
+            summary = self.run_script(
+                source_dir,
+                runtime_dir,
+                "-SeedCorePrefixedAliases",
+            )
+
+            self.assertEqual([54], summary["CopiedArchives"])
+            self.assertEqual(1, summary["RepairedExistingCoreAliasCount"])
+            self.assertEqual(len(payload), summary["RepairedExistingCoreAliasBytes"])
+            self.assertEqual([], summary["RepairedExistingCoreAliasErrors"])
+            self.assertTrue(os.path.samefile(runtime_primary, runtime_alias))
 
     def test_check_only_reports_planned_copies_without_writing(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

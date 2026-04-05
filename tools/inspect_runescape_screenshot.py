@@ -53,33 +53,50 @@ def load_detected_texts(image_path: Path) -> list[DetectedText]:
 def estimate_progress_ratio(image_path: Path) -> float | None:
     image = Image.open(image_path).convert("RGB")
     width, height = image.size
-    bar_top = int(height * 0.50)
-    bar_bottom = int(height * 0.68)
-    bar_left = int(width * 0.12)
-    bar_right = int(width * 0.88)
-    if bar_bottom <= bar_top or bar_right <= bar_left:
-        return None
-
     pixels = image.load()
-    orange_columns = 0
-    total_columns = bar_right - bar_left
-    if total_columns <= 0:
+
+    def measure_region(
+        top_ratio: float,
+        bottom_ratio: float,
+        left_ratio: float = 0.12,
+        right_ratio: float = 0.88,
+    ) -> float | None:
+        bar_top = int(height * top_ratio)
+        bar_bottom = int(height * bottom_ratio)
+        bar_left = int(width * left_ratio)
+        bar_right = int(width * right_ratio)
+        if bar_bottom <= bar_top or bar_right <= bar_left:
+            return None
+
+        orange_columns = 0
+        total_columns = bar_right - bar_left
+        if total_columns <= 0:
+            return None
+
+        for x in range(bar_left, bar_right):
+            orange_hits = 0
+            samples = 0
+            for y in range(bar_top, bar_bottom):
+                r, g, b = pixels[x, y]
+                samples += 1
+                if r >= 180 and 70 <= g <= 220 and b <= 120:
+                    orange_hits += 1
+            if samples and orange_hits / samples >= 0.06:
+                orange_columns += 1
+
+        if orange_columns == 0:
+            return 0.0
+        return orange_columns / total_columns
+
+    candidates = [
+        measure_region(0.50, 0.68),
+        measure_region(0.76, 0.94),
+        measure_region(0.80, 0.96, left_ratio=0.10, right_ratio=0.90),
+    ]
+    measured = [candidate for candidate in candidates if candidate is not None]
+    if not measured:
         return None
-
-    for x in range(bar_left, bar_right):
-        orange_hits = 0
-        samples = 0
-        for y in range(bar_top, bar_bottom):
-            r, g, b = pixels[x, y]
-            samples += 1
-            if r >= 180 and 70 <= g <= 220 and b <= 120:
-                orange_hits += 1
-        if samples and orange_hits / samples >= 0.06:
-            orange_columns += 1
-
-    if orange_columns == 0:
-        return 0.0
-    return round(orange_columns / total_columns, 4)
+    return round(max(measured), 4)
 
 
 def classify_state(detected_texts: Iterable[DetectedText], progress_ratio: float | None) -> str:
@@ -90,6 +107,10 @@ def classify_state(detected_texts: Iterable[DetectedText], progress_ratio: float
         "INVALID LOGIN OR PASSWORD",
         "SORRY WE HAD TROUBLE LOGGING YOU IN",
         "THE RUNESCAPE CLIENT SUFFERED FROM AN ERROR",
+        "UNABLE TO CONNECT BAD SESSION ID",
+        "BAD SESSION ID",
+        "RUNESCAPE HAS BEEN UPDATED",
+        "PLEASE RESTART THE GAME TO RETRY",
         "PLEASE TRY AGAIN",
     )
     login_markers = (

@@ -11,6 +11,21 @@ from typing import Any
 import frida
 
 
+def partition_redirect_rules(redirects: dict[str, str] | None) -> tuple[dict[str, str], list[dict[str, str]]]:
+    exact_rules: dict[str, str] = {}
+    pattern_rules: list[dict[str, str]] = []
+    for key, value in (redirects or {}).items():
+        normalized_key = str(key).strip().lower()
+        normalized_value = str(value).strip()
+        if not normalized_key or not normalized_value:
+            continue
+        if "*" in normalized_key:
+            pattern_rules.append({"pattern": normalized_key, "target": normalized_value})
+        else:
+            exact_rules[normalized_key] = normalized_value
+    return exact_rules, pattern_rules
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Attach deep live Frida hooks to rs2client.exe and write normalized JSONL events."
@@ -24,7 +39,36 @@ def parse_args() -> argparse.Namespace:
         help="Optional maximum trace duration. 0 means wait until interrupted or detached.",
     )
     parser.add_argument("--verbose", action="store_true", help="Emit higher-volume read/send/recv events.")
+    parser.add_argument(
+        "--resolve-redirect",
+        action="append",
+        default=[],
+        help="Hostname redirect rule in source=target form. Supports * patterns on the source side.",
+    )
+    parser.add_argument(
+        "--connect-redirect",
+        action="append",
+        default=[],
+        help="Connect redirect rule in source=target form. Supports * patterns on the source side.",
+    )
     return parser.parse_args()
+
+
+def parse_redirect_rules(values: list[str] | None) -> dict[str, str]:
+    rules: dict[str, str] = {}
+    for raw_value in values or []:
+        candidate = str(raw_value or "").strip()
+        if not candidate:
+            continue
+        if "=" not in candidate:
+            raise ValueError(f"Redirect rule must use source=target form: {candidate!r}")
+        source, target = candidate.split("=", 1)
+        normalized_source = source.strip().lower()
+        normalized_target = target.strip()
+        if not normalized_source or not normalized_target:
+            raise ValueError(f"Redirect rule must use non-empty source and target: {candidate!r}")
+        rules[normalized_source] = normalized_target
+    return rules
 
 
 def build_hook_script(
@@ -33,22 +77,16 @@ def build_hook_script(
     connect_redirects: dict[str, str] | None = None,
 ) -> str:
     verbose_literal = "true" if verbose else "false"
-    normalized_redirects = {
-        str(key).strip().lower(): str(value).strip()
-        for key, value in (resolve_redirects or {}).items()
-        if str(key).strip() and str(value).strip()
-    }
-    normalized_connect_redirects = {
-        str(key).strip().lower(): str(value).strip()
-        for key, value in (connect_redirects or {}).items()
-        if str(key).strip() and str(value).strip()
-    }
+    normalized_redirects, redirect_patterns = partition_redirect_rules(resolve_redirects)
+    normalized_connect_redirects, connect_redirect_patterns = partition_redirect_rules(connect_redirects)
     script = r"""
 'use strict';
 
 const VERBOSE = __VERBOSE__;
 const RESOLVE_REDIRECTS = __RESOLVE_REDIRECTS__;
+const RESOLVE_REDIRECT_PATTERNS = __RESOLVE_REDIRECT_PATTERNS__;
 const CONNECT_REDIRECTS = __CONNECT_REDIRECTS__;
+const CONNECT_REDIRECT_PATTERNS = __CONNECT_REDIRECT_PATTERNS__;
 const hooks = new Set();
 const fileHandles = Object.create(null);
 const socketStats = Object.create(null);
@@ -66,15 +104,45 @@ function normalizeRedirectHost(value) {{
   return String(value).trim().toLowerCase();
 }}
 
-function lookupResolveRedirect(hostValue) {{
+function matchesRedirectPattern(patternValue, hostValue) {{
+  const pattern = normalizeRedirectHost(patternValue);
+  const host = normalizeRedirectHost(hostValue);
+  if (!pattern || !host) {{
+    return false;
+  }}
+  if (pattern.indexOf('*') === -1) {{
+    return pattern === host;
+  }}
+  const escaped = pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*');
+  try {{
+    return new RegExp('^' + escaped + '$').test(host);
+  }} catch (error) {{
+    return false;
+  }}
+}}
+
+function lookupRedirectFromTables(hostValue, exactRules, patternRules) {{
   const normalized = normalizeRedirectHost(hostValue);
   if (!normalized) {{
     return null;
   }}
-  if (Object.prototype.hasOwnProperty.call(RESOLVE_REDIRECTS, normalized)) {{
-    return RESOLVE_REDIRECTS[normalized];
+  if (Object.prototype.hasOwnProperty.call(exactRules, normalized)) {{
+    return exactRules[normalized];
+  }}
+  for (let index = 0; index < patternRules.length; index += 1) {{
+    const rule = patternRules[index];
+    if (!rule || !rule.pattern || !rule.target) {{
+      continue;
+    }}
+    if (matchesRedirectPattern(rule.pattern, normalized)) {{
+      return rule.target;
+    }}
   }}
   return null;
+}}
+
+function lookupResolveRedirect(hostValue) {{
+  return lookupRedirectFromTables(hostValue, RESOLVE_REDIRECTS, RESOLVE_REDIRECT_PATTERNS);
 }}
 
 function maybeRewriteResolveArgument(args, index, wide, hostValue) {{
@@ -108,14 +176,7 @@ function normalizeConnectTarget(value, family) {{
 }}
 
 function lookupConnectRedirect(hostValue) {{
-  const normalized = normalizeRedirectHost(hostValue);
-  if (!normalized) {{
-    return null;
-  }}
-  if (Object.prototype.hasOwnProperty.call(CONNECT_REDIRECTS, normalized)) {{
-    return CONNECT_REDIRECTS[normalized];
-  }}
-  return null;
+  return lookupRedirectFromTables(hostValue, CONNECT_REDIRECTS, CONNECT_REDIRECT_PATTERNS);
 }}
 
 function parseIpv4Address(value) {{
@@ -1986,7 +2047,9 @@ setInterval(installHooks, 1000);
     return (
         script.replace("__VERBOSE__", verbose_literal)
         .replace("__RESOLVE_REDIRECTS__", json.dumps(normalized_redirects, sort_keys=True))
+        .replace("__RESOLVE_REDIRECT_PATTERNS__", json.dumps(redirect_patterns))
         .replace("__CONNECT_REDIRECTS__", json.dumps(normalized_connect_redirects, sort_keys=True))
+        .replace("__CONNECT_REDIRECT_PATTERNS__", json.dumps(connect_redirect_patterns))
         .replace("{{", "{")
         .replace("}}", "}")
     )
@@ -2007,6 +2070,8 @@ def main() -> int:
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     stop_event = threading.Event()
+    resolve_redirects = parse_redirect_rules(args.resolve_redirect)
+    connect_redirects = parse_redirect_rules(args.connect_redirect)
 
     with output_path.open("w", encoding="utf-8") as handle:
         def write_event(event: dict[str, Any]) -> None:
@@ -2039,7 +2104,7 @@ def main() -> int:
             )
 
         session = frida.attach(args.pid)
-        script = session.create_script(build_hook_script(args.verbose))
+        script = session.create_script(build_hook_script(args.verbose, resolve_redirects, connect_redirects))
         script.on("message", on_message)
         script.load()
         write_event(
@@ -2049,6 +2114,8 @@ def main() -> int:
                 "action": "attached",
                 "pid": args.pid,
                 "verbose": bool(args.verbose),
+                "resolveRedirects": resolve_redirects,
+                "connectRedirects": connect_redirects,
             }
         )
 

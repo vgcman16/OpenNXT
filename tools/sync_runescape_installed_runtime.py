@@ -160,6 +160,55 @@ def inspect_directory(scope: str, root: Path, entries: list[DownloadEntry]) -> l
     return inspections
 
 
+def build_wrapper_launch_readiness(
+    *,
+    local_results: list[FileInspection],
+    local_ready: bool,
+    installed_ready_after: bool,
+) -> dict[str, object]:
+    local_mismatches = [result for result in local_results if result.status != "match"]
+    local_mismatch_names = [result.name for result in local_mismatches]
+    local_child_result = next(
+        (
+            result
+            for result in local_results
+            if result.name.lower() == "rs2client.exe"
+        ),
+        None,
+    )
+    local_non_child_ready = all(
+        result.status == "match" or result is local_child_result for result in local_results
+    )
+    local_only_child_crc_mismatch = (
+        local_child_result is not None
+        and local_child_result.status == "crc-mismatch"
+        and len(local_mismatches) == 1
+        and local_mismatch_names[0].lower() == "rs2client.exe"
+    )
+    wrapper_local_child_override_ready = local_ready and installed_ready_after
+    wrapper_installed_child_ready = (
+        installed_ready_after and local_non_child_ready and local_only_child_crc_mismatch
+    )
+    wrapper_launch_ready = (
+        wrapper_local_child_override_ready or wrapper_installed_child_ready
+    )
+    if wrapper_local_child_override_ready:
+        wrapper_launch_reason = "local-family-ready"
+    elif wrapper_installed_child_ready:
+        wrapper_launch_reason = "installed-runtime-ready-local-rs2client-crc-mismatch"
+    else:
+        wrapper_launch_reason = "wrapper-launch-not-ready"
+    return {
+        "localMismatchNames": local_mismatch_names,
+        "localNonChildReady": local_non_child_ready,
+        "localRs2ClientStatus": None if local_child_result is None else local_child_result.status,
+        "wrapperLocalChildOverrideReady": wrapper_local_child_override_ready,
+        "wrapperInstalledChildReady": wrapper_installed_child_ready,
+        "wrapperLaunchReady": wrapper_launch_ready,
+        "wrapperLaunchReason": wrapper_launch_reason,
+    }
+
+
 def replace_file_verified(source: Path, destination: Path, expected_crc: int) -> tuple[int, int]:
     destination.parent.mkdir(parents=True, exist_ok=True)
     temp_fd, temp_name = tempfile.mkstemp(
@@ -326,6 +375,11 @@ def main(argv: list[str] | None = None) -> int:
 
     installed_results_after = inspect_directory("installed", args.installed_dir, entries)
     installed_ready_after = all(result.status == "match" for result in installed_results_after)
+    wrapper_launch_readiness = build_wrapper_launch_readiness(
+        local_results=local_results,
+        local_ready=local_ready,
+        installed_ready_after=installed_ready_after,
+    )
 
     artifact = {
         "tool": "sync_runescape_installed_runtime",
@@ -338,6 +392,7 @@ def main(argv: list[str] | None = None) -> int:
         "localReady": local_ready,
         "installedReadyBefore": installed_ready_before,
         "installedReadyAfter": installed_ready_after,
+        **wrapper_launch_readiness,
         "plannedCopyCount": len(planned_files),
         "copiedCount": copied_count,
         "failedCount": len(failed_files),

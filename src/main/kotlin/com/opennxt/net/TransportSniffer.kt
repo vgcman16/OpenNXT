@@ -184,6 +184,10 @@ class TransportSniffer(private val tlsContext: SslContext) : ByteToMessageDecode
         val readerIndex = buf.readerIndex()
         val contentType = buf.getUnsignedByte(readerIndex).toInt()
         val localPort = (ctx.channel().localAddress() as? InetSocketAddress)?.port ?: -1
+        val previewLength = min(buf.readableBytes(), 32)
+        val preview = ByteArray(previewLength)
+        buf.getBytes(readerIndex, preview)
+        val previewHex = preview.joinToString(" ") { "%02x".format(it.toInt() and 0xff) }
 
         if (contentType == 0x16) {
             if (buf.readableBytes() < 3) {
@@ -198,6 +202,15 @@ class TransportSniffer(private val tlsContext: SslContext) : ByteToMessageDecode
                     "Detected plaintext transport from ${ctx.channel().remoteAddress()} " +
                         "to port $localPort (leading 0x16 was not TLS)"
                 }
+                PreLoginForensics.recordTransportEvent(
+                    localPort = localPort,
+                    remoteAddress = ctx.channel().remoteAddress().toString(),
+                    event = "transport-plaintext",
+                    details = mapOf(
+                        "previewHex" to previewHex,
+                        "leadingByte" to contentType,
+                    ),
+                )
                 ctx.pipeline().remove(this)
                 out.add(buf.readRetainedSlice(buf.readableBytes()))
                 return
@@ -211,12 +224,32 @@ class TransportSniffer(private val tlsContext: SslContext) : ByteToMessageDecode
                     "alpn=${hello?.alpnProtocols?.joinToString(",").orEmpty().ifEmpty { "none" }}, " +
                     "versions=${hello?.supportedVersions?.joinToString(",").orEmpty().ifEmpty { "unknown" }})"
             }
+            PreLoginForensics.recordTransportEvent(
+                localPort = localPort,
+                remoteAddress = ctx.channel().remoteAddress().toString(),
+                event = "transport-tls-clienthello",
+                details = mapOf(
+                    "previewHex" to previewHex,
+                    "sni" to hello?.serverName,
+                    "alpn" to hello?.alpnProtocols,
+                    "versions" to hello?.supportedVersions,
+                ),
+            )
             ctx.pipeline().addAfter(ctx.name(), "tls-server", tlsContext.newHandler(ctx.alloc()))
         } else {
             logger.info {
                 "Detected plaintext transport from ${ctx.channel().remoteAddress()} " +
                     "to port $localPort"
             }
+            PreLoginForensics.recordTransportEvent(
+                localPort = localPort,
+                remoteAddress = ctx.channel().remoteAddress().toString(),
+                event = "transport-plaintext",
+                details = mapOf(
+                    "previewHex" to previewHex,
+                    "leadingByte" to contentType,
+                ),
+            )
         }
 
         ctx.pipeline().remove(this)

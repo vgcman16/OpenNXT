@@ -18,12 +18,16 @@ import com.opennxt.net.game.clientprot.WorldlistFetch
 import com.opennxt.net.game.handlers.ClientCheatHandler
 import com.opennxt.net.game.handlers.NoTimeoutHandler
 import com.opennxt.net.game.handlers.WorldlistFetchHandler
+import com.opennxt.net.game.pipeline.OpcodeWithBuffer
 import com.opennxt.net.game.pipeline.GamePacketHandler
 import com.opennxt.net.game.serverprot.*
 import com.opennxt.net.game.serverprot.variables.ClientSetvarcLarge
 import com.opennxt.net.game.serverprot.variables.ClientSetvarcSmall
 import com.opennxt.net.game.serverprot.variables.ClientSetvarcstrSmall
 import com.opennxt.net.game.serverprot.variables.ResetClientVarcache
+import com.opennxt.net.proxy.UnidentifiedPacket
+import io.netty.buffer.ByteBufUtil
+import io.netty.buffer.Unpooled
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import mu.KotlinLogging
 import kotlin.reflect.KClass
@@ -195,6 +199,9 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
     private val handlers =
         Object2ObjectOpenHashMap<KClass<out GamePacket>, GamePacketHandler<in BasePlayer, out GamePacket>>()
     private val logger = KotlinLogging.logger { }
+    private var keepaliveTicks = 0
+    private var compatServerpermAckCount = 0
+    private val primedPostSocialCompatAckOpcodes = mutableSetOf<Int>()
 
     override val interfaces: InterfaceManager = InterfaceManager(this)
     override val stats: StatContainer = PlayerStatContainer(this)
@@ -252,10 +259,164 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
         handlers[WorldlistFetch::class] = WorldlistFetchHandler as GamePacketHandler<in BasePlayer, out GamePacket>
     }
 
+    private fun sendLobbyCompatServerpermAck(triggerOpcode: Int, reason: String) {
+        val compatAckOpcode = OpenNXT.config.lobbyBootstrap.compatServerpermAckOpcode
+        if (compatAckOpcode < 0) {
+            client.traceBootstrap(
+                "lobby-skip-serverperm-ack-candidate name=$name triggerOpcode=$triggerOpcode reason=$reason " +
+                    "compatAckOpcode=$compatAckOpcode"
+            )
+            return
+        }
+
+        client.write(UnidentifiedPacket(OpcodeWithBuffer(compatAckOpcode, Unpooled.EMPTY_BUFFER)))
+        compatServerpermAckCount++
+        client.traceBootstrap(
+            "lobby-send-serverperm-ack-candidate name=$name opcode=$compatAckOpcode count=$compatServerpermAckCount " +
+                "triggerOpcode=$triggerOpcode reason=$reason"
+        )
+    }
+
+    private fun primePostSocialCompatAck(opcode: Int, payloadSize: Int, previewHex: String, reason: String) {
+        if (!primedPostSocialCompatAckOpcodes.add(opcode)) {
+            return
+        }
+
+        logger.info {
+            "Priming post-social lobby compatibility ack for $name from opcode $opcode " +
+                "(payloadBytes=$payloadSize, preview=$previewHex, reason=$reason)"
+        }
+        client.traceBootstrap(
+            "lobby-prime-post-social-compat name=$name opcode=$opcode bytes=$payloadSize " +
+                "preview=$previewHex reason=$reason"
+        )
+        sendLobbyCompatServerpermAck(triggerOpcode = opcode, reason = reason)
+    }
+
+    private fun shouldPrimePostSocialCompatAck(opcode: Int, payloadSize: Int, bootstrapStage: String): Boolean {
+        if (bootstrapStage != "social-state" || payloadSize <= 0) {
+            return false
+        }
+
+        return when (opcode) {
+            0, 80, 110 -> false
+            12, 118, 122 -> false
+            else -> true
+        }
+    }
+
+    private fun handleUnidentifiedPacket(packet: UnidentifiedPacket): Boolean {
+        val opcode = packet.packet.opcode
+        val buf = packet.packet.buf
+        val payloadSize = buf.readableBytes()
+        val payloadHex =
+            if (payloadSize <= 0) ""
+            else ByteBufUtil.hexDump(buf, buf.readerIndex(), payloadSize)
+        val previewHex =
+            if (payloadSize <= 0) "<empty>"
+            else ByteBufUtil.hexDump(buf, buf.readerIndex(), minOf(32, payloadSize))
+        val bootstrapStage = client.currentBootstrapStage ?: client.lastCompletedBootstrapStage ?: "none"
+        val probableFamily =
+            when (opcode) {
+                12, 118, 122 -> "possible-if-button"
+                0 -> "serverperm-varcs"
+                80 -> "no-timeout-compat"
+                110 -> "worldlist-fetch-compat"
+                27, 44, 48, 56, 57, 62, 89, 94, 109, 30625, 30398 -> "post-login-compat"
+                else -> "unknown"
+            }
+
+        if (opcode == 0) {
+            logger.info {
+                "Intercepted unidentified lobby opcode 0 for $name " +
+                    "(payloadBytes=$payloadSize, preview=$previewHex, compatAckCount=$compatServerpermAckCount)"
+            }
+            client.traceBootstrap(
+                "lobby-recv-serverperm-varcs name=$name opcode=0 bytes=$payloadSize preview=$previewHex " +
+                    "ackCount=$compatServerpermAckCount"
+            )
+            sendLobbyCompatServerpermAck(triggerOpcode = 0, reason = "serverperm-varcs")
+            buf.release()
+            return true
+        }
+
+        if (opcode == 80 && payloadSize == 0) {
+            logger.info {
+                "Treating unidentified lobby opcode 80 as compatibility NO_TIMEOUT for $name"
+            }
+            client.traceBootstrap("lobby-client-no-timeout-compat name=$name opcode=80 bytes=0")
+            NoTimeoutHandler.handle(this, NoTimeout)
+            buf.release()
+            return true
+        }
+
+        if (opcode == 110 && payloadSize == 4) {
+            val checksum = buf.getInt(buf.readerIndex())
+            val compatReplyOpcode = OpenNXT.config.lobbyBootstrap.compatWorldlistFetchReplyOpcode
+            logger.info {
+                "Treating unidentified lobby opcode 110 as compatibility WORLDLIST_FETCH for $name " +
+                    "(checksum=$checksum, compatReplyOpcode=$compatReplyOpcode)"
+            }
+            client.traceBootstrap(
+                "lobby-worldlist-fetch-compat name=$name opcode=110 checksum=$checksum compatReplyOpcode=$compatReplyOpcode"
+            )
+            if (compatReplyOpcode >= 0) {
+                worldList.handleCompatRequest(checksum, client, compatReplyOpcode)
+                client.traceBootstrap(
+                    "lobby-send-worldlist-fetch-reply-compat name=$name opcode=$compatReplyOpcode checksum=$checksum"
+                )
+            }
+            buf.release()
+            return true
+        }
+
+        if (shouldPrimePostSocialCompatAck(opcode = opcode, payloadSize = payloadSize, bootstrapStage = bootstrapStage)) {
+            val reason =
+                when {
+                    opcode == 27 && payloadSize in setOf(12, 13, 14) -> "post-social-prime"
+                    opcode in setOf(62, 109) -> "post-social-followup"
+                    probableFamily == "post-login-compat" -> "post-social-compat-family"
+                    else -> "post-social-generic"
+                }
+            primePostSocialCompatAck(
+                opcode = opcode,
+                payloadSize = payloadSize,
+                previewHex = previewHex,
+                reason = reason
+            )
+        }
+
+        logger.info {
+            "Unhandled unidentified lobby packet for $name " +
+                "(opcode=$opcode, payloadBytes=$payloadSize, family=$probableFamily, preview=$previewHex)"
+        }
+        client.traceBootstrap(
+            "lobby-unidentified-client name=$name opcode=$opcode bytes=$payloadSize " +
+                "family=$probableFamily stage=$bootstrapStage preview=$previewHex"
+        )
+        LobbyPacketForensics.recordClientPacket(
+            username = name,
+            remoteAddress = client.channel.remoteAddress()?.toString().orEmpty(),
+            localAddress = client.channel.localAddress()?.toString().orEmpty(),
+            opcode = opcode,
+            payloadHex = payloadHex,
+            previewHex = previewHex,
+            bootstrapStage = bootstrapStage,
+        )
+        buf.release()
+        return true
+    }
+
     fun handleIncomingPackets() {
         val queue = client.incomingQueue
         while (true) {
             val packet = queue.poll() ?: return
+
+            if (packet is UnidentifiedPacket) {
+                if (handleUnidentifiedPacket(packet)) {
+                    continue
+                }
+            }
 
             val handler = handlers[packet::class] as? GamePacketHandler<in BasePlayer, GamePacket>
             if (handler != null) {
@@ -268,13 +429,15 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
 
     fun added() {
         logger.info { "Bootstrapping lobby player $name" }
-        stats.init()
+        client.processUnidentifiedPackets = true
         val bootstrap = OpenNXT.config.lobbyBootstrap
         val stageTracker = LobbyBootstrapStageTracker(client, name)
 
         logger.info {
                 "Lobby bootstrap toggles for $name: " +
+                "initialStats=${bootstrap.sendInitialStats}, " +
                 "defaultVarps=${bootstrap.sendDefaultVarps}, " +
+                "forcedFallbackCandidateVarps=${bootstrap.useForcedFallbackCandidateDefaultVarps}, " +
                 "defaultVarpRange=${bootstrap.defaultVarpMinId}..${bootstrap.defaultVarpMaxId}, " +
                 "root=${bootstrap.openRootInterface}, " +
                 "supplementalChildren=${bootstrap.openSupplementalChildInterfaces}, " +
@@ -289,13 +452,27 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
                 "socialInit=${bootstrap.sendSocialInitPackets}"
         }
 
+        if (bootstrap.sendInitialStats) {
+            stats.init()
+        } else {
+            logger.info { "Skipping initial stat burst for $name due to bootstrap config" }
+        }
+
         stageTracker.run(LobbyBootstrapStage.RESET) {
             client.write(ResetClientVarcache)
         }
 
         stageTracker.run(LobbyBootstrapStage.DEFAULT_VARPS) {
             if (bootstrap.sendDefaultVarps) {
-                TODORefactorThisClass.sendDefaultVarps(client)
+                if (bootstrap.useForcedFallbackCandidateDefaultVarps) {
+                    logger.info {
+                        "Sending forced fallback candidate lobby varps for $name " +
+                            "(count=${TODORefactorThisClass.FORCED_FALLBACK_CANDIDATE_DEFAULT_VARP_IDS.size})"
+                    }
+                    TODORefactorThisClass.sendForcedFallbackCandidateDefaultVarps(client)
+                } else {
+                    TODORefactorThisClass.sendDefaultVarps(client)
+                }
             } else {
                 logger.info { "Skipping default lobby varps for $name while isolating the 946 crash" }
             }
@@ -657,6 +834,18 @@ class LobbyPlayer(client: ConnectedClient, name: String) : BasePlayer(client, na
     }
 
     override fun tick() {
-        // TODO Do lobby players even need to be ticked?
+        keepaliveTicks++
+        if (keepaliveTicks % 5 == 0) {
+            val canSendNoTimeout = PacketRegistry.getRegistration(Side.SERVER, NoTimeout::class) != null
+            if (canSendNoTimeout) {
+                client.write(NoTimeout)
+            }
+        }
+        if (
+            OpenNXT.config.lobbyBootstrap.sendServerTickEnd &&
+            PacketRegistry.getRegistration(Side.SERVER, ServerTickEnd::class) != null
+        ) {
+            client.write(ServerTickEnd)
+        }
     }
 }

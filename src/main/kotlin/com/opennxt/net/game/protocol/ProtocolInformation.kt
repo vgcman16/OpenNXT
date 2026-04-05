@@ -6,6 +6,7 @@ import com.opennxt.net.game.PacketRegistry
 import mu.KotlinLogging
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import kotlin.system.exitProcess
 
 class ProtocolInformation(val path: Path) {
@@ -43,9 +44,11 @@ class ProtocolInformation(val path: Path) {
 
     fun load() {
         logger.info { "Loading protocol information from $path" }
+        val clientProtSizesPath = path.resolve("clientProtSizes.toml")
+        val serverProtSizesPath = path.resolve("serverProtSizes.toml")
 
         try {
-            clientProtSizes = TomlConfig.load(path.resolve("clientProtSizes.toml"), mustExist = true)
+            clientProtSizes = TomlConfig.load(clientProtSizesPath, mustExist = true)
         } catch (e: Exception) {
             e.printStackTrace()
             logger.error { "Protocol information not found for build ${OpenNXT.config.build}." }
@@ -53,15 +56,26 @@ class ProtocolInformation(val path: Path) {
             logger.error { " Please look check out the following wiki page for help: <TO-DO>" }
             exitProcess(1)
         }
+        logger.info {
+            "Loaded client protocol sizes from ${clientProtSizesPath.toAbsolutePath().normalize()} " +
+                "(cwd=${Paths.get("").toAbsolutePath().normalize()}, " +
+                "lastModified=${Files.getLastModifiedTime(clientProtSizesPath)}, " +
+                "opcode27=${clientProtSizes.values.getOrDefault(27, Int.MIN_VALUE)}, " +
+                "opcode92=${clientProtSizes.values.getOrDefault(92, Int.MIN_VALUE)})"
+        }
 
         try {
-            serverProtSizes = TomlConfig.load(path.resolve("serverProtSizes.toml"), mustExist = true)
+            serverProtSizes = TomlConfig.load(serverProtSizesPath, mustExist = true)
         } catch (e: Exception) {
             e.printStackTrace()
             logger.error { "Protocol information not found for build ${OpenNXT.config.build}." }
             logger.error { " Looked in: ${path.resolve("serverProtSizes.toml")}" }
             logger.error { " Please look check out the following wiki page for help: <TO-DO>" }
             exitProcess(1)
+        }
+        logger.info {
+            "Loaded server protocol sizes from ${serverProtSizesPath.toAbsolutePath().normalize()} " +
+                "(lastModified=${Files.getLastModifiedTime(serverProtSizesPath)})"
         }
 
         try {
