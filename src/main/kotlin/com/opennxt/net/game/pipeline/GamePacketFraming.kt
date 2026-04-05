@@ -127,12 +127,12 @@ class GamePacketFraming : ByteToMessageDecoder() {
         }
 
         return when (opcode) {
-            // On the contained post-lobby 947 path we repeatedly see client opcode 30 arrive as
-            // seven wire bytes: the first three are framed cleanly, then the remaining 00 00 00 02
-            // tail gets misread as a bogus giant opcode (31305) after network fragmentation.
-            // Keep this scoped to the late-default-varps bootstrap phase so we don't globally
-            // rewrite the extracted 947 interaction packet size.
-            30 -> 7
+            // On the contained post-lobby 947 path the late-default-varps branch surfaces client
+            // opcode 30 as a four-byte payload (for example 00 00 00 01). The extracted 947 map
+            // still reports OPPLAYER10 as size 3, but the local compat path repeatedly stalls if we
+            // wait for more than the four payload bytes that actually arrive. Keep this scoped to
+            // late-default-varps so we don't globally rewrite the extracted interaction packet size.
+            30 -> 4
             else -> null
         }
     }
