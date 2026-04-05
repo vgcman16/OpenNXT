@@ -162,6 +162,7 @@ class WorldPlayer(
     private var deferredForcedFallback10623BatchPending = false
     private var forcedFallbackLateReadyInterfaceReplaySent = false
     private var forcedFallbackLateReadyInterfaceReplayArmed = false
+    private var deferredForcedFallbackSelfModelBindPending = false
     private var awaitingLateSceneStartReadySignal = false
     private var lateSceneStartReadySignalsAccepted = 0
     var lastClientBootstrapBlob28: ClientBootstrapBlob28? = null
@@ -1491,10 +1492,18 @@ class WorldPlayer(
                         "reason=$reason"
                 )
             }
-            interfaces.setPlayerModelSelf(id = subInterfaceId, component = selfModelComponent)
-            client.traceBootstrap(
-                "world-bind-local-player-model name=$name id=$subInterfaceId component=$selfModelComponent"
-            )
+            if (forcedMinimalInterfaceBootstrap) {
+                deferredForcedFallbackSelfModelBindPending = true
+                client.traceBootstrap(
+                    "world-defer-local-player-model-bind name=$name id=$subInterfaceId component=$selfModelComponent " +
+                        "reason=forced-map-build-fallback-pre-late-ready"
+                )
+            } else {
+                interfaces.setPlayerModelSelf(id = subInterfaceId, component = selfModelComponent)
+                client.traceBootstrap(
+                    "world-bind-local-player-model name=$name id=$subInterfaceId component=$selfModelComponent"
+                )
+            }
         } else {
             logger.info {
                 "Skipping active player bind for $name because worldInterfaceSelfModelComponent is not configured"
@@ -2640,6 +2649,17 @@ class WorldPlayer(
         }
         forcedFallbackLateReadyInterfaceReplaySent = true
         forcedFallbackLateReadyInterfaceReplayArmed = false
+        if (deferredForcedFallbackSelfModelBindPending) {
+            deferredForcedFallbackSelfModelBindPending = false
+            val selfModelComponent = OpenNXT.config.lobbyBootstrap.worldInterfaceSelfModelComponent
+            if (selfModelComponent >= 0) {
+                interfaces.setPlayerModelSelf(id = 1482, component = selfModelComponent)
+                client.traceBootstrap(
+                    "world-bind-local-player-model-after-late-ready name=$name id=1482 component=$selfModelComponent " +
+                        "control50=${lastClientBootstrapControl50} acceptedCount=$lateSceneStartReadySignalsAccepted"
+                )
+            }
+        }
         if (deferredForcedFallbackSupplementalChildrenPending) {
             deferredForcedFallbackSupplementalChildrenPending = false
             openForcedFallbackSupplementalWorldChildren(includeEvents = false)
@@ -2761,6 +2781,7 @@ class WorldPlayer(
         deferredForcedFallback10623BatchPending = false
         forcedFallbackLateReadyInterfaceReplaySent = false
         forcedFallbackLateReadyInterfaceReplayArmed = false
+        deferredForcedFallbackSelfModelBindPending = false
         awaitingLateSceneStartReadySignal = false
         lateSceneStartReadySignalsAccepted = 0
         postInitialWorldSyncHoldTicks = 0
@@ -3007,7 +3028,9 @@ class WorldPlayer(
                 )
                 TODORefactorThisClass.sendForcedFallbackCandidateDefaultVarps(client)
                 client.primeLateDefaultVarpReplaySkip(TODORefactorThisClass.FORCED_FALLBACK_CANDIDATE_DEFAULT_VARP_IDS)
-                openLoadingNotesInterfaceIfAvailable(reason = "forced-map-build-fallback-minimal-bootstrap")
+                client.traceBootstrap(
+                    "world-skip-loading-notes name=$name reason=forced-map-build-fallback-minimal-bootstrap"
+                )
                 client.traceBootstrap(
                     "world-skip-forced-fallback-completion-companions name=$name " +
                         "ids=1484,1483,745,284,1213,1448,291,1488,1680,1847,635,1639 scripts=139,14150 " +
