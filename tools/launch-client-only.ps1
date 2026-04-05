@@ -4,6 +4,7 @@ param(
     [Nullable[int]]$CefRemoteDebuggingPort = $null,
     [switch]$EnableCefLogging,
     [switch]$CaptureConsole,
+    [switch]$VerboseStartupHook,
     [switch]$UsePatchedLauncher,
     [string]$ClientExeOverride = "",
     [string]$ClientWorkingDirOverride = "",
@@ -1050,6 +1051,9 @@ function Invoke-DirectPatchedClientLaunch {
         if ($EnableStartupHook -and -not [string]::IsNullOrWhiteSpace($StartupHookOutputPath)) {
             $argsList += "--startup-hook-output"
             $argsList += $StartupHookOutputPath
+            if ($VerboseStartupHook) {
+                $argsList += "--startup-hook-verbose"
+            }
         }
         if (-not [string]::IsNullOrWhiteSpace($RsaConfigPath) -and (Test-Path $RsaConfigPath)) {
             $argsList += "--rsa-config"

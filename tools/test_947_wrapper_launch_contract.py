@@ -333,6 +333,8 @@ class WrapperLaunchContractTest(unittest.TestCase):
         self.assertIn('$directPatchExtraArgs += "--resource-gate-force-recordstate-from-type0"', text)
         self.assertIn("$directPatchLoadingStateOutputRoot = Join-Path $root \"data\\\\debug\\\\loading-state-builder-947-direct-helper-client-only\"", text)
         self.assertIn("--startup-hook-output", text)
+        self.assertIn("[switch]$VerboseStartupHook", text)
+        self.assertIn("--startup-hook-verbose", text)
         self.assertIn('$directPatchExtraArgs += "--loading-state-output-root"', text)
         self.assertNotIn('$directPatchExtraArgs += "--producer-output-root"', text)
         self.assertIn('$directPatchInlinePatchOffsets += "0x590cf4"', text)
