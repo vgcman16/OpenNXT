@@ -104,10 +104,6 @@ class GamePacketFraming : ByteToMessageDecoder() {
         }
 
         return when (opcode) {
-            // The contained social-state stream stays aligned only if this compat packet keeps its
-            // extra trailing bytes. The generic 947 client map says 12, but the observed lobby form
-            // is longer on the contained post-login branch.
-            27 -> 14
             // Observed immediately after the contained 27 -> 206 -> 62 -> 109 post-social path.
             // Treat this as a one-byte-length compat packet so we can keep framing instead of
             // dropping the entire lobby stream at the first unresolved big opcode.
