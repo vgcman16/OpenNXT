@@ -2,8 +2,10 @@ package com.opennxt.net.login
 
 import com.opennxt.OpenNXT
 import com.opennxt.login.LoginThread
-import com.opennxt.model.lobby.LobbyPlayer
 import com.opennxt.model.lobby.TODORefactorThisClass
+import com.opennxt.model.entity.PlayerEntity
+import com.opennxt.model.world.TileLocation
+import com.opennxt.model.world.WorldPlayer
 import com.opennxt.net.GenericResponse
 import com.opennxt.net.RSChannelAttributes
 import com.opennxt.net.game.pipeline.DynamicPacketHandler
@@ -105,16 +107,18 @@ class LoginServerHandler : SimpleChannelInboundHandler<LoginPacket>() {
                         ctx.channel().pipeline().replace("login-encoder", "game-encoder", GamePacketEncoder())
                         ctx.channel().pipeline().replace("login-handler", "game-handler", DynamicPacketHandler())
 
-                        val player = LobbyPlayer(
+                        val player = WorldPlayer(
                             ctx.channel().attr(RSChannelAttributes.CONNECTED_CLIENT).get(),
                             it.username,
+                            PlayerEntity(TileLocation(3222, 3222, 0)),
+                            WorldPlayer.EntryMode.POST_LOBBY_AUTH
                         )
 
                         logger.info {
-                            "Routing successful contained lobby auth for ${it.username} into local lobby bootstrap " +
+                            "Routing successful contained lobby auth for ${it.username} into post-lobby world bootstrap " +
                             "on ${ctx.channel().remoteAddress()}"
                         }
-                        OpenNXT.lobby.addPlayer(player)
+                        OpenNXT.world.addPlayer(player)
                     }
 
                     logger.info { "Login on [SERVER] is completed. Should add this to a map somewhere to handle" }
