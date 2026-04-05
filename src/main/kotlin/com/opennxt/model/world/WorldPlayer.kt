@@ -193,7 +193,10 @@ class WorldPlayer(
         private const val FORCED_FALLBACK_LATE_SCENE_START_CONTROL_50_PHASE2_MIN_VALUE = 4
         private const val FORCED_FALLBACK_LATE_SCENE_START_CONTROL_50_PHASE3_MIN_VALUE = 4
         private const val MAX_LATE_SCENE_START_READY_ACCEPTS = 4
-        private val MAP_BUILD_COMPAT_OPCODES = setOf(50, 95, 113)
+        // Build 947 has shown at least one contained post-lobby path where the first
+        // map-build completion signal arrives as a 3-byte opcode 30 packet instead of
+        // the older control opcodes we already tolerate.
+        private val MAP_BUILD_COMPAT_OPCODES = setOf(30, 50, 95, 113)
         private val WORLD_READY_COMPAT_OPCODES = setOf(17, 48, 50)
         private val INTERFACE_BOOTSTRAP_ANNOUNCEMENT_SCRIPTS = setOf(1264, 3529)
         private val INTERFACE_BOOTSTRAP_PANEL_SCRIPTS = setOf(11145, 8420)
@@ -2862,6 +2865,18 @@ class WorldPlayer(
                 )
                 client.write(UnidentifiedPacket(OpcodeWithBuffer(rebuildRegistration.opcode, rebuildPayload)))
                 awaitingMapBuildComplete = PacketRegistry.getRegistration(Side.CLIENT, MapBuildComplete::class) != null
+                if (entryMode == EntryMode.POST_LOBBY_AUTH && awaitingMapBuildComplete) {
+                    logger.info {
+                        "Forcing the minimal post-lobby world bootstrap for $name immediately after REBUILD_NORMAL " +
+                            "because the contained client is crashing before it can safely complete the normal map-build wait"
+                    }
+                    client.traceBootstrap(
+                        "world-force-map-build-fallback name=$name reason=post-lobby-auth-immediate"
+                    )
+                    clearCompatMapBuildReadyFallback()
+                    forcedMapBuildFallbackPending = true
+                    awaitingMapBuildComplete = false
+                }
             }
         }
 
