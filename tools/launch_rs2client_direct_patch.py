@@ -10,7 +10,12 @@ from typing import Any
 import threading
 from urllib.parse import parse_qs, urlparse
 
-import frida
+try:
+    import frida
+    FRIDA_IMPORT_ERROR = None
+except Exception as frida_import_error:  # pragma: no cover - exercised on locked-down Windows hosts
+    frida = None
+    FRIDA_IMPORT_ERROR = frida_import_error
 
 try:
     from tools.launch_runescape_wrapper_rewrite import (
@@ -25,8 +30,14 @@ try:
         query_process_command_line,
         query_process_path,
     )
-    from tools.trace_rs2client_live import build_hook_script as build_startup_hook_script
-    from tools.trace_rs2client_live import normalize_payload as normalize_startup_hook_payload
+    try:
+        from tools.trace_rs2client_live import build_hook_script as build_startup_hook_script
+        from tools.trace_rs2client_live import normalize_payload as normalize_startup_hook_payload
+        STARTUP_TRACE_IMPORT_ERROR = None
+    except Exception as startup_trace_import_error:  # pragma: no cover - exercised on locked-down Windows hosts
+        build_startup_hook_script = None
+        normalize_startup_hook_payload = None
+        STARTUP_TRACE_IMPORT_ERROR = startup_trace_import_error
     from tools.trace_947_application_resource_gate import (
         DEFAULT_DISPATCH_RVA as DEFAULT_RESOURCE_GATE_DISPATCH_RVA,
         DEFAULT_GATE_RVA as DEFAULT_RESOURCE_GATE_GATE_RVA,
@@ -83,8 +94,14 @@ except ImportError:
         query_process_command_line,
         query_process_path,
     )
-    from trace_rs2client_live import build_hook_script as build_startup_hook_script  # type: ignore
-    from trace_rs2client_live import normalize_payload as normalize_startup_hook_payload  # type: ignore
+    try:
+        from trace_rs2client_live import build_hook_script as build_startup_hook_script  # type: ignore
+        from trace_rs2client_live import normalize_payload as normalize_startup_hook_payload  # type: ignore
+        STARTUP_TRACE_IMPORT_ERROR = None
+    except Exception as startup_trace_import_error:  # pragma: no cover - exercised on locked-down Windows hosts
+        build_startup_hook_script = None
+        normalize_startup_hook_payload = None
+        STARTUP_TRACE_IMPORT_ERROR = startup_trace_import_error
     from trace_947_application_resource_gate import (  # type: ignore
         DEFAULT_DISPATCH_RVA as DEFAULT_RESOURCE_GATE_DISPATCH_RVA,
         DEFAULT_GATE_RVA as DEFAULT_RESOURCE_GATE_GATE_RVA,
@@ -770,6 +787,16 @@ def main(argv: list[str] | None = None) -> int:
             or loading_state_output_root is not None
         )
         if use_spawn_session:
+            if frida is None:
+                raise RuntimeError(
+                    "Frida is required for startup hooks or resolve redirects, but it could not be imported: "
+                    f"{FRIDA_IMPORT_ERROR}"
+                )
+            if build_startup_hook_script is None or normalize_startup_hook_payload is None:
+                raise RuntimeError(
+                    "The startup hook helpers could not be imported for the Frida spawn path: "
+                    f"{STARTUP_TRACE_IMPORT_ERROR}"
+                )
             device = frida.get_local_device()
             process_pid = int(device.spawn(argv_list, cwd=str(working_dir)))
             launch_mode = "frida-spawn"

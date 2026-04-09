@@ -8,7 +8,12 @@ from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
-import frida
+try:
+    import frida
+    FRIDA_IMPORT_ERROR = None
+except Exception as frida_import_error:  # pragma: no cover - exercised on locked-down Windows hosts
+    frida = None
+    FRIDA_IMPORT_ERROR = frida_import_error
 
 
 DEFAULT_OUTPUT_ROOT = Path(

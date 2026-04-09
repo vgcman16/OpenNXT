@@ -17,15 +17,27 @@ import urllib.parse
 from pathlib import Path
 from typing import Any, Callable
 
-import frida
+try:
+    import frida
+    FRIDA_IMPORT_ERROR = None
+except Exception as frida_import_error:  # pragma: no cover - exercised on locked-down Windows hosts
+    frida = None
+    FRIDA_IMPORT_ERROR = frida_import_error
 from ctypes import wintypes
 
 try:
     from tools.trace_rs2client_live import build_hook_script as build_child_live_hook_script
     from tools.trace_rs2client_live import normalize_payload as normalize_child_live_payload
-except ImportError:
-    from trace_rs2client_live import build_hook_script as build_child_live_hook_script
-    from trace_rs2client_live import normalize_payload as normalize_child_live_payload
+    CHILD_LIVE_TRACE_IMPORT_ERROR = None
+except Exception:
+    try:
+        from trace_rs2client_live import build_hook_script as build_child_live_hook_script
+        from trace_rs2client_live import normalize_payload as normalize_child_live_payload
+        CHILD_LIVE_TRACE_IMPORT_ERROR = None
+    except Exception as child_live_trace_import_error:  # pragma: no cover - exercised on locked-down Windows hosts
+        build_child_live_hook_script = None
+        normalize_child_live_payload = None
+        CHILD_LIVE_TRACE_IMPORT_ERROR = child_live_trace_import_error
 
 
 PROCESS_QUERY_INFORMATION = 0x0400
@@ -3058,6 +3070,12 @@ def main() -> int:
                         }
                     )
                 accepted_child_refresh_stop.wait(0.25)
+
+        if frida is None:
+            raise RuntimeError(
+                "Frida is required for wrapper spawn rewrite, but it could not be imported: "
+                f"{FRIDA_IMPORT_ERROR}"
+            )
 
         device = frida.get_local_device()
         wrapper_argv = [str(wrapper_exe), f"--configURI={args.config_uri}", *args.wrapper_extra_arg]

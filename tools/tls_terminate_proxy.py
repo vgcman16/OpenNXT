@@ -4,8 +4,10 @@ import hashlib
 import ipaddress
 import re
 import select
+import shutil
 import socket
 import ssl
+import subprocess
 import threading
 import time
 from datetime import datetime, timezone
@@ -13,9 +15,16 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
 
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.serialization import pkcs12
+try:
+    from cryptography.hazmat.primitives import hashes
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.serialization import pkcs12
+    CRYPTOGRAPHY_IMPORT_ERROR = None
+except Exception as cryptography_import_error:  # pragma: no cover - exercised on locked-down Windows hosts
+    hashes = None
+    serialization = None
+    pkcs12 = None
+    CRYPTOGRAPHY_IMPORT_ERROR = cryptography_import_error
 
 
 HTTP_HEADER_TERMINATOR = b"\r\n\r\n"
@@ -410,6 +419,88 @@ def filter_presented_chain(additional_certificates):
             continue
         filtered.append(cert)
     return filtered
+
+
+def find_openssl_executable() -> str | None:
+    candidates = [
+        shutil.which("openssl"),
+        r"C:\Program Files\Git\mingw64\bin\openssl.exe",
+        r"C:\Program Files\Git\usr\bin\openssl.exe",
+    ]
+    for candidate in candidates:
+        if candidate and Path(candidate).exists():
+            return candidate
+    return None
+
+
+def run_openssl(openssl_exe: str, arguments: list[str], *, check: bool = True) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        [openssl_exe, *arguments],
+        check=check,
+        capture_output=True,
+        text=True,
+    )
+
+
+def parse_openssl_x509_metadata(stdout: str) -> tuple[str, str, str]:
+    subject = ""
+    issuer = ""
+    thumbprint = ""
+    for raw_line in stdout.splitlines():
+        line = raw_line.strip()
+        lower = line.lower()
+        if lower.startswith("subject="):
+            subject = line.split("=", 1)[1].strip()
+        elif lower.startswith("issuer="):
+            issuer = line.split("=", 1)[1].strip()
+        elif "fingerprint=" in lower:
+            thumbprint = line.split("=", 1)[1].replace(":", "").strip().upper()
+    return subject, issuer, thumbprint
+
+
+def extract_tls_material_from_pfx_with_openssl(
+    *,
+    pfx_path: Path,
+    pfx_password: str,
+    temp_path: Path,
+) -> tuple[Path, Path, str, str, str]:
+    openssl_exe = find_openssl_executable()
+    if not openssl_exe:
+        raise RuntimeError(
+            "cryptography could not be imported and openssl.exe was not found for PFX extraction"
+        )
+
+    cert_path = temp_path / "server-cert.pem"
+    key_path = temp_path / "server-key.pem"
+    chain_path = temp_path / "server-chain.pem"
+    passin = f"pass:{pfx_password}"
+
+    run_openssl(
+        openssl_exe,
+        ["pkcs12", "-in", str(pfx_path), "-passin", passin, "-nodes", "-nocerts", "-out", str(key_path)],
+    )
+    run_openssl(
+        openssl_exe,
+        ["pkcs12", "-in", str(pfx_path), "-passin", passin, "-nokeys", "-clcerts", "-out", str(cert_path)],
+    )
+    chain_result = run_openssl(
+        openssl_exe,
+        ["pkcs12", "-in", str(pfx_path), "-passin", passin, "-nokeys", "-cacerts", "-out", str(chain_path)],
+        check=False,
+    )
+    if chain_result.returncode == 0 and chain_path.exists() and chain_path.stat().st_size > 0:
+        cert_path.write_bytes(cert_path.read_bytes() + chain_path.read_bytes())
+
+    x509_result = run_openssl(
+        openssl_exe,
+        ["x509", "-in", str(cert_path), "-noout", "-subject", "-issuer", "-fingerprint", "-sha1"],
+    )
+    subject, issuer, thumbprint = parse_openssl_x509_metadata(x509_result.stdout)
+    if not subject and not issuer and not thumbprint:
+        raise RuntimeError(
+            f"openssl extracted TLS material from {pfx_path} but did not return certificate metadata"
+        )
+    return cert_path, key_path, subject, issuer, thumbprint
 
 
 def rewrite_http_request(
@@ -1524,31 +1615,40 @@ def main():
     atexit.register(temp_dir.cleanup)
     temp_path = Path(temp_dir.name)
 
-    pfx_data = Path(args.pfxfile).read_bytes()
-    private_key, certificate, additional_certificates = pkcs12.load_key_and_certificates(
-        pfx_data,
-        args.pfxpassword.encode("utf-8"),
-    )
-    if private_key is None or certificate is None:
-        raise RuntimeError(f"Could not load certificate and private key from {args.pfxfile}")
-    args.cert_subject = certificate.subject.rfc4514_string()
-    args.cert_issuer = certificate.issuer.rfc4514_string()
-    args.cert_thumbprint = certificate.fingerprint(hashes.SHA1()).hex().upper()
-
-    cert_pem = certificate.public_bytes(serialization.Encoding.PEM)
-    presented_chain = filter_presented_chain(additional_certificates)
-    if presented_chain:
-        cert_pem += b"".join(cert.public_bytes(serialization.Encoding.PEM) for cert in presented_chain)
-    key_pem = private_key.private_bytes(
-        serialization.Encoding.PEM,
-        serialization.PrivateFormat.PKCS8,
-        serialization.NoEncryption(),
-    )
-
     cert_path = temp_path / "server-cert.pem"
     key_path = temp_path / "server-key.pem"
-    cert_path.write_bytes(cert_pem)
-    key_path.write_bytes(key_pem)
+    if pkcs12 is not None and serialization is not None and hashes is not None:
+        pfx_data = Path(args.pfxfile).read_bytes()
+        private_key, certificate, additional_certificates = pkcs12.load_key_and_certificates(
+            pfx_data,
+            args.pfxpassword.encode("utf-8"),
+        )
+        if private_key is None or certificate is None:
+            raise RuntimeError(f"Could not load certificate and private key from {args.pfxfile}")
+        args.cert_subject = certificate.subject.rfc4514_string()
+        args.cert_issuer = certificate.issuer.rfc4514_string()
+        args.cert_thumbprint = certificate.fingerprint(hashes.SHA1()).hex().upper()
+
+        cert_pem = certificate.public_bytes(serialization.Encoding.PEM)
+        presented_chain = filter_presented_chain(additional_certificates)
+        if presented_chain:
+            cert_pem += b"".join(cert.public_bytes(serialization.Encoding.PEM) for cert in presented_chain)
+        key_pem = private_key.private_bytes(
+            serialization.Encoding.PEM,
+            serialization.PrivateFormat.PKCS8,
+            serialization.NoEncryption(),
+        )
+
+        cert_path.write_bytes(cert_pem)
+        key_path.write_bytes(key_pem)
+    else:
+        cert_path, key_path, args.cert_subject, args.cert_issuer, args.cert_thumbprint = (
+            extract_tls_material_from_pfx_with_openssl(
+                pfx_path=Path(args.pfxfile),
+                pfx_password=args.pfxpassword,
+                temp_path=temp_path,
+            )
+        )
 
     ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     ssl_context.load_cert_chain(certfile=str(cert_path), keyfile=str(key_path))

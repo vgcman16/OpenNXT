@@ -42,6 +42,7 @@ import com.opennxt.net.game.serverprot.NoTimeout
 import com.opennxt.net.game.serverprot.RebuildNormal
 import com.opennxt.net.game.serverprot.RunClientScript
 import com.opennxt.net.game.serverprot.ServerTickEnd
+import com.opennxt.net.game.serverprot.ifaces.IfCloseSub
 import com.opennxt.net.game.serverprot.ifaces.IfOpensubActivePlayer
 import com.opennxt.net.game.serverprot.ifaces.IfSethide
 import com.opennxt.net.game.serverprot.variables.ResetClientVarcache
@@ -2750,7 +2751,12 @@ class WorldPlayer(
         }
         pendingForcedFallbackLoadingOverlayClose = false
         if (!interfaces.isOpened(1417)) {
-            return false
+            client.write(IfCloseSub(InterfaceHash(1477, 508)))
+            client.traceBootstrap(
+                "world-force-close-loading-overlay name=$name id=1417 parent=1477 component=508 " +
+                    "reason=$reason tracked=false"
+            )
+            return true
         }
         closeLoadingOverlay(reason = reason)
         return true
@@ -2914,15 +2920,12 @@ class WorldPlayer(
                 awaitingMapBuildComplete = PacketRegistry.getRegistration(Side.CLIENT, MapBuildComplete::class) != null
                 if (entryMode == EntryMode.POST_LOBBY_AUTH && awaitingMapBuildComplete) {
                     logger.info {
-                        "Forcing the minimal post-lobby world bootstrap for $name immediately after REBUILD_NORMAL " +
-                            "because the contained client is crashing before it can safely complete the normal map-build wait"
+                        "Allowing the contained post-lobby world bootstrap for $name to wait for the normal " +
+                            "MAP_BUILD_COMPLETE/compat path after REBUILD_NORMAL before using the timed fallback"
                     }
                     client.traceBootstrap(
-                        "world-force-map-build-fallback name=$name reason=post-lobby-auth-immediate"
+                        "world-allow-map-build-complete-wait name=$name reason=post-lobby-auth-normal-bootstrap"
                     )
-                    clearCompatMapBuildReadyFallback()
-                    forcedMapBuildFallbackPending = true
-                    awaitingMapBuildComplete = false
                 }
             }
         }

@@ -88,6 +88,8 @@ $serverConfigPath = Join-Path $root "data\\config\\server.toml"
 $certScript = Join-Path $PSScriptRoot "setup_lobby_tls_cert.ps1"
 $setContentHostsOverrideScript = Join-Path $PSScriptRoot "set_content_hosts_override.ps1"
 $clearContentHostsOverrideScript = Join-Path $PSScriptRoot "clear_content_hosts_override.ps1"
+$setSecureRetailHostsOverrideScript = Join-Path $PSScriptRoot "set_secure_retail_hosts_override.ps1"
+$clearSecureRetailHostsOverrideScript = Join-Path $PSScriptRoot "clear_secure_retail_hosts_override.ps1"
 $hostsFile = Join-Path $env:WINDIR "System32\\drivers\\etc\\hosts"
 $defaultMitmPrimaryHost = "localhost"
 $launcherDir = Join-Path $root "data\\launchers\\win"
@@ -423,6 +425,78 @@ function Sync-RetailHostsOverride {
     if ($exitCode -ne 0) {
         throw "Retail hosts override helper exited with code $exitCode."
     }
+}
+
+function Test-PythonModuleImport {
+    param([string]$ModuleName)
+
+    if ([string]::IsNullOrWhiteSpace($ModuleName)) {
+        return $false
+    }
+
+    try {
+        $pythonExe = (Get-Command python -ErrorAction Stop).Source
+    } catch {
+        return $false
+    }
+
+    $probe = @"
+import importlib
+import sys
+try:
+    importlib.import_module("$ModuleName")
+except Exception:
+    sys.exit(1)
+sys.exit(0)
+"@
+
+    try {
+        & $pythonExe -c $probe | Out-Null
+        return ($LASTEXITCODE -eq 0)
+    } catch {
+        return $false
+    }
+}
+
+function Sync-SecureRetailHostsOverride {
+    param(
+        [bool]$EnableOverride,
+        [string[]]$HostNames = @()
+    )
+
+    if (-not $script:CanWriteHostsFile) {
+        return $null
+    }
+
+    $hostsScript =
+        if ($EnableOverride) { $setSecureRetailHostsOverrideScript }
+        else { $clearSecureRetailHostsOverrideScript }
+    if (-not (Test-Path $hostsScript)) {
+        throw "Secure retail hosts override helper not found: $hostsScript"
+    }
+
+    $scriptArgs = @(
+        "-ExecutionPolicy", "Bypass",
+        "-File", $hostsScript
+    )
+    if ($EnableOverride) {
+        foreach ($hostName in @($HostNames | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) })) {
+            $scriptArgs += "-HostName"
+            $scriptArgs += [string]$hostName
+        }
+    }
+
+    $json = & $powershellExe @scriptArgs
+    $exitCode = if ($null -eq $LASTEXITCODE) { 0 } else { $LASTEXITCODE }
+    if ($exitCode -ne 0) {
+        throw "Secure retail hosts override helper exited with code $exitCode."
+    }
+
+    if ([string]::IsNullOrWhiteSpace($json)) {
+        return $null
+    }
+
+    return $json | ConvertFrom-Json
 }
 
 function Sync-InstalledRuneScapeRuntimeFile {
@@ -1909,10 +1983,15 @@ $shouldApplyRetailHostsOverride = $use947RetailConfigRoute -and $configuredClien
 # Build 947's secure retail route must not rewrite rs.config/content hosts
 # back to localhost; clear any stale overrides instead.
 Sync-RetailHostsOverride -EnableOverride:$shouldApplyRetailHostsOverride
+$secureRetailHostsOverrideResult = Sync-SecureRetailHostsOverride -EnableOverride:$false
+$secureRetailHostsOverrideActive = $false
+$secureRetailHostsOverrideHosts = @()
 $startupRouteHosts = @()
 if ($configuredClientBuild -ge 947 -and -not [string]::IsNullOrWhiteSpace($startupConfigContent)) {
     $startupRouteHosts = @(Get-947StartupRouteHostsFromConfigContent -ConfigContent $startupConfigContent)
 }
+$fridaImportAvailable = Test-PythonModuleImport -ModuleName "frida"
+$effectiveDirectPatchStartupHookOutputPath = $directPatchStartupHookOutput
 $enable947StartupResolveRedirects = $configuredClientBuild -ge 947 -and $use947RetailConfigRoute -and $Force947StartupRouteRedirects
 $enable947ContainedRouteRedirects = $configuredClientBuild -ge 947 -and
     $use947RetailConfigRoute -and
@@ -1975,6 +2054,59 @@ if ($configuredClientBuild -ge 947 -and $use947RetailConfigRoute) {
         $resolveRedirectSpecs = @($resolveRedirectSpecs | Select-Object -Unique)
         Write-ClientOnlyTrace "947 contained route resolve redirects=<disabled-default>"
     }
+}
+
+if (
+    $configuredClientBuild -ge 947 -and
+    $enable947ContainedRouteRedirects -and
+    -not $fridaImportAvailable
+) {
+    $loopbackLaunchArg = Convert-ToLoopbackJavConfigUrl -Url (Convert-To947DirectClientLaunchArg -Url $launchArg -GamePort $gamePort) -HttpPort ([int]$httpPort)
+    if ([string]::IsNullOrWhiteSpace($loopbackLaunchArg)) {
+        if (-not $script:CanWriteHostsFile) {
+            throw "Frida is unavailable, the local 947 loopback bridge could not be built, and the hosts file is not writable, so the contained localhost route cannot be applied."
+        }
+
+        $secureRetailHostsOverrideHosts = @(
+            $resolveRedirectSpecs |
+                ForEach-Object {
+                    $spec = [string]$_
+                    if ([string]::IsNullOrWhiteSpace($spec) -or $spec.IndexOf('=') -lt 0) {
+                        return $null
+                    }
+                    ($spec.Split('=', 2)[0]).Trim().ToLowerInvariant()
+                } |
+                Where-Object {
+                    -not [string]::IsNullOrWhiteSpace($_) -and
+                    $_ -notin @("localhost", "127.0.0.1", "::1", "rs.config.runescape.com")
+                } |
+                Select-Object -Unique
+        )
+        if ($secureRetailHostsOverrideHosts.Count -eq 0) {
+            throw "Frida is unavailable and no secure retail hosts were available to mirror into the hosts-file override."
+        }
+
+        $secureRetailHostsOverrideResult = Sync-SecureRetailHostsOverride -EnableOverride:$true -HostNames $secureRetailHostsOverrideHosts
+        $secureRetailHostsOverrideActive = $true
+        Write-ClientOnlyTrace (
+            "947 contained route using hosts override because Frida import is unavailable hosts={0}" -f
+                ($secureRetailHostsOverrideHosts -join ",")
+        )
+    } else {
+        $launchArg = $loopbackLaunchArg
+        $clientArgs = @($launchArg)
+        $use947RetailConfigRoute = $false
+        $use947ContainedLocalBridgeRoute = $true
+        $shouldLaunch947ContentBootstrapProxy = $configuredClientBuild -ge 947 -and [int]$httpPort -ne 80
+        Write-ClientOnlyTrace (
+            "947 contained route using local loopback bridge because Frida import is unavailable launchArg={0}" -f
+                $launchArg
+        )
+    }
+
+    $resolveRedirectSpecs = @()
+    $effectiveDirectPatchStartupHookOutputPath = $null
+    Remove-Item $directPatchStartupHookOutput -Force -ErrorAction SilentlyContinue
 }
 
 if ($CefRemoteDebuggingPort) {
@@ -2860,7 +2992,7 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
         -ClientArgumentList $clientArgs `
         -SummaryPath $directPatchSummary `
         -TracePath $directPatchTrace `
-        -StartupHookOutputPath $directPatchStartupHookOutput `
+        -StartupHookOutputPath $effectiveDirectPatchStartupHookOutputPath `
         -DirectPatchToolPath $directPatchTool `
         -WorkspaceRoot $root `
         -RsaConfigPath (Join-Path $root "data\\config\\rsa.toml") `
@@ -2962,7 +3094,7 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
                 -LaunchArg $launchArg `
                 -SummaryPath $directPatchSummary `
                 -TracePath $directPatchTrace `
-                -StartupHookOutputPath $directPatchStartupHookOutput `
+                -StartupHookOutputPath $effectiveDirectPatchStartupHookOutputPath `
                 -DirectPatchToolPath $directPatchTool `
                 -WorkspaceRoot $root `
                 -RsaConfigPath (Join-Path $root "data\\config\\rsa.toml") `
@@ -2991,7 +3123,7 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
                     -LaunchArg $launchArg `
                     -SummaryPath $directPatchSummary `
                     -TracePath $directPatchTrace `
-                    -StartupHookOutputPath $directPatchStartupHookOutput `
+                    -StartupHookOutputPath $effectiveDirectPatchStartupHookOutputPath `
                     -DirectPatchToolPath $directPatchTool `
                     -WorkspaceRoot $root `
                     -RsaConfigPath (Join-Path $root "data\\config\\rsa.toml") `
@@ -3102,7 +3234,7 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
                     -FallbackClientArgs $wrapperFallbackClientArgs `
                     -SummaryPath $directPatchSummary `
                     -TracePath $directPatchTrace `
-                    -StartupHookOutputPath $directPatchStartupHookOutput `
+                    -StartupHookOutputPath $effectiveDirectPatchStartupHookOutputPath `
                     -DirectPatchToolPath $directPatchTool `
                     -WorkspaceRoot $root `
                     -RsaConfigPath (Join-Path $root "data\\config\\rsa.toml") `
@@ -3144,7 +3276,7 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
                         -LaunchArg $launchArg `
                         -SummaryPath $directPatchSummary `
                         -TracePath $directPatchTrace `
-                        -StartupHookOutputPath $directPatchStartupHookOutput `
+                        -StartupHookOutputPath $effectiveDirectPatchStartupHookOutputPath `
                         -DirectPatchToolPath $directPatchTool `
                         -WorkspaceRoot $root `
                         -RsaConfigPath (Join-Path $root "data\\config\\rsa.toml") `
@@ -3198,8 +3330,9 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
     StagedRuneScapeWrapper = $stagedRuneScapeWrapper
     ClientArgs = $clientArgs
     DownloadMetadataSource = $resolvedDownloadMetadataSource
+    FridaImportAvailable = [bool]$fridaImportAvailable
     DirectPatchSummary = if ($directPatchLaunchSummary) { $directPatchSummary } else { $null }
-    DirectPatchStartupHookOutput = if ($directPatchLaunchSummary -and -not [string]::IsNullOrWhiteSpace($directPatchStartupHookOutput)) { $directPatchStartupHookOutput } else { $null }
+    DirectPatchStartupHookOutput = if ($directPatchLaunchSummary -and -not [string]::IsNullOrWhiteSpace($effectiveDirectPatchStartupHookOutputPath)) { $effectiveDirectPatchStartupHookOutputPath } else { $null }
     DirectPatchInlinePatchOffsets = $directPatchInlinePatchOffsets
     DirectPatchJumpBypassSpecs = $directPatchJumpBypassSpecs
     WrapperExtraArgs = $wrapperExtraArgs
@@ -3215,6 +3348,8 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
     TlsTrustSubject = $trustState.ActiveSubject
     TlsDirectLeafTrusted = [bool]$trustState.DirectLeafTrusted
     TlsTrustPfxPath = $trustState.PfxPath
+    SecureRetailHostsOverrideActive = [bool]$secureRetailHostsOverrideActive
+    SecureRetailHostsOverrideHosts = $secureRetailHostsOverrideHosts
     LobbyProxyScript = if ($lobbyProxyLauncher) { $lobbyProxyScript } else { $null }
     LobbyProxyPid = if ($lobbyProxyLauncher) { [int]$lobbyProxyLauncher.Id } else { $null }
     LobbyProxyPortReady = [bool]$lobbyProxyReady
