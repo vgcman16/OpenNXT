@@ -73,7 +73,9 @@ $installedRuntimePostLaunchVerifySummary = Join-Path $root "data\\debug\\wrapper
 $directPatchResourceGateOutputRoot = Join-Path $root "data\\debug\\application-resource-gate-947-direct-helper-client-only"
 $directPatchProducerOutputRoot = Join-Path $root "data\\debug\\prelogin-producer-947-direct-helper-client-only"
 $directPatchLoadingStateOutputRoot = Join-Path $root "data\\debug\\loading-state-builder-947-direct-helper-client-only"
-$startupConfigSnapshotPath = Join-Path $root "tmp-947-startup-config-client-only.ws"
+$startupConfigSnapshotRoot = Join-Path $root "data\\debug\\startup-config-snapshots\\947-client-only"
+$startupConfigSnapshotRunId = "{0}-{1}" -f (Get-Date -Format "yyyyMMdd-HHmmssfff"), ([System.Guid]::NewGuid().ToString("N").Substring(0, 8))
+$startupConfigSnapshotPath = Join-Path $startupConfigSnapshotRoot ("startup-config-{0}.ws" -f $startupConfigSnapshotRunId)
 $startupConfigSnapshotReady = $false
 $directPatchStartupHookOutput = Join-Path $root "data\\debug\\direct-rs2client-patch\\latest-client-only-hook.jsonl"
 $lobbyProxyOut = Join-Path $root "tmp-lobby-tls-terminator.out.log"
@@ -107,6 +109,7 @@ $installedGameClientExe = if ([string]::IsNullOrWhiteSpace($env:ProgramData)) {
 $runtimeHotArchiveIds947 = @(2,3,8,12,13,16,17,18,19,20,21,22,24,26,27,28,29,49,57,58,59,60,61,62,65,66)
 
 Remove-Item $clientOnlyTraceLog -Force -ErrorAction SilentlyContinue
+New-Item -ItemType Directory -Path $startupConfigSnapshotRoot -Force | Out-Null
 Remove-Item $startupConfigSnapshotPath -Force -ErrorAction SilentlyContinue
 
 function Write-ClientOnlyTrace {
@@ -1057,6 +1060,56 @@ function Get-947StartupWorldMitmHostsFromConfigContent {
     }
 
     return @($hosts | Select-Object -Unique)
+}
+
+function Get-947PreferredStartupWorldHostFromConfigContent {
+    param([string]$ConfigContent)
+
+    if ([string]::IsNullOrWhiteSpace($ConfigContent)) {
+        return $null
+    }
+
+    $preferredValues = @{
+        "codebase" = $null
+        "param=35" = $null
+        "param=40" = $null
+    }
+
+    foreach ($rawLine in ($ConfigContent -split "`r?`n")) {
+        $line = $rawLine.Trim()
+        if ([string]::IsNullOrWhiteSpace($line)) {
+            continue
+        }
+
+        if ($line.StartsWith("codebase=") -and [string]::IsNullOrWhiteSpace($preferredValues["codebase"])) {
+            $preferredValues["codebase"] = $line.Substring("codebase=".Length)
+        } elseif ($line.StartsWith("param=35=") -and [string]::IsNullOrWhiteSpace($preferredValues["param=35"])) {
+            $preferredValues["param=35"] = $line.Substring("param=35=".Length)
+        } elseif ($line.StartsWith("param=40=") -and [string]::IsNullOrWhiteSpace($preferredValues["param=40"])) {
+            $preferredValues["param=40"] = $line.Substring("param=40=".Length)
+        }
+    }
+
+    foreach ($key in @("codebase", "param=35", "param=40")) {
+        $candidateValue = [string]$preferredValues[$key]
+        if ([string]::IsNullOrWhiteSpace($candidateValue)) {
+            continue
+        }
+
+        $resolvedHost = Get-UriHostName -Value $candidateValue
+        if ([string]::IsNullOrWhiteSpace($resolvedHost)) {
+            $resolvedHost = $candidateValue.Trim().ToLowerInvariant()
+        }
+        if (Test-947WorldHostName -HostName $resolvedHost) {
+            return $resolvedHost
+        }
+    }
+
+    return (
+        @(Get-947StartupRouteHostsFromConfigContent -ConfigContent $ConfigContent) |
+            Where-Object { Test-947WorldHostName -HostName $_ } |
+            Select-Object -First 1
+    )
 }
 
 if (-not ("OpenNxt.CommandLineNative" -as [type])) {
@@ -2172,6 +2225,13 @@ if (
                 ($secureRetailHostsOverrideHosts -join ",")
         )
     } else {
+        $requestedWorldHost = Get-947PreferredStartupWorldHostFromConfigContent -ConfigContent $startupConfigContent
+        if (-not [string]::IsNullOrWhiteSpace($requestedWorldHost)) {
+            $loopbackLaunchArg = Set-QueryParameter -Url $loopbackLaunchArg -Name "requestedWorldHost" -Value $requestedWorldHost
+        }
+        if ($startupConfigSnapshotReady -and (Test-Path $startupConfigSnapshotPath)) {
+            $loopbackLaunchArg = Set-QueryParameter -Url $loopbackLaunchArg -Name "baseConfigSnapshotPath" -Value $startupConfigSnapshotPath
+        }
         $launchArg = $loopbackLaunchArg
         $clientArgs = @($launchArg)
         $use947RetailConfigRoute = $false
@@ -2181,6 +2241,12 @@ if (
             "947 contained route using local loopback bridge because Frida import is unavailable launchArg={0}" -f
                 $launchArg
         )
+        if (-not [string]::IsNullOrWhiteSpace($requestedWorldHost)) {
+            Write-ClientOnlyTrace ("947 contained route loopback requested world host={0}" -f $requestedWorldHost)
+        }
+        if ($startupConfigSnapshotReady -and (Test-Path $startupConfigSnapshotPath)) {
+            Write-ClientOnlyTrace ("947 contained route loopback startup snapshot={0}" -f $startupConfigSnapshotPath)
+        }
     }
 
     $resolveRedirectSpecs = @()

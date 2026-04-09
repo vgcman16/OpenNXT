@@ -220,6 +220,14 @@ class WrapperLaunchContractTest(unittest.TestCase):
     def test_no_frida_fallback_uses_milder_loopback_helper(self) -> None:
         text = (TOOLS_DIR / "launch-client-only.ps1").read_text(encoding="utf-8")
         self.assertIn(
+            '$startupConfigSnapshotRoot = Join-Path $root "data\\\\debug\\\\startup-config-snapshots\\\\947-client-only"',
+            text,
+        )
+        self.assertIn(
+            '$startupConfigSnapshotPath = Join-Path $startupConfigSnapshotRoot ("startup-config-{0}.ws" -f $startupConfigSnapshotRunId)',
+            text,
+        )
+        self.assertIn(
             '$loopbackLaunchArg = Convert-ToLoopbackJavConfigUrl -Url (Convert-To947ContainedLoopbackLaunchArg -Url $launchArg -GamePort $gamePort) -HttpPort ([int]$httpPort)',
             text,
         )
@@ -229,6 +237,30 @@ class WrapperLaunchContractTest(unittest.TestCase):
         )
         self.assertIn(
             '"947 contained route using local loopback bridge because Frida import is unavailable launchArg={0}" -f',
+            text,
+        )
+        self.assertIn(
+            'function Get-947PreferredStartupWorldHostFromConfigContent {',
+            text,
+        )
+        self.assertIn(
+            '$requestedWorldHost = Get-947PreferredStartupWorldHostFromConfigContent -ConfigContent $startupConfigContent',
+            text,
+        )
+        self.assertIn(
+            '$loopbackLaunchArg = Set-QueryParameter -Url $loopbackLaunchArg -Name "requestedWorldHost" -Value $requestedWorldHost',
+            text,
+        )
+        self.assertIn(
+            '$loopbackLaunchArg = Set-QueryParameter -Url $loopbackLaunchArg -Name "baseConfigSnapshotPath" -Value $startupConfigSnapshotPath',
+            text,
+        )
+        self.assertIn(
+            '"947 contained route loopback requested world host={0}" -f $requestedWorldHost',
+            text,
+        )
+        self.assertIn(
+            '"947 contained route loopback startup snapshot={0}" -f $startupConfigSnapshotPath',
             text,
         )
         self.assertIn(
