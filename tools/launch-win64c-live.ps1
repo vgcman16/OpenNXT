@@ -1239,7 +1239,13 @@ function Convert-ToLoopbackJavConfigUrl {
         if (-not [string]::IsNullOrWhiteSpace($query) -and $query.StartsWith("?")) {
             $query = $query.Substring(1)
         }
-        $baseUrl = "http://127.0.0.1:$HttpPort/jav_config.ws"
+        $preservedPath =
+            if ([string]::IsNullOrWhiteSpace($uri.AbsolutePath) -or $uri.AbsolutePath -eq "/") {
+                "/jav_config.ws"
+            } else {
+                $uri.AbsolutePath
+            }
+        $baseUrl = "http://127.0.0.1:$HttpPort$preservedPath"
         if ([string]::IsNullOrWhiteSpace($query)) {
             return $baseUrl
         }

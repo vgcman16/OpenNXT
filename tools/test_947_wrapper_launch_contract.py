@@ -223,6 +223,45 @@ class WrapperLaunchContractTest(unittest.TestCase):
             '$loopbackLaunchArg = Convert-ToLoopbackJavConfigUrl -Url (Convert-To947ContainedLoopbackLaunchArg -Url $launchArg -GamePort $gamePort) -HttpPort ([int]$httpPort)',
             text,
         )
+        self.assertIn(
+            '"947 contained route using hosts override because Frida import is unavailable hosts={0}" -f',
+            text,
+        )
+        self.assertIn(
+            '"947 contained route using local loopback bridge because Frida import is unavailable launchArg={0}" -f',
+            text,
+        )
+        self.assertIn(
+            '$baseUrl = "http://127.0.0.1:$HttpPort$preservedPath"',
+            text,
+        )
+        self.assertIn(
+            'if ($secureRetailHostsOverrideHosts.Count -eq 0) {',
+            text,
+        )
+
+    def test_direct_patch_launch_can_fallback_to_original_when_policy_blocks_patched_client(self) -> None:
+        text = (TOOLS_DIR / "launch-client-only.ps1").read_text(encoding="utf-8")
+        self.assertIn(
+            'Direct patch launch retrying with original client because the staged client was blocked by Application Control',
+            text,
+        )
+        self.assertIn(
+            '$usedOriginalClientFallback = $true',
+            text,
+        )
+        self.assertIn(
+            '$attemptClientExePath = $originalClientExe',
+            text,
+        )
+        self.assertIn(
+            'UsedOriginalClientFallback = $usedOriginalClientFallback',
+            text,
+        )
+        self.assertIn(
+            'AutoSelectedOriginalClient = if ($directLaunch) { [bool]$directLaunch.UsedOriginalClientFallback } else { $false }',
+            text,
+        )
 
     def test_explicit_947_config_urls_are_not_silently_rewritten_back_to_retail(self) -> None:
         client_only_text = (TOOLS_DIR / "launch-client-only.ps1").read_text(encoding="utf-8")
@@ -332,7 +371,7 @@ class WrapperLaunchContractTest(unittest.TestCase):
         self.assertNotIn('Sync-InstalledRuneScapeRuntimeFile -SourcePath $installedGameClientExe -ClientDirectory $ClientDirectory -FileName "rs2client.exe"', text)
         self.assertIn("$prefer947OriginalClientFamily", text)
         self.assertIn('[string]::Equals($effectiveClientVariant, "original", [System.StringComparison]::OrdinalIgnoreCase)', text)
-        self.assertIn("AutoSelectedOriginalClient = $false", text)
+        self.assertIn('AutoSelectedOriginalClient = if ($directLaunch) { [bool]$directLaunch.UsedOriginalClientFallback } else { $false }', text)
         self.assertIn("$selectedRuneScapeWrapper = Join-Path $clientDir \"RuneScape.exe\"", text)
         self.assertIn("$localChildExe = Join-Path $clientDir \"rs2client.exe\"", text)
         self.assertIn("$explicitClientExeOverride = -not [string]::IsNullOrWhiteSpace($ClientExeOverride)", text)

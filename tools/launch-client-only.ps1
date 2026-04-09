@@ -759,7 +759,13 @@ function Convert-ToLoopbackJavConfigUrl {
         if (-not [string]::IsNullOrWhiteSpace($query) -and $query.StartsWith("?")) {
             $query = $query.Substring(1)
         }
-        $baseUrl = "http://127.0.0.1:$HttpPort/jav_config.ws"
+        $preservedPath =
+            if ([string]::IsNullOrWhiteSpace($uri.AbsolutePath) -or $uri.AbsolutePath -eq "/") {
+                "/jav_config.ws"
+            } else {
+                $uri.AbsolutePath
+            }
+        $baseUrl = "http://127.0.0.1:$HttpPort$preservedPath"
         if ([string]::IsNullOrWhiteSpace($query)) {
             return $baseUrl
         }
@@ -1134,6 +1140,23 @@ function Invoke-DirectPatchedClientLaunch {
         Remove-Item $StartupHookOutputPath -Force -ErrorAction SilentlyContinue
     }
 
+    $usedOriginalClientFallback = $false
+    $attemptClientExePath = $ClientExePath
+    $attemptWorkingDirectory = $WorkingDirectory
+
+    function Test-DirectPatchBlockedByPolicy {
+        param([string]$StderrTail)
+
+        if ([string]::IsNullOrWhiteSpace($StderrTail)) {
+            return $false
+        }
+
+        return (
+            $StderrTail -like "*Application Control policy has blocked this file*" -or
+            $StderrTail -like "*WinError 4551*"
+        )
+    }
+
     function New-DirectPatchPythonArgs {
         param(
             [bool]$EnableStartupHook,
@@ -1143,9 +1166,9 @@ function Invoke-DirectPatchedClientLaunch {
         $argsList = @(
             $DirectPatchToolPath,
             "--client-exe",
-            $ClientExePath,
+            $attemptClientExePath,
             "--working-dir",
-            $WorkingDirectory,
+            $attemptWorkingDirectory,
             "--summary-output",
             $SummaryPath,
             "--trace-output",
@@ -1303,7 +1326,7 @@ function Invoke-DirectPatchedClientLaunch {
         }
 
         if (-not (Test-Path $SummaryPath)) {
-            $terminatedPids = @(Stop-DirectPatchAttemptArtifacts -HelperProcess $helperProcess -LaunchedClientPath $ClientExePath)
+            $terminatedPids = @(Stop-DirectPatchAttemptArtifacts -HelperProcess $helperProcess -LaunchedClientPath $attemptClientExePath)
             return [pscustomobject]@{
                 Success = $false
                 FailureMessage = "Direct rs2client patch launch completed without a summary output: $SummaryPath"
@@ -1328,7 +1351,7 @@ function Invoke-DirectPatchedClientLaunch {
             }
         }
         if ($null -eq $process) {
-            $terminatedPids = @(Stop-DirectPatchAttemptArtifacts -HelperProcess $helperProcess -LaunchedClientPath $ClientExePath)
+            $terminatedPids = @(Stop-DirectPatchAttemptArtifacts -HelperProcess $helperProcess -LaunchedClientPath $attemptClientExePath)
             return [pscustomobject]@{
                 Success = $false
                 FailureMessage = "Direct rs2client patch launch completed but no live client process could be resolved."
@@ -1356,6 +1379,25 @@ function Invoke-DirectPatchedClientLaunch {
         $usedReducedDirectPatchMode = $true
         $attempt = Invoke-DirectPatchAttempt -EnableStartupHook:$false -EnableRedirects:$false
     }
+    if (
+        -not $attempt.Success -and
+        $configuredClientBuild -ge 947 -and
+        (Test-Path $originalClientExe) -and
+        -not [string]::Equals([System.IO.Path]::GetFullPath($attemptClientExePath), [System.IO.Path]::GetFullPath($originalClientExe), [System.StringComparison]::OrdinalIgnoreCase) -and
+        (Test-DirectPatchBlockedByPolicy -StderrTail ([string]$attempt.StderrTail))
+    ) {
+        Write-Host ("Direct patch launch retrying with original client because the staged client was blocked by Application Control: {0}" -f $attemptClientExePath)
+        $usedOriginalClientFallback = $true
+        $attemptClientExePath = $originalClientExe
+        $attemptWorkingDirectory = Split-Path -Parent $originalClientExe
+        $usedReducedDirectPatchMode = $false
+        $attempt = Invoke-DirectPatchAttempt -EnableStartupHook:$useInitialStartupHook -EnableRedirects:$useInitialRedirects
+        if (-not $attempt.Success -and ($useInitialStartupHook -or $useInitialRedirects)) {
+            Write-Host "Direct patch launch retrying without pre-resume Frida startup hook or startup redirects"
+            $usedReducedDirectPatchMode = $true
+            $attempt = Invoke-DirectPatchAttempt -EnableStartupHook:$false -EnableRedirects:$false
+        }
+    }
     if (-not $attempt.Success) {
         if (-not [string]::IsNullOrWhiteSpace([string]$attempt.StderrTail)) {
             Write-Host ("Direct patch launch stderr tail: {0}" -f $attempt.StderrTail)
@@ -1375,6 +1417,9 @@ function Invoke-DirectPatchedClientLaunch {
         ResolvedClientPid = $attempt.ResolvedClientPid
         Process = $attempt.Process
         UsedReducedMode = $usedReducedDirectPatchMode
+        UsedOriginalClientFallback = $usedOriginalClientFallback
+        EffectiveClientExePath = $attemptClientExePath
+        EffectiveWorkingDirectory = $attemptWorkingDirectory
         HelperProcess = $attempt.HelperProcess
     }
 }
@@ -1673,7 +1718,12 @@ if ($configuredClientBuild -ge 947) {
 $launchArg = $ConfigUrl
 $use947RetailConfigRoute = $configuredClientBuild -ge 947 -and $launchArg -like "https://rs.config.runescape.com*"
 $use947ContainedLocalBridgeRoute = $configuredClientBuild -ge 947 -and (
-    ($launchArg -like "http://127.0.0.1:*" -or $launchArg -like "http://localhost*") -and
+    (
+        $launchArg -like "http://127.0.0.1:*" -or
+        $launchArg -like "http://localhost*" -or
+        $launchArg -like "https://127.0.0.1*" -or
+        $launchArg -like "https://localhost*"
+    ) -and
     $launchArg -like "*contentRouteRewrite=1*"
 )
 $shouldLaunch947LobbyProxy = $configuredClientBuild -ge 947 -and ($use947RetailConfigRoute -or $use947ContainedLocalBridgeRoute)
@@ -3031,6 +3081,11 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
         -DirectPatchExtraArgs $directPatchExtraArgs `
         -RedirectSpecs $resolveRedirectSpecs
     $directPatchLaunchSummary = $directLaunch.Summary
+    if ([bool]$directLaunch.UsedOriginalClientFallback) {
+        $effectiveClientVariant = "original"
+        $clientExe = [string]$directLaunch.EffectiveClientExePath
+        $clientDir = [string]$directLaunch.EffectiveWorkingDirectory
+    }
     $bootstrapClientPid = $directLaunch.BootstrapClientPid
     $resolvedClientPid = $directLaunch.ResolvedClientPid
     $process = $directLaunch.Process
@@ -3351,7 +3406,7 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
     ClientVariant = $effectiveClientVariant
     Disable947InlineNullReadPatches = [bool]$Disable947InlineNullReadPatches.IsPresent
     Disable947JumpBypassGuards = [bool]$Disable947JumpBypassGuards.IsPresent
-    AutoSelectedOriginalClient = $false
+    AutoSelectedOriginalClient = if ($directLaunch) { [bool]$directLaunch.UsedOriginalClientFallback } else { $false }
     MainWindowTitle = if ($process) { $process.MainWindowTitle } else { $null }
     MainWindowHandle = if ($process) { [int64]$process.MainWindowHandle } else { 0 }
     ClientLaunchBinaryKind = if ($useDirectPatchedRs2Client -or $wrapperFallbackToDirectPatched) { "direct-patched-rs2client" } elseif ($launchViaRuneScapeWrapper) { "runescape-wrapper" } elseif ($UsePatchedLauncher) { "patched-launcher" } else { "rs2client" }

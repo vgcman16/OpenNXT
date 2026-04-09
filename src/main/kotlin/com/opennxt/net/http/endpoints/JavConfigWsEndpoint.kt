@@ -57,6 +57,7 @@ object JavConfigWsEndpoint {
         "lobbyHostRewrite",
         "liveCache",
         "localRewrite",
+        "requestedWorldHost",
         "worldUrlRewrite",
     )
     private val HTTP_DATE_FORMATTER: DateTimeFormatter =
@@ -275,9 +276,10 @@ object JavConfigWsEndpoint {
         return withoutPort.takeIf { WORLD_HOST_PATTERN.matches(it) }
     }
 
-    internal fun extractRequestedWorldHost(msg: FullHttpRequest): String? {
+    internal fun extractRequestedWorldHost(msg: FullHttpRequest, query: QueryStringDecoder? = null): String? {
         return normalizeRequestedWorldHost(msg.headers().get(ORIGINAL_HOST_HEADER))
             ?: normalizeRequestedWorldHost(msg.headers().get(HttpHeaderNames.HOST))
+            ?: normalizeRequestedWorldHost(query?.parameters()?.get("requestedWorldHost")?.firstOrNull())
     }
 
     internal fun applyRequestedWorldHostRewrite(config: ClientConfig, worldHost: String) {
@@ -905,7 +907,7 @@ object JavConfigWsEndpoint {
         if (explicitDownloadMetadataSource.isNotEmpty()) {
             RetailSessionCookie.noteDownloadMetadataSource(explicitDownloadMetadataSource)
         }
-        val requestedWorldHostCandidate = extractRequestedWorldHost(msg)
+        val requestedWorldHostCandidate = extractRequestedWorldHost(msg, query)
         val rewriteDecisions = resolveRewriteDecisions(
             query = query,
             type = type,
