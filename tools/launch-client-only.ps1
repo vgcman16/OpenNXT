@@ -706,6 +706,37 @@ function Convert-To947DirectClientLaunchArg {
     $updated = Set-QueryParameter -Url $updated -Name "codebaseRewrite" -Value "1"
     $updated = Set-QueryParameter -Url $updated -Name "baseConfigSource" -Value "live"
     $updated = Set-QueryParameter -Url $updated -Name "liveCache" -Value "1"
+    # The local loopback/content bridge stalls on the splash/application-
+    # resource loader if we keep the older staged 947 download metadata here.
+    $updated = Set-QueryParameter -Url $updated -Name "downloadMetadataSource" -Value "live"
+    if (-not [string]::IsNullOrWhiteSpace($GamePort)) {
+        $updated = Set-QueryParameter -Url $updated -Name "gamePortOverride" -Value $GamePort
+    }
+    return $updated
+}
+
+function Convert-To947ContainedLoopbackLaunchArg {
+    param(
+        [string]$Url,
+        [string]$GamePort = ""
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Url)) {
+        return $Url
+    }
+
+    $updated = Set-QueryParameter -Url $Url -Name "contentRouteRewrite" -Value "1"
+    if ([string]::IsNullOrWhiteSpace((Get-QueryParameterValue -Url $updated -Name "worldUrlRewrite"))) {
+        $updated = Set-QueryParameter -Url $updated -Name "worldUrlRewrite" -Value "0"
+    }
+    if ([string]::IsNullOrWhiteSpace((Get-QueryParameterValue -Url $updated -Name "codebaseRewrite"))) {
+        $updated = Set-QueryParameter -Url $updated -Name "codebaseRewrite" -Value "0"
+    }
+    $updated = Set-QueryParameter -Url $updated -Name "baseConfigSource" -Value "live"
+    $updated = Set-QueryParameter -Url $updated -Name "liveCache" -Value "1"
+    if ([string]::IsNullOrWhiteSpace((Get-QueryParameterValue -Url $updated -Name "downloadMetadataSource"))) {
+        $updated = Set-QueryParameter -Url $updated -Name "downloadMetadataSource" -Value "live"
+    }
     if (-not [string]::IsNullOrWhiteSpace($GamePort)) {
         $updated = Set-QueryParameter -Url $updated -Name "gamePortOverride" -Value $GamePort
     }
@@ -1643,9 +1674,7 @@ $launchArg = $ConfigUrl
 $use947RetailConfigRoute = $configuredClientBuild -ge 947 -and $launchArg -like "https://rs.config.runescape.com*"
 $use947ContainedLocalBridgeRoute = $configuredClientBuild -ge 947 -and (
     ($launchArg -like "http://127.0.0.1:*" -or $launchArg -like "http://localhost*") -and
-    $launchArg -like "*contentRouteRewrite=1*" -and
-    $launchArg -like "*worldUrlRewrite=1*" -and
-    $launchArg -like "*codebaseRewrite=1*"
+    $launchArg -like "*contentRouteRewrite=1*"
 )
 $shouldLaunch947LobbyProxy = $configuredClientBuild -ge 947 -and ($use947RetailConfigRoute -or $use947ContainedLocalBridgeRoute)
 $launchViaRuneScapeWrapper = [string]::Equals((Split-Path -Leaf $clientExe), "RuneScape.exe", [System.StringComparison]::OrdinalIgnoreCase)
@@ -2061,7 +2090,7 @@ if (
     $enable947ContainedRouteRedirects -and
     -not $fridaImportAvailable
 ) {
-    $loopbackLaunchArg = Convert-ToLoopbackJavConfigUrl -Url (Convert-To947DirectClientLaunchArg -Url $launchArg -GamePort $gamePort) -HttpPort ([int]$httpPort)
+    $loopbackLaunchArg = Convert-ToLoopbackJavConfigUrl -Url (Convert-To947ContainedLoopbackLaunchArg -Url $launchArg -GamePort $gamePort) -HttpPort ([int]$httpPort)
     if ([string]::IsNullOrWhiteSpace($loopbackLaunchArg)) {
         if (-not $script:CanWriteHostsFile) {
             throw "Frida is unavailable, the local 947 loopback bridge could not be built, and the hosts file is not writable, so the contained localhost route cannot be applied."

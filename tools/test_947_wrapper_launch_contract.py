@@ -62,8 +62,6 @@ class WrapperLaunchContractTest(unittest.TestCase):
         self.assertIn('$contentBootstrapProxyScript = Join-Path $PSScriptRoot "tcp_proxy.py"', text)
         self.assertIn("$use947ContainedLocalBridgeRoute = $configuredClientBuild -ge 947 -and (", text)
         self.assertIn('$launchArg -like "*contentRouteRewrite=1*"', text)
-        self.assertIn('$launchArg -like "*worldUrlRewrite=1*"', text)
-        self.assertIn('$launchArg -like "*codebaseRewrite=1*"', text)
         self.assertIn("$shouldLaunch947LobbyProxy = $configuredClientBuild -ge 947 -and ($use947RetailConfigRoute -or $use947ContainedLocalBridgeRoute)", text)
         self.assertIn("$shouldLaunch947ContentBootstrapProxy = $configuredClientBuild -ge 947 -and", text)
         self.assertIn('$launchArg -like "https://rs.config.runescape.com*"', text)
@@ -199,6 +197,32 @@ class WrapperLaunchContractTest(unittest.TestCase):
         self.assertIn('Set-QueryParameter -Url $updated -Name "gamePortOverride" -Value $GamePort', body)
         self.assertNotIn('Remove-QueryParameter -Url $updated -Name "baseConfigSource"', body)
         self.assertNotIn('Remove-QueryParameter -Url $updated -Name "liveCache"', body)
+
+    def test_direct_947_no_frida_loopback_launch_arg_preserves_explicit_contract_shape(self) -> None:
+        text = (TOOLS_DIR / "launch-client-only.ps1").read_text(encoding="utf-8")
+        match = re.search(
+            r"function Convert-To947ContainedLoopbackLaunchArg \{(?P<body>.*?)^\}",
+            text,
+            re.MULTILINE | re.DOTALL,
+        )
+        self.assertIsNotNone(match)
+        body = match.group("body")
+        self.assertIn('Set-QueryParameter -Url $Url -Name "contentRouteRewrite" -Value "1"', body)
+        self.assertIn('Get-QueryParameterValue -Url $updated -Name "worldUrlRewrite"', body)
+        self.assertIn('Get-QueryParameterValue -Url $updated -Name "codebaseRewrite"', body)
+        self.assertIn('Set-QueryParameter -Url $updated -Name "worldUrlRewrite" -Value "0"', body)
+        self.assertIn('Set-QueryParameter -Url $updated -Name "codebaseRewrite" -Value "0"', body)
+        self.assertIn('Set-QueryParameter -Url $updated -Name "baseConfigSource" -Value "live"', body)
+        self.assertIn('Set-QueryParameter -Url $updated -Name "liveCache" -Value "1"', body)
+        self.assertIn('Get-QueryParameterValue -Url $updated -Name "downloadMetadataSource"', body)
+        self.assertIn('Set-QueryParameter -Url $updated -Name "downloadMetadataSource" -Value "live"', body)
+
+    def test_no_frida_fallback_uses_milder_loopback_helper(self) -> None:
+        text = (TOOLS_DIR / "launch-client-only.ps1").read_text(encoding="utf-8")
+        self.assertIn(
+            '$loopbackLaunchArg = Convert-ToLoopbackJavConfigUrl -Url (Convert-To947ContainedLoopbackLaunchArg -Url $launchArg -GamePort $gamePort) -HttpPort ([int]$httpPort)',
+            text,
+        )
 
     def test_explicit_947_config_urls_are_not_silently_rewritten_back_to_retail(self) -> None:
         client_only_text = (TOOLS_DIR / "launch-client-only.ps1").read_text(encoding="utf-8")
