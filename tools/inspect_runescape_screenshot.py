@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
+import io
 import json
 import re
 from dataclasses import dataclass
@@ -8,7 +10,12 @@ from pathlib import Path
 from typing import Iterable
 
 from PIL import Image
-from rapidocr_onnxruntime import RapidOCR
+
+with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+    try:
+        from rapidocr_onnxruntime import RapidOCR
+    except Exception:  # pragma: no cover - machine-specific native import failures
+        RapidOCR = None  # type: ignore[assignment]
 
 
 OCR_ENGINE: RapidOCR | None = None
@@ -22,6 +29,8 @@ class DetectedText:
 
 def get_ocr_engine() -> RapidOCR:
     global OCR_ENGINE
+    if RapidOCR is None:
+        raise RuntimeError("RapidOCR is unavailable on this machine")
     if OCR_ENGINE is None:
         OCR_ENGINE = RapidOCR()
     return OCR_ENGINE
@@ -34,8 +43,11 @@ def normalize_text(value: str) -> str:
 
 
 def load_detected_texts(image_path: Path) -> list[DetectedText]:
-    engine = get_ocr_engine()
-    result, _ = engine(str(image_path))
+    try:
+        engine = get_ocr_engine()
+        result, _ = engine(str(image_path))
+    except Exception:
+        return []
     if not result:
         return []
     detected: list[DetectedText] = []
@@ -99,7 +111,47 @@ def estimate_progress_ratio(image_path: Path) -> float | None:
     return round(max(measured), 4)
 
 
-def classify_state(detected_texts: Iterable[DetectedText], progress_ratio: float | None) -> str:
+def estimate_visual_signals(image_path: Path) -> dict[str, float]:
+    image = Image.open(image_path).convert("RGB")
+    width, height = image.size
+    pixels = image.load()
+
+    regions = {
+        "loginButtonYellowRatio": (0.49, 0.62, 0.76, 0.73),
+        "createButtonBlueRatio": (0.46, 0.89, 0.82, 0.98),
+        "cardDarkRatio": (0.44, 0.20, 0.82, 0.89),
+    }
+
+    metrics: dict[str, float] = {}
+    for key, (left_ratio, top_ratio, right_ratio, bottom_ratio) in regions.items():
+        left = int(width * left_ratio)
+        top = int(height * top_ratio)
+        right = int(width * right_ratio)
+        bottom = int(height * bottom_ratio)
+        total = max(1, (right - left) * (bottom - top))
+        matched = 0
+        for y in range(top, bottom):
+            for x in range(left, right):
+                red, green, blue = pixels[x, y]
+                avg = (red + green + blue) / 3.0
+                if key == "loginButtonYellowRatio":
+                    if red >= 170 and green >= 110 and blue <= 120:
+                        matched += 1
+                elif key == "createButtonBlueRatio":
+                    if blue >= 120 and green >= 120 and red <= 180:
+                        matched += 1
+                elif key == "cardDarkRatio":
+                    if avg <= 90:
+                        matched += 1
+        metrics[key] = round(matched / total, 4)
+    return metrics
+
+
+def classify_state(
+    detected_texts: Iterable[DetectedText],
+    progress_ratio: float | None,
+    visual_signals: dict[str, float] | None = None,
+) -> str:
     normalized = [normalize_text(item.text) for item in detected_texts]
     combined = " | ".join(text for text in normalized if text)
 
@@ -136,10 +188,26 @@ def classify_state(detected_texts: Iterable[DetectedText], progress_ratio: float
     if any(marker in combined for marker in loading_markers):
         return "loading"
 
+    login_button_yellow = 0.0
+    create_button_blue = 0.0
+    card_dark = 0.0
+    if visual_signals:
+        login_button_yellow = float(visual_signals.get("loginButtonYellowRatio", 0.0))
+        create_button_blue = float(visual_signals.get("createButtonBlueRatio", 0.0))
+        card_dark = float(visual_signals.get("cardDarkRatio", 0.0))
+        if login_button_yellow >= 0.18 and create_button_blue >= 0.35 and card_dark >= 0.55:
+            return "login-screen"
+
     if "RUNETEKAPP" in combined or "RUNESCAPE" in combined:
         if progress_ratio is not None and progress_ratio > 0.0:
             return "loading"
         return "splash"
+
+    if progress_ratio is not None and progress_ratio >= 0.08:
+        return "loading"
+
+    if card_dark >= 0.55 and login_button_yellow >= 0.18:
+        return "login-screen"
 
     return "unknown"
 
@@ -147,11 +215,13 @@ def classify_state(detected_texts: Iterable[DetectedText], progress_ratio: float
 def inspect_image(image_path: Path) -> dict:
     detected_texts = load_detected_texts(image_path)
     progress_ratio = estimate_progress_ratio(image_path)
-    state = classify_state(detected_texts, progress_ratio)
+    visual_signals = estimate_visual_signals(image_path)
+    state = classify_state(detected_texts, progress_ratio, visual_signals)
     return {
         "imagePath": str(image_path),
         "state": state,
         "progressRatio": progress_ratio,
+        "visualSignals": visual_signals,
         "detectedTexts": [
             {
                 "text": item.text,

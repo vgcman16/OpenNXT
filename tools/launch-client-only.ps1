@@ -728,18 +728,17 @@ function Convert-To947ContainedLoopbackLaunchArg {
         return $Url
     }
 
+    # When Frida and hosts-file containment are both unavailable, the 947
+    # fallback has to be opinionated enough to keep the client on the local
+    # content/codebase/world bridge. Preserving the weaker startup contract
+    # here strands the client in the localhost JS5 checksum loop and never
+    # reaches the later login-capable path.
     $updated = Set-QueryParameter -Url $Url -Name "contentRouteRewrite" -Value "1"
-    if ([string]::IsNullOrWhiteSpace((Get-QueryParameterValue -Url $updated -Name "worldUrlRewrite"))) {
-        $updated = Set-QueryParameter -Url $updated -Name "worldUrlRewrite" -Value "0"
-    }
-    if ([string]::IsNullOrWhiteSpace((Get-QueryParameterValue -Url $updated -Name "codebaseRewrite"))) {
-        $updated = Set-QueryParameter -Url $updated -Name "codebaseRewrite" -Value "0"
-    }
+    $updated = Set-QueryParameter -Url $updated -Name "worldUrlRewrite" -Value "1"
+    $updated = Set-QueryParameter -Url $updated -Name "codebaseRewrite" -Value "1"
     $updated = Set-QueryParameter -Url $updated -Name "baseConfigSource" -Value "live"
     $updated = Set-QueryParameter -Url $updated -Name "liveCache" -Value "1"
-    if ([string]::IsNullOrWhiteSpace((Get-QueryParameterValue -Url $updated -Name "downloadMetadataSource"))) {
-        $updated = Set-QueryParameter -Url $updated -Name "downloadMetadataSource" -Value "live"
-    }
+    $updated = Set-QueryParameter -Url $updated -Name "downloadMetadataSource" -Value "live"
     if (-not [string]::IsNullOrWhiteSpace($GamePort)) {
         $updated = Set-QueryParameter -Url $updated -Name "gamePortOverride" -Value $GamePort
     }
@@ -2193,59 +2192,83 @@ if (
     $enable947ContainedRouteRedirects -and
     -not $fridaImportAvailable
 ) {
-    $loopbackLaunchArg = Convert-ToLoopbackJavConfigUrl -Url (Convert-To947ContainedLoopbackLaunchArg -Url $launchArg -GamePort $gamePort) -HttpPort ([int]$httpPort)
-    if ([string]::IsNullOrWhiteSpace($loopbackLaunchArg)) {
-        if (-not $script:CanWriteHostsFile) {
-            throw "Frida is unavailable, the local 947 loopback bridge could not be built, and the hosts file is not writable, so the contained localhost route cannot be applied."
-        }
-
-        $secureRetailHostsOverrideHosts = @(
-            $resolveRedirectSpecs |
-                ForEach-Object {
-                    $spec = [string]$_
-                    if ([string]::IsNullOrWhiteSpace($spec) -or $spec.IndexOf('=') -lt 0) {
-                        return $null
-                    }
-                    ($spec.Split('=', 2)[0]).Trim().ToLowerInvariant()
-                } |
-                Where-Object {
-                    -not [string]::IsNullOrWhiteSpace($_) -and
-                    $_ -notin @("localhost", "127.0.0.1", "::1", "rs.config.runescape.com")
-                } |
-                Select-Object -Unique
-        )
-        if ($secureRetailHostsOverrideHosts.Count -eq 0) {
-            throw "Frida is unavailable and no secure retail hosts were available to mirror into the hosts-file override."
-        }
-
+    $requestedWorldHost = Get-947PreferredStartupWorldHostFromConfigContent -ConfigContent $startupConfigContent
+    $secureRetailHostsOverrideHosts = @(
+        $resolveRedirectSpecs |
+            ForEach-Object {
+                $spec = [string]$_
+                if ([string]::IsNullOrWhiteSpace($spec) -or $spec.IndexOf('=') -lt 0) {
+                    return $null
+                }
+                ($spec.Split('=', 2)[0]).Trim().ToLowerInvariant()
+            } |
+            Where-Object {
+                -not [string]::IsNullOrWhiteSpace($_) -and
+                $_ -notin @("localhost", "127.0.0.1", "::1", "rs.config.runescape.com")
+            } |
+            Select-Object -Unique
+    )
+    # Prefer hosts-file containment when Frida is blocked so the client keeps
+    # the retail-shaped hostnames that historically produced the later
+    # world-host userFlow follow-up instead of collapsing straight into the
+    # localhost JS5 loopback bridge.
+    if ($script:CanWriteHostsFile -and $secureRetailHostsOverrideHosts.Count -gt 0) {
         $secureRetailHostsOverrideResult = Sync-SecureRetailHostsOverride -EnableOverride:$true -HostNames $secureRetailHostsOverrideHosts
         $secureRetailHostsOverrideActive = $true
         Write-ClientOnlyTrace (
             "947 contained route using hosts override because Frida import is unavailable hosts={0}" -f
                 ($secureRetailHostsOverrideHosts -join ",")
         )
+        if (-not [string]::IsNullOrWhiteSpace($requestedWorldHost)) {
+            Write-ClientOnlyTrace ("947 contained route hosts override preferred world host={0}" -f $requestedWorldHost)
+        }
+        if ($startupConfigSnapshotReady -and (Test-Path $startupConfigSnapshotPath)) {
+            Write-ClientOnlyTrace ("947 contained route hosts override startup snapshot={0}" -f $startupConfigSnapshotPath)
+        }
     } else {
-        $requestedWorldHost = Get-947PreferredStartupWorldHostFromConfigContent -ConfigContent $startupConfigContent
-        if (-not [string]::IsNullOrWhiteSpace($requestedWorldHost)) {
-            $loopbackLaunchArg = Set-QueryParameter -Url $loopbackLaunchArg -Name "requestedWorldHost" -Value $requestedWorldHost
-        }
-        if ($startupConfigSnapshotReady -and (Test-Path $startupConfigSnapshotPath)) {
-            $loopbackLaunchArg = Set-QueryParameter -Url $loopbackLaunchArg -Name "baseConfigSnapshotPath" -Value $startupConfigSnapshotPath
-        }
-        $launchArg = $loopbackLaunchArg
-        $clientArgs = @($launchArg)
-        $use947RetailConfigRoute = $false
-        $use947ContainedLocalBridgeRoute = $true
-        $shouldLaunch947ContentBootstrapProxy = $configuredClientBuild -ge 947 -and [int]$httpPort -ne 80
-        Write-ClientOnlyTrace (
-            "947 contained route using local loopback bridge because Frida import is unavailable launchArg={0}" -f
-                $launchArg
-        )
-        if (-not [string]::IsNullOrWhiteSpace($requestedWorldHost)) {
-            Write-ClientOnlyTrace ("947 contained route loopback requested world host={0}" -f $requestedWorldHost)
-        }
-        if ($startupConfigSnapshotReady -and (Test-Path $startupConfigSnapshotPath)) {
-            Write-ClientOnlyTrace ("947 contained route loopback startup snapshot={0}" -f $startupConfigSnapshotPath)
+        $loopbackLaunchArg = Convert-ToLoopbackJavConfigUrl -Url (Convert-To947ContainedLoopbackLaunchArg -Url $launchArg -GamePort $gamePort) -HttpPort ([int]$httpPort)
+        if ([string]::IsNullOrWhiteSpace($loopbackLaunchArg)) {
+            if (-not $script:CanWriteHostsFile) {
+                throw "Frida is unavailable, the local 947 loopback bridge could not be built, and the hosts file is not writable, so the contained localhost route cannot be applied."
+            }
+            if ($secureRetailHostsOverrideHosts.Count -eq 0) {
+                throw "Frida is unavailable and no secure retail hosts were available to mirror into the hosts-file override."
+            }
+
+            $secureRetailHostsOverrideResult = Sync-SecureRetailHostsOverride -EnableOverride:$true -HostNames $secureRetailHostsOverrideHosts
+            $secureRetailHostsOverrideActive = $true
+            Write-ClientOnlyTrace (
+                "947 contained route using hosts override because Frida import is unavailable hosts={0}" -f
+                    ($secureRetailHostsOverrideHosts -join ",")
+            )
+            if (-not [string]::IsNullOrWhiteSpace($requestedWorldHost)) {
+                Write-ClientOnlyTrace ("947 contained route hosts override preferred world host={0}" -f $requestedWorldHost)
+            }
+            if ($startupConfigSnapshotReady -and (Test-Path $startupConfigSnapshotPath)) {
+                Write-ClientOnlyTrace ("947 contained route hosts override startup snapshot={0}" -f $startupConfigSnapshotPath)
+            }
+        } else {
+            if (-not [string]::IsNullOrWhiteSpace($requestedWorldHost)) {
+                $loopbackLaunchArg = Set-QueryParameter -Url $loopbackLaunchArg -Name "requestedWorldHost" -Value $requestedWorldHost
+            }
+            if ($startupConfigSnapshotReady -and (Test-Path $startupConfigSnapshotPath)) {
+                $loopbackLaunchArg = Set-QueryParameter -Url $loopbackLaunchArg -Name "baseConfigSnapshotPath" -Value $startupConfigSnapshotPath
+            }
+            $launchArg = $loopbackLaunchArg
+            $clientArgs = @($launchArg)
+            $use947RetailConfigRoute = $false
+            $use947ContainedLocalBridgeRoute = $true
+            $shouldLaunch947ContentBootstrapProxy = $configuredClientBuild -ge 947 -and [int]$httpPort -ne 80
+            Write-ClientOnlyTrace (
+                "947 contained route using local loopback bridge because Frida import is unavailable launchArg={0}" -f
+                    $launchArg
+            )
+            if (-not [string]::IsNullOrWhiteSpace($requestedWorldHost)) {
+                Write-ClientOnlyTrace ("947 contained route loopback requested world host={0}" -f $requestedWorldHost)
+            }
+            if ($startupConfigSnapshotReady -and (Test-Path $startupConfigSnapshotPath)) {
+                Write-ClientOnlyTrace ("947 contained route loopback startup snapshot={0}" -f $startupConfigSnapshotPath)
+            }
         }
     }
 

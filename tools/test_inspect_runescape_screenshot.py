@@ -1,8 +1,12 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
 
-from tools.inspect_runescape_screenshot import DetectedText, classify_state
+try:
+    from tools.inspect_runescape_screenshot import DetectedText, classify_state, inspect_image
+except ModuleNotFoundError:
+    from inspect_runescape_screenshot import DetectedText, classify_state, inspect_image
 
 
 class InspectRuneScapeScreenshotTest(unittest.TestCase):
@@ -56,6 +60,31 @@ class InspectRuneScapeScreenshotTest(unittest.TestCase):
             0.31,
         )
         self.assertEqual(state, "loading")
+
+    def test_classify_login_screen_from_visual_signals_without_ocr(self) -> None:
+        state = classify_state(
+            [],
+            0.0,
+            {
+                "loginButtonYellowRatio": 0.41,
+                "createButtonBlueRatio": 0.57,
+                "cardDarkRatio": 0.72,
+            },
+        )
+        self.assertEqual(state, "login-screen")
+
+    def test_inspect_image_uses_visual_heuristics_when_ocr_is_unavailable(self) -> None:
+        image_path = (
+            Path(__file__).resolve().parents[1]
+            / "data"
+            / "debug"
+            / "runtek-automation"
+            / "20260405-094708-attempt01-before-screen.png"
+        )
+        payload = inspect_image(image_path)
+        self.assertEqual(payload["state"], "login-screen")
+        self.assertGreater(payload["visualSignals"]["loginButtonYellowRatio"], 0.18)
+        self.assertGreater(payload["visualSignals"]["createButtonBlueRatio"], 0.35)
 
 
 if __name__ == "__main__":

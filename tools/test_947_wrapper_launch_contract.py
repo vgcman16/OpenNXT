@@ -208,13 +208,10 @@ class WrapperLaunchContractTest(unittest.TestCase):
         self.assertIsNotNone(match)
         body = match.group("body")
         self.assertIn('Set-QueryParameter -Url $Url -Name "contentRouteRewrite" -Value "1"', body)
-        self.assertIn('Get-QueryParameterValue -Url $updated -Name "worldUrlRewrite"', body)
-        self.assertIn('Get-QueryParameterValue -Url $updated -Name "codebaseRewrite"', body)
-        self.assertIn('Set-QueryParameter -Url $updated -Name "worldUrlRewrite" -Value "0"', body)
-        self.assertIn('Set-QueryParameter -Url $updated -Name "codebaseRewrite" -Value "0"', body)
+        self.assertIn('Set-QueryParameter -Url $updated -Name "worldUrlRewrite" -Value "1"', body)
+        self.assertIn('Set-QueryParameter -Url $updated -Name "codebaseRewrite" -Value "1"', body)
         self.assertIn('Set-QueryParameter -Url $updated -Name "baseConfigSource" -Value "live"', body)
         self.assertIn('Set-QueryParameter -Url $updated -Name "liveCache" -Value "1"', body)
-        self.assertIn('Get-QueryParameterValue -Url $updated -Name "downloadMetadataSource"', body)
         self.assertIn('Set-QueryParameter -Url $updated -Name "downloadMetadataSource" -Value "live"', body)
 
     def test_no_frida_fallback_uses_milder_loopback_helper(self) -> None:
@@ -228,7 +225,15 @@ class WrapperLaunchContractTest(unittest.TestCase):
             text,
         )
         self.assertIn(
-            '$loopbackLaunchArg = Convert-ToLoopbackJavConfigUrl -Url (Convert-To947ContainedLoopbackLaunchArg -Url $launchArg -GamePort $gamePort) -HttpPort ([int]$httpPort)',
+            '$requestedWorldHost = Get-947PreferredStartupWorldHostFromConfigContent -ConfigContent $startupConfigContent',
+            text,
+        )
+        self.assertIn(
+            '$secureRetailHostsOverrideHosts = @(',
+            text,
+        )
+        self.assertIn(
+            'if ($script:CanWriteHostsFile -and $secureRetailHostsOverrideHosts.Count -gt 0) {',
             text,
         )
         self.assertIn(
@@ -236,15 +241,19 @@ class WrapperLaunchContractTest(unittest.TestCase):
             text,
         )
         self.assertIn(
+            '"947 contained route hosts override preferred world host={0}" -f $requestedWorldHost',
+            text,
+        )
+        self.assertIn(
+            '"947 contained route hosts override startup snapshot={0}" -f $startupConfigSnapshotPath',
+            text,
+        )
+        self.assertIn(
+            '$loopbackLaunchArg = Convert-ToLoopbackJavConfigUrl -Url (Convert-To947ContainedLoopbackLaunchArg -Url $launchArg -GamePort $gamePort) -HttpPort ([int]$httpPort)',
+            text,
+        )
+        self.assertIn(
             '"947 contained route using local loopback bridge because Frida import is unavailable launchArg={0}" -f',
-            text,
-        )
-        self.assertIn(
-            'function Get-947PreferredStartupWorldHostFromConfigContent {',
-            text,
-        )
-        self.assertIn(
-            '$requestedWorldHost = Get-947PreferredStartupWorldHostFromConfigContent -ConfigContent $startupConfigContent',
             text,
         )
         self.assertIn(
@@ -261,6 +270,10 @@ class WrapperLaunchContractTest(unittest.TestCase):
         )
         self.assertIn(
             '"947 contained route loopback startup snapshot={0}" -f $startupConfigSnapshotPath',
+            text,
+        )
+        self.assertIn(
+            'function Get-947PreferredStartupWorldHostFromConfigContent {',
             text,
         )
         self.assertIn(
