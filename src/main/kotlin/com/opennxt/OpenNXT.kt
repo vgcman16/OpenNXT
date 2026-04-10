@@ -11,8 +11,8 @@ import com.opennxt.config.TomlConfig
 import com.opennxt.filesystem.ChecksumTable
 import com.opennxt.filesystem.Container
 import com.opennxt.filesystem.Filesystem
+import com.opennxt.filesystem.openFilesystem
 import com.opennxt.filesystem.prefetches.PrefetchTable
-import com.opennxt.filesystem.sqlite.SqliteFilesystem
 import com.opennxt.login.AuthoritativeLoginProcessor
 import com.opennxt.login.LoginThread
 import com.opennxt.model.commands.CommandRepository
@@ -492,7 +492,7 @@ object OpenNXT : CliktCommand(name = "run-server") {
 
             logger.info { "Opening filesystem from ${Constants.CACHE_PATH}" }
             startupProbe("before-filesystem-open")
-            filesystem = SqliteFilesystem(Constants.CACHE_PATH)
+            filesystem = openFilesystem(Constants.CACHE_PATH)
             startupProbe("after-filesystem-open")
 
             logger.info { "Generating prefetch table" }
