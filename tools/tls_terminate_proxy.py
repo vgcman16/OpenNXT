@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
+from urllib.parse import parse_qs, urlsplit
 
 try:
     from cryptography.hazmat.primitives import hashes
@@ -52,6 +53,8 @@ DEFAULT_TLS_MITM_HOSTS = {
     "content.runescape.com",
     "rs.config.runescape.com",
 }
+_localhost_requested_world_host_lock = threading.Lock()
+_localhost_requested_world_host: str | None = None
 
 
 def parse_listen_hosts(value: str) -> list[str]:
@@ -188,6 +191,33 @@ def build_tls_mitm_hosts(args) -> set[str]:
 
 def normalize_tls_server_name(server_name: str | None) -> str:
     return (server_name or "").strip().lower()
+
+
+def reset_localhost_requested_world_host_for_tests() -> None:
+    global _localhost_requested_world_host
+    with _localhost_requested_world_host_lock:
+        _localhost_requested_world_host = None
+
+
+def note_localhost_requested_world_host(server_name: str | None) -> None:
+    normalized = normalize_tls_server_name(server_name)
+    if not is_world_tls_sni(normalized):
+        return
+    global _localhost_requested_world_host
+    with _localhost_requested_world_host_lock:
+        _localhost_requested_world_host = normalized
+
+
+def current_localhost_requested_world_host() -> str | None:
+    with _localhost_requested_world_host_lock:
+        return _localhost_requested_world_host
+
+
+def seed_localhost_requested_world_host(server_name: str | None) -> None:
+    normalized = normalize_tls_server_name(server_name)
+    if not is_world_tls_sni(normalized):
+        return
+    note_localhost_requested_world_host(normalized)
 
 
 def is_world_tls_sni(server_name: str | None) -> bool:
@@ -521,13 +551,21 @@ def rewrite_http_request(
     if not header_lines:
         return data, False
 
+    request_line = header_lines[0]
+    request_parts = request_line.split(" ", 2)
+    request_path = request_parts[1] if len(request_parts) >= 2 else ""
+
     rewritten_lines = [header_lines[0]]
     saw_host = False
     saw_connection = False
     saw_original_host = False
     changed = False
     normalized_upstream = normalize_tls_server_name(upstream_host)
-    normalized_original_host = normalize_tls_server_name(original_host)
+    normalized_original_host = resolve_effective_original_host(
+        request_path=request_path,
+        upstream_host=upstream_host,
+        original_host=original_host,
+    )
     should_preserve_original_host = (
         normalized_original_host is not None
         and normalized_original_host != normalized_upstream
@@ -568,6 +606,52 @@ def rewrite_http_request(
 
     rewritten = "\r\n".join(rewritten_lines).encode("latin1") + HTTP_HEADER_TERMINATOR + remainder
     return rewritten, changed
+
+
+def extract_requested_world_host_from_request_path(request_path: str) -> str | None:
+    if not request_path:
+        return None
+    try:
+        query = parse_qs(urlsplit(request_path).query)
+    except ValueError:
+        return None
+    requested_values = query.get("requestedWorldHost") or []
+    for value in requested_values:
+        normalized = normalize_tls_server_name(value)
+        if is_world_tls_sni(normalized):
+            return normalized
+    return None
+
+
+def resolve_effective_original_host(
+    *,
+    request_path: str,
+    upstream_host: str,
+    original_host: str | None,
+) -> str | None:
+    normalized_original_host = normalize_tls_server_name(original_host)
+    if normalized_original_host != "localhost":
+        return normalized_original_host
+
+    normalized_upstream = normalize_tls_server_name(upstream_host)
+    if not request_path:
+        return None
+
+    lowered_path = request_path.lower()
+    if "/jav_config.ws" in lowered_path:
+        requested_world_host = extract_requested_world_host_from_request_path(request_path)
+        if requested_world_host is not None:
+            note_localhost_requested_world_host(requested_world_host)
+            return requested_world_host
+        sticky_world_host = current_localhost_requested_world_host()
+        if sticky_world_host is not None:
+            return sticky_world_host
+        return None
+
+    if lowered_path.startswith("/ms?") or lowered_path == "/ms":
+        return None
+
+    return normalized_original_host
 
 
 def record_chunk(lines, prefix, byte_counter, first_chunks, lock, data: bytes) -> None:
@@ -1594,6 +1678,7 @@ def main():
     parser.add_argument("--idle-timeout-seconds", type=int, default=1800)
     parser.add_argument("--raw-client-byte-cap", type=int, default=0)
     parser.add_argument("--raw-client-byte-cap-shutdown-delay-seconds", type=float, default=0.0)
+    parser.add_argument("--localhost-requested-world-host", default=None)
     parser.add_argument(
         "--allow-retail-js5-upstream",
         action="store_true",
@@ -1601,6 +1686,7 @@ def main():
     )
     args = parser.parse_args()
     args.secure_game_tls_passthrough = True
+    seed_localhost_requested_world_host(getattr(args, "localhost_requested_world_host", None))
 
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)

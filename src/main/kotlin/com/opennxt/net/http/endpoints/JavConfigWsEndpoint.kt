@@ -282,6 +282,21 @@ object JavConfigWsEndpoint {
             ?: normalizeRequestedWorldHost(query?.parameters()?.get("requestedWorldHost")?.firstOrNull())
     }
 
+    internal fun effectiveRequestHost(headers: HttpHeaders): String? {
+        return headers.get(ORIGINAL_HOST_HEADER) ?: headers.get(HttpHeaderNames.HOST)
+    }
+
+    internal fun effectiveCookieRequestHost(headers: HttpHeaders): String? {
+        val originalHost = normalizeHeaderHost(headers.get(ORIGINAL_HOST_HEADER))
+        val backendHost = normalizeHeaderHost(headers.get(HttpHeaderNames.HOST))
+        // Cookie scoping must follow the client-visible host, not the backend
+        // host that the TLS terminator rewrites internally. On the localhost
+        // bridge, preserving the .runescape.com domain causes the client to
+        // reject the cookie instead of carrying JXADDINFO across startup
+        // requests.
+        return originalHost ?: backendHost
+    }
+
     internal fun applyRequestedWorldHostRewrite(config: ClientConfig, worldHost: String) {
         config["param=3"] = worldHost
         for (param in WORLD_ROUTE_PARAMS) {
@@ -395,12 +410,13 @@ object JavConfigWsEndpoint {
         query: QueryStringDecoder,
         type: BinaryType,
         useStartupContractHints: Boolean = false,
+        implicitLocalContentBridge: Boolean = false,
     ): RewriteDecisions {
         val hint = if (useStartupContractHints) StartupContractHints.latestRewriteContract(type) else null
         return RewriteDecisions(
             localRewrite = resolveLocalRewriteFlag(query, hint),
             hostRewrite = resolveHostRewriteFlag(query, type, hint),
-            contentRouteRewrite = resolveContentRouteRewriteFlag(query, type, hint),
+            contentRouteRewrite = resolveContentRouteRewriteFlag(query, type, hint, implicitLocalContentBridge),
             worldUrlRewrite = resolveWorldUrlRewriteFlag(query, type, hint),
             codebaseRewrite = resolveCodebaseRewriteFlag(query, type, hint),
             lobbyHostRewrite = resolveLobbyHostRewriteFlag(query, type, hint),
@@ -450,10 +466,11 @@ object JavConfigWsEndpoint {
         query: QueryStringDecoder,
         type: BinaryType,
         hint: StartupContractHints.StartupRewriteContract?,
+        implicitLocalContentBridge: Boolean = false,
     ): Boolean = resolveFlagWithHint(
         rawFlag = query.parameters()["contentRouteRewrite"]?.firstOrNull()?.trim()?.lowercase(),
         defaultValue = !shouldUse947Win64SplashDefaults(type),
-        hintedValue = hint?.contentRouteRewrite,
+        hintedValue = if (implicitLocalContentBridge) true else hint?.contentRouteRewrite,
     )
 
     private fun resolveWorldUrlRewriteFlag(
@@ -508,6 +525,26 @@ object JavConfigWsEndpoint {
 
     private fun shouldApplyLocalGamePortRewrite(type: BinaryType, gameHostOverride: String?): Boolean {
         return !shouldUse947Win64SplashDefaults(type) || gameHostOverride != null
+    }
+
+    private fun normalizeHeaderHost(rawHost: String?): String? {
+        val trimmed = rawHost?.trim()?.lowercase()?.takeIf { it.isNotEmpty() } ?: return null
+        if (trimmed.startsWith("[")) {
+            return trimmed.substringAfter("[").substringBefore("]")
+        }
+        return if (trimmed.count { it == ':' } == 1) {
+            trimmed.substringBefore(":")
+        } else {
+            trimmed
+        }
+    }
+
+    private fun isLoopbackHost(host: String?): Boolean {
+        return when (host) {
+            null -> false
+            "localhost", "127.0.0.1", "::1", "0:0:0:0:0:0:0:1" -> true
+            else -> false
+        }
     }
 
     private fun liveConfigCacheKey(type: BinaryType, sourceUrl: String): String {
@@ -888,7 +925,7 @@ object JavConfigWsEndpoint {
             body.size,
             keepAlive = keepAlive,
             cookie = cookie,
-            requestHost = request.headers().get(HttpHeaderNames.HOST),
+            requestHost = effectiveCookieRequestHost(request.headers()),
         )
         val future = ctx.channel().writeAndFlush(response)
         if (!keepAlive) {
@@ -908,10 +945,16 @@ object JavConfigWsEndpoint {
             RetailSessionCookie.noteDownloadMetadataSource(explicitDownloadMetadataSource)
         }
         val requestedWorldHostCandidate = extractRequestedWorldHost(msg, query)
+        val implicitLocalContentBridge =
+            requestedWorldHostCandidate != null &&
+                !hasExplicitQueryParameter(query, "contentRouteRewrite") &&
+                normalizeHeaderHost(msg.headers().get(HttpHeaderNames.HOST)) == "content.runescape.com" &&
+                normalizeHeaderHost(msg.headers().get(ORIGINAL_HOST_HEADER)) == requestedWorldHostCandidate
         val rewriteDecisions = resolveRewriteDecisions(
             query = query,
             type = type,
             useStartupContractHints = requestedWorldHostCandidate != null,
+            implicitLocalContentBridge = implicitLocalContentBridge,
         )
         val requestedWorldHost = if (!rewriteDecisions.worldUrlRewrite && !rewriteDecisions.codebaseRewrite) {
             requestedWorldHostCandidate
@@ -926,8 +969,15 @@ object JavConfigWsEndpoint {
             rewriteDecisionsOverride = rewriteDecisions,
         )
         val config = prepared.config
+        val requestedGameHost =
+            requestedWorldHostCandidate?.takeIf {
+                prepared.localRewrite && prepared.gameHostOverride == null
+            }
         if (prepared.downloadMetadataSource.isNotEmpty()) {
             RetailSessionCookie.noteDownloadMetadataSource(prepared.downloadMetadataSource)
+        }
+        if (requestedGameHost != null) {
+            applyGameHostOverride(config, requestedGameHost)
         }
         if (requestedWorldHost != null) {
             applyRequestedWorldHostRewrite(config, requestedWorldHost)

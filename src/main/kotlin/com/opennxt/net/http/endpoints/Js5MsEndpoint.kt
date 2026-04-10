@@ -193,7 +193,7 @@ object Js5MsEndpoint {
             size,
             keepAlive = keepAlive,
             cookie = cookie,
-            requestHost = request.headers().get(HttpHeaderNames.HOST),
+            requestHost = JavConfigWsEndpoint.effectiveCookieRequestHost(request.headers()),
         )
 
         val future = ctx.channel().writeAndFlush(response)

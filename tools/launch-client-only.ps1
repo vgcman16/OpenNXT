@@ -30,7 +30,9 @@ param(
     [switch]$Disable947InlineNullReadPatches,
     [switch]$Disable947JumpBypassGuards,
     [switch]$AllowRetailJs5Upstream,
-    [switch]$DisableWatchdog
+    [switch]$DisableWatchdog,
+    [ValidateSet("login-first", "strict", "mixed-retail")]
+    [string]$NoFridaLoopbackProfile = "login-first"
 )
 
 $ErrorActionPreference = "Stop"
@@ -85,6 +87,8 @@ $contentBootstrapProxyErr = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\
 $watchdogOut = Join-Path $root "tmp-client-only-watchdog.out.log"
 $watchdogErr = Join-Path $root "tmp-client-only-watchdog.err.log"
 $clientOnlyTraceLog = Join-Path $root "tmp-launch-client-only.trace.log"
+$serverStdoutLog = Join-Path $root "tmp-runserver.out.log"
+$serverStderrLog = Join-Path $root "tmp-runserver.err.log"
 $serverLauncherScript = Join-Path $PSScriptRoot "start_server_logged.ps1"
 $serverConfigPath = Join-Path $root "data\\config\\server.toml"
 $certScript = Join-Path $PSScriptRoot "setup_lobby_tls_cert.ps1"
@@ -120,6 +124,95 @@ function Write-ClientOnlyTrace {
 }
 
 Write-ClientOnlyTrace "launch-client-only start"
+
+function Get-947DesiredLoggedOutJs5PassthroughMode {
+    param(
+        [int]$ClientBuild,
+        [bool]$UseContainedLocalBridgeRoute,
+        [string]$LoopbackProfile,
+        [bool]$AllowRetailJs5UpstreamSwitch
+    )
+
+    if ($ClientBuild -lt 947) {
+        return "unknown"
+    }
+
+    $requestOnlyForLoopbackLoginFirst = $UseContainedLocalBridgeRoute -and
+        [string]::Equals($LoopbackProfile, "login-first", [System.StringComparison]::OrdinalIgnoreCase)
+    if ($requestOnlyForLoopbackLoginFirst) {
+        return "request-only"
+    }
+
+    if (-not $AllowRetailJs5UpstreamSwitch) {
+        return "enabled"
+    }
+
+    return "disabled"
+}
+
+function Get-ActiveLoggedOutJs5PassthroughMode {
+    param([string]$ServerStderrPath)
+
+    if ([string]::IsNullOrWhiteSpace($ServerStderrPath) -or -not (Test-Path $ServerStderrPath)) {
+        return "unknown"
+    }
+
+    $match = Select-String -Path $ServerStderrPath -Pattern 'START_SERVER_LOGGED flags raw=.*enableLoggedOut=(?<enable>True|False)\s+disableLoggedOut=(?<disable>True|False)\s+disableProxy=(?<disableProxy>True|False)' -ErrorAction SilentlyContinue |
+        Select-Object -Last 1
+    if ($null -eq $match) {
+        return "unknown"
+    }
+
+    $enableValue = $match.Matches[0].Groups["enable"].Value
+    $disableValue = $match.Matches[0].Groups["disable"].Value
+    $disableProxyValue = $match.Matches[0].Groups["disableProxy"].Value
+    $enableLoggedOut = [string]::Equals($enableValue, "True", [System.StringComparison]::OrdinalIgnoreCase)
+    $disableLoggedOut = [string]::Equals($disableValue, "True", [System.StringComparison]::OrdinalIgnoreCase)
+    $disableProxy = [string]::Equals($disableProxyValue, "True", [System.StringComparison]::OrdinalIgnoreCase)
+
+    if ($enableLoggedOut -and -not $disableLoggedOut -and $disableProxy) {
+        return "request-only"
+    }
+    if ($enableLoggedOut -and -not $disableLoggedOut -and -not $disableProxy) {
+        return "enabled"
+    }
+    if ($disableLoggedOut -and -not $enableLoggedOut) {
+        return "disabled"
+    }
+
+    return "unknown"
+}
+
+function Wait-PortsClosed {
+    param(
+        [int[]]$Ports,
+        [int]$TimeoutSeconds = 15,
+        [int]$DelayMilliseconds = 250
+    )
+
+    $requiredPorts = @($Ports | ForEach-Object { [int]$_ } | Select-Object -Unique)
+    if ($requiredPorts.Count -eq 0) {
+        return $true
+    }
+
+    $retries = [Math]::Max(1, [int][Math]::Ceiling(($TimeoutSeconds * 1000) / $DelayMilliseconds))
+    for ($attempt = 0; $attempt -lt $retries; $attempt++) {
+        if ($attempt -gt 0) {
+            Start-Sleep -Milliseconds $DelayMilliseconds
+        }
+
+        $listeningPids = @(
+            Get-ListeningProcessIds -Ports $requiredPorts |
+                Where-Object { $_ -is [int] -and $_ -gt 0 } |
+                Select-Object -Unique
+        )
+        if ($listeningPids.Count -eq 0) {
+            return $true
+        }
+    }
+
+    return $false
+}
 
 function Get-TomlScalarValue {
     param(
@@ -684,6 +777,32 @@ function Remove-QueryParameter {
     return $updated
 }
 
+function New-947StartupUserFlowValue {
+    try {
+        $bytes = New-Object byte[] 8
+        $rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+        try {
+            $rng.GetBytes($bytes)
+        } finally {
+            $rng.Dispose()
+        }
+        $value = [System.BitConverter]::ToInt64($bytes, 0)
+        if ($value -lt 0) {
+            if ($value -eq [long]::MinValue) {
+                $value = [long]::MaxValue
+            } else {
+                $value = -1 * $value
+            }
+        }
+        if ($value -lt 100000000000000000L) {
+            $value += 100000000000000000L
+        }
+        return [string]$value
+    } catch {
+        return [string]([DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) + ([string](Get-Random -Minimum 1000 -Maximum 9999))
+    }
+}
+
 function Convert-To947DirectClientLaunchArg {
     param(
         [string]$Url,
@@ -721,24 +840,53 @@ function Convert-To947DirectClientLaunchArg {
 function Convert-To947ContainedLoopbackLaunchArg {
     param(
         [string]$Url,
-        [string]$GamePort = ""
+        [string]$GamePort = "",
+        [string]$Profile = "login-first"
     )
 
     if ([string]::IsNullOrWhiteSpace($Url)) {
         return $Url
     }
 
-    # When Frida and hosts-file containment are both unavailable, the 947
-    # fallback has to be opinionated enough to keep the client on the local
-    # content/codebase/world bridge. Preserving the weaker startup contract
-    # here strands the client in the localhost JS5 checksum loop and never
-    # reaches the later login-capable path.
+    $normalizedProfile = if ([string]::IsNullOrWhiteSpace($Profile)) {
+        "login-first"
+    } else {
+        $Profile.Trim().ToLowerInvariant()
+    }
+
     $updated = Set-QueryParameter -Url $Url -Name "contentRouteRewrite" -Value "1"
-    $updated = Set-QueryParameter -Url $updated -Name "worldUrlRewrite" -Value "1"
-    $updated = Set-QueryParameter -Url $updated -Name "codebaseRewrite" -Value "1"
     $updated = Set-QueryParameter -Url $updated -Name "baseConfigSource" -Value "live"
     $updated = Set-QueryParameter -Url $updated -Name "liveCache" -Value "1"
-    $updated = Set-QueryParameter -Url $updated -Name "downloadMetadataSource" -Value "live"
+
+    switch ($normalizedProfile) {
+        "strict" {
+            # Force the entire startup contract onto localhost. This keeps the
+            # client fully contained, but on locked-down machines it can strand
+            # 947 in the splash/resource warm-up phase for minutes.
+            $updated = Set-QueryParameter -Url $updated -Name "worldUrlRewrite" -Value "1"
+            $updated = Set-QueryParameter -Url $updated -Name "codebaseRewrite" -Value "1"
+            $updated = Set-QueryParameter -Url $updated -Name "downloadMetadataSource" -Value "live"
+        }
+        "mixed-retail" {
+            # Keep the initial content fetch local but otherwise preserve the
+            # retail-visible world/codebase contract. This is the loosest
+            # fallback and is mainly useful for troubleshooting.
+            $updated = Set-QueryParameter -Url $updated -Name "worldUrlRewrite" -Value "0"
+            $updated = Set-QueryParameter -Url $updated -Name "codebaseRewrite" -Value "0"
+            $updated = Set-QueryParameter -Url $updated -Name "downloadMetadataSource" -Value "original"
+        }
+        default {
+            # Default to a login-first compromise: keep the content bootstrap
+            # local, but preserve retail-shaped world/codebase URLs. On
+            # machines where Frida and hosts-file overrides are unavailable,
+            # forcing world URLs to localhost strands 947 on the splash bar
+            # before the real login card appears.
+            $updated = Set-QueryParameter -Url $updated -Name "worldUrlRewrite" -Value "0"
+            $updated = Set-QueryParameter -Url $updated -Name "codebaseRewrite" -Value "0"
+            $updated = Set-QueryParameter -Url $updated -Name "downloadMetadataSource" -Value "original"
+        }
+    }
+
     if (-not [string]::IsNullOrWhiteSpace($GamePort)) {
         $updated = Set-QueryParameter -Url $updated -Name "gamePortOverride" -Value $GamePort
     }
@@ -748,7 +896,8 @@ function Convert-To947ContainedLoopbackLaunchArg {
 function Convert-ToLoopbackJavConfigUrl {
     param(
         [string]$Url,
-        [int]$HttpPort
+        [int]$HttpPort,
+        [switch]$PreferTls
     )
 
     if ([string]::IsNullOrWhiteSpace($Url) -or $HttpPort -le 0) {
@@ -756,7 +905,18 @@ function Convert-ToLoopbackJavConfigUrl {
     }
 
     try {
-        $uri = [System.Uri]$Url
+        $effectiveUrl = $Url
+        if ($PreferTls) {
+            # Match the historical April 5 login-capable local startup shape
+            # more closely: the client entered through /k=5/jav_config.ws with
+            # a userFlow query, not the older rs.config /k=5/l=0 form.
+            $effectiveUrl = Remove-QueryParameter -Url $effectiveUrl -Name "l"
+            if ($effectiveUrl -notmatch '(^|[?&])userFlow=') {
+                $effectiveUrl = Set-QueryParameter -Url $effectiveUrl -Name "userFlow" -Value (New-947StartupUserFlowValue)
+            }
+        }
+
+        $uri = [System.Uri]$effectiveUrl
         $query = $uri.Query
         if (-not [string]::IsNullOrWhiteSpace($query) -and $query.StartsWith("?")) {
             $query = $query.Substring(1)
@@ -764,10 +924,21 @@ function Convert-ToLoopbackJavConfigUrl {
         $preservedPath =
             if ([string]::IsNullOrWhiteSpace($uri.AbsolutePath) -or $uri.AbsolutePath -eq "/") {
                 "/jav_config.ws"
+            } elseif ($PreferTls -and [string]::Equals($uri.AbsolutePath, "/k=5/l=0/jav_config.ws", [System.StringComparison]::OrdinalIgnoreCase)) {
+                "/k=5/jav_config.ws"
             } else {
                 $uri.AbsolutePath
             }
-        $baseUrl = "http://127.0.0.1:$HttpPort$preservedPath"
+        $baseUrl =
+            if ($PreferTls) {
+                # Preserve the local content bridge, but let the actual client
+                # enter through the localhost TLS terminator so the first
+                # startup fetch stays on the same secure shape as the earlier
+                # login-capable local path.
+                "https://localhost$preservedPath"
+            } else {
+                "http://127.0.0.1:$HttpPort$preservedPath"
+            }
         if ([string]::IsNullOrWhiteSpace($query)) {
             return $baseUrl
         }
@@ -775,6 +946,45 @@ function Convert-ToLoopbackJavConfigUrl {
     } catch {
         return $null
     }
+}
+
+function Optimize-947LoginFirstLoopbackLaunchArg {
+    param([string]$Url)
+
+    if ([string]::IsNullOrWhiteSpace($Url)) {
+        return $Url
+    }
+
+    # Match the older login-capable localhost contract more closely. Rebuild
+    # the query from scratch so we do not leak stale rewrite controls or
+    # duplicate keys. Keep the visible localhost URL tiny and let the startup
+    # contract hints restore the local content bridge from
+    # localhost+requestedWorldHost; over-specifying rewrite flags here strands
+    # 947 on the splash bar after the op=33 logged-out JS5 bootstrap.
+    try {
+        $uri = [System.Uri]$Url
+        $baseUrl = "{0}://{1}{2}" -f $uri.Scheme, $uri.Authority, $uri.AbsolutePath
+    } catch {
+        $baseUrl = $Url.Split("?")[0]
+    }
+
+    $binaryType = Get-QueryParameterValue -Url $Url -Name "binaryType"
+    if ([string]::IsNullOrWhiteSpace($binaryType)) {
+        $binaryType = "6"
+    }
+    $userFlow = Get-QueryParameterValue -Url $Url -Name "userFlow"
+    if ([string]::IsNullOrWhiteSpace($userFlow)) {
+        $userFlow = New-947StartupUserFlowValue
+    }
+    $requestedWorldHost = Get-QueryParameterValue -Url $Url -Name "requestedWorldHost"
+
+    $updated = $baseUrl
+    $updated = Set-QueryParameter -Url $updated -Name "userFlow" -Value $userFlow
+    if (-not [string]::IsNullOrWhiteSpace($requestedWorldHost)) {
+        $updated = Set-QueryParameter -Url $updated -Name "requestedWorldHost" -Value $requestedWorldHost
+    }
+    $updated = Set-QueryParameter -Url $updated -Name "binaryType" -Value $binaryType
+    return $updated
 }
 
 function Get-UriHostName {
@@ -2123,6 +2333,7 @@ if ($configuredClientBuild -ge 947 -and -not [string]::IsNullOrWhiteSpace($start
 }
 $fridaImportAvailable = Test-PythonModuleImport -ModuleName "frida"
 $effectiveDirectPatchStartupHookOutputPath = $directPatchStartupHookOutput
+$localhostRequestedWorldHostForTlsProxy = $null
 $enable947StartupResolveRedirects = $configuredClientBuild -ge 947 -and $use947RetailConfigRoute -and $Force947StartupRouteRedirects
 $enable947ContainedRouteRedirects = $configuredClientBuild -ge 947 -and
     $use947RetailConfigRoute -and
@@ -2226,7 +2437,7 @@ if (
             Write-ClientOnlyTrace ("947 contained route hosts override startup snapshot={0}" -f $startupConfigSnapshotPath)
         }
     } else {
-        $loopbackLaunchArg = Convert-ToLoopbackJavConfigUrl -Url (Convert-To947ContainedLoopbackLaunchArg -Url $launchArg -GamePort $gamePort) -HttpPort ([int]$httpPort)
+        $loopbackLaunchArg = Convert-ToLoopbackJavConfigUrl -Url (Convert-To947ContainedLoopbackLaunchArg -Url $launchArg -GamePort $gamePort -Profile $NoFridaLoopbackProfile) -HttpPort ([int]$httpPort) -PreferTls
         if ([string]::IsNullOrWhiteSpace($loopbackLaunchArg)) {
             if (-not $script:CanWriteHostsFile) {
                 throw "Frida is unavailable, the local 947 loopback bridge could not be built, and the hosts file is not writable, so the contained localhost route cannot be applied."
@@ -2251,8 +2462,26 @@ if (
             if (-not [string]::IsNullOrWhiteSpace($requestedWorldHost)) {
                 $loopbackLaunchArg = Set-QueryParameter -Url $loopbackLaunchArg -Name "requestedWorldHost" -Value $requestedWorldHost
             }
-            if ($startupConfigSnapshotReady -and (Test-Path $startupConfigSnapshotPath)) {
+            $useLoopbackStartupSnapshot = [string]::Equals($NoFridaLoopbackProfile, "strict", [System.StringComparison]::OrdinalIgnoreCase)
+            if ($useLoopbackStartupSnapshot -and $startupConfigSnapshotReady -and (Test-Path $startupConfigSnapshotPath)) {
                 $loopbackLaunchArg = Set-QueryParameter -Url $loopbackLaunchArg -Name "baseConfigSnapshotPath" -Value $startupConfigSnapshotPath
+            } elseif (-not $useLoopbackStartupSnapshot) {
+                # The historical login-capable localhost paths did not pin the
+                # startup config to a snapshot here; let the server resolve
+                # the live requested-world config instead.
+                $loopbackLaunchArg = Remove-QueryParameter -Url $loopbackLaunchArg -Name "baseConfigSnapshotPath"
+            }
+            if (-not [string]::Equals($NoFridaLoopbackProfile, "strict", [System.StringComparison]::OrdinalIgnoreCase)) {
+                $loopbackLaunchArg = Optimize-947LoginFirstLoopbackLaunchArg -Url $loopbackLaunchArg
+                if (-not [string]::IsNullOrWhiteSpace($requestedWorldHost)) {
+                    # Keep the visible localhost bootstrap URL close to the
+                    # older login-capable shape and let the TLS terminator
+                    # synthesize X-OpenNXT-Original-Host for the first
+                    # /jav_config.ws request instead of exposing
+                    # requestedWorldHost in the query string.
+                    $localhostRequestedWorldHostForTlsProxy = $requestedWorldHost
+                    $loopbackLaunchArg = Remove-QueryParameter -Url $loopbackLaunchArg -Name "requestedWorldHost"
+                }
             }
             $launchArg = $loopbackLaunchArg
             $clientArgs = @($launchArg)
@@ -2260,14 +2489,27 @@ if (
             $use947ContainedLocalBridgeRoute = $true
             $shouldLaunch947ContentBootstrapProxy = $configuredClientBuild -ge 947 -and [int]$httpPort -ne 80
             Write-ClientOnlyTrace (
-                "947 contained route using local loopback bridge because Frida import is unavailable launchArg={0}" -f
+                "947 contained route using local loopback bridge because Frida import is unavailable profile={0} launchArg={1}" -f
+                    $NoFridaLoopbackProfile,
                     $launchArg
             )
             if (-not [string]::IsNullOrWhiteSpace($requestedWorldHost)) {
                 Write-ClientOnlyTrace ("947 contained route loopback requested world host={0}" -f $requestedWorldHost)
+                if (-not [string]::IsNullOrWhiteSpace($localhostRequestedWorldHostForTlsProxy)) {
+                    Write-ClientOnlyTrace ("947 contained route loopback seeding TLS original host={0}" -f $localhostRequestedWorldHostForTlsProxy)
+                }
             }
-            if ($startupConfigSnapshotReady -and (Test-Path $startupConfigSnapshotPath)) {
+            if ($useLoopbackStartupSnapshot -and $startupConfigSnapshotReady -and (Test-Path $startupConfigSnapshotPath)) {
                 Write-ClientOnlyTrace ("947 contained route loopback startup snapshot={0}" -f $startupConfigSnapshotPath)
+            } elseif (-not $useLoopbackStartupSnapshot) {
+                Write-ClientOnlyTrace "947 contained route loopback using live requested-world config without startup snapshot"
+                if ([string]::Equals($NoFridaLoopbackProfile, "login-first", [System.StringComparison]::OrdinalIgnoreCase)) {
+                    Write-ClientOnlyTrace "947 contained route loopback login-first query minimized for localhost bridge"
+                } elseif ([string]::Equals($NoFridaLoopbackProfile, "mixed-retail", [System.StringComparison]::OrdinalIgnoreCase)) {
+                    Write-ClientOnlyTrace "947 contained route loopback mixed-retail query minimized for localhost bridge"
+                } else {
+                    Write-ClientOnlyTrace ("947 contained route loopback profile={0} using live requested-world config without startup snapshot" -f $NoFridaLoopbackProfile)
+                }
             }
         }
     }
@@ -2302,15 +2544,67 @@ Start-Sleep -Seconds 1
 
 $serverLaunchResult = $null
 Write-ClientOnlyTrace ("server ports check start ports={0},{1}" -f $httpPort, $gameBackendPort)
+$desiredServerLoggedOutJs5PassthroughMode = Get-947DesiredLoggedOutJs5PassthroughMode `
+    -ClientBuild $configuredClientBuild `
+    -UseContainedLocalBridgeRoute ([bool]$use947ContainedLocalBridgeRoute) `
+    -LoopbackProfile $NoFridaLoopbackProfile `
+    -AllowRetailJs5UpstreamSwitch ([bool]$AllowRetailJs5Upstream)
 $serverPortReady = Wait-ListeningPorts -Ports @([int]$httpPort, [int]$gameBackendPort) -TimeoutSeconds 2
+if ($serverPortReady -and $configuredClientBuild -ge 947) {
+    $activeServerLoggedOutJs5PassthroughMode = Get-ActiveLoggedOutJs5PassthroughMode -ServerStderrPath $serverStderrLog
+    Write-ClientOnlyTrace (
+        "active server logged-out JS5 mode desired={0} active={1}" -f
+            $desiredServerLoggedOutJs5PassthroughMode,
+            $activeServerLoggedOutJs5PassthroughMode
+    )
+
+    if ($activeServerLoggedOutJs5PassthroughMode -ne $desiredServerLoggedOutJs5PassthroughMode) {
+        $existingServerProcessIds = @(
+            Get-ListeningProcessIds -Ports @([int]$httpPort, [int]$gameBackendPort) |
+                Where-Object { $_ -is [int] -and $_ -gt 0 } |
+                Select-Object -Unique
+        )
+        if ($existingServerProcessIds.Count -gt 0) {
+            Write-ClientOnlyTrace (
+                "restarting local server because logged-out JS5 mode mismatched desired={0} active={1} pids={2}" -f
+                    $desiredServerLoggedOutJs5PassthroughMode,
+                    $activeServerLoggedOutJs5PassthroughMode,
+                    ($existingServerProcessIds -join ",")
+            )
+            foreach ($processId in $existingServerProcessIds) {
+                try {
+                    taskkill /PID $processId /T /F | Out-Null
+                } catch {}
+            }
+
+            $serverPortsClosed = Wait-PortsClosed -Ports @([int]$httpPort, [int]$gameBackendPort) -TimeoutSeconds 20
+            if (-not $serverPortsClosed) {
+                throw ("Timed out stopping the existing local server for ports {0},{1}." -f $httpPort, $gameBackendPort)
+            }
+            $serverPortReady = $false
+        }
+    }
+}
 if (-not $serverPortReady -and (Test-Path $serverLauncherScript)) {
     $serverLaunchParams = @{}
     if ($configuredClientBuild -ge 947) {
         $serverLaunchParams.EnableRetailRawChecksumPassthrough = $true
-        if (-not $AllowRetailJs5Upstream) {
+        if ([string]::Equals($desiredServerLoggedOutJs5PassthroughMode, "request-only", [System.StringComparison]::OrdinalIgnoreCase)) {
+            # Match the earlier login-capable localhost bridge more closely:
+            # keep the decoder local for the inline 255/255 master-table request,
+            # but still allow non-master logged-out JS5 requests to fetch retail
+            # bodies so stale local 255/x tables do not strand 947 on the splash bar.
             $serverLaunchParams.EnableRetailLoggedOutJs5Passthrough = $true
-        } else {
+            $serverLaunchParams.DisableRetailLoggedOutJs5Proxy = $true
+            Write-ClientOnlyTrace "server launch enabling request-only retail logged-out JS5 passthrough for 947 login-first loopback profile"
+        } elseif ([string]::Equals($desiredServerLoggedOutJs5PassthroughMode, "disabled", [System.StringComparison]::OrdinalIgnoreCase)) {
+            # Keep the entire logged-out JS5 path local when diagnostics need a
+            # fully contained decoder without any retail archive fallback.
             $serverLaunchParams.DisableRetailLoggedOutJs5Passthrough = $true
+            Write-ClientOnlyTrace "server launch disabling retail logged-out JS5 passthrough for requested mode"
+        } elseif ([string]::Equals($desiredServerLoggedOutJs5PassthroughMode, "enabled", [System.StringComparison]::OrdinalIgnoreCase)) {
+            $serverLaunchParams.EnableRetailLoggedOutJs5Passthrough = $true
+            Write-ClientOnlyTrace "server launch enabling retail logged-out JS5 passthrough for requested mode"
         }
         $serverLaunchParams.SkipHttpFileVerification = $true
     }
@@ -2505,6 +2799,9 @@ if ($shouldLaunch947LobbyProxy -and (Test-Path $lobbyProxyScript)) {
     )
     foreach ($extraMitmHost in @($script:ConfiguredTlsExtraMitmHosts | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })) {
         $lobbyProxyPythonArgs += @("--tls-extra-mitm-host", [string]$extraMitmHost)
+    }
+    if (-not [string]::IsNullOrWhiteSpace($localhostRequestedWorldHostForTlsProxy)) {
+        $lobbyProxyPythonArgs += @("--localhost-requested-world-host", [string]$localhostRequestedWorldHostForTlsProxy)
     }
     if ($AllowRetailJs5Upstream) {
         $lobbyProxyPythonArgs += "--allow-retail-js5-upstream"
@@ -2871,9 +3168,16 @@ $runtimeAutoSkipCacheSync947Retail = $configuredClientBuild -ge 947 -and $useDir
     $runtimeUsesRetailStartupConfig -or
     [string]::Equals($resolvedDownloadMetadataSource, "live", [System.StringComparison]::OrdinalIgnoreCase)
 )
-$runtimeCacheSyncSkippedEffective = [bool]($SkipRuntimeCacheSync.IsPresent -or $runtimeAutoSkipCacheSync947Retail)
+$runtimeAutoSkipCacheSync947ContainedLoopback = $configuredClientBuild -ge 947 -and $use947ContainedLocalBridgeRoute -and $useDirectPatchedRs2Client -and (
+    [string]::Equals($NoFridaLoopbackProfile, "strict", [System.StringComparison]::OrdinalIgnoreCase)
+)
+$runtimeCacheSyncAutoSkipped = [bool]($runtimeAutoSkipCacheSync947Retail -or $runtimeAutoSkipCacheSync947ContainedLoopback)
+$runtimeCacheSyncSkippedEffective = [bool]($SkipRuntimeCacheSync.IsPresent -or $runtimeCacheSyncAutoSkipped)
 if ($runtimeAutoSkipCacheSync947Retail) {
     Write-ClientOnlyTrace "runtime cache sync auto-skipped for 947 live-metadata direct-patched path"
+}
+if ($runtimeAutoSkipCacheSync947ContainedLoopback) {
+    Write-ClientOnlyTrace "runtime cache sync auto-skipped for 947 strict contained loopback direct-patched path"
 }
 if (-not $runtimeCacheSyncSkippedEffective -and $configuredClientBuild -ge 947 -and -not [string]::IsNullOrWhiteSpace($env:ProgramData) -and (Test-Path $runtimeCacheSyncScript)) {
     Write-ClientOnlyTrace "runtime cache sync begin"
@@ -3551,7 +3855,7 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
     CacheReset = $cacheResetResults
     RuntimeCacheSyncSummary = if ($runtimeCacheSyncResult) { $runtimeCacheSyncSummary } else { $null }
     RuntimeCacheSyncSkipped = [bool]$runtimeCacheSyncSkippedEffective
-    RuntimeCacheSyncAutoSkipped = [bool]$runtimeAutoSkipCacheSync947Retail
+    RuntimeCacheSyncAutoSkipped = [bool]$runtimeCacheSyncAutoSkipped
     RuntimeCacheSyncPlannedCopyCount = if ($runtimeCacheSyncResult) { [int]$runtimeCacheSyncResult.PlannedCopyCount } else { 0 }
     RuntimeCacheSyncCopiedCount = if ($runtimeCacheSyncResult) { [int]$runtimeCacheSyncResult.CopiedCount } else { 0 }
     RuntimeCacheSyncCopiedArchives = if ($runtimeCacheSyncResult) { @($runtimeCacheSyncResult.CopiedArchives) } else { @() }

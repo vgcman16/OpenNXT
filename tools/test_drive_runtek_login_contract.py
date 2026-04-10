@@ -21,6 +21,13 @@ class DriveRuneTekLoginContractTests(unittest.TestCase):
         self.assertIn("Invoke-WindowClick -Handle $handlePtr -XPercent 0.60 -YPercent 0.69", text)
         self.assertGreaterEqual(text.count("Send-Enter"), 4)
 
+    def test_drive_script_focuses_target_window_aggressively_before_capture(self) -> None:
+        text = SCRIPT.read_text(encoding="utf-8")
+        self.assertIn("BringWindowToTop", text)
+        self.assertIn("SetWindowPos(", text)
+        self.assertIn("$HWND_TOPMOST = [IntPtr](-1)", text)
+        self.assertIn("$HWND_NOTOPMOST = [IntPtr](-2)", text)
+
 
 if __name__ == "__main__":
     unittest.main()

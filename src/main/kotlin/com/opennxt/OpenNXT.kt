@@ -92,6 +92,8 @@ object OpenNXT : CliktCommand(name = "run-server") {
         "OPENNXT_ENABLE_RETAIL_RAW_CHECKSUM_PASSTHROUGH"
     private const val ENABLE_RETAIL_LOGGED_OUT_JS5_PASSTHROUGH_ENV =
         "OPENNXT_ENABLE_RETAIL_LOGGED_OUT_JS5_PASSTHROUGH"
+    private const val DISABLE_RETAIL_LOGGED_OUT_JS5_PROXY_ENV =
+        "OPENNXT_DISABLE_RETAIL_LOGGED_OUT_JS5_PROXY"
     private const val ENABLE_LOGGED_OUT_JS5_PREFETCH_TABLE_ENV =
         "OPENNXT_ENABLE_LOGGED_OUT_JS5_PREFETCH_TABLE"
 
@@ -146,6 +148,21 @@ object OpenNXT : CliktCommand(name = "run-server") {
             null, "" -> true
             "1", "true", "yes", "on" -> true
             "0", "false", "no", "off" -> false
+            else -> true
+        }
+    }
+
+    internal fun retailLoggedOutJs5ProxyEnabled(
+        build: Int,
+        passthroughEnvValue: String? = System.getenv(ENABLE_RETAIL_LOGGED_OUT_JS5_PASSTHROUGH_ENV),
+        disableProxyEnvValue: String? = System.getenv(DISABLE_RETAIL_LOGGED_OUT_JS5_PROXY_ENV)
+    ): Boolean {
+        if (!retailLoggedOutJs5PassthroughEnabled(build, passthroughEnvValue)) {
+            return false
+        }
+
+        return when (disableProxyEnvValue?.trim()?.lowercase()) {
+            "1", "true", "yes", "on" -> false
             else -> true
         }
     }

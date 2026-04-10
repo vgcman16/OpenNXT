@@ -19,7 +19,9 @@ class WrapperLaunchContractTest(unittest.TestCase):
         text = (TOOLS_DIR / "start_server_logged.ps1").read_text(encoding="utf-8")
         self.assertIn("[switch]$EnableRetailLoggedOutJs5Passthrough", text)
         self.assertIn("[switch]$DisableRetailLoggedOutJs5Passthrough", text)
+        self.assertIn("[switch]$DisableRetailLoggedOutJs5Proxy", text)
         self.assertIn("OPENNXT_ENABLE_RETAIL_LOGGED_OUT_JS5_PASSTHROUGH", text)
+        self.assertIn("OPENNXT_DISABLE_RETAIL_LOGGED_OUT_JS5_PROXY", text)
         self.assertIn("[switch]$EnableLoggedOutJs5PrefetchTable", text)
         self.assertIn("OPENNXT_ENABLE_LOGGED_OUT_JS5_PREFETCH_TABLE", text)
 
@@ -108,11 +110,15 @@ class WrapperLaunchContractTest(unittest.TestCase):
         client_text = (TOOLS_DIR / "launch-client-only.ps1").read_text(encoding="utf-8")
         self.assertIn("[switch]$SkipRuntimeCacheSync", client_text)
         self.assertIn('$runtimeAutoSkipCacheSync947Retail = $configuredClientBuild -ge 947 -and $useDirectPatchedRs2Client -and (', client_text)
+        self.assertIn('$runtimeAutoSkipCacheSync947ContainedLoopback = $configuredClientBuild -ge 947 -and $use947ContainedLocalBridgeRoute -and $useDirectPatchedRs2Client -and (', client_text)
+        self.assertIn('[string]::Equals($NoFridaLoopbackProfile, "strict", [System.StringComparison]::OrdinalIgnoreCase)', client_text)
+        self.assertIn('$runtimeCacheSyncAutoSkipped = [bool]($runtimeAutoSkipCacheSync947Retail -or $runtimeAutoSkipCacheSync947ContainedLoopback)', client_text)
         self.assertIn('[string]::Equals($resolvedDownloadMetadataSource, "live", [System.StringComparison]::OrdinalIgnoreCase)', client_text)
         self.assertIn("runtime cache sync auto-skipped for 947 live-metadata direct-patched path", client_text)
+        self.assertIn("runtime cache sync auto-skipped for 947 strict contained loopback direct-patched path", client_text)
         self.assertIn("-not $runtimeCacheSyncSkippedEffective -and $configuredClientBuild -ge 947", client_text)
         self.assertIn("RuntimeCacheSyncSkipped = [bool]$runtimeCacheSyncSkippedEffective", client_text)
-        self.assertIn("RuntimeCacheSyncAutoSkipped = [bool]$runtimeAutoSkipCacheSync947Retail", client_text)
+        self.assertIn("RuntimeCacheSyncAutoSkipped = [bool]$runtimeCacheSyncAutoSkipped", client_text)
 
         live_text = (TOOLS_DIR / "launch-win64c-live.ps1").read_text(encoding="utf-8")
         self.assertIn("[switch]$SkipRuntimeCacheSync", live_text)
@@ -142,10 +148,23 @@ class WrapperLaunchContractTest(unittest.TestCase):
         self.assertIn('-RedirectStandardOutput $directPatchStdout `', client_text)
         self.assertIn('-RedirectStandardError $directPatchStderr `', client_text)
         self.assertIn('$serverLaunchParams = @{}', client_text)
+        self.assertIn('function Get-947DesiredLoggedOutJs5PassthroughMode {', client_text)
+        self.assertIn('function Get-ActiveLoggedOutJs5PassthroughMode {', client_text)
+        self.assertIn('function Wait-PortsClosed {', client_text)
+        self.assertIn('$desiredServerLoggedOutJs5PassthroughMode = Get-947DesiredLoggedOutJs5PassthroughMode `', client_text)
         self.assertIn('$serverLaunchParams.EnableRetailRawChecksumPassthrough = $true', client_text)
-        self.assertIn('if (-not $AllowRetailJs5Upstream) {', client_text)
-        self.assertIn('$serverLaunchParams.EnableRetailLoggedOutJs5Passthrough = $true', client_text)
+        self.assertIn('if ($serverPortReady -and $configuredClientBuild -ge 947) {', client_text)
+        self.assertIn('active server logged-out JS5 mode desired={0} active={1}', client_text)
+        self.assertIn('restarting local server because logged-out JS5 mode mismatched desired={0} active={1} pids={2}', client_text)
+        self.assertIn('if ([string]::Equals($desiredServerLoggedOutJs5PassthroughMode, "request-only"', client_text)
+        self.assertIn('$serverLaunchParams.DisableRetailLoggedOutJs5Proxy = $true', client_text)
+        self.assertIn('server launch enabling request-only retail logged-out JS5 passthrough for 947 login-first loopback profile', client_text)
+        self.assertIn('if ([string]::Equals($desiredServerLoggedOutJs5PassthroughMode, "disabled"', client_text)
         self.assertIn('$serverLaunchParams.DisableRetailLoggedOutJs5Passthrough = $true', client_text)
+        self.assertIn('server launch disabling retail logged-out JS5 passthrough for requested mode', client_text)
+        self.assertIn('elseif ([string]::Equals($desiredServerLoggedOutJs5PassthroughMode, "enabled"', client_text)
+        self.assertIn('$serverLaunchParams.EnableRetailLoggedOutJs5Passthrough = $true', client_text)
+        self.assertIn('server launch enabling retail logged-out JS5 passthrough for requested mode', client_text)
         self.assertIn('$serverLaunchParams.SkipHttpFileVerification = $true', client_text)
         self.assertIn('Write-ClientOnlyTrace ("server launch params={0}" -f (($serverLaunchParams.GetEnumerator() | Sort-Object Name | ForEach-Object { "{0}={1}" -f $_.Name, $_.Value }) -join ","))', client_text)
         self.assertIn('$serverLaunchOutput = & $serverLauncherScript @serverLaunchParams', client_text)
@@ -200,6 +219,8 @@ class WrapperLaunchContractTest(unittest.TestCase):
 
     def test_direct_947_no_frida_loopback_launch_arg_preserves_explicit_contract_shape(self) -> None:
         text = (TOOLS_DIR / "launch-client-only.ps1").read_text(encoding="utf-8")
+        self.assertIn('[ValidateSet("login-first", "strict", "mixed-retail")]', text)
+        self.assertIn('[string]$NoFridaLoopbackProfile = "login-first"', text)
         match = re.search(
             r"function Convert-To947ContainedLoopbackLaunchArg \{(?P<body>.*?)^\}",
             text,
@@ -207,12 +228,25 @@ class WrapperLaunchContractTest(unittest.TestCase):
         )
         self.assertIsNotNone(match)
         body = match.group("body")
+        self.assertIn('[string]$Profile = "login-first"', body)
+        self.assertIn('$normalizedProfile = if ([string]::IsNullOrWhiteSpace($Profile)) {', body)
+        self.assertIn('switch ($normalizedProfile) {', body)
         self.assertIn('Set-QueryParameter -Url $Url -Name "contentRouteRewrite" -Value "1"', body)
-        self.assertIn('Set-QueryParameter -Url $updated -Name "worldUrlRewrite" -Value "1"', body)
-        self.assertIn('Set-QueryParameter -Url $updated -Name "codebaseRewrite" -Value "1"', body)
         self.assertIn('Set-QueryParameter -Url $updated -Name "baseConfigSource" -Value "live"', body)
         self.assertIn('Set-QueryParameter -Url $updated -Name "liveCache" -Value "1"', body)
+        self.assertIn('"strict" {', body)
+        self.assertIn('Set-QueryParameter -Url $updated -Name "worldUrlRewrite" -Value "1"', body)
+        self.assertIn('Set-QueryParameter -Url $updated -Name "codebaseRewrite" -Value "1"', body)
         self.assertIn('Set-QueryParameter -Url $updated -Name "downloadMetadataSource" -Value "live"', body)
+        self.assertIn('"mixed-retail" {', body)
+        self.assertIn('Set-QueryParameter -Url $updated -Name "worldUrlRewrite" -Value "0"', body)
+        self.assertIn('Set-QueryParameter -Url $updated -Name "codebaseRewrite" -Value "0"', body)
+        self.assertIn('Set-QueryParameter -Url $updated -Name "downloadMetadataSource" -Value "original"', body)
+        self.assertIn('Default to a login-first compromise', body)
+        self.assertIn('forcing world URLs to localhost strands 947 on the splash bar', body)
+        default_block = re.search(r'default \{(?P<block>.*?)\n\s*\}', body, re.DOTALL)
+        self.assertIsNotNone(default_block)
+        self.assertIn('Set-QueryParameter -Url $updated -Name "worldUrlRewrite" -Value "0"', default_block.group("block"))
 
     def test_no_frida_fallback_uses_milder_loopback_helper(self) -> None:
         text = (TOOLS_DIR / "launch-client-only.ps1").read_text(encoding="utf-8")
@@ -226,6 +260,18 @@ class WrapperLaunchContractTest(unittest.TestCase):
         )
         self.assertIn(
             '$requestedWorldHost = Get-947PreferredStartupWorldHostFromConfigContent -ConfigContent $startupConfigContent',
+            text,
+        )
+        self.assertIn(
+            '$useLoopbackStartupSnapshot = [string]::Equals($NoFridaLoopbackProfile, "strict", [System.StringComparison]::OrdinalIgnoreCase)',
+            text,
+        )
+        self.assertIn(
+            '$loopbackLaunchArg = Remove-QueryParameter -Url $loopbackLaunchArg -Name "baseConfigSnapshotPath"',
+            text,
+        )
+        self.assertIn(
+            'profile={0} using live requested-world config without startup snapshot',
             text,
         )
         self.assertIn(
@@ -249,15 +295,31 @@ class WrapperLaunchContractTest(unittest.TestCase):
             text,
         )
         self.assertIn(
-            '$loopbackLaunchArg = Convert-ToLoopbackJavConfigUrl -Url (Convert-To947ContainedLoopbackLaunchArg -Url $launchArg -GamePort $gamePort) -HttpPort ([int]$httpPort)',
+            '$loopbackLaunchArg = Convert-ToLoopbackJavConfigUrl -Url (Convert-To947ContainedLoopbackLaunchArg -Url $launchArg -GamePort $gamePort -Profile $NoFridaLoopbackProfile) -HttpPort ([int]$httpPort) -PreferTls',
             text,
         )
         self.assertIn(
-            '"947 contained route using local loopback bridge because Frida import is unavailable launchArg={0}" -f',
+            '"947 contained route using local loopback bridge because Frida import is unavailable profile={0} launchArg={1}" -f',
             text,
         )
         self.assertIn(
             '$loopbackLaunchArg = Set-QueryParameter -Url $loopbackLaunchArg -Name "requestedWorldHost" -Value $requestedWorldHost',
+            text,
+        )
+        self.assertIn(
+            '$localhostRequestedWorldHostForTlsProxy = $requestedWorldHost',
+            text,
+        )
+        self.assertIn(
+            '$loopbackLaunchArg = Remove-QueryParameter -Url $loopbackLaunchArg -Name "requestedWorldHost"',
+            text,
+        )
+        self.assertIn(
+            '$useLoopbackStartupSnapshot = [string]::Equals($NoFridaLoopbackProfile, "strict", [System.StringComparison]::OrdinalIgnoreCase)',
+            text,
+        )
+        self.assertIn(
+            '$loopbackLaunchArg = Remove-QueryParameter -Url $loopbackLaunchArg -Name "baseConfigSnapshotPath"',
             text,
         )
         self.assertIn(
@@ -269,17 +331,49 @@ class WrapperLaunchContractTest(unittest.TestCase):
             text,
         )
         self.assertIn(
+            '"947 contained route loopback seeding TLS original host={0}" -f $localhostRequestedWorldHostForTlsProxy',
+            text,
+        )
+        self.assertIn(
             '"947 contained route loopback startup snapshot={0}" -f $startupConfigSnapshotPath',
             text,
         )
         self.assertIn(
+            '"947 contained route loopback using live requested-world config without startup snapshot"',
+            text,
+        )
+
+    def test_loopback_jav_config_helper_supports_secure_localhost_launch_urls(self) -> None:
+        text = (TOOLS_DIR / "launch-client-only.ps1").read_text(encoding="utf-8")
+        self.assertIn("function New-947StartupUserFlowValue {", text)
+        self.assertIn("function Convert-ToLoopbackJavConfigUrl {", text)
+        self.assertIn("function Optimize-947LoginFirstLoopbackLaunchArg {", text)
+        self.assertIn("[switch]$PreferTls", text)
+        self.assertIn('Remove-QueryParameter -Url $effectiveUrl -Name "l"', text)
+        self.assertIn("Set-QueryParameter -Url $effectiveUrl -Name \"userFlow\" -Value (New-947StartupUserFlowValue)", text)
+        self.assertIn('"/k=5/jav_config.ws"', text)
+        self.assertIn('"https://localhost$preservedPath"', text)
+        self.assertIn('"http://127.0.0.1:$HttpPort$preservedPath"', text)
+        self.assertIn("historical April 5 login-capable local startup shape", text)
+        self.assertIn('Match the older login-capable localhost contract more closely', text)
+        self.assertIn('Rebuild', text)
+        self.assertIn('the query from scratch so we do not leak stale rewrite controls', text)
+        self.assertIn('contract hints restore the local content bridge', text)
+        self.assertIn('older login-capable shape', text)
+        self.assertIn('op=33', text)
+        self.assertIn('Set-QueryParameter -Url $updated -Name "userFlow" -Value $userFlow', text)
+        self.assertIn('Set-QueryParameter -Url $updated -Name "binaryType" -Value $binaryType', text)
+        self.assertIn('$requestedWorldHost = Get-QueryParameterValue -Url $Url -Name "requestedWorldHost"', text)
+        self.assertIn('if (-not [string]::IsNullOrWhiteSpace($requestedWorldHost)) {', text)
+        self.assertIn(
             'function Get-947PreferredStartupWorldHostFromConfigContent {',
             text,
         )
-        self.assertIn(
-            '$baseUrl = "http://127.0.0.1:$HttpPort$preservedPath"',
-            text,
-        )
+        self.assertIn('$loopbackLaunchArg = Optimize-947LoginFirstLoopbackLaunchArg -Url $loopbackLaunchArg', text)
+        self.assertIn('$lobbyProxyPythonArgs += @("--localhost-requested-world-host", [string]$localhostRequestedWorldHostForTlsProxy)', text)
+        self.assertIn('947 contained route loopback login-first query minimized for localhost bridge', text)
+        self.assertIn('947 contained route loopback mixed-retail query minimized for localhost bridge', text)
+        self.assertIn('-not [string]::Equals($NoFridaLoopbackProfile, "strict", [System.StringComparison]::OrdinalIgnoreCase)', text)
         self.assertIn(
             'if ($secureRetailHostsOverrideHosts.Count -eq 0) {',
             text,

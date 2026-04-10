@@ -46,6 +46,8 @@ from tls_terminate_proxy import (
     parse_http_request_header,
     pump_http_requests,
     rewrite_http_request,
+    reset_localhost_requested_world_host_for_tests,
+    seed_localhost_requested_world_host,
     resolve_tls_http_upstream_host,
     should_disable_pump_timeouts,
     sniff_terminated_tls_route,
@@ -124,6 +126,9 @@ def build_client_hello(*, server_name: str | None) -> bytes:
 
 
 class TlsTerminateProxyTest(unittest.TestCase):
+    def setUp(self) -> None:
+        reset_localhost_requested_world_host_for_tests()
+
     def test_rewrite_http_request_retargets_host_without_forcing_close(self) -> None:
         original = (
             b"GET /ms?m=0&a=40 HTTP/1.1\r\n"
@@ -185,6 +190,86 @@ class TlsTerminateProxyTest(unittest.TestCase):
         )
 
         self.assertTrue(changed)
+        self.assertNotIn(b"X-OpenNXT-Original-Host:", rewritten)
+
+    def test_rewrite_http_request_uses_requested_world_host_for_localhost_jav_config(self) -> None:
+        original = (
+            b"GET /k=5/jav_config.ws?requestedWorldHost=world97a.runescape.com&binaryType=6 HTTP/1.1\r\n"
+            b"Host: localhost\r\n"
+            b"Accept: */*\r\n"
+            b"\r\n"
+        )
+
+        rewritten, changed = rewrite_http_request(
+            original,
+            "content.runescape.com",
+            original_host="localhost",
+        )
+
+        self.assertTrue(changed)
+        self.assertIn(b"Host: content.runescape.com\r\n", rewritten)
+        self.assertIn(b"X-OpenNXT-Original-Host: world97a.runescape.com\r\n", rewritten)
+        self.assertNotIn(b"X-OpenNXT-Original-Host: localhost\r\n", rewritten)
+
+    def test_rewrite_http_request_reuses_sticky_world_host_for_followup_localhost_jav_config(self) -> None:
+        bootstrap = (
+            b"GET /k=5/jav_config.ws?requestedWorldHost=world97a.runescape.com&binaryType=6 HTTP/1.1\r\n"
+            b"Host: localhost\r\n\r\n"
+        )
+        followup = (
+            b"GET /k=5/jav_config.ws?userFlow=123&binaryType=6 HTTP/1.1\r\n"
+            b"Host: localhost\r\n\r\n"
+        )
+
+        rewrite_http_request(
+            bootstrap,
+            "content.runescape.com",
+            original_host="localhost",
+        )
+        rewritten, changed = rewrite_http_request(
+            followup,
+            "content.runescape.com",
+            original_host="localhost",
+        )
+
+        self.assertTrue(changed)
+        self.assertIn(b"X-OpenNXT-Original-Host: world97a.runescape.com\r\n", rewritten)
+
+    def test_rewrite_http_request_uses_seeded_world_host_for_first_localhost_jav_config(self) -> None:
+        seed_localhost_requested_world_host("world22.runescape.com")
+        original = (
+            b"GET /k=5/jav_config.ws?userFlow=3039958176800131556&binaryType=6 HTTP/1.1\r\n"
+            b"Host: localhost\r\n"
+            b"Accept: */*\r\n"
+            b"\r\n"
+        )
+
+        rewritten, changed = rewrite_http_request(
+            original,
+            "content.runescape.com",
+            original_host="localhost",
+        )
+
+        self.assertTrue(changed)
+        self.assertIn(b"Host: content.runescape.com\r\n", rewritten)
+        self.assertIn(b"X-OpenNXT-Original-Host: world22.runescape.com\r\n", rewritten)
+
+    def test_rewrite_http_request_omits_localhost_original_host_for_ms_requests(self) -> None:
+        original = (
+            b"GET /ms?m=0&a=255&k=947&g=255&c=0&v=0 HTTP/1.1\r\n"
+            b"Host: localhost\r\n"
+            b"Accept: */*\r\n"
+            b"\r\n"
+        )
+
+        rewritten, changed = rewrite_http_request(
+            original,
+            "content.runescape.com",
+            original_host="localhost",
+        )
+
+        self.assertTrue(changed)
+        self.assertIn(b"Host: content.runescape.com\r\n", rewritten)
         self.assertNotIn(b"X-OpenNXT-Original-Host:", rewritten)
 
     def test_rewrite_http_request_leaves_non_http_payload_unchanged(self) -> None:

@@ -22,9 +22,10 @@ internal fun shouldSendLoggedOutPrefetchTable(
 internal fun shouldActivateRetailLoggedOutProxy(
     build: Int,
     passthroughEnvValue: String? = System.getenv("OPENNXT_ENABLE_RETAIL_LOGGED_OUT_JS5_PASSTHROUGH"),
+    disableProxyEnvValue: String? = System.getenv("OPENNXT_DISABLE_RETAIL_LOGGED_OUT_JS5_PROXY"),
     prefetchEnvValue: String? = System.getenv("OPENNXT_ENABLE_LOGGED_OUT_JS5_PREFETCH_TABLE"),
 ): Boolean {
-    return OpenNXT.retailLoggedOutJs5PassthroughEnabled(build, passthroughEnvValue) &&
+    return OpenNXT.retailLoggedOutJs5ProxyEnabled(build, passthroughEnvValue, disableProxyEnvValue) &&
         !shouldSendLoggedOutPrefetchTable(build, prefetchEnvValue)
 }
 

@@ -164,6 +164,23 @@ public static class RuneTekNative {
   public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 
   [DllImport("user32.dll")]
+  public static extern bool BringWindowToTop(IntPtr hWnd);
+
+  [DllImport("user32.dll")]
+  public static extern IntPtr GetForegroundWindow();
+
+  [DllImport("user32.dll", SetLastError = true)]
+  public static extern bool SetWindowPos(
+      IntPtr hWnd,
+      IntPtr hWndInsertAfter,
+      int X,
+      int Y,
+      int cx,
+      int cy,
+      uint uFlags
+  );
+
+  [DllImport("user32.dll")]
   public static extern bool SetCursorPos(int X, int Y);
 
   [DllImport("user32.dll")]
@@ -174,6 +191,11 @@ public static class RuneTekNative {
 $MOUSEEVENTF_LEFTDOWN = 0x0002
 $MOUSEEVENTF_LEFTUP = 0x0004
 $SW_RESTORE = 9
+$HWND_TOPMOST = [IntPtr](-1)
+$HWND_NOTOPMOST = [IntPtr](-2)
+$SWP_NOSIZE = 0x0001
+$SWP_NOMOVE = 0x0002
+$SWP_SHOWWINDOW = 0x0040
 
 function Find-RuneTekWindow {
     param(
@@ -220,8 +242,30 @@ function Focus-Window {
     param([IntPtr]$Handle)
     [void][RuneTekNative]::ShowWindowAsync($Handle, $SW_RESTORE)
     Start-Sleep -Milliseconds 200
+    [void][RuneTekNative]::SetWindowPos(
+        $Handle,
+        $HWND_TOPMOST,
+        0,
+        0,
+        0,
+        0,
+        ($SWP_NOMOVE -bor $SWP_NOSIZE -bor $SWP_SHOWWINDOW)
+    )
+    Start-Sleep -Milliseconds 80
+    [void][RuneTekNative]::SetWindowPos(
+        $Handle,
+        $HWND_NOTOPMOST,
+        0,
+        0,
+        0,
+        0,
+        ($SWP_NOMOVE -bor $SWP_NOSIZE -bor $SWP_SHOWWINDOW)
+    )
+    Start-Sleep -Milliseconds 80
+    [void][RuneTekNative]::BringWindowToTop($Handle)
+    Start-Sleep -Milliseconds 80
     [void][RuneTekNative]::SetForegroundWindow($Handle)
-    Start-Sleep -Milliseconds 300
+    Start-Sleep -Milliseconds 400
 }
 
 function Invoke-WindowClick {

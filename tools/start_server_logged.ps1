@@ -3,6 +3,7 @@ param(
     [switch]$EnableRetailRawChecksumPassthrough,
     [switch]$EnableRetailLoggedOutJs5Passthrough,
     [switch]$DisableRetailLoggedOutJs5Passthrough,
+    [switch]$DisableRetailLoggedOutJs5Proxy,
     [switch]$EnableLoggedOutJs5PrefetchTable,
     [switch]$SkipHttpFileVerification
 )
@@ -263,10 +264,11 @@ $startupLines = @(
     '[Console]::Error.Flush()'
     ('$env:JAVA_HOME = ''{0}''' -f $javaHome)
     '$env:OPENNXT_STARTUP_PROBE = ''1'''
-    ('[Console]::Error.WriteLine(''START_SERVER_LOGGED flags raw={0} enableLoggedOut={1} disableLoggedOut={2} prefetch={3} skipHttp={4}'')' -f @(
+    ('[Console]::Error.WriteLine(''START_SERVER_LOGGED flags raw={0} enableLoggedOut={1} disableLoggedOut={2} disableProxy={3} prefetch={4} skipHttp={5}'')' -f @(
         [bool]$EnableRetailRawChecksumPassthrough,
         [bool]$EnableRetailLoggedOutJs5Passthrough,
         [bool]$DisableRetailLoggedOutJs5Passthrough,
+        [bool]$DisableRetailLoggedOutJs5Proxy,
         [bool]$EnableLoggedOutJs5PrefetchTable,
         [bool]$SkipHttpFileVerification
     ))
@@ -283,6 +285,9 @@ if ($EnableRetailLoggedOutJs5Passthrough) {
 }
 if ($DisableRetailLoggedOutJs5Passthrough) {
     $startupLines += '$env:OPENNXT_ENABLE_RETAIL_LOGGED_OUT_JS5_PASSTHROUGH = ''0'''
+}
+if ($DisableRetailLoggedOutJs5Proxy) {
+    $startupLines += '$env:OPENNXT_DISABLE_RETAIL_LOGGED_OUT_JS5_PROXY = ''1'''
 }
 if ($EnableLoggedOutJs5PrefetchTable) {
     $startupLines += '$env:OPENNXT_ENABLE_LOGGED_OUT_JS5_PREFETCH_TABLE = ''1'''
