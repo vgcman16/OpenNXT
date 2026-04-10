@@ -1,24 +1,37 @@
 import argparse
 import atexit
 import hashlib
+import ipaddress
 import re
 import select
+import shutil
 import socket
 import ssl
+import subprocess
 import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
+from urllib.parse import parse_qs, urlsplit
 
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.serialization import pkcs12
+try:
+    from cryptography.hazmat.primitives import hashes
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.serialization import pkcs12
+    CRYPTOGRAPHY_IMPORT_ERROR = None
+except Exception as cryptography_import_error:  # pragma: no cover - exercised on locked-down Windows hosts
+    hashes = None
+    serialization = None
+    pkcs12 = None
+    CRYPTOGRAPHY_IMPORT_ERROR = cryptography_import_error
 
 
 HTTP_HEADER_TERMINATOR = b"\r\n\r\n"
 HTTP_METHOD_PREFIXES = (b"GET ", b"POST ", b"HEAD ", b"OPTIONS ", b"PUT ", b"DELETE ", b"PATCH ")
+ORIGINAL_HOST_HEADER = "X-OpenNXT-Original-Host"
+JS5_HANDSHAKE_PREFIX = b"\x0f"
 TLS_HTTP_CONTENT_ROUTE = "tls-http-content"
 TLS_SECURE_GAME_ROUTE = "tls-secure-game"
 RAW_GAME_ROUTE = "raw-game"
@@ -27,6 +40,7 @@ TLS_CLIENT_HELLO_PEEK_LIMIT = 4096
 TLS_ROUTE_MODE_MITM = "mitm"
 TLS_ROUTE_MODE_PASSTHROUGH = "passthrough"
 TLS_ROUTE_MODE_INSPECT = "inspect-after-handshake"
+TLS_ROUTE_MODE_TERMINATE = "terminate"
 RAW_PRELOGIN_CLIENT_BYTE_CAP = 64
 LISTENER_BACKLOG = 128
 DEFAULT_CONTENT_CLIENTHELLO_SHA256 = {
@@ -39,6 +53,8 @@ DEFAULT_TLS_MITM_HOSTS = {
     "content.runescape.com",
     "rs.config.runescape.com",
 }
+_localhost_requested_world_host_lock = threading.Lock()
+_localhost_requested_world_host: str | None = None
 
 
 def parse_listen_hosts(value: str) -> list[str]:
@@ -173,20 +189,81 @@ def build_tls_mitm_hosts(args) -> set[str]:
     return hosts
 
 
+def normalize_tls_server_name(server_name: str | None) -> str:
+    return (server_name or "").strip().lower()
+
+
+def reset_localhost_requested_world_host_for_tests() -> None:
+    global _localhost_requested_world_host
+    with _localhost_requested_world_host_lock:
+        _localhost_requested_world_host = None
+
+
+def note_localhost_requested_world_host(server_name: str | None) -> None:
+    normalized = normalize_tls_server_name(server_name)
+    if not is_world_tls_sni(normalized):
+        return
+    global _localhost_requested_world_host
+    with _localhost_requested_world_host_lock:
+        _localhost_requested_world_host = normalized
+
+
+def current_localhost_requested_world_host() -> str | None:
+    with _localhost_requested_world_host_lock:
+        return _localhost_requested_world_host
+
+
+def seed_localhost_requested_world_host(server_name: str | None) -> None:
+    normalized = normalize_tls_server_name(server_name)
+    if not is_world_tls_sni(normalized):
+        return
+    note_localhost_requested_world_host(normalized)
+
+
+def is_world_tls_sni(server_name: str | None) -> bool:
+    normalized = normalize_tls_server_name(server_name)
+    return bool(normalized) and normalized.startswith("world") and normalized.endswith(".runescape.com")
+
+
+def is_lobby_tls_sni(server_name: str | None) -> bool:
+    normalized = normalize_tls_server_name(server_name)
+    return bool(normalized) and normalized.startswith("lobby") and normalized.endswith(".runescape.com")
+
+
+def is_content_tls_sni(server_name: str | None) -> bool:
+    normalized = normalize_tls_server_name(server_name)
+    return bool(normalized) and normalized.startswith("content") and normalized.endswith(".runescape.com")
+
+
+def build_tls_http_route_hosts(args) -> set[str]:
+    hosts = {item.lower() for item in DEFAULT_TLS_MITM_HOSTS}
+    for candidate in [getattr(args, "tls_remote_host", None), *getattr(args, "tls_extra_mitm_host", [])]:
+        normalized = normalize_tls_server_name(candidate)
+        if normalized and not is_world_tls_sni(normalized):
+            hosts.add(normalized)
+    return hosts
+
+
 def resolve_tls_http_upstream_host(server_name: str | None, args) -> str:
-    normalized = (server_name or "").strip().lower()
-    mitm_hosts = build_tls_mitm_hosts(args)
-    if normalized and normalized in mitm_hosts:
+    normalized = normalize_tls_server_name(server_name)
+    http_hosts = build_tls_http_route_hosts(args)
+    if normalized and (normalized in http_hosts or is_content_tls_sni(normalized)):
         return normalized
     fallback = str(args.tls_remote_host or args.remote_host or "").strip().lower()
     return fallback or normalized
 
 
-def should_mitm_tls_clienthello(server_name: str | None, args) -> bool:
-    normalized = (server_name or "").strip().lower()
-    if not normalized:
+def is_http_tls_sni(server_name: str | None, args) -> bool:
+    normalized = normalize_tls_server_name(server_name)
+    if not normalized or normalized == "localhost" or is_world_tls_sni(normalized):
         return False
-    return normalized in build_tls_mitm_hosts(args)
+    if is_lobby_tls_sni(normalized) or is_content_tls_sni(normalized):
+        return True
+    return normalized in build_tls_http_route_hosts(args)
+
+
+def should_mitm_tls_clienthello(server_name: str | None, args) -> bool:
+    return is_http_tls_sni(server_name, args)
 
 
 def extract_session_id(raw_line: str) -> str | None:
@@ -243,14 +320,16 @@ def decide_tls_route_from_clienthello(
 ) -> tuple[str | None, str, str]:
     if args.tls_passthrough:
         return TLS_SECURE_GAME_ROUTE, TLS_ROUTE_MODE_PASSTHROUGH, "tls-passthrough"
-    normalized = (server_name or "").strip().lower()
+    normalized = normalize_tls_server_name(server_name)
     if normalized == "localhost":
         # The full ClientHello includes a fresh random per connection, so hashing
         # the whole record is not a stable classifier. Inspect localhost sessions
         # after the TLS handshake instead of guessing and misrouting /ms traffic
         # into the secure-game backend.
         return TLS_HTTP_CONTENT_ROUTE, TLS_ROUTE_MODE_INSPECT, "clienthello-localhost-inspect"
-    if should_mitm_tls_clienthello(server_name, args):
+    if is_world_tls_sni(normalized):
+        return TLS_SECURE_GAME_ROUTE, TLS_ROUTE_MODE_TERMINATE, "clienthello-world-sni"
+    if should_mitm_tls_clienthello(normalized, args):
         return TLS_HTTP_CONTENT_ROUTE, TLS_ROUTE_MODE_MITM, "clienthello-content-sni"
     if server_name:
         return TLS_SECURE_GAME_ROUTE, TLS_ROUTE_MODE_PASSTHROUGH, "clienthello-noncontent-sni"
@@ -259,6 +338,20 @@ def decide_tls_route_from_clienthello(
 
 def looks_like_http_request(data: bytes) -> bool:
     return any(data.startswith(prefix) for prefix in HTTP_METHOD_PREFIXES)
+
+
+def looks_like_js5_handshake_prefix(data: bytes) -> bool:
+    return bool(data) and data.startswith(JS5_HANDSHAKE_PREFIX)
+
+
+def classify_tls_client_prefix_route(data: bytes) -> str | None:
+    if not data:
+        return None
+    if looks_like_http_request(data):
+        return TLS_HTTP_CONTENT_ROUTE
+    if any(prefix.startswith(data) for prefix in HTTP_METHOD_PREFIXES):
+        return None
+    return TLS_SECURE_GAME_ROUTE
 
 
 def classify_tls_application_data(data: bytes) -> str:
@@ -298,6 +391,22 @@ def resolve_secure_game_target(args, *, decrypted_secure_game: bool) -> tuple[st
     passthrough_host = getattr(args, "secure_game_passthrough_host", None) or args.remote_host
     passthrough_port = int(getattr(args, "secure_game_passthrough_port", 0) or 0) or int(args.remote_port)
     return passthrough_host, passthrough_port, "tls passthrough"
+
+
+def resolve_tls_retail_connect_host(remote_host: str, remote_port: int) -> str:
+    try:
+        candidates = socket.getaddrinfo(remote_host, remote_port, type=socket.SOCK_STREAM)
+    except socket.gaierror:
+        return remote_host
+
+    for _, _, _, _, sockaddr in candidates:
+        candidate_host = sockaddr[0]
+        try:
+            if not ipaddress.ip_address(candidate_host).is_loopback:
+                return candidate_host
+        except ValueError:
+            continue
+    return remote_host
 
 
 def configure_server_ssl_context(ssl_context: ssl.SSLContext) -> ssl.SSLContext:
@@ -342,7 +451,94 @@ def filter_presented_chain(additional_certificates):
     return filtered
 
 
-def rewrite_http_request(data: bytes, upstream_host: str) -> tuple[bytes, bool]:
+def find_openssl_executable() -> str | None:
+    candidates = [
+        shutil.which("openssl"),
+        r"C:\Program Files\Git\mingw64\bin\openssl.exe",
+        r"C:\Program Files\Git\usr\bin\openssl.exe",
+    ]
+    for candidate in candidates:
+        if candidate and Path(candidate).exists():
+            return candidate
+    return None
+
+
+def run_openssl(openssl_exe: str, arguments: list[str], *, check: bool = True) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        [openssl_exe, *arguments],
+        check=check,
+        capture_output=True,
+        text=True,
+    )
+
+
+def parse_openssl_x509_metadata(stdout: str) -> tuple[str, str, str]:
+    subject = ""
+    issuer = ""
+    thumbprint = ""
+    for raw_line in stdout.splitlines():
+        line = raw_line.strip()
+        lower = line.lower()
+        if lower.startswith("subject="):
+            subject = line.split("=", 1)[1].strip()
+        elif lower.startswith("issuer="):
+            issuer = line.split("=", 1)[1].strip()
+        elif "fingerprint=" in lower:
+            thumbprint = line.split("=", 1)[1].replace(":", "").strip().upper()
+    return subject, issuer, thumbprint
+
+
+def extract_tls_material_from_pfx_with_openssl(
+    *,
+    pfx_path: Path,
+    pfx_password: str,
+    temp_path: Path,
+) -> tuple[Path, Path, str, str, str]:
+    openssl_exe = find_openssl_executable()
+    if not openssl_exe:
+        raise RuntimeError(
+            "cryptography could not be imported and openssl.exe was not found for PFX extraction"
+        )
+
+    cert_path = temp_path / "server-cert.pem"
+    key_path = temp_path / "server-key.pem"
+    chain_path = temp_path / "server-chain.pem"
+    passin = f"pass:{pfx_password}"
+
+    run_openssl(
+        openssl_exe,
+        ["pkcs12", "-in", str(pfx_path), "-passin", passin, "-nodes", "-nocerts", "-out", str(key_path)],
+    )
+    run_openssl(
+        openssl_exe,
+        ["pkcs12", "-in", str(pfx_path), "-passin", passin, "-nokeys", "-clcerts", "-out", str(cert_path)],
+    )
+    chain_result = run_openssl(
+        openssl_exe,
+        ["pkcs12", "-in", str(pfx_path), "-passin", passin, "-nokeys", "-cacerts", "-out", str(chain_path)],
+        check=False,
+    )
+    if chain_result.returncode == 0 and chain_path.exists() and chain_path.stat().st_size > 0:
+        cert_path.write_bytes(cert_path.read_bytes() + chain_path.read_bytes())
+
+    x509_result = run_openssl(
+        openssl_exe,
+        ["x509", "-in", str(cert_path), "-noout", "-subject", "-issuer", "-fingerprint", "-sha1"],
+    )
+    subject, issuer, thumbprint = parse_openssl_x509_metadata(x509_result.stdout)
+    if not subject and not issuer and not thumbprint:
+        raise RuntimeError(
+            f"openssl extracted TLS material from {pfx_path} but did not return certificate metadata"
+        )
+    return cert_path, key_path, subject, issuer, thumbprint
+
+
+def rewrite_http_request(
+    data: bytes,
+    upstream_host: str,
+    *,
+    original_host: str | None = None,
+) -> tuple[bytes, bool]:
     if not upstream_host or not looks_like_http_request(data):
         return data, False
     header_end = data.find(HTTP_HEADER_TERMINATOR)
@@ -355,10 +551,25 @@ def rewrite_http_request(data: bytes, upstream_host: str) -> tuple[bytes, bool]:
     if not header_lines:
         return data, False
 
+    request_line = header_lines[0]
+    request_parts = request_line.split(" ", 2)
+    request_path = request_parts[1] if len(request_parts) >= 2 else ""
+
     rewritten_lines = [header_lines[0]]
     saw_host = False
     saw_connection = False
+    saw_original_host = False
     changed = False
+    normalized_upstream = normalize_tls_server_name(upstream_host)
+    normalized_original_host = resolve_effective_original_host(
+        request_path=request_path,
+        upstream_host=upstream_host,
+        original_host=original_host,
+    )
+    should_preserve_original_host = (
+        normalized_original_host is not None
+        and normalized_original_host != normalized_upstream
+    )
 
     for line in header_lines[1:]:
         lower = line.lower()
@@ -372,6 +583,15 @@ def rewrite_http_request(data: bytes, upstream_host: str) -> tuple[bytes, bool]:
             saw_connection = True
             rewritten_lines.append(line)
             continue
+        if lower.startswith(f"{ORIGINAL_HOST_HEADER.lower()}:"):
+            saw_original_host = True
+            if should_preserve_original_host:
+                desired = f"{ORIGINAL_HOST_HEADER}: {normalized_original_host}"
+                rewritten_lines.append(desired)
+                changed = changed or line != desired
+            else:
+                changed = True
+            continue
         rewritten_lines.append(line)
 
     if not saw_host:
@@ -380,9 +600,58 @@ def rewrite_http_request(data: bytes, upstream_host: str) -> tuple[bytes, bool]:
     if not saw_connection:
         rewritten_lines.append("Connection: keep-alive")
         changed = True
+    if should_preserve_original_host and not saw_original_host:
+        rewritten_lines.append(f"{ORIGINAL_HOST_HEADER}: {normalized_original_host}")
+        changed = True
 
     rewritten = "\r\n".join(rewritten_lines).encode("latin1") + HTTP_HEADER_TERMINATOR + remainder
     return rewritten, changed
+
+
+def extract_requested_world_host_from_request_path(request_path: str) -> str | None:
+    if not request_path:
+        return None
+    try:
+        query = parse_qs(urlsplit(request_path).query)
+    except ValueError:
+        return None
+    requested_values = query.get("requestedWorldHost") or []
+    for value in requested_values:
+        normalized = normalize_tls_server_name(value)
+        if is_world_tls_sni(normalized):
+            return normalized
+    return None
+
+
+def resolve_effective_original_host(
+    *,
+    request_path: str,
+    upstream_host: str,
+    original_host: str | None,
+) -> str | None:
+    normalized_original_host = normalize_tls_server_name(original_host)
+    if normalized_original_host != "localhost":
+        return normalized_original_host
+
+    normalized_upstream = normalize_tls_server_name(upstream_host)
+    if not request_path:
+        return None
+
+    lowered_path = request_path.lower()
+    if "/jav_config.ws" in lowered_path:
+        requested_world_host = extract_requested_world_host_from_request_path(request_path)
+        if requested_world_host is not None:
+            note_localhost_requested_world_host(requested_world_host)
+            return requested_world_host
+        sticky_world_host = current_localhost_requested_world_host()
+        if sticky_world_host is not None:
+            return sticky_world_host
+        return None
+
+    if lowered_path.startswith("/ms?") or lowered_path == "/ms":
+        return None
+
+    return normalized_original_host
 
 
 def record_chunk(lines, prefix, byte_counter, first_chunks, lock, data: bytes) -> None:
@@ -390,12 +659,13 @@ def record_chunk(lines, prefix, byte_counter, first_chunks, lock, data: bytes) -
         byte_counter[0] += len(data)
         first_chunks[0] += 1
         chunk_index = first_chunks[0]
-        if chunk_index <= 5:
+        chunk_preview_limit = 60 if prefix.startswith("raw-") or prefix.startswith("remote->raw-") else 5
+        if chunk_index <= chunk_preview_limit:
             lines.append(
                 f"{prefix} first-chunk-{chunk_index} bytes={len(data)} hex={preview_hex(data)}"
             )
         elif len(data) >= 1024:
-                lines.append(f"{prefix} chunk={len(data)}")
+            lines.append(f"{prefix} chunk={len(data)}")
 
 
 def send_buffered_data(dst, data: bytes, lines, prefix, byte_counter, first_chunks, lock) -> None:
@@ -403,6 +673,20 @@ def send_buffered_data(dst, data: bytes, lines, prefix, byte_counter, first_chun
         return
     record_chunk(lines, prefix, byte_counter, first_chunks, lock, data)
     dst.sendall(data)
+
+
+def should_disable_pump_timeouts(mode: str, session_route: str | None) -> bool:
+    return mode == "raw" or session_route == TLS_SECURE_GAME_ROUTE
+
+
+def disable_stream_timeouts_for_pump(*streams) -> None:
+    for stream in streams:
+        if stream is None:
+            continue
+        try:
+            stream.settimeout(None)
+        except (AttributeError, OSError):
+            continue
 
 
 def pump(src, dst, lines, prefix, byte_counter, first_chunks, lock, shutdown_target=True):
@@ -751,6 +1035,7 @@ def pump_http_requests(
     lock,
     *,
     upstream_host: str,
+    original_host: str | None = None,
     initial_buffer: bytes = b"",
     shutdown_target=True,
 ):
@@ -770,7 +1055,11 @@ def pump_http_requests(
             request_index += 1
             request_bytes = bytes(pending[:expected_total])
             del pending[:expected_total]
-            rewritten_request, changed = rewrite_http_request(request_bytes, upstream_host)
+            rewritten_request, changed = rewrite_http_request(
+                request_bytes,
+                upstream_host,
+                original_host=original_host,
+            )
 
             with lock:
                 lines.append(
@@ -820,9 +1109,27 @@ def create_remote_stream(
     session_route: str | None = None,
     decrypted_secure_game: bool = False,
     session_sni: str | None = None,
+    retail_tls_upstream: bool = False,
+    raw_retail_js5_upstream: bool = False,
 ):
     if mode == "tls":
         if session_route == TLS_SECURE_GAME_ROUTE:
+            if retail_tls_upstream:
+                retail_host = normalize_tls_server_name(session_sni) or args.tls_remote_host or args.remote_host
+                retail_port = int(args.tls_remote_port or args.remote_port)
+                connect_host = resolve_tls_retail_connect_host(retail_host, retail_port)
+                raw_remote = socket.create_connection((connect_host, retail_port), timeout=args.connect_timeout)
+                raw_remote.settimeout(args.socket_timeout)
+                remote_context = ssl.create_default_context()
+                remote_tls = remote_context.wrap_socket(raw_remote, server_hostname=retail_host)
+                remote_tls.settimeout(args.socket_timeout)
+                remote_target = f"{connect_host}:{retail_port}"
+                if connect_host != retail_host:
+                    remote_target += f" (sni {retail_host}:{retail_port}; "
+                else:
+                    remote_target += " ("
+                remote_target += f"retail js5 for {session_route})"
+                return remote_tls, remote_target
             target_host, target_port, target_mode = resolve_secure_game_target(
                 args,
                 decrypted_secure_game=decrypted_secure_game,
@@ -861,6 +1168,19 @@ def create_remote_stream(
             remote_target += f" (sni {remote_host}:{remote_port})"
         return remote_tls, remote_target
 
+    if raw_retail_js5_upstream:
+        retail_host = normalize_tls_server_name(getattr(args, "tls_remote_host", None)) or args.remote_host
+        retail_port = int(getattr(args, "tls_remote_port", 0) or 0) or int(args.remote_port)
+        connect_host = resolve_tls_retail_connect_host(retail_host, retail_port)
+        raw_remote = socket.create_connection((connect_host, retail_port), timeout=args.connect_timeout)
+        raw_remote.settimeout(args.socket_timeout)
+        remote_target = f"{connect_host}:{retail_port}"
+        if connect_host != retail_host:
+            remote_target += f" (raw retail js5 for {retail_host}:{retail_port})"
+        else:
+            remote_target += " (raw retail js5)"
+        return raw_remote, remote_target
+
     remote_host = args.remote_host
     remote_port = args.remote_port
     raw_remote = socket.create_connection((remote_host, remote_port), timeout=args.connect_timeout)
@@ -875,6 +1195,60 @@ def recv_ready_data(stream) -> bytes | None:
         return None
     except (ssl.SSLZeroReturnError, ssl.SSLEOFError):
         return b""
+
+
+def sniff_terminated_tls_route(
+    client_stream,
+    timeout_seconds: float,
+    *,
+    allow_retail_js5_upstream: bool = False,
+) -> tuple[str, str, bytes]:
+    client_payload = b""
+    deadline = time.monotonic() + max(timeout_seconds, 0.0)
+    try:
+        previous_client_timeout = client_stream.gettimeout()
+    except OSError:
+        previous_client_timeout = None
+
+    client_stream.setblocking(False)
+
+    try:
+        while True:
+            if looks_like_js5_handshake_prefix(client_payload):
+                js5_source = "client-js5-retail" if allow_retail_js5_upstream else "client-js5"
+                return TLS_SECURE_GAME_ROUTE, js5_source, client_payload
+            route = classify_tls_client_prefix_route(client_payload)
+            if route == TLS_HTTP_CONTENT_ROUTE:
+                return route, "client-http", client_payload
+            if route == TLS_SECURE_GAME_ROUTE:
+                return route, "client-nonhttp", client_payload
+
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return TLS_SECURE_GAME_ROUTE, "timeout", client_payload
+
+            ready, _, _ = select.select([client_stream], [], [], remaining)
+            if not ready:
+                return TLS_SECURE_GAME_ROUTE, "timeout", client_payload
+
+            data = recv_ready_data(client_stream)
+            if data == b"":
+                if looks_like_js5_handshake_prefix(client_payload):
+                    js5_source = "client-js5-retail" if allow_retail_js5_upstream else "client-js5"
+                    return TLS_SECURE_GAME_ROUTE, js5_source, client_payload
+                route = classify_tls_client_prefix_route(client_payload)
+                if route == TLS_HTTP_CONTENT_ROUTE:
+                    return route, "client-http", client_payload
+                if route == TLS_SECURE_GAME_ROUTE:
+                    return route, "client-nonhttp", client_payload
+                return TLS_SECURE_GAME_ROUTE, "eof", client_payload
+            if data:
+                client_payload += data
+    finally:
+        try:
+            client_stream.settimeout(previous_client_timeout)
+        except OSError:
+            pass
 
 
 def classify_tls_first_appdata(client_stream, backend_stream, timeout_seconds: float) -> tuple[str, str, bytes, bytes]:
@@ -967,9 +1341,21 @@ def handle_client(client_sock, session_id, args, output_dir: Path):
         initial_peek = client_sock.recv(5, socket.MSG_PEEK)
         mode = "tls" if looks_like_tls_client_hello(initial_peek) else "raw"
         lines.append(f"session#{session_id} mode={mode} initial-peek={preview_hex(initial_peek[:5])}")
+        raw_retail_js5_upstream = (
+            mode == "raw"
+            and looks_like_js5_handshake_prefix(initial_peek)
+            and bool(getattr(args, "allow_retail_js5_upstream", False))
+            and bool(normalize_tls_server_name(getattr(args, "tls_remote_host", None)))
+        )
         if mode == "raw":
             session_route = RAW_GAME_ROUTE
             lines.append(f"session#{session_id} session-route={session_route}")
+            if raw_retail_js5_upstream:
+                route_source = "raw-js5-retail"
+                lines.append(f"session#{session_id} raw-route-source={route_source}")
+            elif looks_like_js5_handshake_prefix(initial_peek):
+                route_source = "raw-js5-local"
+                lines.append(f"session#{session_id} raw-route-source={route_source}")
         if mode == "tls":
             clienthello_peek = peek_tls_client_hello(client_sock)
             tls_clienthello_sni = parse_tls_client_hello_sni(clienthello_peek)
@@ -984,13 +1370,15 @@ def handle_client(client_sock, session_id, args, output_dir: Path):
             if session_route:
                 lines.append(f"session#{session_id} session-route={session_route}")
             lines.append(f"session#{session_id} tls-route-mode={route_mode}")
+            lines.append(f"session#{session_id} tls-route-source={route_source}")
             if tls_clienthello_sni is not None:
                 lines.append(f"session#{session_id} tls-clienthello-sni={tls_clienthello_sni}")
             if clienthello_peek:
                 lines.append(f"session#{session_id} tls-clienthello-bytes={len(clienthello_peek)}")
                 lines.append(f"session#{session_id} tls-clienthello-sha256={tls_clienthello_sha256}")
-            if route_mode in (TLS_ROUTE_MODE_MITM, TLS_ROUTE_MODE_INSPECT):
-                session_route = TLS_HTTP_CONTENT_ROUTE
+            if route_mode in (TLS_ROUTE_MODE_MITM, TLS_ROUTE_MODE_INSPECT, TLS_ROUTE_MODE_TERMINATE):
+                if route_mode != TLS_ROUTE_MODE_TERMINATE:
+                    session_route = TLS_HTTP_CONTENT_ROUTE
                 lines.append(f"session#{session_id} tls-cert-subject={args.cert_subject}")
                 lines.append(f"session#{session_id} tls-cert-issuer={args.cert_issuer}")
                 lines.append(f"session#{session_id} tls-cert-thumbprint={args.cert_thumbprint}")
@@ -1046,20 +1434,40 @@ def handle_client(client_sock, session_id, args, output_dir: Path):
                         remote_stream = provisional_stream
                         remote_target = provisional_target
                     lines.append(f"session#{session_id} session-route={session_route}")
+                    lines.append(f"session#{session_id} tls-route-source={route_source}")
                     if session_route == TLS_SECURE_GAME_ROUTE:
                         lines.append(f"session#{session_id} remote-connect=start mode={mode} route={session_route}")
+                    deferred_tls_classification = True
+                elif route_mode == TLS_ROUTE_MODE_TERMINATE:
+                    session_route, route_source, buffered_client_data = sniff_terminated_tls_route(
+                        client_stream,
+                        TLS_FIRST_APPDATA_TIMEOUT_SECONDS,
+                        allow_retail_js5_upstream=bool(getattr(args, "allow_retail_js5_upstream", False)),
+                    )
+                    lines.append(f"session#{session_id} session-route={session_route}")
+                    lines.append(f"session#{session_id} tls-route-source={route_source}")
                     deferred_tls_classification = True
             lines.append(f"session#{session_id} tls-first-appdata-source={route_source}")
 
         if mode == "tls":
-            if not deferred_tls_classification or session_route == TLS_HTTP_CONTENT_ROUTE:
+            if remote_stream is None:
                 lines.append(f"session#{session_id} remote-connect=start mode={mode} route={session_route}")
                 remote_stream, remote_target = create_remote_stream(
                     mode,
                     args,
                     session_route=session_route,
-                    decrypted_secure_game=deferred_tls_classification and session_route == TLS_SECURE_GAME_ROUTE,
+                    decrypted_secure_game=(
+                        session_route == TLS_SECURE_GAME_ROUTE
+                        and (
+                            deferred_tls_classification
+                            or route_mode == TLS_ROUTE_MODE_TERMINATE
+                        )
+                    ),
                     session_sni=tls_clienthello_sni,
+                    retail_tls_upstream=(
+                        route_source == "client-js5-retail"
+                        and bool(getattr(args, "allow_retail_js5_upstream", False))
+                    ),
                 )
         else:
             lines.append(f"session#{session_id} remote-connect=start mode={mode}")
@@ -1068,10 +1476,13 @@ def handle_client(client_sock, session_id, args, output_dir: Path):
                 args,
                 session_route=session_route or None,
                 session_sni=tls_clienthello_sni,
+                raw_retail_js5_upstream=raw_retail_js5_upstream,
             )
             lines.append(f"session#{session_id} remote={remote_target}")
         if mode == "tls" and remote_stream is not None and not any(f"session#{session_id} remote=" in line for line in lines):
             lines.append(f"session#{session_id} remote={remote_target}")
+        if mode == "tls" and session_route == TLS_SECURE_GAME_ROUTE and remote_stream is not None:
+            lines.append(f"session#{session_id} secure-game-target={remote_target}")
 
         # On Windows, the raw pre-login socket can stall after MSG_PEEK without ever
         # forwarding the already-buffered bytes. Consume and forward that first chunk
@@ -1117,6 +1528,9 @@ def handle_client(client_sock, session_id, args, output_dir: Path):
                 server_chunks,
                 lock,
             )
+        if should_disable_pump_timeouts(mode, session_route):
+            disable_stream_timeouts_for_pump(client_stream, remote_stream)
+            lines.append(f"session#{session_id} stream-read-timeouts=disabled")
         shutdown_target = not (
             mode == "tls" and session_route == TLS_HTTP_CONTENT_ROUTE and route_mode != TLS_ROUTE_MODE_PASSTHROUGH
         )
@@ -1135,6 +1549,7 @@ def handle_client(client_sock, session_id, args, output_dir: Path):
         if mode == "tls" and session_route == TLS_HTTP_CONTENT_ROUTE and route_mode in (
             TLS_ROUTE_MODE_MITM,
             TLS_ROUTE_MODE_INSPECT,
+            TLS_ROUTE_MODE_TERMINATE,
         ):
             http_upstream_host = resolve_tls_http_upstream_host(
                 getattr(client_stream, "_opennxt_sni", None) or tls_clienthello_sni,
@@ -1152,6 +1567,7 @@ def handle_client(client_sock, session_id, args, output_dir: Path):
             )
             client_pump_kwargs = {
                 "upstream_host": http_upstream_host,
+                "original_host": getattr(client_stream, "_opennxt_sni", None) or tls_clienthello_sni,
                 "initial_buffer": buffered_client_data,
                 "shutdown_target": shutdown_target,
             }
@@ -1182,7 +1598,7 @@ def handle_client(client_sock, session_id, args, output_dir: Path):
         )
         t2 = threading.Thread(
             target=pump_http_response
-            if mode == "tls" and session_route == TLS_HTTP_CONTENT_ROUTE and route_mode in (TLS_ROUTE_MODE_MITM, TLS_ROUTE_MODE_INSPECT)
+            if mode == "tls" and session_route == TLS_HTTP_CONTENT_ROUTE and route_mode in (TLS_ROUTE_MODE_MITM, TLS_ROUTE_MODE_INSPECT, TLS_ROUTE_MODE_TERMINATE)
             else pump,
             args=(remote_stream, client_stream, lines, f"remote->{mode}-client", server_counter, server_chunks, lock),
             daemon=True,
@@ -1262,8 +1678,15 @@ def main():
     parser.add_argument("--idle-timeout-seconds", type=int, default=1800)
     parser.add_argument("--raw-client-byte-cap", type=int, default=0)
     parser.add_argument("--raw-client-byte-cap-shutdown-delay-seconds", type=float, default=0.0)
+    parser.add_argument("--localhost-requested-world-host", default=None)
+    parser.add_argument(
+        "--allow-retail-js5-upstream",
+        action="store_true",
+        help="Opt-in split-brain mode that forwards JS5/bootstrap bytes on this listener to retail instead of the local backend.",
+    )
     args = parser.parse_args()
     args.secure_game_tls_passthrough = True
+    seed_localhost_requested_world_host(getattr(args, "localhost_requested_world_host", None))
 
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -1278,31 +1701,40 @@ def main():
     atexit.register(temp_dir.cleanup)
     temp_path = Path(temp_dir.name)
 
-    pfx_data = Path(args.pfxfile).read_bytes()
-    private_key, certificate, additional_certificates = pkcs12.load_key_and_certificates(
-        pfx_data,
-        args.pfxpassword.encode("utf-8"),
-    )
-    if private_key is None or certificate is None:
-        raise RuntimeError(f"Could not load certificate and private key from {args.pfxfile}")
-    args.cert_subject = certificate.subject.rfc4514_string()
-    args.cert_issuer = certificate.issuer.rfc4514_string()
-    args.cert_thumbprint = certificate.fingerprint(hashes.SHA1()).hex().upper()
-
-    cert_pem = certificate.public_bytes(serialization.Encoding.PEM)
-    presented_chain = filter_presented_chain(additional_certificates)
-    if presented_chain:
-        cert_pem += b"".join(cert.public_bytes(serialization.Encoding.PEM) for cert in presented_chain)
-    key_pem = private_key.private_bytes(
-        serialization.Encoding.PEM,
-        serialization.PrivateFormat.PKCS8,
-        serialization.NoEncryption(),
-    )
-
     cert_path = temp_path / "server-cert.pem"
     key_path = temp_path / "server-key.pem"
-    cert_path.write_bytes(cert_pem)
-    key_path.write_bytes(key_pem)
+    if pkcs12 is not None and serialization is not None and hashes is not None:
+        pfx_data = Path(args.pfxfile).read_bytes()
+        private_key, certificate, additional_certificates = pkcs12.load_key_and_certificates(
+            pfx_data,
+            args.pfxpassword.encode("utf-8"),
+        )
+        if private_key is None or certificate is None:
+            raise RuntimeError(f"Could not load certificate and private key from {args.pfxfile}")
+        args.cert_subject = certificate.subject.rfc4514_string()
+        args.cert_issuer = certificate.issuer.rfc4514_string()
+        args.cert_thumbprint = certificate.fingerprint(hashes.SHA1()).hex().upper()
+
+        cert_pem = certificate.public_bytes(serialization.Encoding.PEM)
+        presented_chain = filter_presented_chain(additional_certificates)
+        if presented_chain:
+            cert_pem += b"".join(cert.public_bytes(serialization.Encoding.PEM) for cert in presented_chain)
+        key_pem = private_key.private_bytes(
+            serialization.Encoding.PEM,
+            serialization.PrivateFormat.PKCS8,
+            serialization.NoEncryption(),
+        )
+
+        cert_path.write_bytes(cert_pem)
+        key_path.write_bytes(key_pem)
+    else:
+        cert_path, key_path, args.cert_subject, args.cert_issuer, args.cert_thumbprint = (
+            extract_tls_material_from_pfx_with_openssl(
+                pfx_path=Path(args.pfxfile),
+                pfx_password=args.pfxpassword,
+                temp_path=temp_path,
+            )
+        )
 
     ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     ssl_context.load_cert_chain(certfile=str(cert_path), keyfile=str(key_path))

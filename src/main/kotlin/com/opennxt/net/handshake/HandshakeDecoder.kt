@@ -1,5 +1,7 @@
 package com.opennxt.net.handshake
 
+import com.opennxt.net.PreLoginForensics
+import com.opennxt.net.http.endpoints.ClientErrorWsEndpoint
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelFutureListener
@@ -9,37 +11,15 @@ import mu.KotlinLogging
 import java.io.ByteArrayOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
-import java.net.URLDecoder
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
+import java.net.InetSocketAddress
 import java.nio.charset.StandardCharsets
-import java.time.Instant
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-import java.util.Base64
 import java.util.Locale
 import java.util.concurrent.Executors
-import java.util.regex.Pattern
-import kotlin.io.path.createDirectories
 
 class HandshakeDecoder: ByteToMessageDecoder() {
     val logger = KotlinLogging.logger {  }
 
     companion object {
-        private val CLIENT_ERROR_DIR: Path =
-            Paths.get(System.getProperty("user.dir"))
-                .resolve("data")
-                .resolve("debug")
-                .resolve("clienterror")
-                .toAbsolutePath()
-                .normalize()
-        private val CLIENT_ERROR_TIMESTAMP: DateTimeFormatter =
-            DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss", Locale.US).withZone(ZoneOffset.UTC)
-        private val DATA_PARAM_PATTERN: Pattern = Pattern.compile("(?:(?:^|&)data=)([^&]+)")
-        private val CLIENT_ERROR_RESPONSE: ByteArray =
-            ("HTTP/1.1 204 No Content\r\nConnection: close\r\nContent-Length: 0\r\n\r\n")
-                .toByteArray(StandardCharsets.ISO_8859_1)
         private val CONTENT_PROXY_EXECUTOR = Executors.newCachedThreadPool { runnable ->
             Thread(runnable, "handshake-ms-proxy").apply { isDaemon = true }
         }
@@ -75,17 +55,26 @@ class HandshakeDecoder: ByteToMessageDecoder() {
     }
 
     override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
+        val localPort = (ctx.channel().localAddress() as? InetSocketAddress)?.port ?: -1
+        val remoteAddress = ctx.channel().remoteAddress().toString()
+        val previewLength = minOf(buf.readableBytes(), 32)
+        val preview = ByteArray(previewLength)
+        if (previewLength > 0) {
+            buf.getBytes(buf.readerIndex(), preview)
+        }
+        val previewHex = preview.joinToString(" ") { "%02x".format(it.toInt() and 0xff) }
         val id = buf.readUnsignedByte().toInt()
         val type = HandshakeType.fromId(id)
 
         if (type == null) {
-            val previewLength = minOf(buf.readableBytes(), 32)
-            val preview = ByteArray(previewLength)
-            buf.getBytes(buf.readerIndex(), preview)
-            val previewHex = preview.joinToString(" ") { "%02x".format(it.toInt() and 0xff) }
+            val postIdPreviewLength = minOf(buf.readableBytes(), 32)
+            val postIdPreview = ByteArray(postIdPreviewLength)
+            if (postIdPreviewLength > 0) {
+                buf.getBytes(buf.readerIndex(), postIdPreview)
+            }
             val methodPrefix = buildString {
                 append(id.toChar())
-                append(preview.toString(StandardCharsets.ISO_8859_1))
+                append(postIdPreview.toString(StandardCharsets.ISO_8859_1))
             }
 
             if (methodPrefix.startsWith("POST ") || methodPrefix.startsWith("GET ") || methodPrefix.startsWith("HTTP/")) {
@@ -101,12 +90,19 @@ class HandshakeDecoder: ByteToMessageDecoder() {
                 logger.warn {
                     "Plaintext HTTP reached HandshakeDecoder from ${ctx.channel().remoteAddress()}:\n$httpText"
                 }
+                PreLoginForensics.recordTransportEvent(
+                    localPort = localPort,
+                    remoteAddress = remoteAddress,
+                    event = "handshake-http-misroute",
+                    details = mapOf(
+                        "handshakeId" to id,
+                        "previewHex" to previewHex,
+                        "requestTarget" to extractHttpRequestTarget(httpText),
+                    ),
+                )
 
                 if (httpText.contains("/nxtclienterror.ws")) {
-                    recordClientErrorReport(ctx, httpText)
-                    ctx.writeAndFlush(Unpooled.wrappedBuffer(CLIENT_ERROR_RESPONSE)).addListener {
-                        ctx.close()
-                    }
+                    ClientErrorWsEndpoint.handleRawHttpText(ctx, httpText)
                     buf.skipBytes(buf.readableBytes())
                     return
                 }
@@ -121,6 +117,16 @@ class HandshakeDecoder: ByteToMessageDecoder() {
                     "Client from ${ctx.channel().remoteAddress()} attempted to handshake with unknown id: $id " +
                         "(remaining=${buf.readableBytes()}, preview=$previewHex)"
                 }
+                PreLoginForensics.recordTransportEvent(
+                    localPort = localPort,
+                    remoteAddress = remoteAddress,
+                    event = "handshake-unknown",
+                    details = mapOf(
+                        "handshakeId" to id,
+                        "previewHex" to previewHex,
+                        "remainingBytes" to buf.readableBytes(),
+                    ),
+                )
             }
 
             ctx.close()
@@ -129,6 +135,17 @@ class HandshakeDecoder: ByteToMessageDecoder() {
         }
 
         logger.info { "Received handshake from ${ctx.channel().remoteAddress()} with type $type" }
+        PreLoginForensics.recordTransportEvent(
+            localPort = localPort,
+            remoteAddress = remoteAddress,
+            event = "handshake-detected",
+            details = mapOf(
+                "handshakeId" to id,
+                "handshakeType" to type.name,
+                "previewHex" to previewHex,
+                "remainingBytes" to buf.readableBytes(),
+            ),
+        )
         out.add(HandshakeRequest(type))
     }
 
@@ -242,71 +259,5 @@ class HandshakeDecoder: ByteToMessageDecoder() {
         output.write(headerText.toByteArray(StandardCharsets.ISO_8859_1))
         output.write(body)
         return output.toByteArray()
-    }
-
-    private fun recordClientErrorReport(ctx: ChannelHandlerContext, httpText: String) {
-        try {
-            CLIENT_ERROR_DIR.createDirectories()
-            val stamp = CLIENT_ERROR_TIMESTAMP.format(Instant.now())
-            val remote = ctx.channel().remoteAddress().toString()
-                .replace('/', '_')
-                .replace(':', '-')
-            val baseName = "nxtclienterror-$stamp-$remote"
-            val rawPath = CLIENT_ERROR_DIR.resolve("$baseName.http.txt")
-            Files.writeString(rawPath, httpText, StandardCharsets.ISO_8859_1)
-
-            val httpBody = extractHttpBody(httpText)
-            val matcher = DATA_PARAM_PATTERN.matcher(httpBody)
-            if (!matcher.find()) {
-                Files.writeString(
-                    CLIENT_ERROR_DIR.resolve("$baseName.summary.txt"),
-                    buildString {
-                        appendLine("remote=${ctx.channel().remoteAddress()}")
-                        appendLine("timestamp=${Instant.now()}")
-                        appendLine("decodedBytes=0")
-                        appendLine("message=<missing data= body>")
-                        appendLine("httpBodyLength=${httpBody.length}")
-                    },
-                    StandardCharsets.UTF_8
-                )
-                logger.warn {
-                    "Persisted raw nxtclienterror request without data body at $rawPath"
-                }
-                return
-            }
-
-            val encoded = matcher.group(1)
-            val urlDecoded = URLDecoder.decode(encoded.replace("+", "%2B"), StandardCharsets.UTF_8)
-            val decoded = Base64.getDecoder().decode(urlDecoded)
-            val decodedPath = CLIENT_ERROR_DIR.resolve("$baseName.decoded.bin")
-            Files.write(decodedPath, decoded)
-
-            val summaryText = buildString {
-                appendLine("remote=${ctx.channel().remoteAddress()}")
-                appendLine("timestamp=${Instant.now()}")
-                appendLine("decodedBytes=${decoded.size}")
-                appendLine(
-                    "message=" +
-                        decoded
-                            .copyOfRange(0, decoded.indexOfFirst { it == 0.toByte() }.let { if (it >= 0) it else decoded.size })
-                            .toString(StandardCharsets.UTF_8)
-                )
-            }
-            val summaryPath = CLIENT_ERROR_DIR.resolve("$baseName.summary.txt")
-            Files.writeString(summaryPath, summaryText, StandardCharsets.UTF_8)
-            logger.warn {
-                "Persisted nxtclienterror report to $summaryPath"
-            }
-        } catch (error: Exception) {
-            logger.warn(error) { "Failed to persist nxtclienterror report from ${ctx.channel().remoteAddress()}" }
-        }
-    }
-
-    private fun extractHttpBody(httpText: String): String {
-        return when {
-            httpText.contains("\r\n\r\n") -> httpText.substringAfter("\r\n\r\n", "")
-            httpText.contains("\n\n") -> httpText.substringAfter("\n\n", "")
-            else -> ""
-        }
     }
 }

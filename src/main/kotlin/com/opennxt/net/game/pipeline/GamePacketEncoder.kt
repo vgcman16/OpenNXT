@@ -24,6 +24,23 @@ class GamePacketEncoder : MessageToByteEncoder<OpcodeWithBuffer>() {
     private lateinit var mapping: Int2IntMap
     private lateinit var side: Side
 
+    private fun lobbyCompatServerSizeOverride(channel: Channel, opcode: Int): Int? {
+        if (OpenNXT.config.build != 947 || side != Side.CLIENT || bootstrapStage(channel) != "social-state") {
+            return null
+        }
+
+        return when (opcode) {
+            // Build 947 is missing the packet-name mapping for these two social-state packets, so we
+            // currently reuse the 919 opcodes. The active 947 size map still claims those opcodes are
+            // 10-byte packets, but the actual compatibility payloads are the older 1-byte / 0-byte
+            // forms emitted by these packet classes. Without this narrow override the encoder closes
+            // the contained lobby session immediately after successful login bootstrap.
+            4 -> 1
+            41 -> 0
+            else -> null
+        }
+    }
+
     private fun bootstrapStage(channel: Channel): String {
         val client = channel.attr(RSChannelAttributes.CONNECTED_CLIENT).get()
         return client?.currentBootstrapStage ?: client?.lastCompletedBootstrapStage ?: "none"
@@ -52,7 +69,7 @@ class GamePacketEncoder : MessageToByteEncoder<OpcodeWithBuffer>() {
             }
 
             val buffer = msg.buf
-            val size = mapping[msg.opcode]
+            val size = lobbyCompatServerSizeOverride(ctx.channel(), msg.opcode) ?: mapping[msg.opcode]
             if (size == -1 && buffer.writerIndex() >= 255)
                 throw IllegalStateException("Var byte packet exceeds 255 bytes: ${msg.opcode} is ${buffer.writerIndex()} bytes")
             else if (size == -2 && buffer.writerIndex() >= 65535)

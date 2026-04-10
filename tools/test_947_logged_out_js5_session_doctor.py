@@ -136,6 +136,22 @@ class LoggedOutJs5SessionDoctorTest(unittest.TestCase):
         self.assertEqual("255-only-fallback", selection.state)
         self.assertEqual("/127.0.0.1:10005", selection.session.remote)
 
+    def test_parse_sessions_accepts_master_reference_table_request(self) -> None:
+        log_text = "\n".join(
+            [
+                "[x] INFO Decoded js5 handshake for session#11 from /127.0.0.1:10006 with build=947.1",
+                "[x] INFO JS5 logged out state from /127.0.0.1:10006 for build=947",
+                "[x] INFO Queued js5 request #10 from /127.0.0.1:10006: opcode=33, priority=true, nxt=true, build=947, occurrence=1, master-reference-table(index=255, archive=255), available=checksum-table",
+            ]
+        )
+
+        sessions = parse_sessions(log_text)
+
+        self.assertEqual(1, len(sessions))
+        self.assertEqual(1, len(sessions[0].requests))
+        self.assertEqual("master-reference-table", sessions[0].requests[0].kind)
+        self.assertEqual(255, sessions[0].requests[0].archive)
+
     def test_parse_response_header_computes_body_length(self) -> None:
         header = parse_response_header(bytes.fromhex("30000000090200000c4e"))
 

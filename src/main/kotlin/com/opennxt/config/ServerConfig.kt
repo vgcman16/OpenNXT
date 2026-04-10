@@ -18,7 +18,9 @@ class ServerConfig : TomlConfig() {
 
     data class LobbyBootstrap(
         var sendWorldInitState: Boolean = false,
+        var sendInitialStats: Boolean = true,
         var sendDefaultVarps: Boolean = true,
+        var useForcedFallbackCandidateDefaultVarps: Boolean = false,
         var defaultVarpMinId: Int = 0,
         var defaultVarpMaxId: Int = Int.MAX_VALUE,
         var rebuildNormalAreaType: Int = 474,
@@ -93,7 +95,9 @@ class ServerConfig : TomlConfig() {
             ),
             "bootstrap" to mapOf(
                 "sendWorldInitState" to lobbyBootstrap.sendWorldInitState,
+                "sendInitialStats" to lobbyBootstrap.sendInitialStats,
                 "sendDefaultVarps" to lobbyBootstrap.sendDefaultVarps,
+                "useForcedFallbackCandidateDefaultVarps" to lobbyBootstrap.useForcedFallbackCandidateDefaultVarps,
                 "defaultVarpMinId" to lobbyBootstrap.defaultVarpMinId,
                 "defaultVarpMaxId" to lobbyBootstrap.defaultVarpMaxId,
                 "rebuildNormalAreaType" to lobbyBootstrap.rebuildNormalAreaType,
@@ -179,8 +183,15 @@ class ServerConfig : TomlConfig() {
             if (bootstrap != null) {
                 lobbyBootstrap.sendWorldInitState =
                     bootstrap.getBoolean("sendWorldInitState", lobbyBootstrap.sendWorldInitState)
+                lobbyBootstrap.sendInitialStats =
+                    bootstrap.getBoolean("sendInitialStats", lobbyBootstrap.sendInitialStats)
                 lobbyBootstrap.sendDefaultVarps =
                     bootstrap.getBoolean("sendDefaultVarps", lobbyBootstrap.sendDefaultVarps)
+                lobbyBootstrap.useForcedFallbackCandidateDefaultVarps =
+                    bootstrap.getBoolean(
+                        "useForcedFallbackCandidateDefaultVarps",
+                        lobbyBootstrap.useForcedFallbackCandidateDefaultVarps
+                    )
                 lobbyBootstrap.defaultVarpMinId =
                     bootstrap.getLong("defaultVarpMinId", lobbyBootstrap.defaultVarpMinId.toLong()).toInt()
                 lobbyBootstrap.defaultVarpMaxId =

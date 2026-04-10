@@ -1,5 +1,11 @@
 param(
-    [switch]$DisableChecksumOverride
+    [switch]$DisableChecksumOverride,
+    [switch]$EnableRetailRawChecksumPassthrough,
+    [switch]$EnableRetailLoggedOutJs5Passthrough,
+    [switch]$DisableRetailLoggedOutJs5Passthrough,
+    [switch]$DisableRetailLoggedOutJs5Proxy,
+    [switch]$EnableLoggedOutJs5PrefetchTable,
+    [switch]$SkipHttpFileVerification
 )
 
 $ErrorActionPreference = "Stop"
@@ -8,7 +14,9 @@ $root = Split-Path -Parent $PSScriptRoot
 $bat = Join-Path $root "build\install\OpenNXT\bin\OpenNXT.bat"
 $stdout = Join-Path $root "tmp-runserver.out.log"
 $stderr = Join-Path $root "tmp-runserver.err.log"
+$installDistLog = Join-Path $root "tmp-runserver-installDist.log"
 $javaHome = "C:\Program Files\Eclipse Adoptium\jdk-25.0.2.10-hotspot"
+$powershellExe = Join-Path $env:WINDIR "System32\WindowsPowerShell\v1.0\powershell.exe"
 
 function Get-NewestWriteTimeUtc {
     param([string[]]$Paths)
@@ -56,7 +64,9 @@ function Ensure-InstalledServerCurrent {
         return
     }
 
-    & (Join-Path $root "gradlew.bat") --no-daemon --console=plain installDist
+    Remove-Item $installDistLog -ErrorAction SilentlyContinue
+    $gradleCommand = 'call "{0}" --no-daemon --console=plain installDist > "{1}" 2>&1' -f (Join-Path $root "gradlew.bat"), $installDistLog
+    & $env:ComSpec /c $gradleCommand
     if ($LASTEXITCODE -ne 0) {
         throw "installDist failed while preparing the installed server."
     }
@@ -82,6 +92,141 @@ function Test-InstalledServerEntrypoint {
     } catch {
         return $false
     }
+}
+
+function Get-PortFromEndpoint {
+    param([string]$Endpoint)
+
+    if ($Endpoint -match ':(\d+)$') {
+        return [int]$Matches[1]
+    }
+
+    return $null
+}
+
+function Get-NetstatTcpRecords {
+    $records = @()
+
+    foreach ($line in (netstat -ano -p tcp)) {
+        if ($line -notmatch '^\s*TCP\s+') {
+            continue
+        }
+
+        $parts = ($line -replace '^\s+', '') -split '\s+'
+        if ($parts.Length -lt 5) {
+            continue
+        }
+
+        $localPort = Get-PortFromEndpoint $parts[1]
+        if ($null -eq $localPort) {
+            continue
+        }
+
+        $owningProcessId = 0
+        if (-not [int]::TryParse($parts[4], [ref]$owningProcessId)) {
+            continue
+        }
+
+        $records += [pscustomobject]@{
+            LocalAddress  = $parts[1]
+            LocalPort     = $localPort
+            RemoteAddress = $parts[2]
+            RemotePort    = Get-PortFromEndpoint $parts[2]
+            State         = $parts[3]
+            OwningProcess = $owningProcessId
+            Source        = "netstat"
+        }
+    }
+
+    return $records
+}
+
+function Get-TcpListenerRecords {
+    param([int[]]$Ports)
+
+    $normalizedPorts = @(
+        $Ports |
+            Where-Object { $_ -is [int] -and $_ -gt 0 } |
+            Select-Object -Unique
+    )
+    if ($normalizedPorts.Count -eq 0) {
+        return @()
+    }
+
+    try {
+        return @(
+            Get-NetTCPConnection -State Listen -ErrorAction Stop |
+                Where-Object { $_.LocalPort -in $normalizedPorts } |
+                ForEach-Object {
+                    [pscustomobject]@{
+                        LocalAddress  = [string]$_.LocalAddress
+                        LocalPort     = [int]$_.LocalPort
+                        RemoteAddress = [string]$_.RemoteAddress
+                        RemotePort    = if ($null -ne $_.RemotePort) { [int]$_.RemotePort } else { $null }
+                        State         = [string]$_.State
+                        OwningProcess = [int]$_.OwningProcess
+                        Source        = "Get-NetTCPConnection"
+                    }
+                }
+        )
+    } catch {
+        return @(
+            Get-NetstatTcpRecords |
+                Where-Object { $_.State -eq "LISTENING" -and $_.LocalPort -in $normalizedPorts }
+        )
+    }
+}
+
+function Wait-ListeningPorts {
+    param(
+        [int[]]$Ports,
+        [int]$TimeoutSeconds = 60,
+        [int]$DelayMilliseconds = 500
+    )
+
+    $requiredPorts = @(
+        $Ports |
+            Where-Object { $_ -is [int] -and $_ -gt 0 } |
+            Select-Object -Unique
+    )
+    if ($requiredPorts.Count -eq 0) {
+        return $true
+    }
+
+    $retries = [Math]::Max(1, [int][Math]::Ceiling(($TimeoutSeconds * 1000) / $DelayMilliseconds))
+    for ($attempt = 0; $attempt -lt $retries; $attempt++) {
+        if ($attempt -gt 0) {
+            Start-Sleep -Milliseconds $DelayMilliseconds
+        }
+
+        $listening = @(
+            Get-TcpListenerRecords -Ports $requiredPorts |
+                Select-Object -ExpandProperty LocalPort -Unique
+        )
+
+        $allPresent = $true
+        foreach ($requiredPort in $requiredPorts) {
+            if (-not ($listening -contains [int]$requiredPort)) {
+                $allPresent = $false
+                break
+            }
+        }
+
+        if ($allPresent) {
+            return $true
+        }
+    }
+
+    return $false
+}
+
+function Get-ListeningProcessIds {
+    param([int[]]$Ports)
+
+    return @(
+        Get-TcpListenerRecords -Ports $Ports |
+            Select-Object -ExpandProperty OwningProcess -Unique
+    )
 }
 
 Ensure-InstalledServerCurrent
@@ -114,31 +259,83 @@ Get-CimInstance Win32_Process |
 
 Remove-Item $stdout, $stderr -ErrorAction SilentlyContinue
 
-$envCommands = @('set "JAVA_HOME={0}"' -f $javaHome)
-if ($DisableChecksumOverride) {
-    $envCommands += 'set "OPENNXT_DISABLE_CHECKSUM_OVERRIDE=1"'
+$startupLines = @(
+    '[Console]::Error.WriteLine(''START_SERVER_LOGGED wrapper-enter'')'
+    '[Console]::Error.Flush()'
+    ('$env:JAVA_HOME = ''{0}''' -f $javaHome)
+    '$env:OPENNXT_STARTUP_PROBE = ''1'''
+    ('[Console]::Error.WriteLine(''START_SERVER_LOGGED flags raw={0} enableLoggedOut={1} disableLoggedOut={2} disableProxy={3} prefetch={4} skipHttp={5}'')' -f @(
+        [bool]$EnableRetailRawChecksumPassthrough,
+        [bool]$EnableRetailLoggedOutJs5Passthrough,
+        [bool]$DisableRetailLoggedOutJs5Passthrough,
+        [bool]$DisableRetailLoggedOutJs5Proxy,
+        [bool]$EnableLoggedOutJs5PrefetchTable,
+        [bool]$SkipHttpFileVerification
+    ))
+    '[Console]::Error.Flush()'
+)
+if ($useInstalledServer) {
+    $startupLines += '$env:JAVA_TOOL_OPTIONS = ''-XX:TieredStopAtLevel=1'''
 }
-$envPrefix = ($envCommands -join " && ")
+if ($EnableRetailRawChecksumPassthrough) {
+    $startupLines += '$env:OPENNXT_ENABLE_RETAIL_RAW_CHECKSUM_PASSTHROUGH = ''1'''
+}
+if ($EnableRetailLoggedOutJs5Passthrough) {
+    $startupLines += '$env:OPENNXT_ENABLE_RETAIL_LOGGED_OUT_JS5_PASSTHROUGH = ''1'''
+}
+if ($DisableRetailLoggedOutJs5Passthrough) {
+    $startupLines += '$env:OPENNXT_ENABLE_RETAIL_LOGGED_OUT_JS5_PASSTHROUGH = ''0'''
+}
+if ($DisableRetailLoggedOutJs5Proxy) {
+    $startupLines += '$env:OPENNXT_DISABLE_RETAIL_LOGGED_OUT_JS5_PROXY = ''1'''
+}
+if ($EnableLoggedOutJs5PrefetchTable) {
+    $startupLines += '$env:OPENNXT_ENABLE_LOGGED_OUT_JS5_PREFETCH_TABLE = ''1'''
+}
+if ($DisableChecksumOverride) {
+    $startupLines += '$env:OPENNXT_DISABLE_CHECKSUM_OVERRIDE = ''1'''
+}
+$runServerArgs = @("run-server")
+if ($SkipHttpFileVerification) {
+    $runServerArgs += "--skip-http-file-verification"
+}
+if ($useInstalledServer) {
+    $startupLines += '[Console]::Error.WriteLine(''START_SERVER_LOGGED before-bat'')'
+    $startupLines += '[Console]::Error.Flush()'
+    $startupLines += ('& ''{0}'' {1}' -f $bat, ($runServerArgs -join " "))
+    $startupLines += '[Console]::Error.WriteLine(''START_SERVER_LOGGED after-bat'')'
+    $startupLines += '[Console]::Error.Flush()'
+} else {
+    $startupLines += '[Console]::Error.WriteLine(''START_SERVER_LOGGED before-gradle'')'
+    $startupLines += '[Console]::Error.Flush()'
+    $gradleRunArgs = if ($SkipHttpFileVerification) { 'run-server --skip-http-file-verification' } else { 'run-server' }
+    $startupLines += ('& ''{0}'' --no-daemon --console=plain run --args=''{1}''' -f (Join-Path $root "gradlew.bat"), $gradleRunArgs)
+    $startupLines += '[Console]::Error.WriteLine(''START_SERVER_LOGGED after-gradle'')'
+    $startupLines += '[Console]::Error.Flush()'
+}
+$encodedCommand = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes(($startupLines -join [Environment]::NewLine)))
 
-$command =
-    if ($useInstalledServer) {
-        '{0} && call "{1}" run-server' -f $envPrefix, $bat
-    } else {
-        '{0} && call "{1}" --no-daemon --console=plain run --args=""run-server""' -f $envPrefix, (Join-Path $root "gradlew.bat")
-    }
-
-$process = Start-Process -FilePath "cmd.exe" `
-    -ArgumentList @("/c", $command) `
+$process = Start-Process -FilePath $powershellExe `
+    -ArgumentList @("-NoProfile", "-ExecutionPolicy", "Bypass", "-EncodedCommand", $encodedCommand) `
     -WorkingDirectory $root `
     -RedirectStandardOutput $stdout `
     -RedirectStandardError $stderr `
     -PassThru
 
-Start-Sleep -Seconds 6
+$portsReady = Wait-ListeningPorts -Ports @(8080, 43596) -TimeoutSeconds 60
+$serverPid = Get-ListeningProcessIds -Ports @(8080, 43596) | Select-Object -First 1
 
 [pscustomobject]@{
     ProcessId = $process.Id
+    Ready = [bool]$portsReady
+    ServerPid = if ($serverPid) { [int]$serverPid } else { $null }
     Stdout = $stdout
     Stderr = $stderr
+    InstallDistLog = $installDistLog
+    ListenerSnapshot = @(
+        Get-TcpListenerRecords -Ports @(8080, 43596) |
+            Sort-Object LocalPort, OwningProcess |
+            ForEach-Object { "{0}@{1}/pid={2}/src={3}" -f $_.LocalPort, $_.LocalAddress, $_.OwningProcess, $_.Source }
+    )
     LaunchMode = if ($useInstalledServer) { "installDist" } else { "gradleRunFallback" }
 } | ConvertTo-Json -Depth 3

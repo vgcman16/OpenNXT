@@ -197,16 +197,20 @@ class LoginServerDecoder(val rsaPair: RsaConfig.RsaKeyPair) : ByteToMessageDecod
             }
 
             if (ctx.channel().attr(RSChannelAttributes.PASSTHROUGH_CHANNEL).get() == null) {
-                logger.info { "TODO: Send game login response" }
-
-                OpenNXT.world.addPlayer(
-                    WorldPlayer(
-                        ctx.channel().attr(RSChannelAttributes.CONNECTED_CLIENT).get(),
-                        ctx.channel().attr(RSChannelAttributes.LOGIN_USERNAME).get(),
-                        PlayerEntity(TileLocation(3222, 3222, 0))
-                    )
+                val username = ctx.channel().attr(RSChannelAttributes.LOGIN_USERNAME).get()
+                val player = WorldPlayer(
+                    ctx.channel().attr(RSChannelAttributes.CONNECTED_CLIENT).get(),
+                    username,
+                    PlayerEntity(TileLocation(3222, 3222, 0))
                 )
-                // TODO Send login response here? Why are we doing this here...
+
+                logger.info {
+                    "Scheduling immediate world-login completion for $username " +
+                        "after GAMELOGIN_CONTINUE from ${ctx.channel().remoteAddress()}"
+                }
+                OpenNXT.tickEngine.executeAsync {
+                    OpenNXT.world.addPlayerNow(player)
+                }
             }
             return
         }
