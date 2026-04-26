@@ -16,10 +16,11 @@ param(
     [int]$SecureGameDecryptedPort = 0,
     [switch]$TlsPassthrough,
     [switch]$TlsRemoteRaw,
+    [switch]$AllowRetailJs5Upstream,
     [switch]$InlineProxy,
     [int]$MaxSessions = 0,
     [int]$IdleTimeoutSeconds = 0,
-    [double]$SocketTimeout = 30,
+    [double]$SocketTimeout = 180,
     [int]$RawClientByteCap = 0,
     [double]$RawClientByteCapShutdownDelaySeconds = 0
 )
@@ -35,6 +36,13 @@ $traceLog = Join-Path $root ("tmp-{0}-tls-terminator.trace.log" -f $Name)
 $certScript = Join-Path $PSScriptRoot "setup_lobby_tls_cert.ps1"
 $proxyScriptPath = Join-Path $PSScriptRoot "tls_terminate_proxy.py"
 $defaultMitmPrimaryHost = "localhost"
+$TlsExtraMitmHost = @(
+    $TlsExtraMitmHost |
+        ForEach-Object { [string]$_ -split "," } |
+        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+        ForEach-Object { $_.Trim() } |
+        Select-Object -Unique
+)
 $certificateDnsNames = @(
     $LobbyHost
     $TlsRemoteHost
@@ -114,10 +122,15 @@ function Get-ProxyProcessIdsForListenPort {
     return @(
         Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
             Where-Object {
-                $_.Name -in @("python.exe", "pythonw.exe", "cmd.exe") -and
-                $_.CommandLine -like "*tls_terminate_proxy.py*" -and
-                $_.CommandLine -like "*--listen-port*" -and
-                $_.CommandLine -like "*$ListenPort*"
+                $commandLine = [string]$_.CommandLine
+                if ($_.Name -notin @("python.exe", "pythonw.exe", "cmd.exe")) {
+                    return $false
+                }
+                if ($commandLine -notlike "*tls_terminate_proxy.py*") {
+                    return $false
+                }
+                $listenPortMatch = [regex]::Match($commandLine, '(?i)(?:^|\s)--listen-port\s+"?(?<port>\d+)"?')
+                $listenPortMatch.Success -and ([int]$listenPortMatch.Groups["port"].Value -eq $ListenPort)
             } |
             Select-Object -ExpandProperty ProcessId -Unique
     )
@@ -339,6 +352,10 @@ if ($TlsRemoteRaw) {
     $pythonInvokeArgs += "--tls-remote-raw"
     $argString += ' --tls-remote-raw'
 }
+if ($AllowRetailJs5Upstream) {
+    $pythonInvokeArgs += "--allow-retail-js5-upstream"
+    $argString += ' --allow-retail-js5-upstream'
+}
 
 if ($InlineProxy) {
     Write-LauncherTrace "inline-proxy-start"
@@ -392,6 +409,7 @@ $json = [pscustomobject]@{
     SecureGameDecryptedHost = if (-not [string]::IsNullOrWhiteSpace($SecureGameDecryptedHost)) { $SecureGameDecryptedHost } else { $null }
     SecureGameDecryptedPort = if ($SecureGameDecryptedPort -gt 0) { $SecureGameDecryptedPort } else { $null }
     TlsRemoteRaw = $TlsRemoteRaw.IsPresent
+    AllowRetailJs5Upstream = $AllowRetailJs5Upstream.IsPresent
     Stdout = $stdout
     Stderr = $stderr
     PfxFile = $certInfo.PfxPath

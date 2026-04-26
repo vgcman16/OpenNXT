@@ -27,16 +27,18 @@ data class ClientConfig(val entries: MutableMap<String, String> = Object2ObjectO
             this[key] = value
         }
 
+        internal fun parse(text: String): ClientConfig {
+            val config = ClientConfig()
+            text.split("\n").forEach { line ->
+                config.entries.readLine(line)
+            }
+            return config
+        }
+
         fun download(base: String, binaryType: BinaryType): ClientConfig {
             val separator = if (base.contains("?")) "&" else "?"
             val url = URL("$base${separator}binaryType=${binaryType.id}")
-            val config = ClientConfig()
-
-            url.readBytes().toString(Charsets.ISO_8859_1).split("\n").forEach { line ->
-                config.entries.readLine(line)
-            }
-
-            return config
+            return parse(url.readBytes().toString(Charsets.ISO_8859_1))
         }
 
         fun load(path: Path): ClientConfig {

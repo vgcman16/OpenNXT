@@ -6,7 +6,7 @@ import com.github.ajalt.clikt.parameters.types.int
 import com.google.common.util.concurrent.ThreadFactoryBuilder
 import com.opennxt.Constants
 import com.opennxt.filesystem.Filesystem
-import com.opennxt.filesystem.sqlite.SqliteFilesystem
+import com.opennxt.filesystem.openFilesystem
 import com.opennxt.tools.Tool
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import java.lang.Thread.sleep
@@ -28,7 +28,7 @@ class CacheCompletionChecker : Tool(
 
     override fun runTool() {
         logger.info { "Opening filesystem from ${Constants.CACHE_PATH}" }
-        cache = SqliteFilesystem(Constants.CACHE_PATH)
+        cache = openFilesystem(Constants.CACHE_PATH)
 
         logger.info { "Starting table checks" }
         checkerExecutor = Executors.newFixedThreadPool(checkThreads, ThreadFactoryBuilder()

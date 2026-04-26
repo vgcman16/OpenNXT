@@ -22,8 +22,18 @@ param(
     [int]$StartupTimeoutSeconds = 90,
     [int]$ProxyStartupTimeoutSeconds = 30,
     [switch]$RepairRuntimeHotCache,
+    [switch]$SkipRuntimeCacheSync,
     [switch]$AutoSwitchGraphicsCompat,
-    [switch]$UseRuneScapeWrapper
+    [ValidateSet("auto", "true", "false", "default")]
+    [string]$GraphicsCompatibilityMode = "auto",
+    [ValidateSet("auto", "default", "power-saving", "high-performance")]
+    [string]$GraphicsDevicePreference = "auto",
+    [switch]$DisableUseAngle,
+    [switch]$UseRuneScapeWrapper,
+    [switch]$Force947StartupRouteRedirects,
+    [switch]$Disable947InlineNullReadPatches,
+    [switch]$Disable947JumpBypassGuards,
+    [switch]$AllowRetailJs5Upstream
 )
 
 $ErrorActionPreference = "Stop"
@@ -44,7 +54,7 @@ $tlsProxyScript = Join-Path $PSScriptRoot "tls_terminate_proxy.py"
 $hostsFile = Join-Path $env:WINDIR "System32\\drivers\\etc\\hosts"
 $launcherDir = Join-Path $root "data\\launchers\\win"
 $launcherExe = Join-Path $launcherDir "patched.exe"
-$launchArg = "https://rs.config.runescape.com/k=5/l=0/jav_config.ws?binaryType=6&hostRewrite=0&lobbyHostRewrite=0&contentRouteRewrite=0&worldUrlRewrite=0&codebaseRewrite=0&gameHostRewrite=0"
+$launchArg = "https://rs.config.runescape.com/k=5/l=0/jav_config.ws?binaryType=6&hostRewrite=0&lobbyHostRewrite=0&contentRouteRewrite=0&worldUrlRewrite=0&codebaseRewrite=0&gameHostRewrite=0&baseConfigSource=live&liveCache=1&downloadMetadataSource=original"
 $tlsPassthroughConfigHost = "content.runescape.com"
 $proxyConfigPath = Join-Path $root "data\\config\\proxy.toml"
 $serverConfigPath = Join-Path $root "data\\config\\server.toml"
@@ -55,12 +65,15 @@ $directPatchTool = Join-Path $PSScriptRoot "launch_rs2client_direct_patch.py"
 $wrapperRewriteTool = Join-Path $PSScriptRoot "launch_runescape_wrapper_rewrite.py"
 $graphicsDialogHelper = Join-Path $PSScriptRoot "invoke_runescape_graphics_dialog_action.ps1"
 $launcherPreferencesScript = Join-Path $PSScriptRoot "set_runescape_launcher_preferences.ps1"
+$graphicsDeviceResolverScript = Join-Path $PSScriptRoot "resolve_runescape_graphics_device.ps1"
 $windowsGpuPreferenceScript = Join-Path $PSScriptRoot "set_windows_gpu_preference.ps1"
 $runtimeCacheSyncScript = Join-Path $PSScriptRoot "sync_runescape_runtime_cache.ps1"
 $runtimeHotCacheRepairScript = Join-Path $PSScriptRoot "repair_runescape_runtime_hot_cache.ps1"
 $installedRuntimeSyncTool = Join-Path $PSScriptRoot "sync_runescape_installed_runtime.py"
 $directPatchTrace = Join-Path $root "data\\debug\\direct-rs2client-patch\\latest-live.jsonl"
 $directPatchSummary = Join-Path $root "data\\debug\\direct-rs2client-patch\\latest-live.json"
+$directPatchStdout = Join-Path $root "data\\debug\\direct-rs2client-patch\\latest-live.stdout.log"
+$directPatchStderr = Join-Path $root "data\\debug\\direct-rs2client-patch\\latest-live.stderr.log"
 $directPatchStartupHookOutput = Join-Path $root "data\\debug\\direct-rs2client-patch\\latest-live-hook.jsonl"
 $wrapperRewriteTrace = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-live.jsonl"
 $wrapperRewriteSummary = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-live.json"
@@ -69,15 +82,18 @@ $wrapperRewriteStdout = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\lat
 $wrapperRewriteStderr = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-live.stderr.log"
 $graphicsDialogSummary = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-live-graphics-dialog.json"
 $launcherPreferencesSummary = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-live-launcher-preferences.json"
+$graphicsDeviceSummary = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-live-graphics-device.json"
 $gpuPreferenceSummary = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-live-gpu-preference.json"
 $runtimeCacheSyncSummary = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-live-runtime-cache-sync.json"
 $runtimeHotCacheRepairSummary = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-live-runtime-hot-cache-repair.json"
 $installedRuntimeSyncSummary = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-live-installed-runtime-sync.json"
 $installedRuntimePostLaunchVerifySummary = Join-Path $root "data\\debug\\wrapper-spawn-rewrite\\latest-live-installed-runtime-post-launch-check.json"
+$directPatchResourceGateOutputRoot = Join-Path $root "data\\debug\\application-resource-gate-947-direct-helper-live"
 $rsaConfigPath = Join-Path $root "data\\config\\rsa.toml"
 $launchTrace = Join-Path $root "tmp-launch-win64c-live.trace.log"
 $launchStateFile = Join-Path $root "tmp-launch-win64c-live.state.json"
 $startupConfigSnapshotPath = Join-Path $root "tmp-947-startup-config.ws"
+$startupConfigSnapshotReady = $false
 $lobbyProxyOut = Join-Path $root "tmp-lobby-tls-terminator.out.log"
 $lobbyProxyErr = Join-Path $root "tmp-lobby-tls-terminator.err.log"
 $lobbyProxyOutputDir = Join-Path $root "data\\debug\\lobby-tls-terminator"
@@ -346,6 +362,7 @@ function Invoke-DirectPatchedLiveLaunch {
         [int]$MonitorSeconds,
         [string[]]$InlinePatchOffsets = @(),
         [string[]]$JumpBypassSpecs = @(),
+        [string[]]$DirectPatchExtraArgs = @(),
         [string[]]$RedirectSpecs = @()
     )
 
@@ -354,6 +371,69 @@ function Invoke-DirectPatchedLiveLaunch {
     }
     if (-not [string]::IsNullOrWhiteSpace($StartupHookOutputPath) -and (Test-Path $StartupHookOutputPath)) {
         Remove-Item $StartupHookOutputPath -Force -ErrorAction SilentlyContinue
+    }
+    Remove-Item $directPatchStdout, $directPatchStderr -Force -ErrorAction SilentlyContinue
+
+    function Read-DirectPatchSummary {
+        param([string]$Path)
+
+        $lastError = $null
+        for ($attempt = 0; $attempt -lt 20; $attempt++) {
+            try {
+                $rawSummary = Get-Content -Path $Path -Raw -ErrorAction Stop
+                if (-not [string]::IsNullOrWhiteSpace($rawSummary)) {
+                    return $rawSummary | ConvertFrom-Json -ErrorAction Stop
+                }
+            } catch {
+                $lastError = $_
+            }
+
+            Start-Sleep -Milliseconds 250
+        }
+
+        if ($lastError) {
+            throw "Direct rs2client patch launch summary could not be parsed: $Path. $($lastError.Exception.Message)"
+        }
+
+        throw "Direct rs2client patch launch summary was empty: $Path"
+    }
+
+    function Stop-DirectPatchAttemptArtifacts {
+        param(
+            [System.Diagnostics.Process]$HelperProcess,
+            [string]$LaunchedClientPath
+        )
+
+        $targetPids = @()
+        if ($HelperProcess) {
+            $targetPids += $HelperProcess.Id
+        }
+
+        if (-not [string]::IsNullOrWhiteSpace($LaunchedClientPath) -and (Test-Path $LaunchedClientPath)) {
+            $resolvedClientPath = [System.IO.Path]::GetFullPath($LaunchedClientPath)
+            $targetPids += @(
+                Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
+                    Where-Object {
+                        $_.ProcessId -ne $PID -and
+                        $null -ne $_.ExecutablePath -and
+                        [string]::Equals([System.IO.Path]::GetFullPath($_.ExecutablePath), $resolvedClientPath, [System.StringComparison]::OrdinalIgnoreCase)
+                    } |
+                    Select-Object -ExpandProperty ProcessId -Unique
+            )
+        }
+
+        $targetPids = @(
+            $targetPids |
+                Where-Object { $_ -and $_ -ne $PID } |
+                Sort-Object -Unique
+        )
+        foreach ($processId in $targetPids) {
+            try {
+                taskkill /PID $processId /T /F | Out-Null
+            } catch {}
+        }
+
+        return $targetPids
     }
 
     $directPatchArgs = @(
@@ -376,6 +456,10 @@ function Invoke-DirectPatchedLiveLaunch {
     if (-not [string]::IsNullOrWhiteSpace($RsaConfigPath) -and (Test-Path $RsaConfigPath)) {
         $directPatchArgs += "--rsa-config"
         $directPatchArgs += $RsaConfigPath
+        if ($configuredClientBuild -ge 947 -and (Test-Path $originalClientExe)) {
+            $directPatchArgs += "--js5-rsa-source-exe"
+            $directPatchArgs += $originalClientExe
+        }
     }
     foreach ($clientArg in $ClientArgumentList) {
         $directPatchArgs += "--client-arg"
@@ -389,41 +473,96 @@ function Invoke-DirectPatchedLiveLaunch {
         $directPatchArgs += "--patch-jump-bypass"
         $directPatchArgs += $jumpBypassSpec
     }
+    foreach ($directPatchExtraArg in $DirectPatchExtraArgs) {
+        $directPatchArgs += $directPatchExtraArg
+    }
     foreach ($redirectSpec in $RedirectSpecs) {
         $directPatchArgs += "--resolve-redirect"
         $directPatchArgs += $redirectSpec
     }
 
     $pythonExe = (Get-Command python -ErrorAction Stop).Source
-    Push-Location $WorkspaceRoot
-    try {
-        & $pythonExe @directPatchArgs
-        $directPatchExitCode = $LASTEXITCODE
-    } finally {
-        Pop-Location
+    $quotedDirectPatchArgs = @($directPatchArgs | ForEach-Object { Quote-ProcessArgument $_ })
+    Write-LaunchTrace ("direct patch helper start exe={0}" -f $ClientExePath)
+    $directPatchHelper = Start-Process `
+        -FilePath $pythonExe `
+        -ArgumentList $quotedDirectPatchArgs `
+        -WorkingDirectory $WorkspaceRoot `
+        -RedirectStandardOutput $directPatchStdout `
+        -RedirectStandardError $directPatchStderr `
+        -PassThru
+    Write-LaunchTrace ("direct patch helper pid={0}" -f $directPatchHelper.Id)
+    $summaryDeadline = (Get-Date).AddSeconds([Math]::Max(15, $MonitorSeconds))
+    while ((Get-Date) -lt $summaryDeadline -and -not (Test-Path $SummaryPath)) {
+        $helperStillRunning = Get-Process -Id $directPatchHelper.Id -ErrorAction SilentlyContinue
+        if ($null -eq $helperStillRunning) {
+            break
+        }
+
+        Start-Sleep -Milliseconds 500
     }
-    if ($directPatchExitCode -ne 0) {
-        throw "Direct rs2client patch launch failed with exit code $directPatchExitCode."
-    }
+
     if (-not (Test-Path $SummaryPath)) {
+        $directPatchExitCode = $null
+        try {
+            $directPatchHelper.Refresh()
+            if ($directPatchHelper.HasExited) {
+                $directPatchExitCode = $directPatchHelper.ExitCode
+            }
+        } catch {}
+        Write-LaunchTrace ("direct patch helper summary missing helperPid={0} exitCode={1}" -f $directPatchHelper.Id, $(if ($null -ne $directPatchExitCode) { $directPatchExitCode } else { "running" }))
+        if (Test-Path $directPatchStderr) {
+            $stderrTail = (Get-Content -Path $directPatchStderr -ErrorAction SilentlyContinue | Select-Object -Last 20) -join " | "
+            if (-not [string]::IsNullOrWhiteSpace($stderrTail)) {
+                Write-LaunchTrace ("direct patch helper stderr tail={0}" -f $stderrTail)
+            }
+        }
+        $terminatedPids = @(Stop-DirectPatchAttemptArtifacts -HelperProcess $directPatchHelper -LaunchedClientPath $ClientExePath)
+        if ($terminatedPids.Count -gt 0) {
+            Write-LaunchTrace ("direct patch helper cleanup pids={0}" -f ($terminatedPids -join ","))
+        }
+        if ($null -ne $directPatchExitCode) {
+            throw "Direct rs2client patch launch failed with exit code $directPatchExitCode."
+        }
         throw "Direct rs2client patch launch completed without a summary output: $SummaryPath"
     }
 
-    $directPatchLaunchSummary = Get-Content -Path $SummaryPath -Raw | ConvertFrom-Json
+    Write-LaunchTrace ("direct patch helper summary ready helperPid={0}" -f $directPatchHelper.Id)
+    $directPatchLaunchSummary = Read-DirectPatchSummary -Path $SummaryPath
+    $summaryStage = if ($directPatchLaunchSummary.PSObject.Properties.Name -contains "summaryStage") {
+        [string]$directPatchLaunchSummary.summaryStage
+    } else {
+        "unknown"
+    }
+    Write-LaunchTrace ("direct patch helper summary loaded helperPid={0} pid={1} stage={2}" -f $directPatchHelper.Id, $directPatchLaunchSummary.pid, $summaryStage)
     $resolvedClientPid = [int]$directPatchLaunchSummary.pid
-    $client = Get-Process -Id $resolvedClientPid -ErrorAction SilentlyContinue
-    if ($null -eq $client -and [bool]$directPatchLaunchSummary.processAlive) {
-        $client = Resolve-MainClientProcess -BootstrapPid $resolvedClientPid -TimeoutSeconds 10
+    $client = $null
+    $resolveDeadline = (Get-Date).AddSeconds(10)
+    while ((Get-Date) -lt $resolveDeadline -and $null -eq $client) {
+        $client = Get-Process -Id $resolvedClientPid -ErrorAction SilentlyContinue
+        if ($null -eq $client -and [bool]$directPatchLaunchSummary.processAlive) {
+            $client = Resolve-MainClientProcess -BootstrapPid $resolvedClientPid -TimeoutSeconds 2
+        }
+        if ($null -eq $client) {
+            Start-Sleep -Milliseconds 250
+        }
     }
     if ($null -eq $client) {
+        Write-LaunchTrace ("direct patch helper client resolution failed helperPid={0} pid={1}" -f $directPatchHelper.Id, $resolvedClientPid)
+        $terminatedPids = @(Stop-DirectPatchAttemptArtifacts -HelperProcess $directPatchHelper -LaunchedClientPath $ClientExePath)
+        if ($terminatedPids.Count -gt 0) {
+            Write-LaunchTrace ("direct patch helper cleanup pids={0}" -f ($terminatedPids -join ","))
+        }
         throw "Direct rs2client patch launch completed but no live client process could be resolved."
     }
+    Write-LaunchTrace ("direct patch helper client resolved helperPid={0} pid={1}" -f $directPatchHelper.Id, $client.Id)
 
     return [pscustomobject]@{
         Summary = $directPatchLaunchSummary
         BootstrapClient = [pscustomobject]@{ Id = $resolvedClientPid }
         Client = $client
         ResolvedClientPid = $resolvedClientPid
+        HelperProcess = $directPatchHelper
     }
 }
 
@@ -444,6 +583,7 @@ function Invoke-WrapperFallbackToDirectPatchedLive {
         [int]$MonitorSeconds,
         [string[]]$InlinePatchOffsets = @(),
         [string[]]$JumpBypassSpecs = @(),
+        [string[]]$DirectPatchExtraArgs = @(),
         [string[]]$RedirectSpecs = @()
     )
 
@@ -469,6 +609,7 @@ function Invoke-WrapperFallbackToDirectPatchedLive {
         -MonitorSeconds $MonitorSeconds `
         -InlinePatchOffsets $InlinePatchOffsets `
         -JumpBypassSpecs $JumpBypassSpecs `
+        -DirectPatchExtraArgs $DirectPatchExtraArgs `
         -RedirectSpecs $RedirectSpecs
 
     return [pscustomobject]@{
@@ -610,12 +751,125 @@ function Get-NetstatTcpRecords {
     return $records
 }
 
+function Get-TcpListenerRecords {
+    param([int[]]$Ports)
+
+    $normalizedPorts = @(
+        $Ports |
+            Where-Object { $_ -is [int] -and $_ -gt 0 } |
+            Select-Object -Unique
+    )
+    if ($normalizedPorts.Count -eq 0) {
+        return @()
+    }
+
+    try {
+        $tcpRows = @(
+            Get-NetTCPConnection -State Listen -ErrorAction Stop |
+                Where-Object { $_.LocalPort -in $normalizedPorts }
+        )
+        return @(
+            $tcpRows |
+                ForEach-Object {
+                    [pscustomobject]@{
+                        LocalAddress  = [string]$_.LocalAddress
+                        LocalPort     = [int]$_.LocalPort
+                        RemoteAddress = [string]$_.RemoteAddress
+                        RemotePort    = if ($null -ne $_.RemotePort) { [int]$_.RemotePort } else { $null }
+                        State         = [string]$_.State
+                        OwningProcess = [int]$_.OwningProcess
+                        Source        = "Get-NetTCPConnection"
+                    }
+                }
+        )
+    } catch {
+        return @(
+            Get-NetstatTcpRecords |
+                Where-Object { $_.State -eq "LISTENING" -and $_.LocalPort -in $normalizedPorts } |
+                ForEach-Object {
+                    [pscustomobject]@{
+                        LocalAddress  = $_.LocalAddress
+                        LocalPort     = $_.LocalPort
+                        RemoteAddress = $_.RemoteAddress
+                        RemotePort    = $_.RemotePort
+                        State         = $_.State
+                        OwningProcess = $_.OwningProcess
+                        Source        = "netstat"
+                    }
+                }
+        )
+    }
+}
+
+function Get-ListeningPortSnapshot {
+    param([int[]]$Ports)
+
+    $records = @(
+        Get-TcpListenerRecords -Ports $Ports |
+            Sort-Object LocalPort, OwningProcess, LocalAddress, Source
+    )
+    if ($records.Count -eq 0) {
+        return "<none>"
+    }
+
+    return ($records | ForEach-Object {
+        "{0}@{1}/pid={2}/src={3}" -f $_.LocalPort, $_.LocalAddress, $_.OwningProcess, $_.Source
+    }) -join "; "
+}
+
+function Get-ProcessStateSummary {
+    param([Nullable[int]]$Pid)
+
+    if ($null -eq $Pid -or $Pid -le 0) {
+        return "<none>"
+    }
+
+    $process = Get-Process -Id $Pid -ErrorAction SilentlyContinue
+    if ($null -eq $process) {
+        return "pid=$Pid alive=false"
+    }
+
+    return "pid=$($process.Id) alive=true name=$($process.ProcessName)"
+}
+
+function Write-ServerStartupDiagnostics {
+    param(
+        $WrapperProcess,
+        [int[]]$Ports,
+        [string]$Prefix = "server-startup-diagnostics",
+        [int]$TailLines = 40
+    )
+
+    $wrapperSummary = if ($null -ne $WrapperProcess) {
+        Get-ProcessStateSummary -Pid $WrapperProcess.Id
+    } else {
+        "<null-wrapper>"
+    }
+    Write-LaunchTrace ("{0} wrapper={1}" -f $Prefix, $wrapperSummary)
+    Write-LaunchTrace ("{0} listenerSnapshot={1}" -f $Prefix, (Get-ListeningPortSnapshot -Ports $Ports))
+
+    $stderrTail = if (Test-Path $serverErr) {
+        @(
+            Get-Content $serverErr -Tail $TailLines -ErrorAction SilentlyContinue
+        )
+    } else {
+        @()
+    }
+    $stderrSummary = if ($stderrTail.Count -gt 0) {
+        ($stderrTail -join " <NL> ")
+    } elseif (Test-Path $serverErr) {
+        "<empty>"
+    } else {
+        "<missing>"
+    }
+    Write-LaunchTrace ("{0} stderrTail={1}" -f $Prefix, $stderrSummary)
+}
+
 function Get-ListeningProcessIds {
     param([int[]]$Ports)
 
     return @(
-        Get-NetstatTcpRecords |
-            Where-Object { $_.State -eq "LISTENING" -and $_.LocalPort -in $Ports } |
+        Get-TcpListenerRecords -Ports $Ports |
             Select-Object -ExpandProperty OwningProcess -Unique
     )
 }
@@ -628,15 +882,49 @@ function Wait-ListeningPorts {
     )
 
     $retries = [Math]::Max(1, [int][Math]::Ceiling(($TimeoutSeconds * 1000) / $DelayMilliseconds))
+    $requiredPorts = @(
+        $Ports |
+            Where-Object { $_ -is [int] -and $_ -gt 0 } |
+            Select-Object -Unique
+    )
+    if ($requiredPorts.Count -eq 0) {
+        return $true
+    }
 
     for ($i = 0; $i -lt $retries; $i++) {
-        Start-Sleep -Milliseconds $DelayMilliseconds
-        $listening = Get-NetstatTcpRecords |
-            Where-Object { $_.State -eq "LISTENING" -and $_.LocalPort -in $Ports } |
-            Select-Object -ExpandProperty LocalPort -Unique |
-            Sort-Object
+        if ($i -gt 0) {
+            Start-Sleep -Milliseconds $DelayMilliseconds
+        }
 
-        if (($listening -join ",") -eq (($Ports | Sort-Object) -join ",")) {
+        $listening = @()
+        try {
+            $listening = @(
+                Get-TcpListenerRecords -Ports $requiredPorts |
+                    ForEach-Object { [int]$_.LocalPort } |
+                    Select-Object -Unique |
+                    Sort-Object
+            )
+        } catch {
+            if (Get-Command Write-LaunchTrace -ErrorAction SilentlyContinue) {
+                Write-LaunchTrace (
+                    "wait-listening-ports query exception attempt={0} ports={1} message={2}" -f
+                        ($i + 1),
+                        ($requiredPorts -join ","),
+                        $_.Exception.Message
+                )
+            }
+            $listening = @()
+        }
+
+        $allPresent = $true
+        foreach ($requiredPort in $requiredPorts) {
+            if (-not ($listening -contains [int]$requiredPort)) {
+                $allPresent = $false
+                break
+            }
+        }
+
+        if ($allPresent) {
             return $true
         }
     }
@@ -702,11 +990,14 @@ function Start-LobbyProxy {
         "-IdleTimeoutSeconds",
         "0"
     )
-    foreach ($extraTlsMitmHost in $extraTlsMitmHosts) {
+    if ($extraTlsMitmHosts.Count -gt 0) {
         $lobbyProxyArgs += @(
             "-TlsExtraMitmHost",
-            $extraTlsMitmHost
+            ($extraTlsMitmHosts -join ",")
         )
+    }
+    if ($AllowRetailJs5Upstream) {
+        $lobbyProxyArgs += "-AllowRetailJs5Upstream"
     }
 
     if ($script:UseContentTlsRoute) {
@@ -823,8 +1114,22 @@ function Sync-ContentHostsOverride {
         return
     }
 
-    $hostsScript = if ($script:UseContentTlsRoute) { $setContentHostsOverrideScript } else { $clearContentHostsOverrideScript }
-    $action = if ($script:UseContentTlsRoute) { "apply" } else { "clear" }
+    $hostsScript = if ($use947RetailConfigHost) {
+        # The secure 947 retail startup contract must keep rs.config retail-shaped.
+        # Clearing any stale hosts overrides here prevents a silent localhost detour.
+        $clearContentHostsOverrideScript
+    } elseif ($script:UseContentTlsRoute) {
+        $setContentHostsOverrideScript
+    } else {
+        $clearContentHostsOverrideScript
+    }
+    $action = if ($use947RetailConfigHost) {
+        "clear-secure-947-retail-route"
+    } elseif ($script:UseContentTlsRoute) {
+        "apply"
+    } else {
+        "clear"
+    }
 
     Write-LaunchTrace ("content host override {0}=start" -f $action)
     & $powershellExe -ExecutionPolicy Bypass -File $hostsScript | Out-Null
@@ -934,7 +1239,13 @@ function Convert-ToLoopbackJavConfigUrl {
         if (-not [string]::IsNullOrWhiteSpace($query) -and $query.StartsWith("?")) {
             $query = $query.Substring(1)
         }
-        $baseUrl = "http://127.0.0.1:$HttpPort/jav_config.ws"
+        $preservedPath =
+            if ([string]::IsNullOrWhiteSpace($uri.AbsolutePath) -or $uri.AbsolutePath -eq "/") {
+                "/jav_config.ws"
+            } else {
+                $uri.AbsolutePath
+            }
+        $baseUrl = "http://127.0.0.1:$HttpPort$preservedPath"
         if ([string]::IsNullOrWhiteSpace($query)) {
             return $baseUrl
         }
@@ -1156,6 +1467,32 @@ function Get-947StartupRouteHostsFromConfigContent {
     return @($hosts | Select-Object -Unique)
 }
 
+function Test-947SecureStartupRedirectHost {
+    param([string]$HostName)
+
+    $candidate = $HostName
+    if ([string]::IsNullOrWhiteSpace($candidate)) {
+        return $false
+    }
+
+    $normalized = $candidate.Trim().ToLowerInvariant()
+    return [bool](
+        ($normalized -match '^(?:world|lobby)[0-9]+[a-z]*\.runescape\.com$|^(?:world|lobby)\*\.runescape\.com$') -or
+        ($normalized -match '^content[a-z0-9-]*\.runescape\.com$|^content\*\.runescape\.com$')
+    )
+}
+
+function Get-947SecureRetailWorldFleetHosts {
+    # The Frida resolve hook now supports wildcard hostname rules, so keep the
+    # secure-retail startup fleet compact while still catching the content
+    # bootstrap host, the world host, and the later secure lobby handoff host.
+    return @(
+        "content*.runescape.com"
+        "world*.runescape.com"
+        "lobby*.runescape.com"
+    )
+}
+
 function Get-947StartupWorldMitmHosts {
     param(
         [string]$ConfigUrl,
@@ -1193,6 +1530,28 @@ function Test-HostsFileWriteAccess {
     } catch {
         return $false
     }
+}
+
+function Test-RecentD3DDeviceRemoved {
+    param([string[]]$LogPaths)
+
+    foreach ($path in $LogPaths) {
+        if ([string]::IsNullOrWhiteSpace($path) -or -not (Test-Path $path)) {
+            continue
+        }
+
+        try {
+            $tail = @(Get-Content -Path $path -Tail 80 -ErrorAction Stop)
+        } catch {
+            continue
+        }
+
+        if (($tail -join [Environment]::NewLine) -match 'device was removed|0x887A0020') {
+            return $true
+        }
+    }
+
+    return $false
 }
 
 function Test-TlsPassthroughRouteReady {
@@ -1528,6 +1887,7 @@ Stop-ExistingNetTestProcesses
 Stop-InstalledJagexLauncherProcesses
 Remove-Item $launchTrace -ErrorAction SilentlyContinue
 Remove-Item $launchStateFile -ErrorAction SilentlyContinue
+Remove-Item $startupConfigSnapshotPath -ErrorAction SilentlyContinue
 Write-LaunchTrace "starting launch-win64c-live"
 $script:CanWriteHostsFile = Test-HostsFileWriteAccess -Path $hostsFile
 $script:TlsPassthroughRouteReady = Test-TlsPassthroughRouteReady -HostName $tlsPassthroughConfigHost
@@ -1687,6 +2047,15 @@ $resolvedDownloadMetadataSource = if ($downloadMetadataSourceExplicit) {
     $DownloadMetadataSource.Trim().ToLowerInvariant()
 } elseif (-not [string]::IsNullOrWhiteSpace($existingDownloadMetadataSource)) {
     $existingDownloadMetadataSource.Trim().ToLowerInvariant()
+} elseif (
+    $configuredClientBuild -ge 947 -and
+    $prefer947PatchedDirectClient -and
+    [string]::Equals((Get-UriHostName -Value $effectiveLaunchArg), "rs.config.runescape.com", [System.StringComparison]::OrdinalIgnoreCase)
+) {
+    # Match the safer client-only retail-shaped startup baseline: preserve the
+    # live base-config + original metadata pair unless the caller explicitly
+    # overrides downloadMetadataSource.
+    "original"
 } else {
     if ($effectiveUseOriginalClient) { "original" } else { "patched" }
 }
@@ -1703,13 +2072,14 @@ if ($configuredClientBuild -ge 947) {
             # Keep the visible 947 direct startup contract retail-shaped and
             # let the redirect/runtime-repair layer steer the secure splash
             # bootstrap. Forcing world/content/codebase rewrites here traps the
-            # client in the local raw 255/* refresh loop before login.
+            # client in the local raw 255/* refresh loop before login. Preserve
+            # the live base-config + original metadata pair so the later
+            # world-local follow-up stays on the original+live-session
+            # contract instead of dropping into the localhost bootstrap loop.
             $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "gamePortOverride"
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "contentRouteRewrite" -Value "0"
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "worldUrlRewrite" -Value "0"
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "codebaseRewrite" -Value "0"
-            $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "baseConfigSource"
-            $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "liveCache"
             $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "baseConfigSnapshotPath"
         } elseif ([string]::Equals((Get-UriHostName -Value $effectiveLaunchArg), "rs.config.runescape.com", [System.StringComparison]::OrdinalIgnoreCase)) {
             $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "gamePortOverride"
@@ -1734,8 +2104,6 @@ if ($configuredClientBuild -ge 947) {
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "contentRouteRewrite" -Value "0"
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "worldUrlRewrite" -Value "0"
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "codebaseRewrite" -Value "0"
-            $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "baseConfigSource"
-            $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "liveCache"
             $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "baseConfigSnapshotPath"
         } elseif (-not $configUrlOverrideExplicit) {
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "codebaseRewrite" -Value "0"
@@ -1756,15 +2124,22 @@ if ($configuredClientBuild -ge 947) {
     }
 }
 if ($script:UseContentTlsRoute) {
-    if (-not $prefer947PatchedDirectClient) {
-        # Keep the canonical MITM launch shape explicit for the wrapper/retail route.
+    if (-not $prefer947PatchedDirectClient -and -not $configUrlOverrideExplicit) {
+        # Keep the default 947 wrapper route fully retail-shaped. Explicit
+        # ConfigUrlOverride experiments are allowed to keep their local rewrite
+        # contract, but the default live path must not reintroduce a localhost
+        # codebase hop during the splash bootstrap.
         $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "hostRewrite" -Value "0"
         $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "lobbyHostRewrite" -Value "0"
         if ($configuredClientBuild -ge 947) {
+            $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "gamePortOverride"
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "contentRouteRewrite" -Value "0"
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "worldUrlRewrite" -Value "0"
-            $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "codebaseRewrite" -Value "1"
+            $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "codebaseRewrite" -Value "0"
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "gameHostRewrite" -Value "0"
+            $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "baseConfigSource"
+            $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "liveCache"
+            $effectiveLaunchArg = Remove-QueryParameter -Url $effectiveLaunchArg -Name "baseConfigSnapshotPath"
         } else {
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "contentRouteRewrite" -Value "1"
             $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "gameHostOverride" -Value $canonicalLoopbackGameHost
@@ -1772,12 +2147,30 @@ if ($script:UseContentTlsRoute) {
         }
     }
 } else {
-    $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "contentRouteRewrite" -Value "0"
+    if (-not $configUrlOverrideExplicit) {
+        $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "contentRouteRewrite" -Value "0"
+    }
 }
 if ($useRuneScapeWrapperPreview) {
     if ($configuredClientBuild -lt 947) {
         $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "worldUrlRewrite" -Value "1"
         $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "baseConfigSource" -Value "compressed"
+    }
+}
+if (
+    $configuredClientBuild -ge 947 -and
+    $prefer947PatchedDirectClient -and
+    [string]::Equals((Get-UriHostName -Value $effectiveLaunchArg), "rs.config.runescape.com", [System.StringComparison]::OrdinalIgnoreCase)
+) {
+    # Final safety net: the direct 947 retail-shaped startup path should keep
+    # the live base-config contract even if an earlier normalization branch
+    # removed it while rewriting the rest of the URL back to retail-shaped
+    # defaults.
+    if ([string]::IsNullOrWhiteSpace((Get-QueryParameterValue -Url $effectiveLaunchArg -Name "baseConfigSource"))) {
+        $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "baseConfigSource" -Value "live"
+    }
+    if ([string]::IsNullOrWhiteSpace((Get-QueryParameterValue -Url $effectiveLaunchArg -Name "liveCache"))) {
+        $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "liveCache" -Value "1"
     }
 }
 $script:Effective947StartupConfigHost = if ($configuredClientBuild -ge 947) { Get-UriHostName -Value $effectiveLaunchArg } else { $null }
@@ -1805,77 +2198,320 @@ if ($normalizedExtraClientArgs.Count -gt 0) {
     $clientArgs += $normalizedExtraClientArgs
 }
 
+function Get-RuntimeArchiveCandidateNames {
+    param(
+        [int]$ArchiveId,
+        [switch]$IncludeCorePrefixedAliases
+    )
+
+    if ($IncludeCorePrefixedAliases) {
+        return @(
+            ("js5-{0}.jcache" -f $ArchiveId)
+            ("core-js5-{0}.jcache" -f $ArchiveId)
+        )
+    }
+
+    return @(("js5-{0}.jcache" -f $ArchiveId))
+}
+
+function Get-RuntimeArchiveState {
+    param(
+        [string]$RuntimeCacheDir,
+        [int]$ArchiveId,
+        [switch]$IncludeCorePrefixedAliases,
+        [int]$StubMaxLength = 12288
+    )
+
+    $candidateRecords = @(
+        foreach ($candidateName in (Get-RuntimeArchiveCandidateNames -ArchiveId $ArchiveId -IncludeCorePrefixedAliases:$IncludeCorePrefixedAliases)) {
+            $candidatePath = Join-Path $RuntimeCacheDir $candidateName
+            $candidateItem = if (Test-Path $candidatePath) {
+                Get-Item -LiteralPath $candidatePath -ErrorAction SilentlyContinue
+            } else {
+                $null
+            }
+
+            [pscustomobject]@{
+                Name = $candidateName
+                Path = $candidatePath
+                Exists = $null -ne $candidateItem
+                Length = if ($candidateItem) { [int64]$candidateItem.Length } else { $null }
+            }
+        }
+    )
+
+    $selectedRecord = $candidateRecords | Where-Object { $_.Exists } | Select-Object -First 1
+    return [pscustomobject]@{
+        ArchiveId = $ArchiveId
+        Exists = $null -ne $selectedRecord
+        PreferredPath = if ($selectedRecord) { $selectedRecord.Path } else { $candidateRecords[0].Path }
+        PreferredName = if ($selectedRecord) { $selectedRecord.Name } else { $candidateRecords[0].Name }
+        Length = if ($selectedRecord) { $selectedRecord.Length } else { $null }
+        IsStub = $null -ne $selectedRecord -and $selectedRecord.Length -le $StubMaxLength
+        CandidatePaths = @($candidateRecords | ForEach-Object { $_.Path })
+        ExistingPaths = @($candidateRecords | Where-Object { $_.Exists } | ForEach-Object { $_.Path })
+    }
+}
+
+function Get-SharedReadFileSha256 {
+    param([string]$Path)
+
+    $stream = $null
+    $hasher = $null
+    try {
+        $stream = [System.IO.File]::Open($Path, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, ([System.IO.FileShare]::ReadWrite -bor [System.IO.FileShare]::Delete))
+        $hasher = [System.Security.Cryptography.SHA256]::Create()
+        $hashBytes = $hasher.ComputeHash($stream)
+        return ([System.BitConverter]::ToString($hashBytes)).Replace("-", "")
+    } finally {
+        if ($hasher) {
+            $hasher.Dispose()
+        }
+        if ($stream) {
+            $stream.Dispose()
+        }
+    }
+}
+
+function Get-RuntimeArchiveSqliteShape {
+    param([string]$Path)
+
+    if (-not (Test-Path $Path)) {
+        return $null
+    }
+
+    $pythonCommand = Get-Command python -ErrorAction SilentlyContinue
+    if ($null -eq $pythonCommand) {
+        return $null
+    }
+
+    $pythonScript = @'
+import json
+import sqlite3
+import sys
+
+path = sys.argv[1]
+result = {"cache_rows": 0, "cache_index_rows": 0}
+try:
+    uri = "file:" + path + "?mode=ro"
+    connection = sqlite3.connect(uri, uri=True)
+    cursor = connection.cursor()
+    cache_rows = cursor.execute("select count(*) from cache").fetchone()
+    cache_index_rows = cursor.execute("select count(*) from cache_index").fetchone()
+    result["cache_rows"] = 0 if not cache_rows else int(cache_rows[0] or 0)
+    result["cache_index_rows"] = 0 if not cache_index_rows else int(cache_index_rows[0] or 0)
+    connection.close()
+except Exception:
+    pass
+
+print(json.dumps(result))
+'@
+
+    try {
+        $raw = $pythonScript | & $pythonCommand.Source - $Path 2>$null
+        if ([string]::IsNullOrWhiteSpace($raw)) {
+            return $null
+        }
+        return $raw | ConvertFrom-Json
+    } catch {
+        return $null
+    }
+}
+
+function Test-RuntimeArchiveHasMissingReferenceTable {
+    param(
+        [string]$SourcePath,
+        [string]$RuntimePath
+    )
+
+    if (-not (Test-Path $SourcePath) -or -not (Test-Path $RuntimePath)) {
+        return $false
+    }
+
+    $sourceShape = Get-RuntimeArchiveSqliteShape -Path $SourcePath
+    if ($null -eq $sourceShape -or [int]$sourceShape.cache_index_rows -le 0) {
+        return $false
+    }
+
+    $runtimeShape = Get-RuntimeArchiveSqliteShape -Path $RuntimePath
+    if ($null -eq $runtimeShape) {
+        return $false
+    }
+
+    return [int]$runtimeShape.cache_index_rows -le 0
+}
+
+function Test-RuntimeArchiveMatchesSource {
+    param(
+        [string]$SourceCacheDir,
+        [string]$RuntimeCacheDir,
+        [int]$ArchiveId
+    )
+
+    $sourcePath = Join-Path $SourceCacheDir ("js5-{0}.jcache" -f $ArchiveId)
+    $runtimePath = Join-Path $RuntimeCacheDir ("js5-{0}.jcache" -f $ArchiveId)
+    if (-not (Test-Path $sourcePath) -or -not (Test-Path $runtimePath)) {
+        return $false
+    }
+
+    $sourceItem = Get-Item -LiteralPath $sourcePath -ErrorAction SilentlyContinue
+    $runtimeItem = Get-Item -LiteralPath $runtimePath -ErrorAction SilentlyContinue
+    if ($null -eq $sourceItem -or $null -eq $runtimeItem) {
+        return $false
+    }
+    if (Test-RuntimeArchiveHasMissingReferenceTable -SourcePath $sourcePath -RuntimePath $runtimePath) {
+        return $false
+    }
+    if ([int64]$sourceItem.Length -ne [int64]$runtimeItem.Length) {
+        return $false
+    }
+
+    $sourceHash = Get-SharedReadFileSha256 -Path $sourcePath
+    $runtimeHash = Get-SharedReadFileSha256 -Path $runtimePath
+    return $sourceHash -eq $runtimeHash
+}
+
 $runtimeCopiedHotArchiveIds = @()
 $runtimeAutoRepairReason = $null
 $runtimeShouldAutoRepairHotCache947 = $false
 $runtimeHotCacheRepairArchiveIds = @()
 $runtimeHotStubArchiveIds = @()
+$runtimeHotMissingReferenceTableArchiveIds = @()
+$runtimeHotArchiveParityMismatchIds = @()
 $runtimeShouldPreserveHotArchiveSet = $false
+$runtimeForceRetailRefreshHotArchiveSet = $false
+$runtimeHotCacheRepairResult = $null
 
-if ($configuredClientBuild -ge 947 -and -not [string]::IsNullOrWhiteSpace($env:ProgramData) -and (Test-Path $runtimeCacheSyncScript)) {
+$runtimeUsesRetailStartupConfig = $configuredClientBuild -ge 947 -and $use947RetailConfigHost
+$runtimeAutoSkipCacheSync947Retail = $configuredClientBuild -ge 947 -and $runtimeUsesRetailStartupConfig -and $prefer947PatchedDirectClient
+$runtimeCacheSyncSkippedEffective = [bool]($SkipRuntimeCacheSync.IsPresent -or $runtimeAutoSkipCacheSync947Retail)
+if ($runtimeAutoSkipCacheSync947Retail) {
+    Write-LaunchTrace "runtime cache sync auto-skipped for 947 retail-shaped direct-patched path"
+}
+
+if (-not $runtimeCacheSyncSkippedEffective -and $configuredClientBuild -ge 947 -and -not [string]::IsNullOrWhiteSpace($env:ProgramData) -and (Test-Path $runtimeCacheSyncScript)) {
     $runtimeCacheSourceDir = Join-Path $root "data\\cache"
     $runtimeCacheTargetDir = Join-Path $env:ProgramData "Jagex\\RuneScape"
+    $runtimeAliasSeedingEnabled = $configuredClientBuild -ge 947
     Write-LaunchTrace ("runtime cache sync start source={0} runtime={1}" -f $runtimeCacheSourceDir, $runtimeCacheTargetDir)
     $runtimeSourceFiles = @(
         Get-ChildItem -Path $runtimeCacheSourceDir -Filter "js5-*.jcache" -File -ErrorAction SilentlyContinue
     )
+    $runtimeSourceArchiveIds = @(
+        $runtimeSourceFiles |
+            ForEach-Object {
+                if ($_.Name -match '^js5-(\d+)\.jcache$') {
+                    [int]$Matches[1]
+                }
+            } |
+            Sort-Object -Unique
+    )
     $runtimeTargetFiles = @(
-        Get-ChildItem -Path $runtimeCacheTargetDir -Filter "js5-*.jcache" -File -ErrorAction SilentlyContinue
+        Get-ChildItem -Path $runtimeCacheTargetDir -File -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -match '^(?:core-)?js5-\d+\.jcache$' }
+    )
+    $runtimeTargetArchiveCount = @(
+        foreach ($archiveId in $runtimeSourceArchiveIds) {
+            $runtimeArchiveState = Get-RuntimeArchiveState -RuntimeCacheDir $runtimeCacheTargetDir -ArchiveId $archiveId -IncludeCorePrefixedAliases:$runtimeAliasSeedingEnabled
+            if ($runtimeArchiveState.Exists) {
+                $archiveId
+            }
+        }
     )
     $runtimeHotStubArchiveIds = @(
         foreach ($archiveId in $runtimeHotArchiveIds947) {
-            $runtimeArchivePath = Join-Path $runtimeCacheTargetDir ("js5-{0}.jcache" -f $archiveId)
-            if (Test-Path $runtimeArchivePath) {
-                $runtimeArchive = Get-Item -LiteralPath $runtimeArchivePath -ErrorAction SilentlyContinue
-                if ($runtimeArchive -and $runtimeArchive.Length -le 12288) {
-                    $archiveId
-                }
+            $runtimeArchiveState = Get-RuntimeArchiveState -RuntimeCacheDir $runtimeCacheTargetDir -ArchiveId $archiveId -IncludeCorePrefixedAliases:$runtimeAliasSeedingEnabled
+            if ($runtimeArchiveState.IsStub) {
+                $archiveId
             }
         }
     )
     $runtimeMissingHotArchiveIds = @(
         foreach ($archiveId in $runtimeHotArchiveIds947) {
-            $runtimeArchivePath = Join-Path $runtimeCacheTargetDir ("js5-{0}.jcache" -f $archiveId)
-            if (-not (Test-Path $runtimeArchivePath)) {
+            $runtimeArchiveState = Get-RuntimeArchiveState -RuntimeCacheDir $runtimeCacheTargetDir -ArchiveId $archiveId -IncludeCorePrefixedAliases:$runtimeAliasSeedingEnabled
+            if (-not $runtimeArchiveState.Exists) {
                 $archiveId
             }
         }
     )
-    $runtimeUsesRetailStartupConfig = $configuredClientBuild -ge 947 -and $use947RetailConfigHost
-    $runtimePromoteToFullSync = $runtimeUsesRetailStartupConfig -or ($prefer947PatchedDirectClient -and ($runtimeTargetFiles.Count -lt $runtimeSourceFiles.Count -or $runtimeHotStubArchiveIds.Count -gt 0))
+    $runtimeHotMissingReferenceTableArchiveIds = @(
+        foreach ($archiveId in $runtimeHotArchiveIds947) {
+            $runtimeArchiveState = Get-RuntimeArchiveState -RuntimeCacheDir $runtimeCacheTargetDir -ArchiveId $archiveId -IncludeCorePrefixedAliases:$runtimeAliasSeedingEnabled
+            $sourceArchivePath = Join-Path $runtimeCacheSourceDir ("js5-{0}.jcache" -f $archiveId)
+            if (
+                $runtimeArchiveState.Exists -and
+                (Test-RuntimeArchiveHasMissingReferenceTable -SourcePath $sourceArchivePath -RuntimePath $runtimeArchiveState.PreferredPath)
+            ) {
+                $archiveId
+            }
+        }
+    )
+    $runtimePromoteToFullSync = $runtimeUsesRetailStartupConfig -or ($prefer947PatchedDirectClient -and ($runtimeTargetArchiveCount.Count -lt $runtimeSourceFiles.Count -or $runtimeHotStubArchiveIds.Count -gt 0 -or $runtimeHotMissingReferenceTableArchiveIds.Count -gt 0))
     $runtimeSyncMode = if ($runtimePromoteToFullSync) { "full" } else { "seed-missing" }
-    $runtimeClientManagedHotArchiveSet = $configuredClientBuild -ge 947 -and $runtimeUsesRetailStartupConfig -and $prefer947PatchedDirectClient -and $runtimeMissingHotArchiveIds.Count -eq 0
-    Write-LaunchTrace ("runtime cache sync mode={0} sourceCount={1} runtimeCount={2} hotStubCount={3} hotStubArchives={4}" -f $runtimeSyncMode, $runtimeSourceFiles.Count, $runtimeTargetFiles.Count, $runtimeHotStubArchiveIds.Count, (($runtimeHotStubArchiveIds | ForEach-Object { [string]$_ }) -join ","))
+    if ($configuredClientBuild -ge 947 -and $runtimeUsesRetailStartupConfig -and $prefer947PatchedDirectClient) {
+        $runtimeHotArchiveParityMismatchIds = @(
+            foreach ($archiveId in $runtimeHotArchiveIds947) {
+                if (-not (Test-RuntimeArchiveMatchesSource -SourceCacheDir $runtimeCacheSourceDir -RuntimeCacheDir $runtimeCacheTargetDir -ArchiveId $archiveId)) {
+                    $archiveId
+                }
+            }
+        )
+    }
+    $runtimeClientManagedHotArchiveSet = $configuredClientBuild -ge 947 -and $runtimeUsesRetailStartupConfig -and $prefer947PatchedDirectClient -and $runtimeMissingHotArchiveIds.Count -eq 0 -and $runtimeHotMissingReferenceTableArchiveIds.Count -eq 0 -and $runtimeHotArchiveParityMismatchIds.Count -eq 0
+    Write-LaunchTrace ("runtime cache sync mode={0} sourceCount={1} runtimeFileCount={2} runtimeArchiveCount={3} hotStubCount={4} hotStubArchives={5} hotMissingCount={6} hotMissingReferenceCount={7} hotParityMismatchCount={8}" -f $runtimeSyncMode, $runtimeSourceFiles.Count, $runtimeTargetFiles.Count, $runtimeTargetArchiveCount.Count, $runtimeHotStubArchiveIds.Count, (($runtimeHotStubArchiveIds | ForEach-Object { [string]$_ }) -join ","), $runtimeMissingHotArchiveIds.Count, $runtimeHotMissingReferenceTableArchiveIds.Count, $runtimeHotArchiveParityMismatchIds.Count)
     $runtimeCacheSyncParameters = @{
         SourceCacheDir = $runtimeCacheSourceDir
         RuntimeCacheDir = $runtimeCacheTargetDir
         SummaryOutput  = $runtimeCacheSyncSummary
         NoOutput       = $true
     }
-    $runtimeShouldPreserveHotArchiveSet = $runtimeClientManagedHotArchiveSet -or ((-not $prefer947PatchedDirectClient) -and (-not $runtimeUsesRetailStartupConfig) -and -not $RepairRuntimeHotCache.IsPresent)
-    # Once the direct 947 retail-shaped path has a complete hot splash set, let
-    # the client own those ProgramData archives. They are valid even when their
-    # SQLite cache_index rows are empty, and force-repairing them every launch
-    # just sends splash back into another warmup cycle.
+    if ($runtimeAliasSeedingEnabled) {
+        $runtimeCacheSyncParameters["SeedCorePrefixedAliases"] = $true
+    }
+    # Now that the direct-patched 947 retail-shaped path serves live retail
+    # logged-out reference tables directly, tearing down the runtime hot archive
+    # set on every launch only leaves the client with freshly recreated 12 KB
+    # placeholders and no path forward beyond the splash screen. Prefer syncing
+    # the staged hot archives into ProgramData and only quarantine them when a
+    # future targeted diagnostic explicitly requests it.
+    $runtimeForceRetailRefreshHotArchiveSet = $false
+    $runtimeShouldPreserveHotArchiveSet = (
+        $runtimeForceRetailRefreshHotArchiveSet -or
+        ((-not $prefer947PatchedDirectClient) -and (-not $runtimeUsesRetailStartupConfig) -and -not $RepairRuntimeHotCache.IsPresent)
+    )
     if ($runtimeShouldPreserveHotArchiveSet) {
         $runtimeCacheSyncParameters["SkipJs5Archives"] = $runtimeHotArchiveIds947
-        if (-not $runtimeClientManagedHotArchiveSet) {
+        if ((-not $runtimeClientManagedHotArchiveSet) -and (-not $runtimeForceRetailRefreshHotArchiveSet)) {
             $runtimeCacheSyncParameters["ValidateSkippedArchives"] = $true
         }
     }
-    if ($runtimeShouldPreserveHotArchiveSet -and -not $runtimeClientManagedHotArchiveSet -and $runtimeHotStubArchiveIds.Count -gt 0) {
+    if (
+        $runtimeShouldPreserveHotArchiveSet -and
+        -not $runtimeClientManagedHotArchiveSet -and
+        -not $runtimeForceRetailRefreshHotArchiveSet -and
+        $runtimeHotStubArchiveIds.Count -gt 0
+    ) {
         $runtimeCacheSyncParameters["RescueSkippedBootstrapStubs"] = $true
     }
     if (-not $runtimePromoteToFullSync) {
         $runtimeCacheSyncParameters["SeedMissingOnly"] = $true
     }
-    & $runtimeCacheSyncScript @runtimeCacheSyncParameters
+    try {
+        & $runtimeCacheSyncScript @runtimeCacheSyncParameters
+    } catch {
+        Write-LaunchTrace ("runtime cache sync failed but launch will continue: {0}" -f $_.Exception.Message)
+    }
     if (Test-Path $runtimeCacheSyncSummary) {
         $runtimeCacheSyncResult = Get-Content -Path $runtimeCacheSyncSummary -Raw | ConvertFrom-Json
         $runtimeCacheSyncResult | Add-Member -NotePropertyName SyncMode -NotePropertyValue $runtimeSyncMode -Force
         $runtimeCacheSyncResult | Add-Member -NotePropertyName RuntimeSourceCount -NotePropertyValue $runtimeSourceFiles.Count -Force
         $runtimeCacheSyncResult | Add-Member -NotePropertyName RuntimeTargetCountBefore -NotePropertyValue $runtimeTargetFiles.Count -Force
+        $runtimeCacheSyncResult | Add-Member -NotePropertyName RuntimeTargetArchiveCountBefore -NotePropertyValue $runtimeTargetArchiveCount.Count -Force
+        $runtimeCacheSyncResult | Add-Member -NotePropertyName RuntimeAliasSeedingEnabled -NotePropertyValue $runtimeAliasSeedingEnabled -Force
         $runtimeCacheSyncResult | Add-Member -NotePropertyName HotStubArchiveIdsBefore -NotePropertyValue @($runtimeHotStubArchiveIds) -Force
+        $runtimeCacheSyncResult | Add-Member -NotePropertyName MissingHotArchiveIdsBefore -NotePropertyValue @($runtimeMissingHotArchiveIds) -Force
+        $runtimeCacheSyncResult | Add-Member -NotePropertyName HotMissingReferenceTableArchiveIdsBefore -NotePropertyValue @($runtimeHotMissingReferenceTableArchiveIds) -Force
+        $runtimeCacheSyncResult | Add-Member -NotePropertyName HotArchiveParityMismatchIdsBefore -NotePropertyValue @($runtimeHotArchiveParityMismatchIds) -Force
         $runtimeCopiedHotArchiveIds = @(
             @($runtimeCacheSyncResult.CopiedArchives) |
                 Where-Object { $runtimeHotArchiveIds947 -contains [int]$_ } |
@@ -1883,38 +2519,59 @@ if ($configuredClientBuild -ge 947 -and -not [string]::IsNullOrWhiteSpace($env:P
                 Select-Object -Unique
         )
         $runtimeCacheSyncResult | Add-Member -NotePropertyName CopiedHotArchiveIds -NotePropertyValue @($runtimeCopiedHotArchiveIds) -Force
-        Write-LaunchTrace ("runtime cache sync mode={0} rescued={1} copied={2} unchanged={3} skipped={4} skipArchives={5}" -f $runtimeSyncMode, $runtimeCacheSyncResult.RescuedCount, $runtimeCacheSyncResult.CopiedCount, $runtimeCacheSyncResult.UnchangedCount, $runtimeCacheSyncResult.SkippedCount, (($runtimeCacheSyncResult.SkipJs5Archives | ForEach-Object { [string]$_ }) -join ","))
+        Write-LaunchTrace ("runtime cache sync mode={0} rescued={1} copied={2} copiedTargets={3} unchanged={4} skipped={5} skipArchives={6}" -f $runtimeSyncMode, $runtimeCacheSyncResult.RescuedCount, $runtimeCacheSyncResult.CopiedCount, $runtimeCacheSyncResult.CopiedTargetCount, $runtimeCacheSyncResult.UnchangedCount, $runtimeCacheSyncResult.SkippedCount, (($runtimeCacheSyncResult.SkipJs5Archives | ForEach-Object { [string]$_ }) -join ","))
     } else {
         Write-LaunchTrace "runtime cache sync summary missing"
     }
 }
 
-$runtimeShouldAutoRepairHotCache947 = $configuredClientBuild -ge 947 -and $runtimeShouldPreserveHotArchiveSet -and -not $runtimeClientManagedHotArchiveSet -and $runtimeHotStubArchiveIds.Count -gt 0
+$runtimeShouldAutoRepairHotCache947 = $configuredClientBuild -ge 947 -and (
+    ($runtimeForceRetailRefreshHotArchiveSet -and $runtimeShouldPreserveHotArchiveSet) -or
+    ($runtimeShouldPreserveHotArchiveSet -and -not $runtimeClientManagedHotArchiveSet -and ($runtimeHotStubArchiveIds.Count -gt 0 -or $runtimeHotMissingReferenceTableArchiveIds.Count -gt 0))
+)
 if ($runtimeShouldAutoRepairHotCache947 -and -not $RepairRuntimeHotCache.IsPresent) {
-    $runtimeAutoRepairReason = "auto-hot-stub-quarantine"
+    $runtimeAutoRepairReason = if ($runtimeForceRetailRefreshHotArchiveSet) {
+        "auto-retail-hot-archive-refresh"
+    } elseif ($runtimeHotMissingReferenceTableArchiveIds.Count -gt 0) {
+        "auto-hot-missing-reference-table-quarantine"
+    } else {
+        "auto-hot-stub-quarantine"
+    }
 }
 $runtimeHotCacheRepairArchiveIds = if ($RepairRuntimeHotCache.IsPresent) {
     @($runtimeHotArchiveIds947)
+} elseif ($runtimeForceRetailRefreshHotArchiveSet) {
+    @($runtimeHotArchiveIds947)
 } elseif ($runtimeShouldAutoRepairHotCache947) {
-    @($runtimeHotStubArchiveIds)
+    @(
+        @($runtimeHotStubArchiveIds) +
+        @($runtimeHotMissingReferenceTableArchiveIds) |
+            Sort-Object -Unique
+    )
 } else {
     @()
 }
 Write-LaunchTrace ("runtime hot cache repair decision mode={0} archiveCount={1} archives={2}" -f $(if ($RepairRuntimeHotCache.IsPresent) { "manual" } elseif (-not [string]::IsNullOrWhiteSpace($runtimeAutoRepairReason)) { $runtimeAutoRepairReason } else { "skip" }), $runtimeHotCacheRepairArchiveIds.Count, (($runtimeHotCacheRepairArchiveIds | ForEach-Object { [string]$_ }) -join ","))
 
 if (
+    -not $runtimeCacheSyncSkippedEffective -and
     ($RepairRuntimeHotCache.IsPresent -or $runtimeShouldAutoRepairHotCache947) -and
     -not [string]::IsNullOrWhiteSpace($env:ProgramData) -and
     (Test-Path $runtimeHotCacheRepairScript) -and
     $runtimeHotCacheRepairArchiveIds.Count -gt 0
 ) {
     Write-LaunchTrace ("runtime hot cache repair start runtime={0}" -f (Join-Path $env:ProgramData "Jagex\\RuneScape"))
-    & $runtimeHotCacheRepairScript `
-        -RuntimeCacheDir (Join-Path $env:ProgramData "Jagex\\RuneScape") `
-        -ArchiveIds $runtimeHotCacheRepairArchiveIds `
-        -IncludeAuxiliaryFiles `
-        -SummaryOutput $runtimeHotCacheRepairSummary `
-        -NoOutput
+    $runtimeRepairArgs = @{
+        RuntimeCacheDir = (Join-Path $env:ProgramData "Jagex\\RuneScape")
+        ArchiveIds = $runtimeHotCacheRepairArchiveIds
+        IncludeAuxiliaryFiles = $true
+        SummaryOutput = $runtimeHotCacheRepairSummary
+        NoOutput = $true
+    }
+    if ($configuredClientBuild -ge 947) {
+        $runtimeRepairArgs["IncludeCorePrefixedAliases"] = $true
+    }
+    & $runtimeHotCacheRepairScript @runtimeRepairArgs
     if (Test-Path $runtimeHotCacheRepairSummary) {
         $runtimeHotCacheRepairResult = Get-Content -Path $runtimeHotCacheRepairSummary -Raw | ConvertFrom-Json
         Write-LaunchTrace ("runtime hot cache repair moved={0} missing={1}" -f $runtimeHotCacheRepairResult.MovedCount, $runtimeHotCacheRepairResult.MissingCount)
@@ -1944,6 +2601,14 @@ try {
     }
 
     $environmentCommands = @('set "JAVA_TOOL_OPTIONS=-XX:TieredStopAtLevel=1"')
+    if ($configuredClientBuild -ge 947) {
+        $environmentCommands += 'set "OPENNXT_ENABLE_RETAIL_RAW_CHECKSUM_PASSTHROUGH=1"'
+        if (-not $AllowRetailJs5Upstream) {
+            $environmentCommands += 'set "OPENNXT_ENABLE_RETAIL_LOGGED_OUT_JS5_PASSTHROUGH=1"'
+        } else {
+            $environmentCommands += 'set "OPENNXT_ENABLE_RETAIL_LOGGED_OUT_JS5_PASSTHROUGH=0"'
+        }
+    }
     if ($DisableChecksumOverride) {
         $environmentCommands += 'set "OPENNXT_DISABLE_CHECKSUM_OVERRIDE=1"'
     }
@@ -1969,59 +2634,95 @@ try {
 
     $serverPid = $null
     $serverPorts = @($configuredHttpPort, $configuredGameBackendPort)
-    if (-not (Wait-ListeningPorts -Ports $serverPorts -TimeoutSeconds $StartupTimeoutSeconds)) {
-        $stderrRaw = if (Test-Path $serverErr) { Get-Content $serverErr -Raw -ErrorAction SilentlyContinue } else { "" }
-        $installStartupBroken = $serverLaunchMode -eq "installDist" -and (
-            $stderrRaw -match 'NoClassDefFoundError' -or
-            $stderrRaw -match 'ClassNotFoundException' -or
-            $stderrRaw -match 'ReflectKotlinClassFinder'
-        )
+    try {
+        Write-LaunchTrace ("waiting for server ports={0} timeout={1}s mode={2}" -f ($serverPorts -join ","), $StartupTimeoutSeconds, $serverLaunchMode)
+        if (-not (Wait-ListeningPorts -Ports $serverPorts -TimeoutSeconds $StartupTimeoutSeconds)) {
+            Write-ServerStartupDiagnostics -WrapperProcess $wrapper -Ports $serverPorts -Prefix ("server ports wait failed mode={0}" -f $serverLaunchMode)
+            $stderrRaw = if (Test-Path $serverErr) { Get-Content $serverErr -Raw -ErrorAction SilentlyContinue } else { "" }
+            $installStartupBroken = $serverLaunchMode -eq "installDist" -and (
+                $stderrRaw -match 'NoClassDefFoundError' -or
+                $stderrRaw -match 'ClassNotFoundException' -or
+                $stderrRaw -match 'ReflectKotlinClassFinder'
+            )
 
-        if ($installStartupBroken) {
-            Write-LaunchTrace "installed server startup failed; retrying gradle run fallback"
-            try {
-                taskkill /PID $wrapper.Id /F | Out-Null
-            } catch {}
-            Remove-Item $serverOut, $serverErr -ErrorAction SilentlyContinue
-            $serverLaunchMode = "gradleRunFallback"
-            $wrapper = Start-ServerWrapperProcess -Command $serverCommandFallback
-            Write-LaunchTrace "started server wrapper pid=$($wrapper.Id) mode=$serverLaunchMode"
-            $fallbackTimeoutSeconds = [Math]::Max($StartupTimeoutSeconds, 180)
-            if (-not (Wait-ListeningPorts -Ports $serverPorts -TimeoutSeconds $fallbackTimeoutSeconds)) {
-                throw "Timed out waiting for OpenNXT server ports $configuredHttpPort and $configuredGameBackendPort after fallback startup"
+            if ($installStartupBroken) {
+                Write-LaunchTrace "installed server startup failed; retrying gradle run fallback"
+                try {
+                    taskkill /PID $wrapper.Id /F | Out-Null
+                } catch {}
+                Remove-Item $serverOut, $serverErr -ErrorAction SilentlyContinue
+                $serverLaunchMode = "gradleRunFallback"
+                $wrapper = Start-ServerWrapperProcess -Command $serverCommandFallback
+                Write-LaunchTrace "started server wrapper pid=$($wrapper.Id) mode=$serverLaunchMode"
+                $fallbackTimeoutSeconds = [Math]::Max($StartupTimeoutSeconds, 180)
+                Write-LaunchTrace ("waiting for server ports={0} timeout={1}s mode={2}" -f ($serverPorts -join ","), $fallbackTimeoutSeconds, $serverLaunchMode)
+                if (-not (Wait-ListeningPorts -Ports $serverPorts -TimeoutSeconds $fallbackTimeoutSeconds)) {
+                    Write-ServerStartupDiagnostics -WrapperProcess $wrapper -Ports $serverPorts -Prefix ("server ports wait failed mode={0}" -f $serverLaunchMode)
+                    throw "Timed out waiting for OpenNXT server ports $configuredHttpPort and $configuredGameBackendPort after fallback startup"
+                }
+            } else {
+                throw "Timed out waiting for OpenNXT server ports $configuredHttpPort and $configuredGameBackendPort after $StartupTimeoutSeconds seconds"
             }
-        } else {
-            throw "Timed out waiting for OpenNXT server ports $configuredHttpPort and $configuredGameBackendPort after $StartupTimeoutSeconds seconds"
         }
+        Write-LaunchTrace "server ports ready"
+
+        $serverPid = Get-ListeningProcessIds -Ports $serverPorts | Select-Object -First 1
+        if ($null -eq $serverPid) {
+            Write-LaunchTrace ("server pid unresolved mode={0} listenerSnapshot={1}" -f $serverLaunchMode, (Get-ListeningPortSnapshot -Ports $serverPorts))
+        } else {
+            Write-LaunchTrace "server pid=$serverPid mode=$serverLaunchMode"
+        }
+    } catch {
+        Write-ServerStartupDiagnostics -WrapperProcess $wrapper -Ports $serverPorts -Prefix "server startup exception"
+        Write-LaunchTrace ("server startup exception message={0}" -f $_.Exception.Message)
+        if (-not [string]::IsNullOrWhiteSpace($_.ScriptStackTrace)) {
+            Write-LaunchTrace ("server startup exception stack={0}" -f $_.ScriptStackTrace.Replace([Environment]::NewLine, " <NL> "))
+        }
+        throw
     }
-    Write-LaunchTrace "server ports ready"
 
-    $serverPid = Get-ListeningProcessIds -Ports $serverPorts | Select-Object -First 1
-    Write-LaunchTrace "server pid=$serverPid mode=$serverLaunchMode"
-
-    if ($configuredClientBuild -ge 947 -and $use947RetailConfigHost -and -not $prefer947PatchedDirectClient -and $script:UseContentTlsRoute -and -not $script:CanWriteHostsFile) {
+    if ($configuredClientBuild -ge 947 -and $use947RetailConfigHost -and $script:UseContentTlsRoute) {
         $startupConfigContent = Get-947StartupConfigContent -ConfigUrl $effectiveLaunchArg -HttpPort $configuredHttpPort
         if (-not [string]::IsNullOrWhiteSpace($startupConfigContent)) {
+            $startupConfigSnapshotReady = Save-947StartupConfigSnapshot -ConfigContent $startupConfigContent -OutputPath $startupConfigSnapshotPath
             $startupRouteHosts = @(Get-947StartupRouteHostsFromConfigContent -ConfigContent $startupConfigContent)
-            $startupRedirectHosts = @(
-                @(Get-947StartupWorldMitmHostsFromConfigContent -ConfigContent $startupConfigContent) |
-                    Select-Object -Unique
-            )
-            $script:ConfiguredTlsExtraMitmHosts = @(
-                @(
-                    $script:ConfiguredTlsExtraMitmHosts +
-                        $startupRedirectHosts
-                ) |
-                    Select-Object -Unique
-            )
-            $resolveRedirectSpecs = @(
-                @(
-                    $resolveRedirectSpecs +
-                        ($startupRedirectHosts | ForEach-Object { "{0}={1}" -f $_, $defaultMitmPrimaryHost })
-                ) |
-                    Select-Object -Unique
-            )
-            Write-LaunchTrace ("947 startup secure resolve redirects={0}" -f ($resolveRedirectSpecs -join ","))
+            $enable947StartupResolveRedirects = $configuredClientBuild -ge 947 -and $use947RetailConfigHost -and $script:UseContentTlsRoute -and $Force947StartupRouteRedirects
+            if ($enable947StartupResolveRedirects) {
+                # Match the last clean contained direct baseline: explicit
+                # startup-route experiments must redirect the content bootstrap
+                # host and the secure world/lobby fleet locally together.
+                $startupRedirectHosts = @(
+                    @(
+                        (@($startupRouteHosts) | Where-Object { Test-947SecureStartupRedirectHost -HostName $_ }) +
+                            @(Get-947SecureRetailWorldFleetHosts)
+                    ) |
+                        Where-Object { $_ -notin @("localhost", "127.0.0.1", "::1", "rs.config.runescape.com") } |
+                        Select-Object -Unique
+                )
+                $script:ConfiguredTlsExtraMitmHosts = @(
+                    @(
+                        $script:ConfiguredTlsExtraMitmHosts +
+                            $startupRedirectHosts
+                    ) |
+                        Select-Object -Unique
+                )
+                $resolveRedirectSpecs = @(
+                    @(
+                        $resolveRedirectSpecs +
+                            ($startupRedirectHosts | ForEach-Object { "{0}={1}" -f $_, $defaultMitmPrimaryHost })
+                    ) |
+                        Select-Object -Unique
+                )
+                Write-LaunchTrace ("947 startup secure resolve redirects={0}" -f ($resolveRedirectSpecs -join ","))
+            } else {
+                # 947 win64 splash bootstrap must stay on the retail startup
+                # world/content/lobby hosts until login. Redirecting those
+                # fetched route hosts back to localhost is only for explicit
+                # forced-startup experiments; the default path keeps them
+                # retail-shaped through the login transition.
+                $resolveRedirectSpecs = @($resolveRedirectSpecs | Select-Object -Unique)
+                Write-LaunchTrace "947 startup secure resolve redirects=<disabled-default>"
+            }
         } else {
             Write-LaunchTrace "947 startup secure resolve redirects=<config-fetch-failed>"
         }
@@ -2031,6 +2732,7 @@ try {
         $startupConfigContent = Get-947StartupConfigContent -ConfigUrl $effectiveLaunchArg -HttpPort $configuredHttpPort
         if (-not [string]::IsNullOrWhiteSpace($startupConfigContent)) {
             if (Save-947StartupConfigSnapshot -ConfigContent $startupConfigContent -OutputPath $startupConfigSnapshotPath) {
+                $startupConfigSnapshotReady = $true
                 $effectiveLaunchArg = Set-QueryParameter -Url $effectiveLaunchArg -Name "baseConfigSnapshotPath" -Value $startupConfigSnapshotPath
                 Write-LaunchTrace ("947 startup config snapshot={0}" -f $startupConfigSnapshotPath)
             }
@@ -2103,6 +2805,9 @@ if (-not $DisableWatchdog) {
     if ($script:UseLobbyTlsPassthroughProxy) {
         $watchdogArgs += "-LobbyTlsPassthrough"
     }
+    if ($AllowRetailJs5Upstream) {
+        $watchdogArgs += "-AllowRetailJs5Upstream"
+    }
     $watchdog = Start-Process -FilePath $powershellExe `
         -ArgumentList $watchdogArgs `
         -WorkingDirectory $root `
@@ -2153,6 +2858,7 @@ $clientWorkingDirectory = $selectedClientDir
 $effectiveClientArgs = @($clientArgs)
 $directPatchInlinePatchOffsets = @()
 $directPatchJumpBypassSpecs = @()
+$directPatchExtraArgs = @()
 $directPatchLaunchSummary = $null
 $installedRuntimeSyncResult = $null
 $wrapperExtraArgs = @()
@@ -2198,12 +2904,15 @@ if (
         $installedRuntimeSyncResult = Get-Content -Path $installedRuntimeSyncSummary -Raw | ConvertFrom-Json
     }
     if ($null -ne $installedRuntimeSyncResult) {
-        Write-LaunchTrace ("installed runtime sync localReady={0} installedReadyAfter={1} copied={2} failed={3}" -f $installedRuntimeSyncResult.localReady, $installedRuntimeSyncResult.installedReadyAfter, $installedRuntimeSyncResult.copiedCount, $installedRuntimeSyncResult.failedCount)
+        Write-LaunchTrace ("installed runtime sync localReady={0} wrapperLaunchReady={1} wrapperLocalChildOverrideReady={2} wrapperInstalledChildReady={3} installedReadyAfter={4} copied={5} failed={6}" -f $installedRuntimeSyncResult.localReady, $installedRuntimeSyncResult.wrapperLaunchReady, $installedRuntimeSyncResult.wrapperLocalChildOverrideReady, $installedRuntimeSyncResult.wrapperInstalledChildReady, $installedRuntimeSyncResult.installedReadyAfter, $installedRuntimeSyncResult.copiedCount, $installedRuntimeSyncResult.failedCount)
     } else {
         Write-LaunchTrace "installed runtime sync summary missing"
     }
-    if ($null -ne $installedRuntimeSyncResult -and -not [bool]$installedRuntimeSyncResult.localReady) {
-        throw "Installed runtime sync refused to continue because the staged local 947 client family does not match the live manifest."
+    if (
+        $null -ne $installedRuntimeSyncResult -and
+        -not [bool]$installedRuntimeSyncResult.wrapperLaunchReady
+    ) {
+        throw "Installed runtime sync refused to continue because neither the staged local 947 client family nor the already-installed wrapper child runtime is launch-ready."
     }
     if ($null -ne $installedRuntimeSyncResult -and -not [bool]$installedRuntimeSyncResult.installedReadyAfter) {
         throw "Installed runtime sync completed but ProgramData runtime files still do not match the live manifest."
@@ -2219,15 +2928,45 @@ if ($configuredClientBuild -ge 947 -and [string]::IsNullOrWhiteSpace($startupCon
     $startupConfigContent = Get-947StartupConfigContent -ConfigUrl $effectiveLaunchArg -HttpPort $configuredHttpPort
 }
 $launcherPreferencesResult = $null
+$graphicsDeviceResult = $null
 $gpuPreferenceResult = $null
 if ($autoManageGraphicsCompat -and ($useRuneScapeWrapper -or $useDirectPatchedRs2Client) -and (Test-Path $launcherPreferencesScript)) {
+    $preferHighPerformanceGraphics = Test-RecentD3DDeviceRemoved -LogPaths @($directPatchStderr, $wrapperRewriteStderr)
+    $effectiveGraphicsCompatibilityMode = $GraphicsCompatibilityMode
+    if ([string]::IsNullOrWhiteSpace($effectiveGraphicsCompatibilityMode) -or $effectiveGraphicsCompatibilityMode -eq "auto") {
+        $effectiveGraphicsCompatibilityMode = "true"
+    }
+    $effectiveGraphicsDevicePreference = $GraphicsDevicePreference
+    if ([string]::IsNullOrWhiteSpace($effectiveGraphicsDevicePreference) -or $effectiveGraphicsDevicePreference -eq "auto") {
+        # Keep 947 on the safer Intel/power-saving lane by default, but if the
+        # previous run ended with D3D11 device removal then retry on the
+        # discrete adapter instead of repeating the known-bad render path.
+        $effectiveGraphicsDevicePreference = "power-saving"
+        if ($preferHighPerformanceGraphics) {
+            $effectiveGraphicsDevicePreference = "high-performance"
+        }
+    }
+    $resolvedGraphicsDevice = "default"
+    if ($configuredClientBuild -ge 947 -and (Test-Path $graphicsDeviceResolverScript)) {
+        if ($effectiveGraphicsDevicePreference -eq "power-saving") {
+            $graphicsDeviceJson = & $graphicsDeviceResolverScript -Preference "power-saving" -SummaryOutput $graphicsDeviceSummary
+        } else {
+            $graphicsDeviceJson = & $graphicsDeviceResolverScript -Preference $effectiveGraphicsDevicePreference -SummaryOutput $graphicsDeviceSummary
+        }
+        if (-not [string]::IsNullOrWhiteSpace($graphicsDeviceJson)) {
+            $graphicsDeviceResult = $graphicsDeviceJson | ConvertFrom-Json
+            if (-not [string]::IsNullOrWhiteSpace([string]$graphicsDeviceResult.SelectedGraphicsDevice)) {
+                $resolvedGraphicsDevice = [string]$graphicsDeviceResult.SelectedGraphicsDevice
+            }
+        }
+    }
     $launcherPreferenceParams = @{
-        Compatibility = "true"
+        Compatibility = $effectiveGraphicsCompatibilityMode
         ClearDontAskAgain = $true
         SummaryOutput = $launcherPreferencesSummary
     }
     if ($configuredClientBuild -ge 947) {
-        $launcherPreferenceParams.GraphicsDevice = "default"
+        $launcherPreferenceParams.GraphicsDevice = $resolvedGraphicsDevice
     }
     $preferencesJson = & $launcherPreferencesScript @launcherPreferenceParams
     if (-not [string]::IsNullOrWhiteSpace($preferencesJson)) {
@@ -2240,7 +2979,23 @@ if ($configuredClientBuild -ge 947 -and (Test-Path $windowsGpuPreferenceScript))
         $installedGameClientExe
     ) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Select-Object -Unique
     if ($gpuTargets.Count -gt 0) {
-        $gpuPreferenceJson = & $windowsGpuPreferenceScript -ExecutablePath $gpuTargets -Preference "high-performance" -SummaryOutput $gpuPreferenceSummary
+        $preferHighPerformanceGraphics = Test-RecentD3DDeviceRemoved -LogPaths @($directPatchStderr, $wrapperRewriteStderr)
+        # Keep 947 on the safer Windows GPU lane by default; the discrete-GPU
+        # override has been correlated with CLOCK_WATCHDOG_TIMEOUT bugchecks.
+        # If the previous run hit D3D11 device removal on that lane, retry on
+        # the discrete adapter instead of pinning the failing config forever.
+        $effectiveWindowsGpuPreference = $GraphicsDevicePreference
+        if ([string]::IsNullOrWhiteSpace($effectiveWindowsGpuPreference) -or $effectiveWindowsGpuPreference -eq "auto") {
+            $effectiveWindowsGpuPreference = "power-saving"
+            if ($preferHighPerformanceGraphics) {
+                $effectiveWindowsGpuPreference = "high-performance"
+            }
+        }
+        if ($effectiveWindowsGpuPreference -eq "power-saving") {
+            $gpuPreferenceJson = & $windowsGpuPreferenceScript -ExecutablePath $gpuTargets -Preference "power-saving" -SummaryOutput $gpuPreferenceSummary
+        } else {
+            $gpuPreferenceJson = & $windowsGpuPreferenceScript -ExecutablePath $gpuTargets -Preference $effectiveWindowsGpuPreference -SummaryOutput $gpuPreferenceSummary
+        }
         if (-not [string]::IsNullOrWhiteSpace($gpuPreferenceJson)) {
             $gpuPreferenceResult = $gpuPreferenceJson | ConvertFrom-Json
         }
@@ -2261,31 +3016,53 @@ if ($UsePatchedLauncher) {
     $clientWorkingDirectory = $selectedClientDir
     $effectiveClientArgs = @("--configURI=$effectiveLaunchArg")
     if ($configuredClientBuild -ge 947) {
-        $wrapperExtraArgs += "--useAngle"
-        $wrapperInlinePatchOffsets += "0x590001"
-        $wrapperInlinePatchOffsets += "0x590321"
-        $wrapperInlinePatchOffsets += "0x5916c3"
-        $wrapperInlinePatchOffsets += "0x5916f0"
-        $wrapperInlinePatchOffsets += "0x591712"
-        $wrapperInlinePatchOffsets += "0x591719"
-        $wrapperInlinePatchOffsets += "0x5919e3"
-        $wrapperInlinePatchOffsets += "0x591a10"
-        $wrapperInlinePatchOffsets += "0x591a32"
-        $wrapperInlinePatchOffsets += "0x591a39"
-        $wrapperInlinePatchOffsets += "0x594a41"
-        $wrapperInlinePatchOffsets += "0x594d61"
+        if (-not $DisableUseAngle.IsPresent) {
+            $wrapperExtraArgs += "--useAngle"
+        }
+        if (-not $Disable947InlineNullReadPatches.IsPresent) {
+            $wrapperInlinePatchOffsets += "0x590001"
+            $wrapperInlinePatchOffsets += "0x590321"
+            $wrapperInlinePatchOffsets += "0x5916c3"
+            $wrapperInlinePatchOffsets += "0x5916f0"
+            $wrapperInlinePatchOffsets += "0x591712"
+            $wrapperInlinePatchOffsets += "0x591719"
+            $wrapperInlinePatchOffsets += "0x5919e3"
+            $wrapperInlinePatchOffsets += "0x591a10"
+            $wrapperInlinePatchOffsets += "0x591a32"
+            $wrapperInlinePatchOffsets += "0x591a39"
+            $wrapperInlinePatchOffsets += "0x594d61"
+        }
+        if (-not $Disable947JumpBypassGuards.IsPresent) {
+        # With 0x590cf4 removed, the client faults immediately at 0x59002d
+        # (mov rdx, qword ptr [rbx+0x10]) unless we keep this early null-deref
+        # bypass active.
         $wrapperJumpBypassSpecs += "0x59002d:0x5900a5"
-        $wrapperJumpBypassSpecs += "0x59034d:0x5903c5"
-        $wrapperJumpBypassSpecs += "0x590c72:0x590dcb"
-        $wrapperJumpBypassSpecs += "0x590f92:0x5910eb"
-        $wrapperJumpBypassSpecs += "0x594a88:0x594aa1"
-        $wrapperJumpBypassSpecs += "0x594a91:0x594aa1"
-        $wrapperJumpBypassSpecs += "0x594aa6:0x594aba"
-        $wrapperJumpBypassSpecs += "0x594aaf:0x594aba"
-        $wrapperJumpBypassSpecs += "0x594da8:0x594dc1"
-        $wrapperJumpBypassSpecs += "0x594dc6:0x594dda"
-        $wrapperJumpBypassSpecs += "0x72ad28:0x72ad46"
-        $wrapperJumpBypassSpecs += "0x72b3a8:0x72b3c6"
+        # FUN_140590220 can stale out on state==1 before it re-runs the normal
+        # 0x7710/0x7734/0x77d8 readiness checks. Keep that fast path only when the
+        # normal-path buffers are populated; otherwise fall back into the original
+        # compare/enqueue path.
+        $wrapperJumpBypassSpecs += "0x5902d5:0x5903bd"
+        # Some contained 947 runs still reach the master-table entry lookup
+        # before owner+0x30d0 is populated, or with an out-of-range entry
+        # index that would fall into the bad absolute-read fallback at 0x590c72.
+        # Guard that lookup, but keep the real in-range table path live.
+        $wrapperJumpBypassSpecs += "0x590c58:0x590c81"
+            # After `/ms` succeeds, some login-path packets still reach
+            # FUN_1402ab680 with a sentinel param_2 whose +0x8 field is null.
+            # Guard that stale update and return through the normal epilogue
+            # instead of AV'ing at 0x2ab6ad on [rsi+0x40].
+            $wrapperJumpBypassSpecs += "0x2ab698:0x2ab7f7"
+            # Once contained lobby bootstrap completes, some runs open the
+            # follow-on world socket and immediately enter FUN_140369980 with a
+            # poisoned `*param_1` base. Guard the `[r10+0x18]` walk and fall
+            # back to a conservative zero result instead of AV'ing before any
+            # world payload is sent.
+            $wrapperJumpBypassSpecs += "0x3699b2:0x3699f2"
+            # Some contained sign-in runs now advance into FUN_1407a3ad0 with
+            # stale vector-slot bookkeeping and then AV on the direct slot
+            # write path. Force the function's own slow-path allocator/helper.
+            $wrapperJumpBypassSpecs += "0x7a3bc2:0x7a3bff"
+        }
     }
     if ($normalizedExtraClientArgs.Count -gt 0) {
         $effectiveClientArgs += $normalizedExtraClientArgs
@@ -2305,34 +3082,44 @@ if ($shouldUse947DirectParamPairArgs) {
     }
 }
 if ($configuredClientBuild -ge 947 -and (Test-Path $selectedChildExe)) {
-    $directPatchInlinePatchOffsets += "0x590001"
-    $directPatchInlinePatchOffsets += "0x5916c3"
-    $directPatchInlinePatchOffsets += "0x5916f0"
-    $directPatchInlinePatchOffsets += "0x591712"
-    $directPatchInlinePatchOffsets += "0x591719"
-    $directPatchJumpBypassSpecs += "0x59002d:0x5900a5"
-    $directPatchJumpBypassSpecs += "0x590c72:0x590dcb"
-    if ($use947RetailConfigHost) {
-        # The secure retail-config direct route still needs the full 0x594a**
-        # null-dereference guard cluster to survive startup. The donor/wrapper
-        # fallback path also needs the early 0x72ad28 startup guard, but we
-        # continue to avoid the later localhost-only compat bypasses.
-        $directPatchInlinePatchOffsets += "0x594a41"
-        $directPatchJumpBypassSpecs += "0x594a88:0x594aa1"
-        $directPatchJumpBypassSpecs += "0x594a91:0x594aa1"
-        $directPatchJumpBypassSpecs += "0x594aa6:0x594aba"
-        $directPatchJumpBypassSpecs += "0x594aaf:0x594aba"
-        $directPatchJumpBypassSpecs += "0x72ad28:0x72ad46"
-    } else {
-        # The localhost/bootstrap route still needs the broader compat block,
-        # but the secure retail-config route stays on the narrower crash
-        # guards so we do not short-circuit the 947 splash bootstrap.
-        $directPatchInlinePatchOffsets += "0x594a41"
-        $directPatchJumpBypassSpecs += "0x594a88:0x594aa1"
-        $directPatchJumpBypassSpecs += "0x594a91:0x594aa1"
-        $directPatchJumpBypassSpecs += "0x594aa6:0x594aba"
-        $directPatchJumpBypassSpecs += "0x594aaf:0x594aba"
-        $directPatchJumpBypassSpecs += "0x72ad28:0x72ad46"
+    if (-not $Disable947InlineNullReadPatches.IsPresent) {
+        $directPatchInlinePatchOffsets += "0x590001"
+        $directPatchInlinePatchOffsets += "0x590321"
+        $directPatchInlinePatchOffsets += "0x5916c3"
+        $directPatchInlinePatchOffsets += "0x5916f0"
+        $directPatchInlinePatchOffsets += "0x591712"
+        $directPatchInlinePatchOffsets += "0x591719"
+        $directPatchInlinePatchOffsets += "0x5919e3"
+        $directPatchInlinePatchOffsets += "0x591a10"
+        $directPatchInlinePatchOffsets += "0x591a32"
+        $directPatchInlinePatchOffsets += "0x591a39"
+        $directPatchInlinePatchOffsets += "0x594d61"
+    }
+    if (-not $Disable947JumpBypassGuards.IsPresent) {
+        # Keep the early FUN_14058fed0 null-deref guard active; removing it moves
+        # the fault straight onto 0x59002d before the client can reach the splash.
+        $directPatchJumpBypassSpecs += "0x59002d:0x5900a5"
+        $directPatchJumpBypassSpecs += "0x5902d5:0x5903bd"
+        # Some contained 947 runs still reach the master-table entry lookup before
+        # owner+0x30d0 is populated, or with an out-of-range entry index that
+        # would fall into the bad absolute-read fallback at 0x590c72. Guard that
+        # lookup, but keep the real in-range table path live.
+        $directPatchJumpBypassSpecs += "0x590c58:0x590c81"
+        # After `/ms` succeeds, some login-path packets still reach
+        # FUN_1402ab680 with a sentinel param_2 whose +0x8 field is null.
+        # Guard that stale update and return through the normal epilogue
+        # instead of AV'ing at 0x2ab6ad on [rsi+0x40].
+        $directPatchJumpBypassSpecs += "0x2ab698:0x2ab7f7"
+        # Once contained lobby bootstrap completes, some runs open the
+        # follow-on world socket and immediately enter FUN_140369980 with a
+        # poisoned `*param_1` base. Guard the `[r10+0x18]` walk and fall back
+        # to a conservative zero result instead of AV'ing before any world
+        # payload is sent.
+        $directPatchJumpBypassSpecs += "0x3699b2:0x3699f2"
+        # Some contained sign-in runs now advance into FUN_1407a3ad0 with
+        # stale vector-slot bookkeeping and then AV on the direct slot write
+        # path. Force the function's own slow-path allocator/helper.
+        $directPatchJumpBypassSpecs += "0x7a3bc2:0x7a3bff"
     }
 }
 
@@ -2355,6 +3142,7 @@ $wrapperRewriteHelper = $null
 $wrapperFallbackToDirectPatched = $false
 $wrapperFallbackReason = $null
 $wrapperAcceptedInstalledRuntimeChild = $false
+$directPatchMonitorSeconds = [Math]::Max(300, $StartupTimeoutSeconds)
 
 if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
     $directLaunch = Invoke-DirectPatchedLiveLaunch `
@@ -2367,9 +3155,10 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
         -DirectPatchToolPath $directPatchTool `
         -WorkspaceRoot $root `
         -RsaConfigPath $rsaConfigPath `
-        -MonitorSeconds $StartupTimeoutSeconds `
+        -MonitorSeconds $directPatchMonitorSeconds `
         -InlinePatchOffsets $directPatchInlinePatchOffsets `
         -JumpBypassSpecs $directPatchJumpBypassSpecs `
+        -DirectPatchExtraArgs $directPatchExtraArgs `
         -RedirectSpecs $resolveRedirectSpecs
     $directPatchLaunchSummary = $directLaunch.Summary
     $resolvedClientPid = $directLaunch.ResolvedClientPid
@@ -2398,15 +3187,34 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
         $rewriteArgs += "--rewrite-scope"
         $rewriteArgs += "all"
         $rewriteArgs += "--child-hook-duration-seconds"
-        $rewriteArgs += "20"
-        if (Test-Path $selectedChildExe) {
+        $rewriteArgs += "120"
+        if ($startupConfigSnapshotReady -and (Test-Path $startupConfigSnapshotPath)) {
+            $rewriteArgs += "--rewrite-config-file"
+            $rewriteArgs += $startupConfigSnapshotPath
+        }
+        $wrapperLocalChildOverrideReady = (Test-Path $selectedChildExe)
+        if ($null -ne $installedRuntimeSyncResult) {
+            $wrapperLocalChildOverrideReady = $wrapperLocalChildOverrideReady -and [bool]$installedRuntimeSyncResult.wrapperLocalChildOverrideReady
+        }
+        if ($wrapperLocalChildOverrideReady) {
             $rewriteArgs += "--child-exe-override"
             $rewriteArgs += $selectedChildExe
+        }
+        $acceptedChildRefreshReady = $null -ne $installedRuntimeSyncResult -and
+            [bool]$installedRuntimeSyncResult.wrapperLocalChildOverrideReady -and
+            [bool]$installedRuntimeSyncResult.installedReadyAfter
+        if ($acceptedChildRefreshReady -and -not [string]::IsNullOrWhiteSpace($installedGameClientExe) -and (Test-Path $installedGameClientExe)) {
+            $rewriteArgs += "--accepted-child-exe"
+            $rewriteArgs += $installedGameClientExe
         }
     }
     if (Test-Path $rsaConfigPath) {
         $rewriteArgs += "--rsa-config"
         $rewriteArgs += $rsaConfigPath
+        if ($configuredClientBuild -ge 947 -and (Test-Path $originalClientExe)) {
+            $rewriteArgs += "--js5-rsa-source-exe"
+            $rewriteArgs += $originalClientExe
+        }
     }
     foreach ($wrapperExtraArg in $wrapperExtraArgs) {
         $rewriteArgs += "--wrapper-extra-arg=$wrapperExtraArg"
@@ -2422,6 +3230,9 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
     foreach ($resolveRedirectSpec in $resolveRedirectSpecs) {
         $rewriteArgs += "--resolve-redirect"
         $rewriteArgs += $resolveRedirectSpec
+    }
+    if ($enable947StartupResolveRedirects) {
+        $rewriteArgs += "--force-secure-retail-startup-redirects"
     }
 
     $pythonExe = (Get-Command python -ErrorAction Stop).Source
@@ -2474,7 +3285,7 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
                 -DirectPatchToolPath $directPatchTool `
                 -WorkspaceRoot $root `
                 -RsaConfigPath $rsaConfigPath `
-                -MonitorSeconds $StartupTimeoutSeconds `
+                -MonitorSeconds $directPatchMonitorSeconds `
                 -InlinePatchOffsets $directPatchInlinePatchOffsets `
                 -JumpBypassSpecs $directPatchJumpBypassSpecs `
                 -RedirectSpecs $resolveRedirectSpecs
@@ -2518,11 +3329,14 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
                 } else {
                     $null
                 }
-                $installedRuntimeReady = $null -ne $installedRuntimeSyncResult -and
-                    [bool]$installedRuntimeSyncResult.localReady -and
+                $acceptedChildRefreshReady = $null -ne $installedRuntimeSyncResult -and
+                    [bool]$installedRuntimeSyncResult.wrapperLocalChildOverrideReady -and
+                    [bool]$installedRuntimeSyncResult.installedReadyAfter
+                $wrapperInstalledRuntimeChildReady = $null -ne $installedRuntimeSyncResult -and
+                    [bool]$installedRuntimeSyncResult.wrapperInstalledChildReady -and
                     [bool]$installedRuntimeSyncResult.installedReadyAfter
                 if (
-                    $installedRuntimeReady -and
+                    ($acceptedChildRefreshReady -or $wrapperInstalledRuntimeChildReady) -and
                     -not [string]::IsNullOrWhiteSpace($installedRuntimeChildPath) -and
                     [string]::Equals($installedRuntimeChildPath, $actualChildPath, [System.StringComparison]::OrdinalIgnoreCase)
                 ) {
@@ -2548,7 +3362,7 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
                 -DirectPatchToolPath $directPatchTool `
                 -WorkspaceRoot $root `
                 -RsaConfigPath $rsaConfigPath `
-                -MonitorSeconds $StartupTimeoutSeconds `
+                -MonitorSeconds $directPatchMonitorSeconds `
                 -InlinePatchOffsets $directPatchInlinePatchOffsets `
                 -JumpBypassSpecs $directPatchJumpBypassSpecs `
                 -RedirectSpecs $resolveRedirectSpecs
@@ -2594,7 +3408,7 @@ if ($useDirectPatchedRs2Client -and (Test-Path $directPatchTool)) {
                     -DirectPatchToolPath $directPatchTool `
                     -WorkspaceRoot $root `
                     -RsaConfigPath $rsaConfigPath `
-                    -MonitorSeconds $StartupTimeoutSeconds `
+                    -MonitorSeconds $directPatchMonitorSeconds `
                     -InlinePatchOffsets $directPatchInlinePatchOffsets `
                     -JumpBypassSpecs $directPatchJumpBypassSpecs `
                     -RedirectSpecs $resolveRedirectSpecs
@@ -2666,6 +3480,8 @@ $json = [pscustomobject]@{
     WrapperExtraArgs = $wrapperExtraArgs
     WrapperInlinePatchOffsets = $wrapperInlinePatchOffsets
     WrapperJumpBypassSpecs = $wrapperJumpBypassSpecs
+    Disable947InlineNullReadPatches = [bool]$Disable947InlineNullReadPatches.IsPresent
+    Disable947JumpBypassGuards = [bool]$Disable947JumpBypassGuards.IsPresent
     DisableChecksumOverride = $DisableChecksumOverride.IsPresent
     RequestedBypassGameProxy = $BypassGameProxy.IsPresent
     BypassGameProxy = $script:EffectiveBypassGameProxy
@@ -2695,6 +3511,8 @@ $json = [pscustomobject]@{
     ClientCefLog = if ($EnableCefLogging) { $clientCefLog } else { $null }
     GraphicsDialogSummary = if ($graphicsHelperResult) { $graphicsDialogSummary } else { $null }
     GraphicsDialogInvoked = if ($graphicsHelperResult) { [bool]$graphicsHelperResult.Invoked } else { $null }
+    GraphicsDeviceSummary = if ($graphicsDeviceResult) { $graphicsDeviceSummary } else { $null }
+    LauncherGraphicsDevice = if ($launcherPreferencesResult) { $launcherPreferencesResult.After.GraphicsDevice } else { $null }
     LauncherPreferencesSummary = if ($launcherPreferencesResult) { $launcherPreferencesSummary } else { $null }
     LauncherCompatibilityForced = if ($launcherPreferencesResult) { $launcherPreferencesResult.After.Compatibility } else { $null }
     LauncherPreferencesChangedKeys = if ($launcherPreferencesResult) { @($launcherPreferencesResult.ChangedKeys) } else { @() }
@@ -2702,6 +3520,8 @@ $json = [pscustomobject]@{
     GpuPreferenceChangedPaths = if ($gpuPreferenceResult) { @($gpuPreferenceResult.ChangedPaths) } else { @() }
     GpuPreferenceTargetPaths = if ($gpuPreferenceResult) { @($gpuPreferenceResult.Entries | ForEach-Object { $_.ExecutablePath }) } else { @() }
     RuntimeCacheSyncSummary = if ($runtimeCacheSyncResult) { $runtimeCacheSyncSummary } else { $null }
+    RuntimeCacheSyncSkipped = [bool]$runtimeCacheSyncSkippedEffective
+    RuntimeCacheSyncAutoSkipped = [bool]$runtimeAutoSkipCacheSync947Retail
     RuntimeCacheSyncPlannedCopyCount = if ($runtimeCacheSyncResult) { [int]$runtimeCacheSyncResult.PlannedCopyCount } else { 0 }
     RuntimeCacheSyncCopiedCount = if ($runtimeCacheSyncResult) { [int]$runtimeCacheSyncResult.CopiedCount } else { 0 }
     RuntimeCacheSyncCopiedArchives = if ($runtimeCacheSyncResult) { @($runtimeCacheSyncResult.CopiedArchives) } else { @() }
@@ -2734,7 +3554,9 @@ $json = [pscustomobject]@{
         "direct-client"
     }
 } | ConvertTo-Json -Depth 3
+Write-LaunchTrace ("writing launch state file={0}" -f $launchStateFile)
 Set-Content -Path $launchStateFile -Value $json -Encoding ASCII
+Write-LaunchTrace ("launch state written file={0}" -f $launchStateFile)
 Write-Output $json
 Write-LaunchTrace "launch-win64c-live completed"
 

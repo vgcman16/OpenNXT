@@ -15,6 +15,37 @@ class World : Tickable {
 
     private val toAdd = ConcurrentLinkedQueue<WorldPlayer>()
 
+    private fun registerPlayer(player: WorldPlayer): Boolean {
+        return try {
+            players
+                .filter { existing -> existing.name.equals(player.name, ignoreCase = true) }
+                .toList()
+                .forEach { existing ->
+                    removePlayer(
+                        existing,
+                        reason = "replaced by a newer world login for the same username",
+                        closeChannel = true
+                    )
+                }
+
+            players += player
+            if (!playerEntities.add(player.entity)) {
+                logger.warn { "Failed to allocate entity slot for world player ${player.name}" }
+                players -= player
+                player.client.channel.close()
+                return false
+            }
+            player.added()
+            true
+        } catch (e: Exception) {
+            logger.error(e) { "Failed to bootstrap world player ${player.name}" }
+            players -= player
+            playerEntities.remove(player.entity)
+            player.client.channel.close()
+            false
+        }
+    }
+
     private fun removePlayer(player: WorldPlayer, reason: String, closeChannel: Boolean = false) {
         logger.info { "Removing world player ${player.name}: $reason" }
         players -= player
@@ -27,32 +58,7 @@ class World : Tickable {
     override fun tick() {
         while (true) {
             val player = toAdd.poll() ?: break
-            try {
-                players
-                    .filter { existing -> existing.name.equals(player.name, ignoreCase = true) }
-                    .toList()
-                    .forEach { existing ->
-                        removePlayer(
-                            existing,
-                            reason = "replaced by a newer world login for the same username",
-                            closeChannel = true
-                        )
-                    }
-
-                players += player
-                if (!playerEntities.add(player.entity)) {
-                    logger.warn { "Failed to allocate entity slot for world player ${player.name}" }
-                    players -= player
-                    player.client.channel.close()
-                    continue
-                }
-                player.added()
-            } catch (e: Exception) {
-                logger.error(e) { "Failed to bootstrap world player ${player.name}" }
-                players -= player
-                playerEntities.remove(player.entity)
-                player.client.channel.close()
-            }
+            registerPlayer(player)
         }
 
         players.toList().forEach { player ->
@@ -82,5 +88,10 @@ class World : Tickable {
     fun addPlayer(player: WorldPlayer) {
         logger.info { "Queueing world player ${player.name}" }
         toAdd += player
+    }
+
+    fun addPlayerNow(player: WorldPlayer) {
+        logger.info { "Adding world player ${player.name} immediately on tick-engine thread" }
+        registerPlayer(player)
     }
 }

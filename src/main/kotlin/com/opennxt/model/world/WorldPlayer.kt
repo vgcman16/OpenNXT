@@ -42,6 +42,7 @@ import com.opennxt.net.game.serverprot.NoTimeout
 import com.opennxt.net.game.serverprot.RebuildNormal
 import com.opennxt.net.game.serverprot.RunClientScript
 import com.opennxt.net.game.serverprot.ServerTickEnd
+import com.opennxt.net.game.serverprot.ifaces.IfCloseSub
 import com.opennxt.net.game.serverprot.ifaces.IfOpensubActivePlayer
 import com.opennxt.net.game.serverprot.ifaces.IfSethide
 import com.opennxt.net.game.serverprot.variables.ResetClientVarcache
@@ -55,7 +56,12 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import mu.KotlinLogging
 import kotlin.reflect.KClass
 
-class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntity) : BasePlayer(client, name) {
+class WorldPlayer(
+    client: ConnectedClient,
+    name: String,
+    val entity: PlayerEntity,
+    private val entryMode: EntryMode = EntryMode.FULL_LOGIN
+) : BasePlayer(client, name) {
     private val handlers =
         Object2ObjectOpenHashMap<KClass<out GamePacket>, GamePacketHandler<in BasePlayer, out GamePacket>>()
     private val logger = KotlinLogging.logger { }
@@ -157,6 +163,7 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
     private var deferredForcedFallback10623BatchPending = false
     private var forcedFallbackLateReadyInterfaceReplaySent = false
     private var forcedFallbackLateReadyInterfaceReplayArmed = false
+    private var deferredForcedFallbackSelfModelBindPending = false
     private var awaitingLateSceneStartReadySignal = false
     private var lateSceneStartReadySignalsAccepted = 0
     var lastClientBootstrapBlob28: ClientBootstrapBlob28? = null
@@ -188,12 +195,20 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
         private const val FORCED_FALLBACK_LATE_SCENE_START_CONTROL_50_PHASE2_MIN_VALUE = 4
         private const val FORCED_FALLBACK_LATE_SCENE_START_CONTROL_50_PHASE3_MIN_VALUE = 4
         private const val MAX_LATE_SCENE_START_READY_ACCEPTS = 4
-        private val MAP_BUILD_COMPAT_OPCODES = setOf(50, 95, 113)
+        // Build 947 has shown at least one contained post-lobby path where the first
+        // map-build completion signal arrives as a 3-byte opcode 30 packet instead of
+        // the older control opcodes we already tolerate.
+        private val MAP_BUILD_COMPAT_OPCODES = setOf(30, 50, 95, 113)
         private val WORLD_READY_COMPAT_OPCODES = setOf(17, 48, 50)
         private val INTERFACE_BOOTSTRAP_ANNOUNCEMENT_SCRIPTS = setOf(1264, 3529)
         private val INTERFACE_BOOTSTRAP_PANEL_SCRIPTS = setOf(11145, 8420)
         private val INTERFACE_BOOTSTRAP_COMPLETION_SCRIPTS = setOf(139, 14150)
         private val INTERFACE_BOOTSTRAP_WIDGET_STATE_SCRIPTS = setOf(8310)
+    }
+
+    enum class EntryMode {
+        FULL_LOGIN,
+        POST_LOBBY_AUTH,
     }
 
     private data class PendingWorldReadySignal(
@@ -429,6 +444,14 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
         }
         return null
     }
+
+    private fun isLateSceneStartReadyCompatOpcode(opcode: Int): Boolean =
+        // On the contained 947 path the client no longer emits only the older 17/48-style
+        // post-scene-start nudges. Once we enter the forced fallback late-world tail we now
+        // consistently see a smaller readiness family (27, 66, 72, 84, 106, 114) instead.
+        // Keep this scoped to the active late-scene-ready wait so we do not globally reinterpret
+        // normal gameplay traffic as bootstrap progress.
+        opcode in setOf(17, 27, 48, 66, 72, 83, 84, 106, 114)
 
     private fun acceptLateSceneStartReadySignal(opcode: Int, payloadLength: Int, preview: String, source: String) {
         lateSceneStartReadySignalsAccepted++
@@ -691,6 +714,15 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
             awaitingMapBuildComplete = false
             completeDeferredBootstrap()
         }
+        if (awaitingLateSceneStartReadySignal) {
+            acceptLateSceneStartReadySignal(
+                opcode = 106,
+                payloadLength = 6,
+                preview =
+                    "mode=${packet.mode},width=${packet.width},height=${packet.height},flag=${packet.trailingFlag}",
+                source = "decoded-post-scene-start"
+            )
+        }
     }
 
     private fun handleUnidentifiedPacket(packet: UnidentifiedPacket): Boolean {
@@ -859,7 +891,7 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
             return true
         }
 
-        if (awaitingLateSceneStartReadySignal && opcode in setOf(17, 48)) {
+        if (awaitingLateSceneStartReadySignal && isLateSceneStartReadyCompatOpcode(opcode)) {
             acceptLateSceneStartReadySignal(
                 opcode = opcode,
                 payloadLength = payloadLength,
@@ -1326,6 +1358,8 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
         deferredDefaultVarpsPending = false
         runBootstrapStage("late-default-varps") {
             client.traceBootstrap("world-send-deferred-default-varps name=$name")
+            val skipFullDefaultVarpReplayForContainedPostLobby =
+                entryMode == EntryMode.POST_LOBBY_AUTH
             val forcedFallbackReplaySkipIds =
                 if (forcedMapBuildFallbackActive) TODORefactorThisClass.FORCED_FALLBACK_CANDIDATE_DEFAULT_VARP_IDS
                 else emptyList()
@@ -1342,7 +1376,14 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
                     )
                     TODORefactorThisClass.sendForcedFallbackCandidateDefaultVarps(client)
                 }
-                TODORefactorThisClass.sendDefaultVarps(client)
+                if (skipFullDefaultVarpReplayForContainedPostLobby) {
+                    client.traceBootstrap(
+                        "world-skip-full-default-varp-replay name=$name " +
+                            "reason=contained-post-lobby-auth forcedFallback=$forcedMapBuildFallbackActive"
+                    )
+                } else {
+                    TODORefactorThisClass.sendDefaultVarps(client)
+                }
             }
             client.traceBootstrap(
                 "world-queued-deferred-default-varps name=$name packets=${client.pendingDeferredBootstrapVarpCount()}"
@@ -1452,10 +1493,18 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
                         "reason=$reason"
                 )
             }
-            interfaces.setPlayerModelSelf(id = subInterfaceId, component = selfModelComponent)
-            client.traceBootstrap(
-                "world-bind-local-player-model name=$name id=$subInterfaceId component=$selfModelComponent"
-            )
+            if (forcedMinimalInterfaceBootstrap) {
+                deferredForcedFallbackSelfModelBindPending = true
+                client.traceBootstrap(
+                    "world-defer-local-player-model-bind name=$name id=$subInterfaceId component=$selfModelComponent " +
+                        "reason=forced-map-build-fallback-pre-late-ready"
+                )
+            } else {
+                interfaces.setPlayerModelSelf(id = subInterfaceId, component = selfModelComponent)
+                client.traceBootstrap(
+                    "world-bind-local-player-model name=$name id=$subInterfaceId component=$selfModelComponent"
+                )
+            }
         } else {
             logger.info {
                 "Skipping active player bind for $name because worldInterfaceSelfModelComponent is not configured"
@@ -2601,6 +2650,17 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
         }
         forcedFallbackLateReadyInterfaceReplaySent = true
         forcedFallbackLateReadyInterfaceReplayArmed = false
+        if (deferredForcedFallbackSelfModelBindPending) {
+            deferredForcedFallbackSelfModelBindPending = false
+            val selfModelComponent = OpenNXT.config.lobbyBootstrap.worldInterfaceSelfModelComponent
+            if (selfModelComponent >= 0) {
+                interfaces.setPlayerModelSelf(id = 1482, component = selfModelComponent)
+                client.traceBootstrap(
+                    "world-bind-local-player-model-after-late-ready name=$name id=1482 component=$selfModelComponent " +
+                        "control50=${lastClientBootstrapControl50} acceptedCount=$lateSceneStartReadySignalsAccepted"
+                )
+            }
+        }
         if (deferredForcedFallbackSupplementalChildrenPending) {
             deferredForcedFallbackSupplementalChildrenPending = false
             openForcedFallbackSupplementalWorldChildren(includeEvents = false)
@@ -2691,7 +2751,12 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
         }
         pendingForcedFallbackLoadingOverlayClose = false
         if (!interfaces.isOpened(1417)) {
-            return false
+            client.write(IfCloseSub(InterfaceHash(1477, 508)))
+            client.traceBootstrap(
+                "world-force-close-loading-overlay name=$name id=1417 parent=1477 component=508 " +
+                    "reason=$reason tracked=false"
+            )
+            return true
         }
         closeLoadingOverlay(reason = reason)
         return true
@@ -2722,6 +2787,7 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
         deferredForcedFallback10623BatchPending = false
         forcedFallbackLateReadyInterfaceReplaySent = false
         forcedFallbackLateReadyInterfaceReplayArmed = false
+        deferredForcedFallbackSelfModelBindPending = false
         awaitingLateSceneStartReadySignal = false
         lateSceneStartReadySignalsAccepted = 0
         postInitialWorldSyncHoldTicks = 0
@@ -2758,63 +2824,68 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
             entity.model.refresh()
         }
 
-        stage = "login-response"
-        runBootstrapStage(stage) {
-            client.channel.write(Unpooled.buffer(1).writeByte(GenericResponse.SUCCESSFUL.id))
-            client.channel.writeAndFlush(
-                LoginPacket.GameLoginResponse(
-                    byte0 = 0,
-                    rights = 0,
-                    byte2 = 0,
-                    byte3 = 0,
-                    byte4 = 0,
-                    byte5 = 0,
-                    byte6 = 0,
-                    playerIndex = entity.index,
-                    byte8 = 1,
-                    medium9 = 0,
-                    isMember = 1,
-                    username = name,
-                    short12 = 0,
-                    int13 = 0
+        if (entryMode == EntryMode.FULL_LOGIN) {
+            stage = "login-response"
+            runBootstrapStage(stage) {
+                client.channel.write(Unpooled.buffer(1).writeByte(GenericResponse.SUCCESSFUL.id))
+                client.channel.writeAndFlush(
+                    LoginPacket.GameLoginResponse(
+                        byte0 = 0,
+                        rights = 0,
+                        byte2 = 0,
+                        byte3 = 0,
+                        byte4 = 0,
+                        byte5 = 0,
+                        byte6 = 0,
+                        playerIndex = entity.index,
+                        byte8 = 1,
+                        medium9 = 0,
+                        isMember = 1,
+                        username = name,
+                        short12 = 0,
+                        int13 = 0
+                    )
                 )
-            )
-        }
+            }
 
-        stage = "pipeline-switch"
-        runBootstrapStage(stage) {
-            val pipeline = client.channel.pipeline()
+            stage = "pipeline-switch"
+            runBootstrapStage(stage) {
+                val pipeline = client.channel.pipeline()
 
-            if (pipeline.context("game-decoder") == null) {
-                if (pipeline.context("login-decoder") != null) {
-                    pipeline.replace("login-decoder", "game-decoder", GamePacketFraming())
-                } else {
-                    logger.warn { "Game decoder missing during world pipeline switch for $name; adding it directly" }
-                    if (pipeline.context("transport-sniffer") != null) {
-                        pipeline.addAfter("transport-sniffer", "game-decoder", GamePacketFraming())
+                if (pipeline.context("game-decoder") == null) {
+                    if (pipeline.context("login-decoder") != null) {
+                        pipeline.replace("login-decoder", "game-decoder", GamePacketFraming())
                     } else {
-                        pipeline.addLast("game-decoder", GamePacketFraming())
+                        logger.warn { "Game decoder missing during world pipeline switch for $name; adding it directly" }
+                        if (pipeline.context("transport-sniffer") != null) {
+                            pipeline.addAfter("transport-sniffer", "game-decoder", GamePacketFraming())
+                        } else {
+                            pipeline.addLast("game-decoder", GamePacketFraming())
+                        }
+                    }
+                }
+
+                if (pipeline.context("game-encoder") == null) {
+                    if (pipeline.context("login-encoder") != null) {
+                        pipeline.replace("login-encoder", "game-encoder", GamePacketEncoder())
+                    } else {
+                        logger.warn { "Game encoder missing during world pipeline switch for $name; adding it directly" }
+                        pipeline.addLast("game-encoder", GamePacketEncoder())
+                    }
+                }
+
+                if (pipeline.context("game-handler") == null) {
+                    if (pipeline.context("login-handler") != null) {
+                        pipeline.replace("login-handler", "game-handler", DynamicPacketHandler())
+                    } else {
+                        logger.warn { "Game handler missing during world pipeline switch for $name; adding it directly" }
+                        pipeline.addLast("game-handler", DynamicPacketHandler())
                     }
                 }
             }
-
-            if (pipeline.context("game-encoder") == null) {
-                if (pipeline.context("login-encoder") != null) {
-                    pipeline.replace("login-encoder", "game-encoder", GamePacketEncoder())
-                } else {
-                    logger.warn { "Game encoder missing during world pipeline switch for $name; adding it directly" }
-                    pipeline.addLast("game-encoder", GamePacketEncoder())
-                }
-            }
-
-            if (pipeline.context("game-handler") == null) {
-                if (pipeline.context("login-handler") != null) {
-                    pipeline.replace("login-handler", "game-handler", DynamicPacketHandler())
-                } else {
-                    logger.warn { "Game handler missing during world pipeline switch for $name; adding it directly" }
-                    pipeline.addLast("game-handler", DynamicPacketHandler())
-                }
-            }
+        } else {
+            client.traceBootstrap("world-skip-login-response name=$name reason=post-lobby-auth")
+            client.traceBootstrap("world-skip-pipeline-switch name=$name reason=post-lobby-auth")
         }
 
         stage = "rebuild"
@@ -2847,6 +2918,15 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
                 )
                 client.write(UnidentifiedPacket(OpcodeWithBuffer(rebuildRegistration.opcode, rebuildPayload)))
                 awaitingMapBuildComplete = PacketRegistry.getRegistration(Side.CLIENT, MapBuildComplete::class) != null
+                if (entryMode == EntryMode.POST_LOBBY_AUTH && awaitingMapBuildComplete) {
+                    logger.info {
+                        "Allowing the contained post-lobby world bootstrap for $name to wait for the normal " +
+                            "MAP_BUILD_COMPLETE/compat path after REBUILD_NORMAL before using the timed fallback"
+                    }
+                    client.traceBootstrap(
+                        "world-allow-map-build-complete-wait name=$name reason=post-lobby-auth-normal-bootstrap"
+                    )
+                }
             }
         }
 
@@ -2951,7 +3031,9 @@ class WorldPlayer(client: ConnectedClient, name: String, val entity: PlayerEntit
                 )
                 TODORefactorThisClass.sendForcedFallbackCandidateDefaultVarps(client)
                 client.primeLateDefaultVarpReplaySkip(TODORefactorThisClass.FORCED_FALLBACK_CANDIDATE_DEFAULT_VARP_IDS)
-                openLoadingNotesInterfaceIfAvailable(reason = "forced-map-build-fallback-minimal-bootstrap")
+                client.traceBootstrap(
+                    "world-skip-loading-notes name=$name reason=forced-map-build-fallback-minimal-bootstrap"
+                )
                 client.traceBootstrap(
                     "world-skip-forced-fallback-completion-companions name=$name " +
                         "ids=1484,1483,745,284,1213,1448,291,1488,1680,1847,635,1639 scripts=139,14150 " +

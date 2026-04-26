@@ -1,8 +1,8 @@
 # Phase 5 Integration Summary
 
 - Verified packet entries: `24`
-- Generated source root: `C:\Users\Demon\Documents\New project\OpenNXT\src\generated\kotlin`
-- Generated catalog: `C:\Users\Demon\Documents\New project\OpenNXT\src\generated\kotlin\com\opennxt\net\game\generated\GeneratedPacketCatalog.kt`
+- Generated source root: `src\generated\kotlin`
+- Generated catalog: `src\generated\kotlin\com\opennxt\net\game\generated\GeneratedPacketCatalog.kt`
 
 ## Packets
 

@@ -20,6 +20,7 @@ class ArchiveContainerCompare : Tool(
 ) {
     private val indicesArg by option(help = "Comma-separated index list")
         .default("32,33,34")
+    private val archivesArg by option(help = "Optional comma-separated archive list to compare within each selected index")
     private val outputDir by option(help = "Directory where comparison reports should be written")
         .default(Constants.DATA_PATH.resolve("debug").resolve("archive-container-compare").toString())
     private val ip by option(help = "Live js5 host").default("content.runescape.com")
@@ -27,19 +28,18 @@ class ArchiveContainerCompare : Tool(
     private val timeoutSeconds by option(help = "Live fetch timeout in seconds").int().default(30)
 
     override fun runTool() {
-        val indices = indicesArg.split(",")
-            .map { it.trim() }
-            .filter { it.isNotEmpty() }
-            .map { it.toInt() }
+        val indices = parseIntListArg(indicesArg)
+            ?: throw IllegalArgumentException("indicesArg must not be empty")
+        val requestedArchives = parseIntListArg(archivesArg)
         val baseDir = Paths.get(outputDir)
         Files.createDirectories(baseDir)
 
-        val reports = compare(indices)
+        val reports = compare(indices, requestedArchives)
         Files.writeString(baseDir.resolve("report.txt"), reports.joinToString("\n\n") { it.render() })
         logger.info { "Wrote archive container comparison report to $baseDir" }
     }
 
-    private fun compare(indices: List<Int>): List<IndexReport> {
+    private fun compare(indices: List<Int>, requestedArchives: List<Int>?): List<IndexReport> {
         val pool = Js5ClientPool(1, 1, ip, port)
         try {
             pool.openConnections(amount = 1)
@@ -51,10 +51,11 @@ class ArchiveContainerCompare : Tool(
             return indices.map { index ->
                 val table = filesystem.getReferenceTable(index)
                     ?: throw IllegalStateException("Missing local reference table for index $index")
-                val archiveReports = table.archives.keys.sorted().map { archive ->
+                val selectedArchives = selectArchives(table.archives.keys, requestedArchives)
+                val archiveReports = selectedArchives.map { archive ->
                     compareArchive(pool, index, archive)
                 }
-                IndexReport(index, archiveReports)
+                IndexReport(index, archiveReports, requestedArchives != null)
             }
         } finally {
             pool.close()
@@ -121,13 +122,36 @@ class ArchiveContainerCompare : Tool(
             .joinToString("") { "%02x".format(it.toInt() and 0xff) }
     }
 
+    companion object {
+        internal fun parseIntListArg(value: String?): List<Int>? {
+            if (value.isNullOrBlank()) {
+                return null
+            }
+            return value.split(",")
+                .map { it.trim() }
+                .filter { it.isNotEmpty() }
+                .map { it.toInt() }
+        }
+
+        internal fun selectArchives(availableArchives: Collection<Int>, requestedArchives: List<Int>?): List<Int> {
+            val available = availableArchives.toHashSet()
+            return if (requestedArchives == null) {
+                availableArchives.sorted()
+            } else {
+                requestedArchives.distinct().filter { it in available }
+            }
+        }
+    }
+
     private data class IndexReport(
         val index: Int,
-        val archives: List<ArchiveReport>
+        val archives: List<ArchiveReport>,
+        val filtered: Boolean
     ) {
         fun render(): String = buildString {
             appendLine("index=$index")
             appendLine("archiveCount=${archives.size}")
+            appendLine("filtered=$filtered")
             appendLine("rawMismatchCount=${archives.count { !it.rawMatch }}")
             appendLine("decodedMismatchCount=${archives.count { !it.decodedMatch }}")
             archives.forEach {

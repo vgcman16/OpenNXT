@@ -57,10 +57,15 @@ function Get-ProxyProcessIdsForListenPort {
     return @(
         Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
             Where-Object {
-                $_.Name -in @("python.exe", "pythonw.exe", "cmd.exe") -and
-                $_.CommandLine -like "*tls_terminate_proxy.py*" -and
-                $_.CommandLine -like "*--listen-port*" -and
-                $_.CommandLine -like "*$ListenPort*"
+                $commandLine = [string]$_.CommandLine
+                if ($_.Name -notin @("python.exe", "pythonw.exe", "cmd.exe")) {
+                    return $false
+                }
+                if ($commandLine -notlike "*tls_terminate_proxy.py*") {
+                    return $false
+                }
+                $listenPortMatch = [regex]::Match($commandLine, '(?i)(?:^|\s)--listen-port\s+"?(?<port>\d+)"?')
+                $listenPortMatch.Success -and ([int]$listenPortMatch.Groups["port"].Value -eq $ListenPort)
             } |
             Select-Object -ExpandProperty ProcessId -Unique
     )

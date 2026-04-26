@@ -1,6 +1,7 @@
 param(
     [string]$RuntimeCacheDir = "",
     [int[]]$ArchiveIds = @(2,3,8,12,13,16,17,18,19,20,21,22,24,26,27,28,29,49,57,58,59,60,61,62,65,66),
+    [switch]$IncludeCorePrefixedAliases,
     [switch]$IncludeAuxiliaryFiles,
     [string]$BackupRoot = "",
     [string]$Tag = "",
@@ -37,6 +38,9 @@ if (-not (Test-Path $BackupRoot)) {
 $requestedNames = New-Object System.Collections.Generic.List[string]
 foreach ($archiveId in ($ArchiveIds | Select-Object -Unique | Sort-Object)) {
     $requestedNames.Add(("js5-{0}.jcache" -f $archiveId)) | Out-Null
+    if ($IncludeCorePrefixedAliases) {
+        $requestedNames.Add(("core-js5-{0}.jcache" -f $archiveId)) | Out-Null
+    }
 }
 if ($IncludeAuxiliaryFiles) {
     foreach ($name in @("ObjCache.jcache", "GlobalSettings.jcache", "ShaderManager.jcache")) {
@@ -69,6 +73,7 @@ $summary = [pscustomobject]@{
     RuntimeCacheDir = $RuntimeCacheDir
     BackupRoot = $BackupRoot
     Tag = $Tag
+    IncludeCorePrefixedAliases = [bool]$IncludeCorePrefixedAliases
     IncludeAuxiliaryFiles = [bool]$IncludeAuxiliaryFiles
     RequestedNames = @($requestedNames.ToArray())
     RequestedCount = $requestedNames.Count

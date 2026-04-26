@@ -32,8 +32,8 @@ REQUEST_RE = re.compile(
     r"Queued js5 request #(?P<request_id>\d+) from (?P<remote>\S+): "
     r"opcode=(?P<opcode>\d+), priority=(?P<priority>true|false), nxt=(?P<nxt>true|false), "
     r"build=(?P<build>\d+), occurrence=(?P<occurrence>\d+), "
-    r"(?P<kind>reference-table|archive)\(index=(?P<index>\d+), archive=(?P<archive>\d+)\), "
-    r"available=(?P<available>true|false)"
+    r"(?P<kind>master-reference-table|reference-table|archive)\(index=(?P<index>\d+), archive=(?P<archive>\d+)\), "
+    r"available=(?P<available>\S+)"
 )
 PARAM_RE = re.compile(r"^param=(?P<key>\d+)=(?P<value>.*)$")
 
@@ -252,7 +252,7 @@ def parse_sessions_from_lines(lines: Iterable[str], request_capture_limit: int |
                 kind=request_match.group("kind"),
                 index=int(request_match.group("index")),
                 archive=int(request_match.group("archive")),
-                available=request_match.group("available") == "true",
+                available=request_match.group("available") != "false",
             )
             if session.build is None:
                 session.build = request.build

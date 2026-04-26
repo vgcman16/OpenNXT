@@ -1,6 +1,7 @@
 param(
     [int]$CheckIntervalSeconds = 2,
     [switch]$LobbyTlsPassthrough,
+    [switch]$AllowRetailJs5Upstream,
     [switch]$BypassGameProxy
 )
 
@@ -15,12 +16,19 @@ $gameProxyErr = Join-Path $root "tmp-game-proxy.err.log"
 $serverConfigPath = Join-Path $root "data\config\server.toml"
 $defaultMitmPrimaryHost = "localhost"
 
-$createdNew = $false
-$mutex = New-Object System.Threading.Mutex($false, "Global\OpenNXTLiveProxyWatchdog", [ref]$createdNew)
-if (-not $createdNew) {
-    Write-Output "watchdog=already-running"
-    exit 0
-}
+$mutex = $null
+$hasMutex = $false
+try {
+    $mutex = New-Object System.Threading.Mutex($false, "Global\OpenNXTLiveProxyWatchdog")
+    try {
+        $hasMutex = $mutex.WaitOne(0, $false)
+    } catch [System.Threading.AbandonedMutexException] {
+        $hasMutex = $true
+    }
+    if (-not $hasMutex) {
+        Write-Output "watchdog=already-running"
+        exit 0
+    }
 
 function Get-PortFromEndpoint {
     param([string]$Endpoint)
@@ -97,6 +105,10 @@ $configuredGameBackendPort = Get-ConfiguredPort -Path $serverConfigPath -Key "ga
 function Start-LobbyProxy {
     $rawRemotePort = if ($configuredGameBackendPort -gt 0) { $configuredGameBackendPort } else { $configuredGamePort }
     $lobbyProxyArgs = @(
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        ('"{0}"' -f $lobbyProxyScript),
         "-LobbyHost",
         $defaultMitmPrimaryHost,
         "-RemoteHost",
@@ -124,8 +136,11 @@ function Start-LobbyProxy {
             "-TlsRemoteRaw"
         )
     }
+    if ($AllowRetailJs5Upstream) {
+        $lobbyProxyArgs += "-AllowRetailJs5Upstream"
+    }
 
-    & $lobbyProxyScript @lobbyProxyArgs | Out-Null
+    & $powershellExe @lobbyProxyArgs | Out-Null
 }
 
 function Start-GameProxy {
@@ -148,8 +163,7 @@ function Start-GameProxy {
         -WorkingDirectory $root | Out-Null
 }
 
-try {
-    Write-Output "watchdog=started intervalSeconds=$CheckIntervalSeconds lobbyTlsPassthrough=$($LobbyTlsPassthrough.IsPresent) bypassGameProxy=$($BypassGameProxy.IsPresent)"
+    Write-Output "watchdog=started intervalSeconds=$CheckIntervalSeconds lobbyTlsPassthrough=$($LobbyTlsPassthrough.IsPresent) allowRetailJs5Upstream=$($AllowRetailJs5Upstream.IsPresent) bypassGameProxy=$($BypassGameProxy.IsPresent)"
     while ($true) {
         try {
             $serverReady = (Test-PortListening -Port $configuredHttpPort) -and (Test-PortListening -Port $configuredGameBackendPort)
@@ -164,12 +178,19 @@ try {
                 }
             }
         } catch {
-            Write-Error $_
+            Write-Output ("watchdog=error message={0}" -f $_.Exception.Message)
         }
 
         Start-Sleep -Seconds $CheckIntervalSeconds
     }
 } finally {
-    $mutex.ReleaseMutex()
-    $mutex.Dispose()
+    if ($hasMutex -and $null -ne $mutex) {
+        try {
+            $mutex.ReleaseMutex()
+        } catch {
+        }
+    }
+    if ($null -ne $mutex) {
+        $mutex.Dispose()
+    }
 }

@@ -9,15 +9,18 @@ http = 8080
 https = 8443
 
 [lobby.bootstrap]
-sendWorldInitState = false
+sendWorldInitState = true
+sendImmediateFollowupWorldSync = true
+sendInitialStats = false
 sendDefaultVarps = true
+useForcedFallbackCandidateDefaultVarps = true
 worldInterfaceSelfModelComponent = 1
 worldInterfaceSelfHeadComponent = -1
 openRootInterface = true
-openSupplementalChildInterfaces = false
-openPrimaryChild814 = false
+openSupplementalChildInterfaces = true
+openPrimaryChild814 = true
 openAlternateChild1322 = false
-sendPrimaryVarcLarge2771 = false
-sendPrimaryVarcSmall3496 = false
-sendPrimaryVarcString2508 = false
-sendPrimaryClientScript10936 = false
+sendPrimaryVarcLarge2771 = true
+sendPrimaryVarcSmall3496 = true
+sendPrimaryVarcString2508 = true
+sendPrimaryClientScript10936 = true

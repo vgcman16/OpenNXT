@@ -150,6 +150,82 @@ class SyncRuneScapeInstalledRuntimeTest(unittest.TestCase):
             self.assertFalse(summary["installedReadyAfter"])
             self.assertEqual(b"wrong-libegl", (installed_dir / "libEGL.dll").read_bytes())
 
+    def test_wrapper_launch_can_continue_when_only_local_child_crc_mismatches(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            config_file = temp_path / "jav_config.ws"
+            local_dir = temp_path / "local"
+            installed_dir = temp_path / "installed"
+            local_dir.mkdir()
+            installed_dir.mkdir()
+
+            local_lib_bytes = b"correct-libegl"
+            local_child_bytes = b"staged-local-child"
+            installed_child_bytes = b"wrapper-installed-child"
+            (local_dir / "libEGL.dll").write_bytes(local_lib_bytes)
+            (installed_dir / "libEGL.dll").write_bytes(local_lib_bytes)
+            (local_dir / "rs2client.exe").write_bytes(local_child_bytes)
+            (installed_dir / "rs2client.exe").write_bytes(installed_child_bytes)
+
+            lib_crc = subprocess.run(
+                [
+                    PYTHON,
+                    "-c",
+                    (
+                        "import sys,zlib;"
+                        "data=open(sys.argv[1],'rb').read();"
+                        "print(zlib.crc32(data)&0xffffffff)"
+                    ),
+                    str(local_dir / "libEGL.dll"),
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+            ).stdout.strip()
+            child_crc = subprocess.run(
+                [
+                    PYTHON,
+                    "-c",
+                    (
+                        "import sys,zlib;"
+                        "data=open(sys.argv[1],'rb').read();"
+                        "print(zlib.crc32(data)&0xffffffff)"
+                    ),
+                    str(installed_dir / "rs2client.exe"),
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+            ).stdout.strip()
+            config_file.write_text(
+                "\n".join(
+                    [
+                        "download_name_0=libEGL.dll",
+                        f"download_crc_0={lib_crc}",
+                        "download_name_3=rs2client.exe",
+                        f"download_crc_3={child_crc}",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            summary = self.run_script(config_file, local_dir, installed_dir)
+
+            self.assertFalse(summary["localReady"])
+            self.assertTrue(summary["installedReadyBefore"])
+            self.assertTrue(summary["installedReadyAfter"])
+            self.assertEqual(["rs2client.exe"], summary["localMismatchNames"])
+            self.assertTrue(summary["localNonChildReady"])
+            self.assertEqual("crc-mismatch", summary["localRs2ClientStatus"])
+            self.assertFalse(summary["wrapperLocalChildOverrideReady"])
+            self.assertTrue(summary["wrapperInstalledChildReady"])
+            self.assertTrue(summary["wrapperLaunchReady"])
+            self.assertEqual(
+                "installed-runtime-ready-local-rs2client-crc-mismatch",
+                summary["wrapperLaunchReason"],
+            )
+            self.assertEqual(installed_child_bytes, (installed_dir / "rs2client.exe").read_bytes())
+
 
 if __name__ == "__main__":
     unittest.main()

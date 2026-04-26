@@ -8,7 +8,14 @@ from pathlib import Path
 from typing import Any, Iterable
 
 
-WORKSPACE = Path(r"C:\Users\Demon\Documents\New project\OpenNXT")
+def _resolve_workspace() -> Path:
+    script_workspace = Path(__file__).resolve().parents[1]
+    if (script_workspace / "tools").exists() and (script_workspace / "data").exists():
+        return script_workspace
+    return Path(r"C:\Users\Demon\Documents\New project\OpenNXT")
+
+
+WORKSPACE = _resolve_workspace()
 REPO_ROOT = WORKSPACE.parent
 PROT_DIR = WORKSPACE / "data" / "prot" / "946"
 GENERATED_DIR = PROT_DIR / "generated"

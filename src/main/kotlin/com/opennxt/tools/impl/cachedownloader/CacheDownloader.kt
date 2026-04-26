@@ -10,7 +10,7 @@ import com.opennxt.filesystem.ChecksumTable
 import com.opennxt.filesystem.Container
 import com.opennxt.filesystem.Filesystem
 import com.opennxt.filesystem.ReferenceTable
-import com.opennxt.filesystem.sqlite.SqliteFilesystem
+import com.opennxt.filesystem.openFilesystem
 import com.opennxt.tools.Tool
 import java.lang.Thread.sleep
 import java.nio.ByteBuffer
@@ -224,7 +224,7 @@ class CacheDownloader : Tool("cache-downloader", "Updates / downloads the cache 
         logger.info { "Starting download from $ip:$port" }
 
         logger.info { "Opening filesystem from ${Constants.CACHE_PATH}" }
-        cache = SqliteFilesystem(Constants.CACHE_PATH)
+        cache = openFilesystem(Constants.CACHE_PATH)
 
         logger.info { "Setting up client pool with $numJs5Clients js5 clients and $numHttpClients http clients" }
         clientPool = Js5ClientPool(numJs5Clients, numHttpClients, ip, port)

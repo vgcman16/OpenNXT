@@ -20,6 +20,11 @@ discord-bot/dist
 discord-bot/runtime
 discord-bot/.env
 
+!src/main/kotlin/com/
+!src/main/kotlin/com/**
+!src/test/kotlin/com/
+!src/test/kotlin/com/**
+
 !data/
 data/*
 !data/prot
