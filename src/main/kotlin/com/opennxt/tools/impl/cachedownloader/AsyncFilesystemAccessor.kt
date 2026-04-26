@@ -4,10 +4,12 @@ import com.opennxt.ext.getCrc32
 import com.opennxt.filesystem.Filesystem
 import com.opennxt.util.Whirlpool
 import java.io.Closeable
-import java.lang.Thread.sleep
 import java.nio.ByteBuffer
 import java.util.*
+import java.util.concurrent.BlockingQueue
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
 internal fun writeCompletedRequest(
@@ -46,25 +48,25 @@ internal fun writeCompletedRequest(
 class AsyncFilesystemAccessor(val filesystem: Filesystem) : Runnable, Closeable {
 
     private val running = AtomicBoolean(true)
-    private val operations = LinkedList<IOOperation<*>>()
+    private val operations: BlockingQueue<IOOperation<*>> = LinkedBlockingQueue()
 
     fun pendingOperations(): Int = operations.size
 
     fun write(request: Js5RequestHandler.ArchiveRequest): CompletableFuture<Unit> {
         val future = CompletableFuture<Unit>()
-        operations.addLast(IOOperation.WriteRequestOperation(request, future))
+        operations.add(IOOperation.WriteRequestOperation(request, future))
         return future
     }
 
     fun write(index: Int, archive: Int, data: ByteArray, version: Int, crc: Int): CompletableFuture<Unit> {
         val future = CompletableFuture<Unit>()
-        operations.addLast(IOOperation.WriteOperation(index, archive, data, version, crc, future))
+        operations.add(IOOperation.WriteOperation(index, archive, data, version, crc, future))
         return future
     }
 
     fun read(index: Int, archive: Int): CompletableFuture<ByteBuffer?> {
         val future = CompletableFuture<ByteBuffer?>()
-        operations.addLast(IOOperation.ReadOperation(index, archive, future))
+        operations.add(IOOperation.ReadOperation(index, archive, future))
         return future
     }
 
@@ -74,12 +76,8 @@ class AsyncFilesystemAccessor(val filesystem: Filesystem) : Runnable, Closeable 
 
     override fun run() {
         try {
-            while (running.get()) {
-                val operation = operations.pollFirst()
-                if (operation == null) {
-                    sleep(10)
-                    continue
-                }
+            while (running.get() || operations.isNotEmpty()) {
+                val operation = operations.poll(10, TimeUnit.MILLISECONDS) ?: continue
 
                 try {
                     when (operation) {

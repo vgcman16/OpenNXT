@@ -13,7 +13,9 @@ import kotlin.system.exitProcess
 class Js5RequestHandler(
     private val clientPool: Js5ClientPool,
     private val filesystem: Filesystem,
-    private val numIoWorkers: Int = 0
+    private val numIoWorkers: Int = 0,
+    private val useHttpForIndex40: Boolean = true,
+    private val maxHttpAttempts: Int = 2
 ) : Runnable {
 
     data class RequestDataSnapshot(
@@ -37,7 +39,8 @@ class Js5RequestHandler(
     ) {
         private val lock = CountDownLatch(1)
 
-        var crashed = false
+        @Volatile var crashed = false
+        var httpAttempts = 0
         var offset = 0 // Offset in this block, a block is 102400 bytes
         var buffer: ByteBuffer? = null
 
@@ -92,9 +95,14 @@ class Js5RequestHandler(
     private val processing = HashSet<ArchiveRequest>()
 
     init {
+        require(numIoWorkers > 0) { "numIoWorkers must be greater than 0" }
+        require(maxHttpAttempts >= 0) { "maxHttpAttempts must be greater than or equal to 0" }
         logger.info { "Starting $numIoWorkers filesystem I/O threads" }
         workerThreads.forEach(Thread::start)
     }
+
+    private fun shouldUseHttp(request: ArchiveRequest): Boolean =
+        useHttpForIndex40 && request.index == 40 && request.httpAttempts < maxHttpAttempts
 
     fun createSnapshot(): RequestDataSnapshot {
         synchronized(lock) {
@@ -116,9 +124,9 @@ class Js5RequestHandler(
             requests.forEach { request ->
                 request.crashed = false
 
-                if (request.index == 40) {
+                if (shouldUseHttp(request)) {
                     processingHttp += request
-                    clientPool.addRequest(request)
+                    clientPool.addHttpRequest(request)
                     return@forEach
                 }
 
@@ -174,8 +182,12 @@ class Js5RequestHandler(
                 }
 
                 if (crashed.isNotEmpty()) {
+                    val fallingBackToJs5 = crashed.count { it.index == 40 && !shouldUseHttp(it) }
                     request(crashed)
-                    logger.info { "Re-queued ${crashed.size} failed/crashed/lost requests" }
+                    logger.info {
+                        "Re-queued ${crashed.size} failed/crashed/lost requests" +
+                            if (fallingBackToJs5 > 0) " ($fallingBackToJs5 index 40 requests falling back to JS5)" else ""
+                    }
                 }
             }
         } catch (e: Exception) {
