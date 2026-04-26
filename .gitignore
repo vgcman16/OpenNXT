@@ -2,8 +2,8 @@
 .idea
 build
 .kotlin
-com
-OpenNXT
+/com/
+/OpenNXT/
 capture-win64c-state.json
 hs_err_pid*.log
 myeasylog.log
