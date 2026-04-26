@@ -35,7 +35,9 @@ class Js5ClientPool(
     private val numHttpClients: Int = 4,
     val ip: String,
     val port: Int,
-    private val bootstrapLoggedIn: Boolean = false
+    private val bootstrapLoggedIn: Boolean = false,
+    private val configUrl: String = Js5Credentials.DEFAULT_CONFIG_URL,
+    private val httpTimeoutMillis: Int = 15_000
 ) : Closeable {
     private val logger = KotlinLogging.logger { }
 
@@ -47,15 +49,17 @@ class Js5ClientPool(
         .build())
     private val bootstrap = Bootstrap()
     private val workerGroup = NioEventLoopGroup(8)
-    private val credentials by lazy { Js5Credentials.download() }
+    private val credentials by lazy { Js5Credentials.download(configUrl) }
 
     var closed = false
 
     init {
         bootstrap.group(workerGroup)
         bootstrap.channel(NioSocketChannel::class.java)
-        bootstrap.handler(Js5ClientPipeline.Js5ClientChannelInitializer(bootstrapLoggedIn))
+        bootstrap.handler(Js5ClientPipeline.Js5ClientChannelInitializer(bootstrapLoggedIn) { credentials })
     }
+
+    fun resolveCredentials(): Js5Credentials = credentials
 
     fun addRequest(priority: Boolean, index: Int, archive: Int): Js5RequestHandler.ArchiveRequest? {
         if (closed) throw IllegalStateException("Pool is closed!")
@@ -74,8 +78,6 @@ class Js5ClientPool(
         while (it.hasNext()) {
             val request = it.next()
 
-            if (request.index == 40)
-                throw IllegalStateException("This shouldn't be reached (music requests shouldn't be in this list, but pendingHttp!)")
 //            val isHttp = request.archive == 255
 //            if (isHttp) {
 //                httpExecutor.submit(
@@ -119,16 +121,7 @@ class Js5ClientPool(
 
         val isHttp = request.index == 40
         if (isHttp) {
-            httpExecutor.submit(
-                Js5HttpRequest(
-                    URL(
-                        "http",
-                        ip,
-                        80,
-                        "/ms?m=0&a=${request.index}&k=${credentials.version}&g=${request.archive}&c=${request.crc}&v=${request.version}"
-                    ), request
-                )
-            )
+            submitHttpRequest(request)
             return true
         } else {
             for (client in clients) {
@@ -140,6 +133,29 @@ class Js5ClientPool(
 
             return false
         }
+    }
+
+    fun addHttpRequest(request: Js5RequestHandler.ArchiveRequest): Boolean {
+        if (closed) throw IllegalStateException("Pool is closed!")
+
+        submitHttpRequest(request)
+        return true
+    }
+
+    private fun submitHttpRequest(request: Js5RequestHandler.ArchiveRequest) {
+        request.httpAttempts++
+        httpExecutor.submit(
+            Js5HttpRequest(
+                URL(
+                    "http",
+                    ip,
+                    80,
+                    "/ms?m=0&a=${request.index}&k=${credentials.version}&g=${request.archive}&c=${request.crc}&v=${request.version}"
+                ),
+                request,
+                httpTimeoutMillis
+            )
+        )
     }
 
     fun getClient(): Js5Client =

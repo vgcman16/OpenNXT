@@ -1,6 +1,7 @@
 package com.opennxt.tools.impl.cachedownloader
 
 import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.int
 import com.google.common.util.concurrent.ThreadFactoryBuilder
@@ -34,6 +35,26 @@ class CacheDownloader : Tool("cache-downloader", "Updates / downloads the cache 
     private val ioThreads by option(help = "The number of I/O threads for cache-related operations").int().default(8)
     private val checkThreads by option(help = "The number of I/O threads for checking which files require updating").int()
         .default(4)
+    private val configUrl by option(
+        "--config-url",
+        help = "Jagex jav_config.ws URL used to resolve the JS5 token and build"
+    ).default(Js5Credentials.DEFAULT_CONFIG_URL)
+    private val expectedBuild by option(
+        "--expected-build",
+        help = "Expected JS5 build; defaults to 947 for the 947 client, or 0 to disable the guard"
+    ).int().default(947)
+    private val httpTimeoutMillis by option(
+        "--http-timeout-millis",
+        help = "Connect/read timeout for index 40 HTTP archive downloads before retry/fallback"
+    ).int().default(15_000)
+    private val maxHttpAttempts by option(
+        "--max-http-attempts",
+        help = "HTTP attempts for index 40 archives before falling back to JS5; 0 disables HTTP for index 40"
+    ).int().default(2)
+    private val disableHttp by option(
+        "--disable-http",
+        help = "Download index 40 archives over JS5 immediately instead of the HTTP mirror"
+    ).flag(default = false)
     private val indicesArg by option(help = "Comma-separated indices to refresh; defaults to all indices")
     private val archivesArg by option(help = "Comma-separated archive ids to refresh within the selected indices")
 
@@ -214,6 +235,9 @@ class CacheDownloader : Tool("cache-downloader", "Updates / downloads the cache 
     override fun runTool() {
         check(numJs5Clients > 0) { "num-js5-clients must be greater than 0" }
         check(numHttpClients > 0) { "num-http-clients must be greater than 0" }
+        check(ioThreads > 0) { "io-threads must be greater than 0" }
+        check(httpTimeoutMillis > 0) { "http-timeout-millis must be greater than 0" }
+        check(maxHttpAttempts >= 0) { "max-http-attempts must be greater than or equal to 0" }
 
         val selectedIndices = parseSelectionCsv(indicesArg)
         val selectedArchives = parseSelectionCsv(archivesArg)
@@ -227,7 +251,19 @@ class CacheDownloader : Tool("cache-downloader", "Updates / downloads the cache 
         cache = openFilesystem(Constants.CACHE_PATH)
 
         logger.info { "Setting up client pool with $numJs5Clients js5 clients and $numHttpClients http clients" }
-        clientPool = Js5ClientPool(numJs5Clients, numHttpClients, ip, port)
+        clientPool = Js5ClientPool(numJs5Clients, numHttpClients, ip, port, configUrl = configUrl, httpTimeoutMillis = httpTimeoutMillis)
+        val credentials = clientPool.resolveCredentials()
+        if (expectedBuild > 0 && credentials.version != expectedBuild) {
+            logger.error {
+                "Refusing to download cache for JS5 build ${credentials.version}; expected $expectedBuild for the 947 client. " +
+                    "Use --expected-build=0 only when intentionally syncing a different build."
+            }
+            exitProcess(1)
+        }
+        logger.info {
+            "Using JS5 build ${credentials.version} from $configUrl; " +
+                "index 40 HTTP ${if (disableHttp || maxHttpAttempts == 0) "disabled" else "enabled with $maxHttpAttempts attempts and ${httpTimeoutMillis}ms timeout"}"
+        }
 
         logger.info { "Grabbing checksum and reference tables..." }
         clientPool.openConnections(amount = 1)
@@ -257,7 +293,13 @@ class CacheDownloader : Tool("cache-downloader", "Updates / downloads the cache 
         }
 
         logger.info { "Setting up request handler" }
-        requestHandler = Js5RequestHandler(clientPool, cache, ioThreads)
+        requestHandler = Js5RequestHandler(
+            clientPool,
+            cache,
+            ioThreads,
+            useHttpForIndex40 = !disableHttp,
+            maxHttpAttempts = maxHttpAttempts
+        )
 
         logger.info { "Starting table checks" }
         checkerExecutor = Executors.newFixedThreadPool(checkThreads, ThreadFactoryBuilder()

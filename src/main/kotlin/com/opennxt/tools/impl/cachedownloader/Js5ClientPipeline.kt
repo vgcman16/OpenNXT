@@ -30,10 +30,11 @@ object Js5ClientPipeline {
     }
 
     class Js5ClientChannelInitializer(
-        private val bootstrapLoggedIn: Boolean = false
+        private val bootstrapLoggedIn: Boolean = false,
+        private val credentialsProvider: () -> Js5Credentials = { Js5Credentials.download() }
     ) : ChannelInitializer<SocketChannel>() {
         override fun initChannel(ch: SocketChannel) {
-            val credentials = Js5Credentials.download()
+            val credentials = credentialsProvider()
             val client = Js5Client(credentials.version, credentials.token, bootstrapLoggedIn)
             ch.attr(Js5Client.ATTR_KEY).set(client)
 
